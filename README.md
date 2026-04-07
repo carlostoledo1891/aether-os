@@ -40,3 +40,4 @@ React 18 · Vite 6 · TypeScript 5.7 · Tailwind CSS 4 · Motion 12 · Recharts 
 
 Aligned with the Aether UI core: near-black indigo glass palette, violet primary accent,
 Inter + JetBrains Mono typography, spring-based animations.
+# aether-os
