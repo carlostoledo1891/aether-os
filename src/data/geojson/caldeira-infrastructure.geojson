@@ -1,0 +1,120 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PILOT-PLANT",
+        "label": "Pilot Plant",
+        "sublabel": "Poços de Caldas · opened Dec 2025",
+        "kind": "plant",
+        "status": "operational",
+        "capacity": "500 kg MREC / year",
+        "address": "Rua Barão de Campo Místico 80, Centro"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.561, -21.791] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PROJECT-OFFICE",
+        "label": "Project Office",
+        "sublabel": "Meteoric Caldeira Mineração · Poços de Caldas",
+        "kind": "office",
+        "status": "operational",
+        "address": "Paco das Aguas Office Tower, Sala 404"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.562, -21.790] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CEMIG-SUBSTATION",
+        "label": "CEMIG Grid Tie-In",
+        "sublabel": "100% renewable · hydro + wind + solar",
+        "kind": "power",
+        "status": "contracted",
+        "operator": "CEMIG – Companhia Energética de Minas Gerais"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.592, -21.790] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PORT-SANTOS",
+        "label": "Port of Santos",
+        "sublabel": "Export endpoint · ~254 km from plant",
+        "kind": "port",
+        "status": "planned",
+        "distance_km": 254
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.334, -23.961] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD-MINE-N",
+        "label": "Mine Access Road N",
+        "sublabel": "Plant → Northern deposits",
+        "kind": "road",
+        "status": "existing"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-46.561, -21.791],
+          [-46.558, -21.795],
+          [-46.553, -21.806],
+          [-46.543, -21.818],
+          [-46.530, -21.780]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD-MINE-S",
+        "label": "Mine Access Road S",
+        "sublabel": "Plant → Southern deposits",
+        "kind": "road",
+        "status": "planned"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-46.561, -21.791],
+          [-46.562, -21.800],
+          [-46.566, -21.815],
+          [-46.569, -21.830],
+          [-46.572, -21.848]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SUPPLY-ROUTE",
+        "label": "Export Route",
+        "sublabel": "Caldeira → Poços de Caldas → SP → Santos",
+        "kind": "supply-chain",
+        "status": "planned",
+        "distance_km": 254
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-46.572, -21.848],
+          [-46.561, -21.791],
+          [-46.520, -21.753],
+          [-46.380, -21.670],
+          [-46.080, -21.430],
+          [-45.850, -21.950],
+          [-45.450, -22.450],
+          [-45.600, -23.200],
+          [-46.330, -23.540],
+          [-46.334, -23.961]
+        ]
+      }
+    }
+  ]
+}

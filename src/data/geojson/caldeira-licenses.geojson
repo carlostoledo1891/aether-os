@@ -1,0 +1,92 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "southern-lp",
+        "name": "Southern LP Zone",
+        "label": "Capão do Mel · Soberbo · Figueira",
+        "status": "lp_approved",
+        "approval_date": "2025-12-19",
+        "body": "COPAM / FEAM",
+        "next_step": "Installation License (LI)",
+        "li_target": "2026-06",
+        "area_km2": 67,
+        "license_count": 21,
+        "note": "LP approved unanimous. Covers first phase PFS production area."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.660, -21.793],
+          [-46.520, -21.793],
+          [-46.510, -21.830],
+          [-46.520, -21.870],
+          [-46.535, -21.920],
+          [-46.600, -21.935],
+          [-46.655, -21.918],
+          [-46.665, -21.875],
+          [-46.660, -21.793]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "southern-acquired",
+        "name": "Acquired Southern Licences",
+        "label": "21 New Licences · Consolidated South",
+        "status": "li_pending",
+        "acquisition_date": "2025-12",
+        "vendors": "Varginha Mineração · Minas Rio Mineradora · Fertimax",
+        "area_km2": 49,
+        "license_count": 21,
+        "note": "Consolidates 67 km² contiguous area between existing southern blocks. Barra do Pacu deposit included."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.590, -21.793],
+          [-46.510, -21.793],
+          [-46.505, -21.825],
+          [-46.515, -21.860],
+          [-46.540, -21.910],
+          [-46.580, -21.930],
+          [-46.620, -21.920],
+          [-46.640, -21.890],
+          [-46.635, -21.840],
+          [-46.610, -21.800],
+          [-46.590, -21.793]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "northern-licences",
+        "name": "Northern Licences",
+        "label": "Dona Maria 1 & 2 · Cupim Vermelho Norte",
+        "status": "exploration",
+        "area_km2": 80,
+        "license_count": 35,
+        "treo_ppm": 2200,
+        "tonnage_mt": 566,
+        "note": "566 Mt @ 2,200 ppm TREO. Near-term northern operations potential. Agostinho prospect located here."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.635, -21.762],
+          [-46.495, -21.752],
+          [-46.488, -21.800],
+          [-46.500, -21.820],
+          [-46.540, -21.828],
+          [-46.600, -21.825],
+          [-46.640, -21.810],
+          [-46.635, -21.762]
+        ]]
+      }
+    }
+  ]
+}

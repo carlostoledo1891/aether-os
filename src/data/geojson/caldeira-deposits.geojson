@@ -1,0 +1,194 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "capao-do-mel",
+        "name": "Capão do Mel",
+        "status": "measured",
+        "treo_ppm": 3034,
+        "mreo_pct": 24,
+        "tonnage_mt": 85,
+        "clay_depth_avg_m": 23.4,
+        "clay_depth_max_m": 50,
+        "area_km2": 9.9,
+        "orientation": "NE-SW",
+        "dimensions": "2,600 × 3,800 m",
+        "resource_note": "High-grade core 36 Mt @ 4,345 ppm TREO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.561, -21.828],
+          [-46.543, -21.844],
+          [-46.569, -21.868],
+          [-46.587, -21.852],
+          [-46.561, -21.828]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "soberbo",
+        "name": "Soberbo",
+        "status": "indicated",
+        "treo_ppm": 2601,
+        "mreo_pct": 26,
+        "tonnage_mt": 229,
+        "clay_depth_avg_m": 16.9,
+        "clay_depth_max_m": 77.4,
+        "area_km2": 9.9,
+        "orientation": "NE-SW",
+        "dimensions": "2,600 × 3,800 m",
+        "resource_note": "Highest-grade hub: 229 Mt @ 2,601 ppm TREO. MREO above 24% project average."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.611, -21.862],
+          [-46.593, -21.878],
+          [-46.619, -21.902],
+          [-46.637, -21.886],
+          [-46.611, -21.862]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "figueira",
+        "name": "Figueira",
+        "status": "indicated",
+        "treo_ppm": 2480,
+        "mreo_pct": 23,
+        "tonnage_mt": 44,
+        "clay_depth_avg_m": 28.2,
+        "clay_depth_max_m": 62.5,
+        "area_km2": 3.1,
+        "orientation": "N-S",
+        "dimensions": "2,600 × 1,200 m",
+        "resource_note": "Included in 20-year mine plan; updated resources improve DFS metrics"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.596, -21.806],
+          [-46.584, -21.806],
+          [-46.584, -21.830],
+          [-46.596, -21.830],
+          [-46.596, -21.806]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "barra-do-pacu",
+        "name": "Barra do Pacu",
+        "status": "indicated",
+        "treo_ppm": 2204,
+        "mreo_pct": 22,
+        "tonnage_mt": 389,
+        "clay_depth_avg_m": 29.2,
+        "clay_depth_max_m": 50,
+        "area_km2": 7.6,
+        "orientation": "N-S",
+        "dimensions": "1,900 × 4,000 m",
+        "resource_note": "Maiden resource Apr 2025; southern extension of Capão do Mel; high-grade: 32 Mt @ 4,130 ppm"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.564, -21.860],
+          [-46.546, -21.860],
+          [-46.546, -21.896],
+          [-46.564, -21.896],
+          [-46.564, -21.860]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "agostinho",
+        "name": "Agostinho",
+        "status": "exploration",
+        "treo_ppm": 5200,
+        "mreo_pct": 30,
+        "tonnage_mt": 0,
+        "clay_depth_avg_m": 0,
+        "clay_depth_max_m": 24,
+        "area_km2": 5.0,
+        "orientation": "N-S",
+        "dimensions": "~2,000 × 2,500 m",
+        "resource_note": "116 holes · peak 19,183 ppm TREO · MREO up to 38% · awaiting MRE"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.530, -21.767],
+          [-46.510, -21.767],
+          [-46.510, -21.789],
+          [-46.530, -21.789],
+          [-46.530, -21.767]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cupim-vermelho-norte",
+        "name": "Cupim Vermelho Norte",
+        "status": "inferred",
+        "treo_ppm": 2200,
+        "mreo_pct": 24,
+        "tonnage_mt": 340,
+        "clay_depth_avg_m": 20,
+        "clay_depth_max_m": 55,
+        "area_km2": 13.0,
+        "orientation": "NW-SE",
+        "dimensions": "2,600 × 5,000 m",
+        "resource_note": "Largest resource block by area. Part of 566 Mt northern resource @ 2,200 ppm TREO."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.6025, -21.7112],
+          [-46.5685, -21.7112],
+          [-46.5685, -21.7345],
+          [-46.6025, -21.7345],
+          [-46.6025, -21.7112]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dona-maria",
+        "name": "Dona Maria 1 & 2",
+        "status": "inferred",
+        "treo_ppm": 2100,
+        "mreo_pct": 23,
+        "tonnage_mt": 226,
+        "clay_depth_avg_m": 18,
+        "clay_depth_max_m": 45,
+        "area_km2": 2.4,
+        "orientation": "E-W",
+        "dimensions": "500 × 4,800 m",
+        "resource_note": "Narrow high-grade corridor. Part of 566 Mt northern resource. Near-term operations potential."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.568, -21.746],
+          [-46.524, -21.746],
+          [-46.524, -21.751],
+          [-46.568, -21.751],
+          [-46.568, -21.746]
+        ]]
+      }
+    }
+  ]
+}

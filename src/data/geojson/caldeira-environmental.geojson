@@ -1,0 +1,73 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "APA-PEDRA-BRANCA",
+        "label": "APA Pedra Branca",
+        "sublabel": "Área de Proteção Ambiental Estadual",
+        "kind": "protected-area",
+        "authority": "IEF / CONGEAPA",
+        "note": "State conservation area. Mining within 3 km buffer requires CONGEAPA approval (granted for LP)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.605, -21.878],
+          [-46.576, -21.891],
+          [-46.576, -21.919],
+          [-46.605, -21.932],
+          [-46.634, -21.919],
+          [-46.634, -21.891],
+          [-46.605, -21.878]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "APA-BUFFER-3KM",
+        "label": "APA 3 km Buffer Zone",
+        "sublabel": "Mining inside buffer requires CONGEAPA consent",
+        "kind": "buffer-zone",
+        "buffer_km": 3,
+        "status": "approved",
+        "note": "LP approved Dec 2025 includes CONGEAPA consent to mine within this buffer."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.605, -21.851],
+          [-46.547, -21.872],
+          [-46.547, -21.938],
+          [-46.605, -21.959],
+          [-46.663, -21.938],
+          [-46.663, -21.872],
+          [-46.605, -21.851]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "WATER-MONITORING-ZONE",
+        "label": "Integrated Water Monitoring Zone",
+        "sublabel": "Piezometers · UDC · Springs network",
+        "kind": "monitoring-zone",
+        "sensors": 4,
+        "note": "Continuous aquifer depth and quality monitoring under FEAM/INB oversight."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-46.670, -21.895],
+          [-46.630, -21.895],
+          [-46.630, -21.932],
+          [-46.670, -21.932],
+          [-46.670, -21.895]
+        ]]
+      }
+    }
+  ]
+}

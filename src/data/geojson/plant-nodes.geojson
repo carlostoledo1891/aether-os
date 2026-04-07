@@ -1,0 +1,230 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MINE-A",
+        "label": "Block 14-C",
+        "sublabel": "Capao do Mel · 4,091 ppm TREO",
+        "domain": "extraction",
+        "radius": 15,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.618, -21.848]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MINE-B",
+        "label": "Block N-7",
+        "sublabel": "Northern Expansion · Indicated",
+        "domain": "extraction",
+        "radius": 10,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.608, -21.762]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "LEACH",
+        "label": "Leach Pad",
+        "sublabel": "(NH4)2SO4 · pH 4-5",
+        "domain": "processing",
+        "radius": 12,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.594, -21.828]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PREC",
+        "label": "Precip.",
+        "sublabel": "PLS -> MREC · >90% TREO",
+        "domain": "processing",
+        "radius": 10,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.573, -21.810]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CIP",
+        "label": "CIP Plant",
+        "sublabel": "Centro de Inovacao · Pocos de Caldas",
+        "domain": "processing",
+        "radius": 19,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.555, -21.793]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FJH",
+        "label": "FJH Unit",
+        "sublabel": "Flash Joule Heating",
+        "domain": "processing",
+        "radius": 11,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.540, -21.782]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "QA",
+        "label": "XRF / QA",
+        "sublabel": "Inline · batch certified",
+        "domain": "compliance",
+        "radius": 9,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.524, -21.773]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "EXPORT",
+        "label": "Container",
+        "sublabel": "-> Santos · 254 km",
+        "domain": "transport",
+        "radius": 10,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.506, -21.763]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "UDC",
+        "label": "UDC",
+        "sublabel": "INB Legacy · monitored",
+        "domain": "monitor",
+        "radius": 9,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.648, -21.912]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RAPTOR",
+        "label": "Raptor",
+        "sublabel": "Perpetual ASX:PEC",
+        "domain": "external",
+        "radius": 7,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.518, -21.840]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "VIRIDIS",
+        "label": "Colossus",
+        "sublabel": "Viridis ASX:VMM",
+        "domain": "external",
+        "radius": 7,
+        "labelMode": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.655, -21.778]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIZN",
+        "label": "PIZ-N01",
+        "sublabel": "Piezometer · North",
+        "domain": "monitor",
+        "radius": 5,
+        "labelMode": "sensor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.572, -21.757]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIZC",
+        "label": "PIZ-C02",
+        "sublabel": "Piezometer · Central",
+        "domain": "monitor",
+        "radius": 5,
+        "labelMode": "sensor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.582, -21.800]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIZS",
+        "label": "PIZ-S03",
+        "sublabel": "Piezometer · South",
+        "domain": "monitor",
+        "radius": 5,
+        "labelMode": "sensor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.600, -21.862]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIZE",
+        "label": "PIZ-E04",
+        "sublabel": "Piezometer · East",
+        "domain": "monitor",
+        "radius": 5,
+        "labelMode": "sensor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.552, -21.792]
+      }
+    }
+  ]
+}

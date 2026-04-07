@@ -1,0 +1,76 @@
+@import './fonts.css';
+@import 'tailwindcss';
+
+/* ─── Aether OS Design Tokens ─────────────────────────────────────────────── */
+/* Aligned with UI core handoff — indigo glass palette */
+
+:root {
+  /* Surfaces */
+  --w-bg:           #07070E;
+  --w-canvas:       #060610;
+  --w-panel:        #0D0D1C;
+  --w-surface:      #121228;
+  --w-surface-high: #181834;
+
+  /* Borders */
+  --w-border:       #20203A;
+  --w-border2:      #2E2E52;
+  --w-border3:      #424270;
+
+  /* Text */
+  --w-text1:        #ECECF8;
+  --w-text2:        #A0A0C8;
+  --w-text3:        #6B6B98;
+  --w-text4:        #5A5A88;
+
+  /* Accents */
+  --w-violet:        #7C5CFC;
+  --w-violet-soft:   #9D80FF;
+  --w-violet-glow:   rgba(124, 92, 252, 0.25);
+  --w-violet-subtle: rgba(124, 92, 252, 0.13);
+
+  --w-cyan:          #00D4C8;
+  --w-cyan-glow:     rgba(0, 212, 200, 0.22);
+  --w-cyan-subtle:   rgba(0, 212, 200, 0.10);
+
+  --w-green:         #22D68A;
+  --w-green-glow:    rgba(34, 214, 138, 0.22);
+  --w-green-subtle:  rgba(34, 214, 138, 0.10);
+
+  --w-amber:         #F5A623;
+  --w-amber-glow:    rgba(245, 166, 35, 0.22);
+  --w-amber-subtle:  rgba(245, 166, 35, 0.10);
+
+  --w-red:           #FF4D4D;
+  --w-red-glow:      rgba(255, 77, 77, 0.22);
+  --w-red-subtle:    rgba(255, 77, 77, 0.10);
+
+  /* Glass */
+  --w-glass:         rgba(255, 255, 255, 0.035);
+  --w-glass-hover:   rgba(255, 255, 255, 0.06);
+
+  /* Typography */
+  --font-ui:   'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@theme inline {
+  --color-w-bg:           var(--w-bg);
+  --color-w-canvas:       var(--w-canvas);
+  --color-w-panel:        var(--w-panel);
+  --color-w-surface:      var(--w-surface);
+  --color-w-surface-high: var(--w-surface-high);
+  --color-w-border:       var(--w-border);
+  --color-w-border2:      var(--w-border2);
+  --color-w-border3:      var(--w-border3);
+  --color-w-text1:        var(--w-text1);
+  --color-w-text2:        var(--w-text2);
+  --color-w-text3:        var(--w-text3);
+  --color-w-text4:        var(--w-text4);
+  --color-w-violet:       var(--w-violet);
+  --color-w-violet-soft:  var(--w-violet-soft);
+  --color-w-cyan:         var(--w-cyan);
+  --color-w-green:        var(--w-green);
+  --color-w-amber:        var(--w-amber);
+  --color-w-red:          var(--w-red);
+}

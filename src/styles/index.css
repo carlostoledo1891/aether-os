@@ -1,0 +1,185 @@
+@import './theme.css';
+
+/* ─── Global Reset & Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-ui);
+  background-color: var(--w-bg);
+  color: var(--w-text1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--w-border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--w-border3); }
+
+/* ─── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 var(--w-violet-glow); }
+  70%  { box-shadow: 0 0 0 8px rgba(124,92,252,0); }
+  100% { box-shadow: 0 0 0 0 rgba(124,92,252,0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes glow-ambient {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Utility Classes ────────────────────────────────────────────────────────── */
+.font-mono { font-family: var(--font-mono); }
+
+.glass-surface {
+  background: var(--w-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--w-border);
+}
+
+.glass-surface:hover {
+  background: var(--w-glass-hover);
+}
+
+.text-gradient-violet {
+  background: linear-gradient(135deg, var(--w-violet-soft), var(--w-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-violet { filter: drop-shadow(0 0 6px var(--w-violet-glow)); }
+.glow-cyan   { filter: drop-shadow(0 0 6px var(--w-cyan-glow)); }
+.glow-green  { filter: drop-shadow(0 0 6px var(--w-green-glow)); }
+.glow-amber  { filter: drop-shadow(0 0 6px var(--w-amber-glow)); }
+.glow-red    { filter: drop-shadow(0 0 6px var(--w-red-glow)); }
+
+.animate-pulse-dot  { animation: pulse-dot 2s ease-in-out infinite; }
+.animate-glow       { animation: glow-ambient 3s ease-in-out infinite; }
+.animate-spin-slow  { animation: spin-slow 8s linear infinite; }
+
+@keyframes flow-dash {
+  from { stroke-dashoffset: 20; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes flow-dash-slow {
+  from { stroke-dashoffset: 14; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes node-ring-pulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes scan-line {
+  0%   { top: 0%;    opacity: 0; }
+  2%   { opacity: 0.04; }
+  98%  { opacity: 0.04; }
+  100% { top: 100%;  opacity: 0; }
+}
+
+.map-flow-edge     { animation: flow-dash      0.7s linear infinite; }
+.map-flow-edge-med { animation: flow-dash      1.1s linear infinite; }
+.map-flow-edge-slow{ animation: flow-dash-slow 1.8s linear infinite; }
+
+/* ─── MapLibre GL overrides — Aether dark theme ──────────────────────────── */
+.maplibregl-map { font-family: var(--font-ui) !important; }
+
+.maplibregl-ctrl-group {
+  background: rgba(13,13,28,0.88) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5) !important;
+  overflow: hidden;
+}
+
+.maplibregl-ctrl-group button {
+  background: transparent !important;
+  border-color: rgba(255,255,255,0.07) !important;
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background: rgba(124,92,252,0.15) !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon,
+.maplibregl-ctrl-compass .maplibregl-ctrl-icon {
+  filter: invert(1) opacity(0.55) !important;
+}
+
+.maplibregl-ctrl-zoom-in:hover .maplibregl-ctrl-icon,
+.maplibregl-ctrl-zoom-out:hover .maplibregl-ctrl-icon,
+.maplibregl-ctrl-compass:hover .maplibregl-ctrl-icon {
+  filter: invert(1) opacity(0.9) !important;
+}
+
+.maplibregl-ctrl-attrib {
+  display: none !important;
+}
+
+.maplibregl-canvas { border-radius: 13px; }
+
+/* Ensure the map container takes full space */
+.maplibregl-map,
+.maplibregl-canvas-container,
+.maplibregl-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ─── Print / PDF Export ─────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+  html, #root { height: auto !important; overflow: visible !important; }
+
+  /* Show only the buyer view content when printing */
+  header, [data-print-hide], .view-switcher-bar { display: none !important; }
+
+  .glass-surface {
+    backdrop-filter: none !important;
+    background: #f8f8f8 !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+
+  * { color: #111 !important; border-color: #ccc !important; }
+  [style*="color: #"] { color: #111 !important; }
+
+  @page { margin: 20mm; size: A4; }
+}
