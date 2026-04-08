@@ -29,6 +29,11 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
   const DEPOSIT_DATA = useMemo(() => service.getDepositData(), [service])
   const RESOURCE_CLASSIFICATION = useMemo(() => service.getResourceClassification(), [service])
   const snap = useMemo(() => service.getIssuerSnapshot(), [service])
+
+  if (!Array.isArray(DEPOSIT_DATA) || !RESOURCE_CLASSIFICATION || !snap || !('resource' in snap)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading geology...</div>
+  }
+
   return (
     <motion.div
       key="geology-panel"
@@ -40,7 +45,7 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <GlowingIcon icon={Mountain} color="amber" size={11}/>
           <SectionLabel>Global Mineral Resource</SectionLabel>
-          {snap.resource.citation.url && (
+          {snap?.resource?.citation?.url && (
             <a
               href={snap.resource.citation.url}
               target="_blank"
@@ -54,7 +59,7 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
               }}
             >
               <Link2 size={8} />
-              ASX {snap.resource.citation.retrieved}
+              ASX {snap?.resource?.citation?.retrieved ?? '—'}
             </a>
           )}
         </div>

@@ -13,10 +13,15 @@ export function AuditTab() {
   const auditTrail = useMemo(() => service.getAuditTrail(), [service])
   const [auditFilter, setAuditFilter] = useState<string>('all')
 
+  const safeAudit = Array.isArray(auditTrail) ? auditTrail : []
   const filteredAudit = useMemo(
-    () => (auditFilter === 'all' ? auditTrail : auditTrail.filter((e) => e.type === auditFilter)),
-    [auditTrail, auditFilter],
+    () => (auditFilter === 'all' ? safeAudit : safeAudit.filter((e) => e.type === auditFilter)),
+    [safeAudit, auditFilter],
   )
+
+  if (!Array.isArray(auditTrail)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading audit...</div>
+  }
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
@@ -58,7 +63,7 @@ export function AuditTab() {
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <GlowingIcon icon={ScrollText} color="violet" size={14} />
           <span className="text-[11px] font-semibold uppercase tracking-[0.07em] text-[var(--w-text3)]">
-            {dataCtx.telemetry === 'simulated' ? 'Demonstration event log' : 'Event log'}
+            {dataCtx?.telemetry === 'simulated' ? 'Demonstration event log' : 'Event log'}
           </span>
           <span className="text-[11px] text-[var(--w-text4)]">({filteredAudit.length} events)</span>
         </div>
@@ -144,7 +149,7 @@ export function AuditTab() {
 
       <div className="rounded-lg px-4 py-3" style={{ border: `1px solid ${W.glass07}`, background: W.glass03 }}>
         <p className={`${ty.body} m-0 text-[var(--w-text3)]`}>
-          {dataCtx.telemetry === 'simulated' ? (
+          {dataCtx?.telemetry === 'simulated' ? (
             <>
               Events below use <strong style={{ color: W.text2 }}>stub hashes for demonstration</strong>. They illustrate how a
               controlled, append-only ledger could support regulatory and board review once wired to your WORM / blockchain and

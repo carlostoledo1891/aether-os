@@ -50,14 +50,16 @@ export function BuyerView() {
   const DEPOSIT_DATA = useMemo(() => service.getDepositData(), [service])
   const [batchIndex, setBatchIndex] = useState(0)
   const [batchDropdownOpen, setBatchDropdownOpen] = useState(false)
-  const safeBatchIndex = Math.min(batchIndex, BATCHES.length - 1)
-  const batch = BATCHES[safeBatchIndex] as typeof BATCHES[number] | undefined
+  const safeBatches = Array.isArray(BATCHES) ? BATCHES : []
+  const safeBatchIndex = Math.min(batchIndex, Math.max(safeBatches.length - 1, 0))
+  const batch = safeBatches[safeBatchIndex] as typeof BATCHES[number] | undefined
   const batchId = batch?.batch_id ?? ''
   const [exporting, setExporting] = useState(false)
   const [activeTab, setActiveTab] = useState<BuyerTab>('compliance')
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
   const originDepositId = BATCH_DEPOSIT_MAP[batchId] ?? 'capao-do-mel'
-  const originDeposit = DEPOSIT_DATA.find(d => d.id === originDepositId)
+  const safeDeposits = Array.isArray(DEPOSIT_DATA) ? DEPOSIT_DATA : []
+  const originDeposit = safeDeposits.find(d => d.id === originDepositId)
 
   const handleStepClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
@@ -234,12 +236,12 @@ export function BuyerView() {
                     border: `1px solid ${W.glass12}`,
                     boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
                   }}>
-                  {BATCHES.map((b, i) => (
+                  {safeBatches.map((b, i) => (
                     <button key={b.batch_id} onClick={() => { setBatchIndex(i); setBatchDropdownOpen(false); setSelectedStepIndex(null) }} style={{
                       width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                       padding: '8px 11px', border: 'none', cursor: 'pointer', outline: 'none',
                       background: i === batchIndex ? 'rgba(124,92,252,0.12)' : 'transparent',
-                      borderBottom: i < BATCHES.length - 1 ? W.hairlineBorder : 'none',
+                      borderBottom: i < safeBatches.length - 1 ? W.hairlineBorder : 'none',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
                         <span style={{ fontSize: 11, fontWeight: 700, color: i === batchIndex ? W.violetSoft : W.text2, fontFamily: 'var(--font-mono)' }}>{b.batch_id}</span>

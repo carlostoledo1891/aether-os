@@ -11,9 +11,13 @@ export function PipelineTab() {
   const service = useAetherService()
   const offtakers = useMemo(() => service.getOfftakerPipeline(), [service])
 
+  if (!Array.isArray(offtakers)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading pipeline...</div>
+  }
+
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 md:grid-cols-2">
-      {offtakers.map((o) => (
+      {(Array.isArray(offtakers) ? offtakers : []).map((o) => (
         <ExecutiveCard key={o.id} glow="cyan" className="flex min-h-[220px] flex-col">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">

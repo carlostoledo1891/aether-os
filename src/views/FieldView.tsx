@@ -106,9 +106,9 @@ function pickFeatureByPriority(
 export function FieldView() {
   const { plant, env } = useTelemetry()
   const service = useAetherService()
-  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service])
-  const PREDICTIVE_HYDROLOGY_SCENARIOS = useMemo(() => service.getHydrologyScenarios(), [service])
-  const SPRING_COUNT = useMemo(() => service.getSpringCount(), [service])
+  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service]) as ReturnType<typeof service.getProjectFinancials> | undefined
+  const PREDICTIVE_HYDROLOGY_SCENARIOS = useMemo(() => service.getHydrologyScenarios(), [service]) as ReturnType<typeof service.getHydrologyScenarios> | undefined
+  const SPRING_COUNT = useMemo(() => service.getSpringCount(), [service]) as number | undefined
   const [mapTab, setMapTab] = useState<MapTab>('operations')
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
@@ -340,7 +340,7 @@ export function FieldView() {
     else setSelectedHydroNode(null)
   }, [mapTab])
 
-  const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS[1] ?? PREDICTIVE_HYDROLOGY_SCENARIOS[0]
+  const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS?.[1] ?? PREDICTIVE_HYDROLOGY_SCENARIOS?.[0]
 
   const weather = useSiteWeather(30, { enabled: mapTab === 'environment' })
   const hydroWeatherStrip = useMemo(
@@ -350,8 +350,8 @@ export function FieldView() {
       windowPrecipMm: weather.windowPrecipMm,
       anomalyMm: weather.anomalyMm,
       source: weather.source,
-      scenarioDroughtIndex: currentScenario.drought_index,
-      scenarioHorizon: currentScenario.horizon,
+      scenarioDroughtIndex: currentScenario?.drought_index ?? 0,
+      scenarioHorizon: currentScenario?.horizon ?? '',
     }),
     [weather, currentScenario],
   )
@@ -369,14 +369,14 @@ export function FieldView() {
             { label: 'NdPr Ratio', value: `${plant.output.ndpr_ratio_pct.toFixed(1)}%`, sub: 'of TREO basket' },
             { label: 'Inflow', value: `${plant.flow_metrics.in_liters_sec.toFixed(0)} L/s`, sub: 'Process water in' },
             { label: 'NH₄ Feed', value: `${plant.leaching_circuit.ammonium_sulfate_ml_min.toFixed(0)} ml/min`, sub: 'Tracked reagent feed' },
-            { label: 'Annual NdPr', value: `${PROJECT_FINANCIALS.annual_ndpr_t.toLocaleString()} t/yr`, sub: 'LOM target' },
+            { label: 'Annual NdPr', value: `${PROJECT_FINANCIALS?.annual_ndpr_t?.toLocaleString() ?? '—'} t/yr`, sub: 'LOM target' },
           ]
         : [
-            { label: 'Spring Preservation', value: `${currentScenario.spring_preservation_pct}%`, sub: currentScenario.horizon },
-            { label: 'Active Springs', value: `${currentScenario.active_springs}/${SPRING_COUNT}`, sub: 'Modeled protected count' },
-            { label: 'Guardband', value: `${currentScenario.sulfate_guardband_ppm} ppm`, sub: 'Before sulfate breach' },
-            { label: 'Recirculation', value: `${currentScenario.recirculation_pct.toFixed(1)}%`, sub: 'Commercial case model' },
-            { label: 'LI Signal', value: currentScenario.permitting_signal, sub: 'Hearing readiness' },
+            { label: 'Spring Preservation', value: `${currentScenario?.spring_preservation_pct ?? '—'}%`, sub: currentScenario?.horizon ?? '' },
+            { label: 'Active Springs', value: `${currentScenario?.active_springs ?? '—'}/${SPRING_COUNT ?? '—'}`, sub: 'Modeled protected count' },
+            { label: 'Guardband', value: `${currentScenario?.sulfate_guardband_ppm ?? '—'} ppm`, sub: 'Before sulfate breach' },
+            { label: 'Recirculation', value: `${currentScenario?.recirculation_pct?.toFixed(1) ?? '—'}%`, sub: 'Commercial case model' },
+            { label: 'LI Signal', value: currentScenario?.permitting_signal ?? '—', sub: 'Hearing readiness' },
           ],
     [mapTab, plant, currentScenario, PROJECT_FINANCIALS, SPRING_COUNT],
   )

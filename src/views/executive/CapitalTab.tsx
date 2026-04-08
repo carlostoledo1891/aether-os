@@ -11,6 +11,10 @@ export function CapitalTab() {
   const service = useAetherService()
   const capital = useMemo(() => service.getCapitalSnapshot(), [service])
 
+  if (!capital || typeof capital !== 'object' || !('total_capex_m' in capital)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading capital...</div>
+  }
+
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
       <div className="flex min-w-0 flex-col gap-4">
@@ -18,9 +22,9 @@ export function CapitalTab() {
           <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(
               [
-                ['Total CAPEX', `$${capital.total_capex_m}M`, W.text1],
-                ['Drawn', `$${capital.drawn_m}M`, W.violet],
-                ['Remaining', `$${capital.remaining_m}M`, W.text3],
+                ['Total CAPEX', `$${capital?.total_capex_m ?? 0}M`, W.text1],
+                ['Drawn', `$${capital?.drawn_m ?? 0}M`, W.violet],
+                ['Remaining', `$${capital?.remaining_m ?? 0}M`, W.text3],
               ] as [string, string, string][]
             ).map(([label, value, clr]) => (
               <div
@@ -35,7 +39,7 @@ export function CapitalTab() {
               </div>
             ))}
           </div>
-          {capital.funding_sources.map((f) => {
+          {(Array.isArray(capital?.funding_sources) ? capital.funding_sources : []).map((f) => {
             const pct = f.committed_m > 0 ? (f.drawn_m / f.committed_m) * 100 : 0
             return (
               <div key={f.name} className="mb-3 last:mb-0">
@@ -62,8 +66,8 @@ export function CapitalTab() {
         <ExecutiveCard>
           <span className={`${ty.labelStrong} mb-3 block`}>Monthly Spend vs Budget</span>
           <div>
-            {capital.monthly_spend.map((m, i) => {
-              const maxVal = Math.max(...capital.monthly_spend.map((x) => Math.max(x.budget_m, x.actual_m)))
+            {(Array.isArray(capital?.monthly_spend) ? capital.monthly_spend : []).map((m, i) => {
+              const maxVal = Math.max(0, ...(Array.isArray(capital?.monthly_spend) ? capital.monthly_spend : []).map((x) => Math.max(x.budget_m, x.actual_m)))
               const budgetPct = (m.budget_m / maxVal) * 100
               const actualPct = m.actual_m > 0 ? (m.actual_m / maxVal) * 100 : 0
               return (
@@ -114,7 +118,7 @@ export function CapitalTab() {
         <ExecutiveCard>
           <span className={`${ty.labelStrong} mb-3 block`}>Conditions Precedent</span>
           <div className="flex flex-col gap-2">
-            {capital.conditions_precedent.map((cp) => (
+            {(Array.isArray(capital?.conditions_precedent) ? capital.conditions_precedent : []).map((cp) => (
               <div
                 key={cp.id}
                 className="flex items-center gap-3 rounded-md border px-2 py-2.5"

@@ -29,9 +29,14 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
   const { env } = useTelemetry()
   const { getHistory } = useDataService()
   const svc = useAetherService()
-  const PREDICTIVE_HYDROLOGY_SCENARIOS = useMemo(() => svc.getHydrologyScenarios(), [svc])
-  const SCALE_UP_PATHWAY = useMemo(() => svc.getScaleUpPathway(), [svc])
-  const SPRING_COUNT = useMemo(() => svc.getSpringCount(), [svc])
+  const rawScenarios = useMemo(() => svc.getHydrologyScenarios(), [svc])
+  const PREDICTIVE_HYDROLOGY_SCENARIOS = Array.isArray(rawScenarios) ? rawScenarios : []
+  const rawScaleUp = useMemo(() => svc.getScaleUpPathway(), [svc])
+  const SCALE_UP_PATHWAY = rawScaleUp && typeof rawScaleUp === 'object' && 'current_digital_coverage_pct' in rawScaleUp
+    ? rawScaleUp
+    : { current_digital_coverage_pct: 0, springs_monitored: 0 }
+  const rawSpringCount = useMemo(() => svc.getSpringCount(), [svc])
+  const SPRING_COUNT = typeof rawSpringCount === 'number' ? rawSpringCount : 0
   const [range, setRange] = useState<TimeRangeKey>('24h')
   const { envHistory, precipMmSeries } = getHistory(range)
   const precipDays = range === '30d' ? 30 : range === '7d' ? 7 : 7
@@ -60,9 +65,13 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
     return { direct, sentinel, inferred }
   }, [env.springs])
 
-  const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS[1]
-  const currentScenarioStatus = currentScenario.status as 'stable' | 'watch' | 'action'
+  const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS[1] ?? PREDICTIVE_HYDROLOGY_SCENARIOS[0]
+  const currentScenarioStatus = (currentScenario?.status ?? 'stable') as 'stable' | 'watch' | 'action'
   const prov = useMemo(() => svc.getProvenanceProfile(), [svc])
+
+  if (!currentScenario || !prov || !('sections' in prov)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading environment...</div>
+  }
 
   return (
     <motion.div

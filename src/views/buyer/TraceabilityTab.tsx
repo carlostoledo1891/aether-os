@@ -19,6 +19,10 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
   const API_HANDOFFS = useMemo(() => service.getApiHandoffs(), [service])
   const SCOPE_3_TRACKING = useMemo(() => service.getScope3Tracking(), [service])
 
+  if (!Array.isArray(API_HANDOFFS) || !SCOPE_3_TRACKING) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading traceability...</div>
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {/* Blockchain timeline */}

@@ -11,7 +11,11 @@ import ty from './executiveTypography.module.css'
 export function RiskTab() {
   const service = useAetherService()
   const risks = useMemo(() => service.getRiskRegister(), [service])
-  const risksByScore = useMemo(() => [...risks].sort((a: RiskItem, b: RiskItem) => b.score - a.score), [risks])
+  const risksByScore = useMemo(() => Array.isArray(risks) ? [...risks].sort((a: RiskItem, b: RiskItem) => b.score - a.score) : [], [risks])
+
+  if (!Array.isArray(risks) || risks.length === 0) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading risks...</div>
+  }
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
@@ -23,7 +27,7 @@ export function RiskTab() {
               : tier === 'high'
                 ? [8, 11, 'High', W.amber]
                 : [1, 7, 'Medium', W.green]
-          const count = risks.filter((r) => r.score >= min && r.score <= max).length
+          const count = (Array.isArray(risks) ? risks : []).filter((r) => r.score >= min && r.score <= max).length
           return (
             <ExecutiveCard key={tier} className="!p-4">
               <div className={`${ty.labelStrong} mb-1`} style={{ color: clr }}>

@@ -12,11 +12,15 @@ export function FinancialsTab() {
   const service = useAetherService()
   const [scenario, setScenario] = useState<ScenarioKey>('consensus')
 
-  const fin = useMemo(() => service.getFinancialScenario(scenario), [service, scenario])
-  const sensitivityTable = useMemo(() => service.getSensitivityTable(), [service])
-  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service])
-  const PROJECT_TIMELINE = useMemo(() => service.getProjectTimeline(), [service])
-  const snap = useMemo(() => service.getIssuerSnapshot(), [service])
+  const fin = useMemo(() => service.getFinancialScenario(scenario), [service, scenario]) as ReturnType<typeof service.getFinancialScenario> | undefined
+  const sensitivityTable = useMemo(() => service.getSensitivityTable(), [service]) as ReturnType<typeof service.getSensitivityTable> | undefined
+  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service]) as ReturnType<typeof service.getProjectFinancials> | undefined
+  const PROJECT_TIMELINE = useMemo(() => service.getProjectTimeline(), [service]) as ReturnType<typeof service.getProjectTimeline> | undefined
+  const snap = useMemo(() => service.getIssuerSnapshot(), [service]) as ReturnType<typeof service.getIssuerSnapshot> | undefined
+
+  if (!fin || !snap || !PROJECT_FINANCIALS || !sensitivityTable || !PROJECT_TIMELINE) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading financials...</div>
+  }
 
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-5 lg:grid-cols-2">
@@ -25,11 +29,11 @@ export function FinancialsTab() {
           Illustrative scenarios aligned to public disclosure materials — not a live market or trading feed.
         </ExecutivePageIntro>
         <p className={`${ty.body} max-w-[52rem] border-l-2 border-[color-mix(in_srgb,var(--w-green)_45%,transparent)] pl-3`}>
-          <span className="font-mono text-[10px] text-[var(--w-text4)]">As of {snap.as_of}</span>
+          <span className="font-mono text-[10px] text-[var(--w-text4)]">As of {snap?.as_of ?? '—'}</span>
           {' · '}
-          Resource headline (verify vs latest ASX): {snap.resource.global_bt} Bt @ {snap.resource.global_treo_ppm} ppm TREO (M+I{' '}
-          {snap.resource.measured_indicated_bt} Bt · Inferred {snap.resource.inferred_bt} Bt). PFS: {snap.economics.pfs_document_label}.
-          {snap.resource.citation.url ? (
+          Resource headline (verify vs latest ASX): {snap?.resource?.global_bt ?? '—'} Bt @ {snap?.resource?.global_treo_ppm ?? '—'} ppm TREO (M+I{' '}
+          {snap?.resource?.measured_indicated_bt ?? '—'} Bt · Inferred {snap?.resource?.inferred_bt ?? '—'} Bt). PFS: {snap?.economics?.pfs_document_label ?? '—'}.
+          {snap?.resource?.citation?.url ? (
             <a
               href={snap.resource.citation.url}
               target="_blank"
@@ -40,7 +44,7 @@ export function FinancialsTab() {
               {snap.resource.citation.label}
             </a>
           ) : (
-            <span className="ml-1 text-[var(--w-text4)]">{snap.resource.citation.label}</span>
+            <span className="ml-1 text-[var(--w-text4)]">{snap?.resource?.citation?.label ?? '—'}</span>
           )}
         </p>
       </div>
@@ -66,15 +70,15 @@ export function FinancialsTab() {
           ))}
         </div>
 
-        <ExecutiveCard title={`${fin.label} Scenario`} icon={DollarSign} iconColor="green" glow="green">
+        <ExecutiveCard title={`${fin?.label ?? '—'} Scenario`} icon={DollarSign} iconColor="green" glow="green">
           <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-2.5 xl:grid-cols-3">
             {([
-              ['Pre-Tax NPV₈', `$${fin.npv_pretax_m}M`, `IRR ${fin.irr_pretax_pct}%`],
-              ['Post-Tax NPV₈', `$${fin.npv_posttax_m}M`, `IRR ${fin.irr_posttax_pct}%`],
-              ['Annual Revenue', `$${fin.annual_revenue_m}M`, `NdPr @ $${fin.ndpr_price_kg}/kg`],
-              ['Payback', `${fin.payback_yrs} yrs`, `OPEX $${fin.opex_per_kg}/kg TREO`],
-              ['NdPr Net OPEX', `$${fin.breakeven_ndpr_kg}/kg`, 'Net of by-product credits'],
-              ['LOM FCF', `$${(PROJECT_FINANCIALS.lom_fcf_m / 1000).toFixed(1)}B`, `${PROJECT_FINANCIALS.mine_life_years}-yr · ${PROJECT_FINANCIALS.throughput_mtpa} Mtpa`],
+              ['Pre-Tax NPV₈', `$${fin?.npv_pretax_m ?? 0}M`, `IRR ${fin?.irr_pretax_pct ?? 0}%`],
+              ['Post-Tax NPV₈', `$${fin?.npv_posttax_m ?? 0}M`, `IRR ${fin?.irr_posttax_pct ?? 0}%`],
+              ['Annual Revenue', `$${fin?.annual_revenue_m ?? 0}M`, `NdPr @ $${fin?.ndpr_price_kg ?? 0}/kg`],
+              ['Payback', `${fin?.payback_yrs ?? 0} yrs`, `OPEX $${fin?.opex_per_kg ?? 0}/kg TREO`],
+              ['NdPr Net OPEX', `$${fin?.breakeven_ndpr_kg ?? 0}/kg`, 'Net of by-product credits'],
+              ['LOM FCF', `$${((PROJECT_FINANCIALS?.lom_fcf_m ?? 0) / 1000).toFixed(1)}B`, `${PROJECT_FINANCIALS?.mine_life_years ?? 0}-yr · ${PROJECT_FINANCIALS?.throughput_mtpa ?? 0} Mtpa`],
             ] as [string, string, string][]).map(([label, value, sub]) => (
               <div
                 key={label}
@@ -102,8 +106,8 @@ export function FinancialsTab() {
                 <span className={`${ty.th} text-right`}>Pre-Tax NPV</span>
                 <span className={`${ty.th} text-right`}>Post-Tax NPV</span>
               </div>
-              {sensitivityTable.map((row) => {
-                const isActive = row.ndpr_price === fin.ndpr_price_kg
+              {(Array.isArray(sensitivityTable) ? sensitivityTable : []).map((row) => {
+                const isActive = row.ndpr_price === fin?.ndpr_price_kg
                 return (
                   <div
                     key={row.ndpr_price}
@@ -142,7 +146,7 @@ export function FinancialsTab() {
 
         <ExecutiveCard title="Milestones" icon={Landmark} iconColor="green">
           <div className="flex flex-col gap-3">
-            {PROJECT_TIMELINE.map(({ milestone, date, status, detail }) => (
+            {(Array.isArray(PROJECT_TIMELINE) ? PROJECT_TIMELINE : []).map(({ milestone, date, status, detail }) => (
               <div key={milestone} className="flex items-start gap-3">
                 <span
                   className="mt-1.5 h-2 w-2 shrink-0 rounded-full"

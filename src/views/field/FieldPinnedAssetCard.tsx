@@ -28,6 +28,10 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
   const service = useAetherService()
   const prov = useMemo(() => service.getProvenanceProfile(), [service])
 
+  if (!prov || !('sections' in prov)) {
+    return null
+  }
+
   return (
     <GlassCard
       animate={false}

@@ -50,11 +50,15 @@ export function DfsTab() {
   const dfsWorkstreams = useMemo(() => service.getDFSWorkstreams(), [service])
   const regulatory = useMemo(() => service.getRegulatoryLog(), [service])
 
+  if (!Array.isArray(dfsWorkstreams) || !Array.isArray(regulatory)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading DFS...</div>
+  }
+
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
       <ExecutiveCard title="Ausenco DFS Workstreams" icon={FileBarChart} iconColor="green" glow="green">
         <div className="flex flex-col gap-4">
-          {dfsWorkstreams.map((ws) => {
+          {(Array.isArray(dfsWorkstreams) ? dfsWorkstreams : []).map((ws) => {
             const barColor =
               ws.status === 'on_track'
                 ? W.green
@@ -106,7 +110,7 @@ export function DfsTab() {
           DFS-relevant regulatory touchpoints — for full agency matrix, exports, and MPF thread see the Agencies tab.
         </p>
         <div className="flex flex-col gap-3">
-          {regulatory.map((r) => (
+          {(Array.isArray(regulatory) ? regulatory : []).map((r) => (
             <div
               key={r.id}
               className="rounded-lg border px-4 py-4"

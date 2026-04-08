@@ -31,6 +31,8 @@ export const MonitoringNetworkCard = memo(function MonitoringNetworkCard({
     [siteWeather, precipDays],
   )
 
+  if (!prov || !('sections' in prov)) return null
+
   return (
     <GlassCard animate={false} glow="cyan" className="shrink-0 px-[11px] py-[11px]">
       <div className="mb-1.5 flex flex-wrap items-center gap-1.5">

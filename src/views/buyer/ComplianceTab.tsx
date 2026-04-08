@@ -21,6 +21,10 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
   const U_TH_SAFETY = useMemo(() => service.getUThSafety(), [service])
   const MARKET_PRICES = useMemo(() => service.getMarketPrices(), [service])
 
+  if (!Array.isArray(benchmarks) || !MARKET_PRICES || !U_TH_SAFETY || !Array.isArray(CYBER_TRUST_PILLARS)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading compliance...</div>
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {/* FEOC Badge */}

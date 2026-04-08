@@ -20,9 +20,13 @@ export function EsgTab() {
   const esgFrameworks = useMemo(() => service.getESGFrameworks(), [service])
 
   const esgOverallCoverage = useMemo(() => {
-    if (esgFrameworks.length === 0) return 0
+    if (!Array.isArray(esgFrameworks) || esgFrameworks.length === 0) return 0
     return Math.round(esgFrameworks.reduce((sum, f) => sum + f.coverage_pct, 0) / esgFrameworks.length)
   }, [esgFrameworks])
+
+  if (!Array.isArray(esgFrameworks)) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading ESG...</div>
+  }
 
   return (
     <div className="flex min-w-0 flex-col gap-4">

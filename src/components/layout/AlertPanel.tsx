@@ -47,7 +47,8 @@ function incidentResolutionTime(inc: IncidentRecord): string {
 
 export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }: AlertPanelProps) {
   const service = useAetherService()
-  const incidents = useMemo(() => service.getIncidentLog(), [service])
+  const rawIncidents = useMemo(() => service.getIncidentLog(), [service])
+  const incidents = Array.isArray(rawIncidents) ? rawIncidents : ([] as IncidentRecord[])
   const active = alerts.filter(a => !a.dismissed)
   const [tab, setTab] = useState<PanelTab>('active')
   const closeButtonRef = useRef<HTMLButtonElement>(null)

@@ -30,12 +30,20 @@ export function PermitsAgenciesTab() {
   const profile = useMemo(() => service.getProvenanceProfile(), [service])
   const spatial = useMemo(() => service.getSpatialInsights(), [service])
 
-  const mpfEntry = useMemo(() => regulatory.find(r => r.id === 'REG-04'), [regulatory])
-  const r01 = useMemo(() => risks.find(r => r.id === 'R01'), [risks])
+  const safeRegulatory = Array.isArray(regulatory) ? regulatory : []
+  const safeRisks = Array.isArray(risks) ? risks : []
+  const safeAudit = Array.isArray(audit) ? audit : []
+
+  const mpfEntry = useMemo(() => safeRegulatory.find(r => r.id === 'REG-04'), [safeRegulatory])
+  const r01 = useMemo(() => safeRisks.find(r => r.id === 'R01'), [safeRisks])
   const linkedAudits = useMemo(
-    () => audit.filter(e => r01?.relatedAuditIds?.includes(e.id)),
-    [audit, r01],
+    () => safeAudit.filter(e => r01?.relatedAuditIds?.includes(e.id)),
+    [safeAudit, r01],
   )
+
+  if (!Array.isArray(regulatory) || !thresholds || !spatial) {
+    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading agencies...</div>
+  }
 
   const downloadJson = useCallback(() => {
     const bundle = service.getRegulatoryExportBundle()
@@ -81,9 +89,9 @@ export function PermitsAgenciesTab() {
           <Download size={12} />
           Regulatory log (CSV)
         </button>
-        <ProvenanceBadge kind={profile.sections.regulatory_log.kind} title={profile.sections.regulatory_log.hint} />
-        <ProvenanceBadge kind={profile.sections.audit_ledger.kind} title={profile.sections.audit_ledger.hint} />
-        {profile.sections.map_geometry ? (
+        <ProvenanceBadge kind={profile?.sections?.regulatory_log?.kind} title={profile?.sections?.regulatory_log?.hint} />
+        <ProvenanceBadge kind={profile?.sections?.audit_ledger?.kind} title={profile?.sections?.audit_ledger?.hint} />
+        {profile?.sections?.map_geometry ? (
           <ProvenanceBadge kind={profile.sections.map_geometry.kind} title={profile.sections.map_geometry.hint} />
         ) : null}
       </div>
@@ -94,14 +102,14 @@ export function PermitsAgenciesTab() {
           <SectionLabel>Spatial cross-check (heuristic)</SectionLabel>
         </div>
         <p className="text-[11px] leading-snug" style={{ color: W.text3 }}>
-          {spatial.summary}
+          {spatial?.summary ?? '—'}
         </p>
         <p className="mt-2 font-mono text-[9px] leading-snug" style={{ color: W.text4 }}>
-          Pilot → PFS plant ≈ {spatial.pilotToPfsPlantKm.toFixed(2)} km · Licence zones overlapping APA buffer (illustrative union):{' '}
-          {spatial.licenceZonesInApaBuffer}
+          Pilot → PFS plant ≈ {(spatial?.pilotToPfsPlantKm ?? 0).toFixed(2)} km · Licence zones overlapping APA buffer (illustrative union):{' '}
+          {spatial?.licenceZonesInApaBuffer ?? '—'}
         </p>
         <p className="mt-1 font-mono text-[8px] leading-snug" style={{ color: W.text4 }}>
-          {spatial.apaHeuristicNote}
+          {spatial?.apaHeuristicNote ?? '—'}
         </p>
       </GlassCard>
 
@@ -131,7 +139,7 @@ export function PermitsAgenciesTab() {
               </tr>
             </thead>
             <tbody>
-              {regulatory.map((r) => (
+              {(Array.isArray(regulatory) ? regulatory : []).map((r) => (
                 <tr
                   key={r.id}
                   className="border-b transition-colors hover:bg-white/[0.03]"
@@ -232,7 +240,7 @@ export function PermitsAgenciesTab() {
                 <td className="py-3 pr-2 font-semibold" style={{ color: W.text2 }}>
                   Sulfate (discharge)
                 </td>
-                <td className="py-3 pr-2 font-mono">{thresholds.sulfate_warning_ppm} ppm warn</td>
+                <td className="py-3 pr-2 font-mono">{thresholds?.sulfate_warning_ppm ?? '—'} ppm warn</td>
                 <td className="py-3 pr-2">FEAM discharge condition (demo)</td>
                 <td className="py-3 pr-2">ISE / inline</td>
                 <td className="py-3 pr-2 font-mono">{sulfate.toFixed(0)} ppm</td>
@@ -244,7 +252,7 @@ export function PermitsAgenciesTab() {
                 <td className="py-3 pr-2 font-semibold" style={{ color: W.text2 }}>
                   Nitrate (discharge)
                 </td>
-                <td className="py-3 pr-2 font-mono">{thresholds.nitrate_warning_ppm} ppm warn</td>
+                <td className="py-3 pr-2 font-mono">{thresholds?.nitrate_warning_ppm ?? '—'} ppm warn</td>
                 <td className="py-3 pr-2">FEAM discharge condition (demo)</td>
                 <td className="py-3 pr-2">ISE</td>
                 <td className="py-3 pr-2 font-mono">{wq.nitrate_ppm.toFixed(0)} ppm</td>
