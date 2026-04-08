@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import {
   useGeoJsonFeatureCollection,
   type Feature,
@@ -11,6 +12,8 @@ import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
 
 type Campaign = '2022-infill' | '2023-infill' | '2024-resource' | '2025-pfs'
 
+export type DrillHoleType = 'DD' | 'AC' | 'AUGER'
+
 interface DrillHoleProperties extends FeatureProperties {
   id: string
   deposit: string
@@ -18,7 +21,10 @@ interface DrillHoleProperties extends FeatureProperties {
   mreo_pct: number
   depth_m: number
   campaign: Campaign
-  note?: string
+  hole_type: DrillHoleType
+  note: string | null
+  source_ref?: string
+  as_of?: string
 }
 
 type DrillHoleFeature = Feature<DrillHoleProperties, PointGeometry>
@@ -30,7 +36,12 @@ export interface DrillHoleDetail {
   mreo_pct: number
   depth_m: number
   campaign: Campaign
-  note?: string
+  hole_type: DrillHoleType
+  note: string | null
+  source_ref?: string
+  as_of?: string
+  intercept?: string
+  including?: string
 }
 
 export const DRILL_LAYER_ID = 'drill-hole-core'
@@ -47,17 +58,22 @@ export function toDrillHoleDetail(
     mreo_pct: Number(properties.mreo_pct ?? 0),
     depth_m: Number(properties.depth_m ?? 0),
     campaign: (properties.campaign ?? '2022-infill') as Campaign,
-    note: properties.note ? String(properties.note) : undefined,
+    hole_type: (properties.hole_type ?? 'AC') as DrillHoleType,
+    note: properties.note ? String(properties.note) : null,
+    source_ref: properties.source_ref ? String(properties.source_ref) : undefined,
+    as_of: properties.as_of ? String(properties.as_of) : undefined,
+    intercept: properties.intercept ? String(properties.intercept) : undefined,
+    including: properties.including ? String(properties.including) : undefined,
   }
 }
 
 /** Circle color ramp: cyan → violet → amber for TREO grade */
 function holeColor(treo: number): string {
-  if (treo >= 10000) return '#FF4D4D'   // red — exceptional
-  if (treo >= 5000)  return '#F5A623'   // amber — very high
-  if (treo >= 3000)  return '#9D80FF'   // violet-soft — high
-  if (treo >= 2200)  return '#7C5CFC'   // violet — resource grade
-  return '#00D4C8'                       // cyan — lower grade
+  if (treo >= 10000) return W.red   // red — exceptional
+  if (treo >= 5000)  return W.amber   // amber — very high
+  if (treo >= 3000)  return W.violetSoft   // violet-soft — high
+  if (treo >= 2200)  return W.violet   // violet — resource grade
+  return W.cyan                       // cyan — lower grade
 }
 
 /** Radius scaled by depth (5–14px) */
@@ -69,11 +85,14 @@ interface DrillHoleOverlayProps {
   hoveredHoleId?: string | null
   /** Filter to only show holes for a specific deposit */
   depositFilter?: string | null
+  /** Filter by collar type */
+  holeTypeFilter?: DrillHoleType | 'all'
 }
 
 export function DrillHoleOverlay({
   hoveredHoleId = null,
   depositFilter = null,
+  holeTypeFilter = 'all',
 }: DrillHoleOverlayProps) {
   const raw = useGeoJsonFeatureCollection<DrillHoleFeature>(drillholesUrl)
 
@@ -81,6 +100,7 @@ export function DrillHoleOverlay({
     if (!raw) return null
     const features = raw.features
       .filter(f => !depositFilter || f.properties.deposit === depositFilter)
+      .filter(f => holeTypeFilter === 'all' || f.properties.hole_type === holeTypeFilter)
       .map(f => {
         const treo = f.properties.treo_ppm
         const depth = f.properties.depth_m
@@ -96,7 +116,7 @@ export function DrillHoleOverlay({
         }
       })
     return { type: 'FeatureCollection', features }
-  }, [raw, hoveredHoleId, depositFilter])
+  }, [raw, hoveredHoleId, depositFilter, holeTypeFilter])
 
   if (!data) return null
 
@@ -121,7 +141,7 @@ export function DrillHoleOverlay({
           'circle-color': ['get', 'circleColor'],
           'circle-radius': ['get', 'circleRadius'],
           'circle-opacity': ['get', 'circleOpacity'],
-          'circle-stroke-color': '#06060F',
+          'circle-stroke-color': W.mapHalo,
           'circle-stroke-width': 0.8,
         }}
       />
@@ -133,14 +153,14 @@ export function DrillHoleOverlay({
         layout={{
           'text-field': ['concat', ['get', 'id'], '\n', ['to-string', ['get', 'treo_ppm']], ' ppm'],
           'text-size': 8,
-          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+          'text-font': ['Open Sans Regular'],
           'text-anchor': 'top',
           'text-offset': [0, 0.8],
           'text-allow-overlap': false,
         }}
         paint={{
           'text-color': ['get', 'circleColor'],
-          'text-halo-color': '#06060F',
+          'text-halo-color': W.mapHalo,
           'text-halo-width': 1.2,
           'text-opacity': 0.8,
         }}

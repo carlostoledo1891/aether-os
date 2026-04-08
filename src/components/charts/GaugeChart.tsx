@@ -17,7 +17,7 @@ interface GaugeChartProps {
 
 export function GaugeChart({
   value, max = 100, size = 80, strokeWidth = 6,
-  color = W.violet, trackColor = 'rgba(255,255,255,0.06)',
+  color = W.violet, trackColor = W.glass06,
   label, sublabel, unit = '%', showValue = true, animate = true,
 }: GaugeChartProps) {
   const pct = Math.min(1, Math.max(0, value / max))

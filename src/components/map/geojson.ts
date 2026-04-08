@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-export type FeaturePropertyValue = string | number | boolean | null
+/** GeoJSON allows absent keys; optional typed props use `undefined` when parsing. */
+export type FeaturePropertyValue = string | number | boolean | null | undefined
 export type FeatureProperties = Record<string, FeaturePropertyValue>
 
 export interface PointGeometry {

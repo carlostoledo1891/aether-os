@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import {
   useGeoJsonFeatureCollection,
   type Feature,
@@ -31,6 +32,11 @@ export interface LicenseDetail {
   area_km2: number
   license_count: number
   note: string
+  source_ref?: string
+  as_of?: string
+  confidence?: string
+  resource_category?: string
+  total_mt?: number
 }
 
 export const LICENSE_LAYER_ID = 'license-fill'
@@ -48,14 +54,19 @@ export function toLicenseDetail(
     area_km2: Number(properties.area_km2 ?? 0),
     license_count: Number(properties.license_count ?? 0),
     note: String(properties.note ?? ''),
+    source_ref: properties.source_ref ? String(properties.source_ref) : undefined,
+    as_of: properties.as_of ? String(properties.as_of) : undefined,
+    confidence: properties.confidence ? String(properties.confidence) : undefined,
+    resource_category: properties.resource_category ? String(properties.resource_category) : undefined,
+    total_mt: typeof properties.total_mt === 'number' ? properties.total_mt : undefined,
   }
 }
 
 function statusColors(status: LicenseStatus): { fill: string; line: string } {
   switch (status) {
-    case 'lp_approved': return { fill: '#22D68A', line: '#22D68A' }
-    case 'li_pending':  return { fill: '#F5A623', line: '#F5A623' }
-    case 'exploration': return { fill: '#7C5CFC', line: '#9D80FF' }
+    case 'lp_approved': return { fill: W.green, line: W.green }
+    case 'li_pending':  return { fill: W.amber, line: W.amber }
+    case 'exploration': return { fill: W.violet, line: W.violetSoft }
   }
 }
 
@@ -126,14 +137,14 @@ export function LicenseOverlay({
         layout={{
           'text-field': ['get', 'name'],
           'text-size': 10,
-          'text-font': ['Open Sans SemiBold', 'Arial Unicode MS Regular'],
+          'text-font': ['Open Sans Regular'],
           'text-anchor': 'center',
           'text-allow-overlap': false,
           'text-max-width': 10,
         }}
         paint={{
           'text-color': ['get', 'lineColor'],
-          'text-halo-color': '#06060F',
+          'text-halo-color': W.mapHalo,
           'text-halo-width': 1.5,
           'text-opacity': 0.85,
         }}
@@ -144,14 +155,14 @@ export function LicenseOverlay({
         layout={{
           'text-field': ['concat', ['to-string', ['get', 'area_km2']], ' km²  ·  ', ['to-string', ['get', 'license_count']], ' licences'],
           'text-size': 8.5,
-          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+          'text-font': ['Open Sans Regular'],
           'text-anchor': 'center',
           'text-offset': [0, 1.2],
           'text-allow-overlap': false,
         }}
         paint={{
-          'text-color': '#A0A0C8',
-          'text-halo-color': '#06060F',
+          'text-color': W.text2,
+          'text-halo-color': W.mapHalo,
           'text-halo-width': 1.2,
           'text-opacity': 0.7,
         }}

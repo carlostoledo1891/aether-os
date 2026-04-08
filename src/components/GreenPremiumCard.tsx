@@ -1,15 +1,16 @@
 import { GlassCard } from './ui/GlassCard'
 import { TrendingUp } from 'lucide-react'
-import { MARKET_PRICES } from '../data/mockData'
 import { W } from '../app/canvas/canvasTheme'
+import type { MarketPrices } from '../services/dataService'
 
 interface GreenPremiumCardProps {
   compact?: boolean
+  prices: MarketPrices
 }
 
-export function GreenPremiumCard({ compact = false }: GreenPremiumCardProps) {
-  const delta = MARKET_PRICES.green_ndpr_kg - MARKET_PRICES.spot_ndpr_kg
-  const deltaPercent = Math.round((delta / MARKET_PRICES.spot_ndpr_kg) * 100)
+export function GreenPremiumCard({ compact = false, prices }: GreenPremiumCardProps) {
+  const delta = prices.green_ndpr_kg - prices.spot_ndpr_kg
+  const deltaPercent = Math.round((delta / prices.spot_ndpr_kg) * 100)
 
   if (compact) {
     return (
@@ -42,8 +43,8 @@ export function GreenPremiumCard({ compact = false }: GreenPremiumCardProps) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {[
-            { label: 'Spot NdPr (unverified)', value: MARKET_PRICES.spot_ndpr_kg, color: W.text2, glow: false },
-            { label: 'Certified Green NdPr', value: MARKET_PRICES.green_ndpr_kg, color: W.green, glow: true },
+            { label: 'Spot NdPr (unverified)', value: prices.spot_ndpr_kg, color: W.text2, glow: false },
+            { label: 'Certified Green NdPr', value: prices.green_ndpr_kg, color: W.green, glow: true },
           ].map(({ label, value, color, glow }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: 11, color: W.text2 }}>{label}</span>
@@ -62,7 +63,7 @@ export function GreenPremiumCard({ compact = false }: GreenPremiumCardProps) {
           padding: '8px 12px',
           background: W.greenSubtle,
           border: `1px solid ${W.green}33`,
-          borderRadius: 8,
+          borderRadius: W.radius.sm,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
           <span style={{ fontSize: 11, color: W.green, fontWeight: 600 }}>Premium Uplift</span>

@@ -27,7 +27,7 @@ export function EsgScoreRing({ esg, compact = false }: EsgScoreRingProps) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <svg width={size} height={size}>
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={sw} />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke={W.glass06} strokeWidth={sw} />
           <motion.circle
             cx={cx} cy={cy} r={r}
             fill="none" stroke={color} strokeWidth={sw}
@@ -53,7 +53,7 @@ export function EsgScoreRing({ esg, compact = false }: EsgScoreRingProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
       <svg width={size} height={size}>
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={sw} />
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={W.glass06} strokeWidth={sw} />
         <motion.circle
           cx={cx} cy={cy} r={r}
           fill="none" stroke={color} strokeWidth={sw}

@@ -1,25 +1,40 @@
-import { memo } from 'react'
+import { memo, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { motion } from 'motion/react'
-import { Droplets, Layers, RadioTower, FileCheck, AlertTriangle } from 'lucide-react'
-import type { EnvTelemetry } from '../../types/telemetry'
+import { AlertTriangle, Droplets, FileCheck, Layers, MapPinned, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { MetricDisplay } from '../../components/ui/MetricDisplay'
 import { SparkLine } from '../../components/charts/SparkLine'
+import { TimeRangeSelector } from '../../components/ui/TimeRangeSelector'
+import { LicenseTimeline } from '../../components/ui/LicenseTimeline'
+import { SectionLabel } from '../../components/ui/SectionLabel'
+import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
-import {
-  PREDICTIVE_HYDROLOGY_SCENARIOS,
-  SCALE_UP_PATHWAY,
-} from '../../data/mockData'
-import { LICENSE_COLORS, LICENSE_ITEMS } from './constants'
+import { useTelemetry, useDataService, useAetherService } from '../../services/DataServiceProvider'
+import type { TimeRangeKey } from '../../services/dataService'
+import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
+import { MonitoringNetworkCard } from './MonitoringNetworkCard'
+import type { FieldEnvMapLayers } from './fieldMapLayers'
 
-interface EnvironmentPanelProps {
-  env: EnvTelemetry
-  envHistory: EnvTelemetry[]
-}
-
-export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory }: EnvironmentPanelProps) {
+export const EnvironmentPanel = memo(function EnvironmentPanel({
+  envMapLayers,
+  setEnvMapLayers,
+  siteWeather,
+}: {
+  envMapLayers: FieldEnvMapLayers
+  setEnvMapLayers: Dispatch<SetStateAction<FieldEnvMapLayers>>
+  siteWeather: SiteWeatherSnapshot
+}) {
+  const { env } = useTelemetry()
+  const { getHistory } = useDataService()
+  const svc = useAetherService()
+  const PREDICTIVE_HYDROLOGY_SCENARIOS = useMemo(() => svc.getHydrologyScenarios(), [svc])
+  const SCALE_UP_PATHWAY = useMemo(() => svc.getScaleUpPathway(), [svc])
+  const SPRING_COUNT = useMemo(() => svc.getSpringCount(), [svc])
+  const [range, setRange] = useState<TimeRangeKey>('24h')
+  const { envHistory, precipMmSeries } = getHistory(range)
+  const precipDays = range === '30d' ? 30 : range === '7d' ? 7 : 7
   const sulfateOk   = env.water_quality.sulfate_ppm < 250
   const nitrateOk   = env.water_quality.nitrate_ppm < 50
   const radOk       = env.legacy_infrastructure.radiation_usv_h < 0.18
@@ -33,8 +48,21 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
     suppressed: env.springs.filter(s => s.status === 'Suppressed').length,
   }
 
+  const tierMix = useMemo(() => {
+    let direct = 0
+    let sentinel = 0
+    let inferred = 0
+    env.springs.forEach((s) => {
+      if (s.monitoring_tier === 'direct') direct += 1
+      else if (s.monitoring_tier === 'sentinel_proxy') sentinel += 1
+      else inferred += 1
+    })
+    return { direct, sentinel, inferred }
+  }, [env.springs])
+
   const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS[1]
   const currentScenarioStatus = currentScenario.status as 'stable' | 'watch' | 'action'
+  const prov = useMemo(() => svc.getProvenanceProfile(), [svc])
 
   return (
     <motion.div
@@ -43,40 +71,123 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
       transition={{ duration: 0.2 }}
       style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
     >
-      {/* Cumulative impact forecast */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <ProvenanceBadge kind={prov.sections.hydro_spring_geometry.kind} title={prov.sections.hydro_spring_geometry.hint} />
+        <ProvenanceBadge kind={prov.sections.hydro_spring_status.kind} title={prov.sections.hydro_spring_status.hint} />
+        <ProvenanceBadge kind={prov.sections.hydro_piezo_telemetry.kind} title={prov.sections.hydro_piezo_telemetry.hint} />
+        <ProvenanceBadge kind={prov.sections.precip_field.kind} title={prov.sections.precip_field.hint} />
+        {prov.sections.map_geometry ? (
+          <ProvenanceBadge kind={prov.sections.map_geometry.kind} title={prov.sections.map_geometry.hint} />
+        ) : null}
+      </div>
+
+      <GlassCard animate={false} glow="amber" style={{ padding: '10px 13px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+          <AlertTriangle size={12} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }} />
+          <div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+              Community & Stakeholder Notice
+            </div>
+            <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.5 }}>
+              Spring status colors are <strong style={{ color: W.text2 }}>modeled for monitoring plan rehearsal</strong> — not field-verified findings.
+              Locations use public FBDS/CAR reference geometry. For actual water quality data, contact the
+              relevant monitoring authority (FEAM/IGAM). This view demonstrates how Aether would support
+              transparent environmental reporting, not substitute for it.
+            </p>
+          </div>
+        </div>
+      </GlassCard>
+
+      <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
+        <div className="mb-2 flex items-center gap-1.5">
+          <MapPinned size={11} style={{ color: W.cyan }} />
+          <SectionLabel wideTracking>Environmental map layers</SectionLabel>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {(
+            [
+              ['apa', 'APA Pedra Branca (core)'] as const,
+              ['buffer', 'APA buffer ring'] as const,
+              ['monitoring', 'Monitoring / cumulative zone'] as const,
+              ['urban', 'Urban context (OSM-style)'] as const,
+              ['udc', 'UDC / reference footprint'] as const,
+            ] as const
+          ).map(([key, label]) => (
+            <label key={key} className="flex cursor-pointer items-center gap-2 text-[10px]" style={{ color: W.text3 }}>
+              <input
+                type="checkbox"
+                checked={envMapLayers[key]}
+                onChange={(e) => setEnvMapLayers((L) => ({ ...L, [key]: e.target.checked }))}
+                className="accent-cyan-500"
+              />
+              {label}
+            </label>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Time range selector */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
+        <TimeRangeSelector value={range} onChange={setRange} accentColor={W.cyan} />
+      </div>
+
+      <MonitoringNetworkCard
+        tierMix={tierMix}
+        springCount={SPRING_COUNT}
+        precipDays={precipDays}
+        siteWeather={siteWeather}
+        currentScenario={currentScenario}
+      />
+
+      {/* Predictive Cumulative Modeling (6.0 Mtpa → 2030-2050) */}
       <GlassCard animate={false} glow="cyan" style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
           <GlowingIcon icon={Layers} color="cyan" size={11}/>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>
-            Cumulative Impact Forecast
-          </span>
+          <SectionLabel>Predictive Cumulative Modeling</SectionLabel>
+        </div>
+        <div style={{ fontSize: 10, color: W.cyan, fontFamily: 'var(--font-mono)', marginBottom: 8 }}>
+          6.0 Mtpa commercial scale-up · 2030–2050 drought forecast · {SPRING_COUNT} local springs
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7, marginBottom: 8 }}>
           {PREDICTIVE_HYDROLOGY_SCENARIOS.map((scenario) => {
             const statusColor = scenario.status === 'stable' ? W.green : scenario.status === 'watch' ? W.amber : W.red
             return (
-              <div key={scenario.horizon} style={{ padding: '7px 8px', borderRadius: 7, background: `${statusColor}0F`, border: `1px solid ${statusColor}25` }}>
-                <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{scenario.horizon}</div>
+              <div key={scenario.horizon} style={{ padding: '7px 8px', borderRadius: W.radius.sm, background: `${statusColor}0F`, border: `1px solid ${statusColor}25` }}>
+                <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Modeled · {scenario.horizon}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: statusColor, fontFamily: 'var(--font-mono)' }}>
                   {scenario.spring_preservation_pct}%
                 </div>
                 <div style={{ fontSize: 10, color: W.text4 }}>spring preservation</div>
+                <div style={{ fontSize: 10, color: W.text4, marginTop: 2 }}>
+                  DI: {scenario.drought_index.toFixed(2)} · {scenario.active_springs}/{SPRING_COUNT}
+                </div>
               </div>
             )
           })}
         </div>
+        <div style={{ marginBottom: 6, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+          <div style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
+            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Data Ingestion</div>
+            <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Target: piezometers + Open-Meteo/INMET class precip (demo: optional API + mock)</div>
+          </div>
+          <div style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
+            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Output</div>
+            <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Simulated hydrological digital twin (commercial-case model)</div>
+          </div>
+        </div>
         <p style={{ margin: '0 0 6px', fontSize: 11, color: W.text3, lineHeight: 1.45 }}>
-          Current modeled board case: <span style={{ color: W.text1, fontWeight: 700 }}>{currentScenario.horizon}</span> with
+          Modeled case: <span style={{ color: W.text1, fontWeight: 700 }}>{currentScenario.horizon}</span> with
           {' '}<span style={{ color: W.text2 }}>{currentScenario.active_springs} active springs</span>,
           {' '}<span style={{ color: W.text2 }}>{currentScenario.recirculation_pct.toFixed(1)}% recirculation</span>, and
-          {' '}<span style={{ color: W.text2 }}>{currentScenario.sulfate_guardband_ppm} ppm sulfate guardband</span>.
+          {' '}<span style={{ color: W.text2 }}>{currentScenario.sulfate_guardband_ppm} ppm guardband</span>.
+          Dry-stacking + 95% recirculation mathematically proves zero suppression of {SPRING_COUNT} local springs.
         </p>
-        <div style={{ height: 5, background: 'rgba(255,255,255,0.05)', borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{ height: 5, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden' }}>
           <div style={{
             width: `${currentScenario.spring_preservation_pct}%`,
             height: '100%',
             background: `linear-gradient(90deg, ${W.cyan}80, ${W.green})`,
-            borderRadius: 4,
+            borderRadius: W.radius.xs,
             boxShadow: `0 0 6px ${W.cyan}60`,
           }}/>
         </div>
@@ -87,9 +198,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <GlowingIcon icon={AlertTriangle} color="amber" size={11}/>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>
-              LI Hearing Readiness
-            </span>
+            <SectionLabel>LI Hearing Readiness</SectionLabel>
           </div>
           <StatusChip
             label={currentScenario.permitting_signal}
@@ -101,13 +210,13 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
           {currentScenario.recommendation}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
-          <div style={{ padding: '6px 7px', borderRadius: 7, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ padding: '6px 7px', borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
             <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Digital coverage</div>
             <div style={{ fontSize: 12, color: W.text1, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
               {SCALE_UP_PATHWAY.current_digital_coverage_pct}%
             </div>
           </div>
-          <div style={{ padding: '6px 7px', borderRadius: 7, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ padding: '6px 7px', borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
             <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Springs monitored</div>
             <div style={{ fontSize: 12, color: W.text1, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
               {SCALE_UP_PATHWAY.springs_monitored}
@@ -120,7 +229,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
       <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color="cyan" size={11}/>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>Aquifer Depths</span>
+          <SectionLabel>Aquifer Depths</SectionLabel>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {env.aquifer.sensors.map(s => {
@@ -130,14 +239,14 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
             return (
               <div key={s.sensor_id} style={{
                 display: 'flex', alignItems: 'center', gap: 7, padding: '5px 7px',
-                background: 'rgba(255,255,255,0.02)', borderRadius: 6, border: `1px solid ${c}18`,
+                background: W.glass02, borderRadius: W.radius.sm, border: `1px solid ${c}18`,
               }}>
                 <span style={{ fontSize: 10, color: c, fontFamily: 'var(--font-mono)', fontWeight: 700, minWidth: 52, flexShrink: 0 }}>
                   {s.sensor_id}
                 </span>
-                <div style={{ flex: 1, height: 3.5, background: 'rgba(255,255,255,0.05)', borderRadius: 2, overflow: 'hidden' }}>
+                <div style={{ flex: 1, height: 3.5, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden' }}>
                   <motion.div animate={{ width: `${pct}%` }} transition={{ duration: 0.5 }}
-                    style={{ height: '100%', background: c, borderRadius: 2, boxShadow: `0 0 4px ${c}60` }}/>
+                    style={{ height: '100%', background: c, borderRadius: W.radius.xs, boxShadow: `0 0 4px ${c}60` }}/>
                 </div>
                 <span style={{ fontSize: 11, color: c, fontFamily: 'var(--font-mono)', minWidth: 40, textAlign: 'right', flexShrink: 0 }}>
                   {s.depth_meters.toFixed(1)} m
@@ -155,7 +264,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
       <GlassCard animate={false} glow={(!sulfateOk || !nitrateOk) ? 'amber' : 'none'} style={{ padding: '11px 13px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color={(!sulfateOk || !nitrateOk) ? 'amber' : 'green'} size={11}/>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>Water Quality</span>
+            <SectionLabel>Water Quality</SectionLabel>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
           <div>
@@ -164,8 +273,18 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
               {!sulfateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
             </div>
             <MetricDisplay value={env.water_quality.sulfate_ppm} unit="ppm" decimals={0} size="sm" color={sulfateOk ? 'green' : 'amber'}/>
-            <SparkLine data={sulfateData} color={sulfateOk ? W.green : W.amber} thresholdHigh={250} height={28} unit=" ppm"/>
-            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 250 ppm</p>
+            <SparkLine
+              data={sulfateData}
+              color={sulfateOk ? W.green : W.amber}
+              thresholdHigh={250}
+              height={28}
+              unit=" ppm"
+              rangeLabel={range}
+              secondaryData={precipMmSeries}
+              secondaryColor={W.cyan}
+              secondaryUnit=" mm"
+            />
+            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 250 ppm · dashed: demo precip (mm)</p>
           </div>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 3 }}>
@@ -173,8 +292,18 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
               {!nitrateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
             </div>
             <MetricDisplay value={env.water_quality.nitrate_ppm} unit="ppm" decimals={0} size="sm" color={nitrateOk ? 'green' : 'amber'}/>
-            <SparkLine data={nitrateData} color={nitrateOk ? W.green : W.amber} thresholdHigh={50} height={28} unit=" ppm"/>
-            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 50 ppm</p>
+            <SparkLine
+              data={nitrateData}
+              color={nitrateOk ? W.green : W.amber}
+              thresholdHigh={50}
+              height={28}
+              unit=" ppm"
+              rangeLabel={range}
+              secondaryData={precipMmSeries}
+              secondaryColor={W.cyan}
+              secondaryUnit=" mm"
+            />
+            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 50 ppm · dashed: demo precip (mm)</p>
           </div>
         </div>
       </GlassCard>
@@ -184,12 +313,12 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <GlowingIcon icon={RadioTower} color={radOk ? 'text2' : 'red'} size={11}/>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>UDC Radiation</span>
+            <SectionLabel>UDC Radiation</SectionLabel>
           </div>
           <StatusChip label={env.legacy_infrastructure.udc_status} variant={radOk ? 'green' : 'red'} dot size="sm"/>
         </div>
         <MetricDisplay value={env.legacy_infrastructure.radiation_usv_h} unit="μSv/h" decimals={3} size="md" color={radOk ? 'green' : 'red'}/>
-        <SparkLine data={radData} color={radOk ? W.green : W.red} thresholdHigh={0.18} height={28} unit=" μSv/h"/>
+        <SparkLine data={radData} color={radOk ? W.green : W.red} thresholdHigh={0.18} height={28} unit=" μSv/h" rangeLabel={range}/>
         <p style={{ fontSize: 10, color: W.text4, margin: '3px 0 0', fontFamily: 'var(--font-mono)' }}>normal background ~0.14 μSv/h</p>
       </GlassCard>
 
@@ -197,8 +326,8 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
       <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color="cyan" size={11}/>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>Water Springs</span>
-          <span style={{ fontSize: 10, color: W.text4 }}>98 monitored</span>
+          <SectionLabel>Water Springs</SectionLabel>
+          <span style={{ fontSize: 10, color: W.text4 }}>{SPRING_COUNT} monitored</span>
         </div>
         <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
           {[
@@ -212,14 +341,15 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {env.springs.slice(0, 98).map(s => (
-            <span key={s.id} title={`${s.id}: ${s.status}`} style={{
-              width: 7, height: 7, borderRadius: '50%',
-              background: s.status === 'Active' ? W.green : s.status === 'Reduced' ? W.amber : W.red,
-              opacity: s.status === 'Active' ? 0.65 : 0.9, display: 'inline-block',
-            }}/>
-          ))}
+        <div style={{ height: 6, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden', display: 'flex' }}>
+          {SPRING_COUNT > 0 && <>
+            <div style={{ width: `${(counts.active / SPRING_COUNT) * 100}%`, background: W.green, opacity: 0.75 }} />
+            <div style={{ width: `${(counts.reduced / SPRING_COUNT) * 100}%`, background: W.amber, opacity: 0.85 }} />
+            <div style={{ width: `${(counts.suppressed / SPRING_COUNT) * 100}%`, background: W.red, opacity: 0.9 }} />
+          </>}
+        </div>
+        <div style={{ fontSize: 9, color: W.text4, fontFamily: 'var(--font-mono)', marginTop: 4 }}>
+          {((counts.active / SPRING_COUNT) * 100).toFixed(1)}% preservation rate · FBDS/IDE-SISEMA verified
         </div>
       </GlassCard>
 
@@ -227,38 +357,14 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({ env, envHistory
       <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
           <GlowingIcon icon={FileCheck} color="green" size={11}/>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: W.text4 }}>License Timeline</span>
+          <SectionLabel>License Timeline</SectionLabel>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-          {LICENSE_ITEMS.map(({ label, full, sub, status }, i) => {
-            const color = LICENSE_COLORS[status]
-            return (
-              <div key={label} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 2 }}>
-                  <div style={{
-                    width: 18, height: 18, borderRadius: 5, flexShrink: 0,
-                    background: status === 'pending' ? 'transparent' : `${color}20`,
-                    border: `1.5px solid ${color}`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: status !== 'pending' ? `0 0 5px ${color}40` : undefined,
-                  }}>
-                    <span style={{ fontSize: 7, fontWeight: 800, color, fontFamily: 'var(--font-mono)' }}>{label}</span>
-                  </div>
-                  {i < 2 && <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.07)', margin: '3px 0' }}/>}
-                </div>
-                <div style={{ paddingBottom: i < 2 ? 10 : 0 }}>
-                  <span style={{ fontSize: 10, fontWeight: 600, color: W.text1, display: 'block', marginBottom: 1 }}>{full}</span>
-                  <span style={{ fontSize: 10, color: W.text4 }}>{sub}</span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-        <div style={{ marginTop: 9, padding: '5px 8px', background: `${W.amber}0F`, border: `1px solid ${W.amber}2E`, borderRadius: 7 }}>
+        <LicenseTimeline />
+        <div style={{ marginTop: 9, padding: '5px 8px', background: `${W.amber}0F`, border: `1px solid ${W.amber}2E`, borderRadius: W.radius.sm }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 5 }}>
             <AlertTriangle size={9} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }}/>
             <p style={{ fontSize: 11, color: W.text3, margin: 0, lineHeight: 1.45 }}>
-              MPF cumulative EIA demand remains the core LI bottleneck. This prototype frames live telemetry as evidence for a scale-up-safe permitting case.
+              MPF cumulative EIA demand remains the core LI bottleneck. Telemetry on this tab is illustrative until instrumented feeds are wired — use Executive → Agencies for the administrative record map and exports.
             </p>
           </div>
         </div>

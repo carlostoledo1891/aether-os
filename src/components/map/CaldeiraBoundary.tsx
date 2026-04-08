@@ -1,4 +1,5 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
 import caldeiraBoundaryUrl from '../../data/geojson/caldeira-boundary.geojson?url'
 
@@ -22,7 +23,7 @@ export function CaldeiraBoundary() {
         id="caldeira-boundary-fill"
         type="fill"
         paint={{
-          'fill-color': '#7C5CFC',
+          'fill-color': W.violet,
           'fill-opacity': 0.04,
         }}
       />
@@ -32,7 +33,7 @@ export function CaldeiraBoundary() {
         id="caldeira-boundary-glow"
         type="line"
         paint={{
-          'line-color': '#00D4C8',
+          'line-color': W.cyan,
           'line-width': 6,
           'line-opacity': 0.10,
           'line-blur': 4,
@@ -44,7 +45,7 @@ export function CaldeiraBoundary() {
         id="caldeira-boundary-line"
         type="line"
         paint={{
-          'line-color': '#9D80FF',
+          'line-color': W.violetSoft,
           'line-width': 1.5,
           'line-opacity': 0.55,
           'line-dasharray': [6, 4],

@@ -31,7 +31,7 @@ export function BarComparison({ items, max, height = 28, showPercent = false }: 
             </span>
           </div>
           <div style={{
-            height, background: 'rgba(255,255,255,0.04)',
+            height, background: W.glass04,
             borderRadius: height / 2, overflow: 'hidden',
           }}>
             <motion.div

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
-import type { ReactNode, CSSProperties } from 'react'
+import type { ReactNode, CSSProperties, KeyboardEvent } from 'react'
+import { W } from '../../app/canvas/canvasTheme'
 
 interface GlassCardProps {
   children: ReactNode
@@ -10,31 +11,45 @@ interface GlassCardProps {
   animate?: boolean
 }
 
+const insetTop = `inset 0 1px 0 ${W.glass07}`
 const glowMap = {
-  violet: '0 0 20px rgba(124,92,252,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
-  cyan:   '0 0 20px rgba(0,212,200,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
-  green:  '0 0 20px rgba(34,214,138,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
-  amber:  '0 0 20px rgba(245,166,35,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
-  red:    '0 0 20px rgba(255,77,77,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
-  none:   'inset 0 1px 0 rgba(255,255,255,0.04)',
+  violet: `0 0 20px ${W.violetGlow}, ${insetTop}`,
+  cyan:   `0 0 20px ${W.cyanGlow}, ${insetTop}`,
+  green:  `0 0 20px ${W.greenGlow}, ${insetTop}`,
+  amber:  `0 0 20px ${W.amberGlow}, ${insetTop}`,
+  red:    `0 0 20px ${W.redGlow}, ${insetTop}`,
+  none:   `inset 0 1px 0 ${W.glass04}`,
 }
 
 export function GlassCard({
   children, className = '', style, glow = 'none', onClick, animate = true
 }: GlassCardProps) {
   const baseStyle: CSSProperties = {
-    background: 'rgba(255,255,255,0.035)',
+    background: W.glass,
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: 14,
+    border: W.chromeBorder,
+    borderRadius: W.radius.lg,
     boxShadow: glowMap[glow],
     ...style,
   }
 
+  const handleKeyDown = onClick
+    ? (e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() }
+      }
+    : undefined
+
   if (!animate) {
     return (
-      <div className={className} style={baseStyle} onClick={onClick}>
+      <div
+        className={className}
+        style={baseStyle}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+      >
         {children}
       </div>
     )
@@ -46,7 +61,10 @@ export function GlassCard({
       style={baseStyle}
       whileHover={onClick ? { scale: 1.01 } : undefined}
       transition={{ duration: 0.15 }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
     >
       {children}
     </motion.div>

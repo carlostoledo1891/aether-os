@@ -1,0 +1,40 @@
+/* Alert drawer shell — layout only; semantic colors use design tokens */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+  background: var(--w-panel);
+  border-left: var(--w-border-chrome);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: var(--w-border-hairline);
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}

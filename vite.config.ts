@@ -8,6 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    port: 5175,
+    proxy: {
+      '/api': 'http://localhost:3001',
+      '/ingest': 'http://localhost:3001',
+      '/ws': { target: 'ws://localhost:3001', ws: true },
+    },
+  },
   test: {
     globals: true,
     environment: 'happy-dom',

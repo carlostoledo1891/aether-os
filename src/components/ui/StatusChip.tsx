@@ -19,8 +19,8 @@ const variantMap = {
 
 export const StatusChip = memo(function StatusChip({ label, variant = 'muted', dot = false, size = 'sm' }: StatusChipProps) {
   const v = variantMap[variant]
-  const padding = size === 'sm' ? '2px 8px' : '4px 12px'
-  const fontSize = size === 'sm' ? 10 : 11
+  const padding = size === 'sm' ? '1px 6px' : '3px 10px'
+  const fontSize = size === 'sm' ? 9 : 10
 
   return (
     <span style={{
@@ -29,7 +29,7 @@ export const StatusChip = memo(function StatusChip({ label, variant = 'muted', d
       gap: 5,
       background: v.bg,
       border: `1px solid ${v.border}`,
-      borderRadius: 20,
+      borderRadius: W.radius.lg,
       padding,
       fontSize,
       fontWeight: 600,
@@ -41,7 +41,7 @@ export const StatusChip = memo(function StatusChip({ label, variant = 'muted', d
     }}>
       {dot && (
         <span style={{
-          width: 5, height: 5,
+          width: 4, height: 4,
           borderRadius: '50%',
           background: v.text,
           boxShadow: `0 0 4px ${v.text}`,

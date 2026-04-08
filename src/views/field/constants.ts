@@ -3,7 +3,7 @@ import {
 } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 
-export type MapTab = 'operations' | 'geology' | 'licenses' | 'environment'
+export type MapTab = 'operations' | 'environment'
 
 export const LICENSE_COLORS = {
   verified: W.green,
@@ -35,8 +35,6 @@ export const DOMAIN_COLOR: Record<string, string> = {
 
 export const TAB_COLOR: Record<MapTab, string> = {
   operations:  W.violet,
-  geology:     W.amber,
-  licenses:    W.green,
   environment: W.cyan,
 }
 
@@ -51,3 +49,27 @@ export const LICENSE_ZONES = [
   { id: 'southern-acquired', name: 'Acquired Licences', label: '21 new licences · consolidated south', status: 'li_pending' as const, area: 49, count: 21, note: 'Acquired Dec 2025. Consolidates 67 km² contiguous area. Barra do Pacu included.' },
   { id: 'northern-licences', name: 'Northern Licences', label: 'Dona Maria 1&2 · Cupim Vermelho Norte', status: 'exploration' as const, area: 80, count: 35, note: '566 Mt @ 2,200 ppm TREO. Near-term northern operations potential.' },
 ] as const
+
+export const PLANT_NODE_SPECS: Record<string, { hardware: string; spec: string; threshold?: string; frequency: string }> = {
+  'MINE-A': { hardware: 'GPS-tracked excavator fleet', spec: 'Free-dig IAC clay · no drill-and-blast', frequency: 'Continuous GPS telemetry' },
+  'MINE-B': { hardware: 'Secondary excavation front', spec: 'Redundant block feed capacity', frequency: 'Continuous GPS telemetry' },
+  'LEACH':  { hardware: 'Industrial pH & ORP probes', spec: 'Dropped into leaching vats', threshold: 'pH 4.0–5.0 · alert <3.9 or >5.1', frequency: '2s polling interval' },
+  'PREC':   { hardware: 'Inline turbidity + temperature', spec: 'MREC precipitation stage', threshold: '>90% TREO grade required', frequency: '2s polling interval' },
+  'CIP':    { hardware: 'Ultrasonic flow meters', spec: 'Clamp-on exterior of intake/outflow pipes', threshold: '95% recirculation target · alert <94%', frequency: '2s polling interval' },
+  'FJH':    { hardware: 'Power meter + thermal camera', spec: 'Flash Joule Heating separation', threshold: '87% energy savings vs traditional SX', frequency: '2s polling interval' },
+  'QA':     { hardware: 'Inline XRF analyzer', spec: 'X-ray fluorescence at MREC output', threshold: '>90% TREO grade for certification', frequency: 'Per-batch analysis' },
+  'EXPORT': { hardware: 'RFID container tracking', spec: 'Port of Santos rail connection', frequency: 'Event-driven GPS updates' },
+  'UDC':    { hardware: 'Scintillation detector array', spec: 'Legacy UDC site radiation monitoring', threshold: '<0.18 μSv/h background limit', frequency: '10s polling interval' },
+  'RAPTOR': { hardware: 'N/A — competitor reference', spec: 'Raptor Technologies facility marker', frequency: 'Static' },
+  'VIRIDIS':{ hardware: 'N/A — competitor reference', spec: 'Viridis Mining facility marker', frequency: 'Static' },
+}
+
+export const HYDRO_NODE_SPECS: Record<string, { hardware: string; spec: string; compliance: string }> = {
+  'PIZ-N01': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
+  'PIZ-C02': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
+  'PIZ-S03': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
+  'PIZ-E04': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
+  'UDC':     { hardware: 'Scintillation detector', spec: 'Continuous gamma radiation survey · INB/CNEN mandated', compliance: 'INB/CNEN radiation monitoring' },
+  'MINE-A':  { hardware: 'Ion-selective electrode array', spec: 'Wastewater discharge monitoring · nitrate + sulfate', compliance: 'FEAM discharge permit conditions' },
+  'PLANT':   { hardware: 'Process water quality station', spec: 'pH + conductivity + turbidity · inline continuous', compliance: 'Pilot plant operating permit' },
+}

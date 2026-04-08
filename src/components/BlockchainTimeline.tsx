@@ -5,6 +5,8 @@ import { W } from '../app/canvas/canvasTheme'
 
 interface BlockchainTimelineProps {
   timeline: ComplianceLedger['molecular_timeline']
+  selectedStepIndex?: number | null
+  onStepClick?: (index: number) => void
 }
 
 const statusConfig = {
@@ -21,19 +23,36 @@ function formatTime(ts: string): string {
   })
 }
 
-export function BlockchainTimeline({ timeline }: BlockchainTimelineProps) {
+export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }: BlockchainTimelineProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <p style={{ margin: '0 0 10px', fontSize: 9, color: W.text4, lineHeight: 1.4 }}>
+        Demonstration ledger — illustrative hashes and API handoffs; production ERP/CBP integration is post–pilot scope.
+      </p>
       <AnimatePresence>
         {timeline.map((step, i) => {
           const { icon: Icon, color, bg, border, label } = statusConfig[step.status]
+          const isSelected = selectedStepIndex === i
           return (
             <motion.div
               key={step.step}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
-              style={{ display: 'flex', gap: 12 }}
+              role={onStepClick ? 'button' : undefined}
+              tabIndex={onStepClick ? 0 : undefined}
+              onClick={() => onStepClick?.(i)}
+              onKeyDown={onStepClick ? (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onStepClick(i) } } : undefined}
+              style={{
+                display: 'flex', gap: 12,
+                cursor: onStepClick ? 'pointer' : undefined,
+                padding: '2px 4px',
+                marginLeft: -4,
+                borderRadius: W.radius.sm,
+                background: isSelected ? `${color}12` : 'transparent',
+                border: isSelected ? `1px solid ${color}30` : '1px solid transparent',
+                transition: 'background 0.2s, border-color 0.2s',
+              }}
             >
               {/* Connector column */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
@@ -41,10 +60,11 @@ export function BlockchainTimeline({ timeline }: BlockchainTimelineProps) {
                   width: 28, height: 28,
                   borderRadius: '50%',
                   background: bg,
-                  border: `1.5px solid ${border}`,
+                  border: `1.5px solid ${isSelected ? color : border}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
-                  boxShadow: step.status !== 'pending' ? `0 0 8px ${color}30` : undefined,
+                  boxShadow: isSelected ? `0 0 12px ${color}50` : step.status !== 'pending' ? `0 0 8px ${color}30` : undefined,
+                  transition: 'box-shadow 0.2s, border-color 0.2s',
                 }}>
                   <Icon size={12} style={{ color }} />
                 </div>
@@ -54,7 +74,7 @@ export function BlockchainTimeline({ timeline }: BlockchainTimelineProps) {
                     flex: 1,
                     minHeight: 16,
                     background: step.status === 'pending'
-                      ? 'rgba(255,255,255,0.06)'
+                      ? W.glass06
                       : `linear-gradient(to bottom, ${color}50, rgba(255,255,255,0.06))`,
                     margin: '2px 0',
                   }} />
@@ -69,19 +89,19 @@ export function BlockchainTimeline({ timeline }: BlockchainTimelineProps) {
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                   <div>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: step.status === 'pending' ? W.text4 : W.text1 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: step.status === 'pending' ? W.text4 : W.text1 }}>
                       {step.step}
                     </span>
                     <span style={{
                       marginLeft: 7,
-                      fontSize: 10, fontWeight: 700,
+                      fontSize: 9, fontWeight: 700,
                       color, letterSpacing: '0.07em', textTransform: 'uppercase',
                     }}>
                       {label}
                     </span>
                   </div>
                   <span style={{
-                    fontSize: 10, color: W.text4,
+                    fontSize: 9, color: W.text4,
                     fontFamily: 'var(--font-mono)',
                     flexShrink: 0, marginLeft: 8,
                   }}>
@@ -89,26 +109,29 @@ export function BlockchainTimeline({ timeline }: BlockchainTimelineProps) {
                   </span>
                 </div>
 
-                <p style={{ margin: '0 0 6px', fontSize: 11, color: step.status === 'pending' ? W.text4 : W.text2, lineHeight: 1.5 }}>
+                <p style={{ margin: '0 0 6px', fontSize: 10, color: step.status === 'pending' ? W.text4 : W.text2, lineHeight: 1.5 }}>
                   {step.description}
                 </p>
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {step.hash && (
-                    <span style={{
-                      fontSize: 10, color: color, fontFamily: 'var(--font-mono)',
+                    <span title={step.hash} style={{
+                      fontSize: 9, color: color, fontFamily: 'var(--font-mono)',
                       background: bg, border: `1px solid ${border}`,
-                      padding: '2px 7px', borderRadius: 4,
+                      padding: '1px 6px', borderRadius: W.radius.xs,
+                      maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap', display: 'inline-block',
                     }}>
                       {step.hash}
                     </span>
                   )}
                   {step.coordinates && (
                     <span style={{
-                      fontSize: 10, color: W.text3, fontFamily: 'var(--font-mono)',
+                      fontSize: 9, color: isSelected ? W.text1 : W.text3, fontFamily: 'var(--font-mono)',
                       display: 'flex', alignItems: 'center', gap: 3,
+                      transition: 'color 0.2s',
                     }}>
-                      <MapPin size={8} />
+                      <MapPin size={7} />
                       {step.coordinates.lat.toFixed(3)}, {step.coordinates.lng.toFixed(3)}
                     </span>
                   )}

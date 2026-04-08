@@ -1,0 +1,25 @@
+/* App root shell — tokens via CSS vars (see theme.css :root) */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--w-bg);
+  font-family: var(--font-ui);
+  background-image:
+    linear-gradient(var(--w-app-shell-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--w-app-shell-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.main {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.viewLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}

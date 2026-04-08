@@ -45,9 +45,53 @@
   --w-red-glow:      rgba(255, 77, 77, 0.22);
   --w-red-subtle:    rgba(255, 77, 77, 0.10);
 
-  /* Glass */
+  /* Glass (parity with canvasTheme W) */
   --w-glass:         rgba(255, 255, 255, 0.035);
   --w-glass-hover:   rgba(255, 255, 255, 0.06);
+  --w-glass-02:      rgba(255, 255, 255, 0.02);
+  --w-glass-03:      rgba(255, 255, 255, 0.03);
+  --w-glass-04:      rgba(255, 255, 255, 0.04);
+  --w-glass-05:      rgba(255, 255, 255, 0.05);
+  --w-glass-06:      rgba(255, 255, 255, 0.06);
+  --w-glass-07:      rgba(255, 255, 255, 0.07);
+  --w-glass-08:      rgba(255, 255, 255, 0.08);
+  --w-glass-12:      rgba(255, 255, 255, 0.12);
+  --w-overlay-88:    rgba(6, 6, 16, 0.88);
+
+  /* Map-specific */
+  --w-map-water-fill:    #0A1A28;
+  --w-map-halo:          #060610;
+  --w-map-commercial:    #8B1538;
+  --w-map-secondary:     #B8B8D8;
+
+  --w-app-shell-grid: rgba(255, 255, 255, 0.012);
+  --w-map-hud-panel: rgba(5, 5, 16, 0.82);
+  --w-map-hud-wq: rgba(0, 212, 200, 0.08);
+  --w-map-hud-wq-warn: rgba(245, 166, 35, 0.12);
+  --w-map-hud-border-cyan: 1px solid rgba(0, 212, 200, 0.18);
+  --w-map-hud-border-cyan-strong: 1px solid rgba(0, 212, 200, 0.2);
+  --w-map-hud-border-amber: 1px solid rgba(245, 166, 35, 0.28);
+  --w-map-hud-border-red: 1px solid rgba(255, 77, 77, 0.25);
+
+  /* Chrome / layout (for CSS-only rules & future themes) */
+  --w-chrome-header-bg: rgba(13, 13, 28, 0.95);
+  --w-scrim:             rgba(0, 0, 0, 0.5);
+  --w-border-hairline:   1px solid rgba(255, 255, 255, 0.06);
+  --w-border-chrome:     1px solid rgba(255, 255, 255, 0.08);
+  --w-banner-bg-mock:    rgba(0, 212, 200, 0.06);
+  --w-banner-bg-live:    rgba(245, 166, 35, 0.08);
+  --w-banner-edge-mock:  rgba(0, 212, 200, 0.12);
+  --w-banner-edge-live:  rgba(245, 166, 35, 0.2);
+
+  /* Alert / inverse (parity with canvasTheme W) */
+  --w-text-inverse:      #ffffff;
+  --w-red-border-soft:   rgba(255, 77, 77, 0.3);
+  --w-red-badge-bg:      rgba(255, 77, 77, 0.15);
+
+  --w-radius-xs: 4px;
+  --w-radius-sm: 7px;
+  --w-radius-md: 10px;
+  --w-radius-lg: 14px;
 
   /* Typography */
   --font-ui:   'Inter', sans-serif;

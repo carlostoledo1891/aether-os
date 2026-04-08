@@ -1,147 +1,109 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ViewMode } from './types/telemetry'
-import { useSimulatedTelemetry } from './hooks/useSimulatedTelemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
+import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
+import { createMockDataService } from './services/mockDataService'
+import { createLiveDataService } from './services/liveDataService'
+import { getDataMode } from './config/env'
+import { W } from './app/canvas/canvasTheme'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { HeaderStrip } from './components/layout/HeaderStrip'
+import { DataModeBanner } from './components/layout/DataModeBanner'
 import { AlertPanel } from './components/layout/AlertPanel'
-import { PlaybackScrubber } from './components/layout/PlaybackScrubber'
-import { FieldView } from './views/FieldView'
-import { BuyerView } from './views/BuyerView'
-import { ExecutiveView } from './views/ExecutiveView'
-import { BATCHES } from './data/mockData'
+import shell from './AppShell.module.css'
 
-export default function App() {
+const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
+
+const FieldView = lazy(() => import('./views/FieldView').then(m => ({ default: m.FieldView })))
+const BuyerView = lazy(() => import('./views/BuyerView').then(m => ({ default: m.BuyerView })))
+const ExecutiveView = lazy(() => import('./views/ExecutiveView').then(m => ({ default: m.ExecutiveView })))
+
+function createDataService() {
+  return getDataMode() === 'live' ? createLiveDataService() : createMockDataService()
+}
+
+function AppShell() {
   const [view, setView] = useState<ViewMode>('operator')
-  const [batchId, setBatchId] = useState(BATCHES[0].batch_id)
   const [alertOpen, setAlertOpen] = useState(false)
 
-  const {
-    plant, env, esg, activeAlerts,
-    plantHistory, envHistory,
-    simMode, setSimMode,
-    dismissAlert, dismissAllAlerts,
-  } = useSimulatedTelemetry()
-
-
-
-  const batch = BATCHES.find(b => b.batch_id === batchId) ?? BATCHES[0]
-
-  function handleSimToggle() {
-    setSimMode(prev => ({
-      type: prev.type === 'live' ? 'playback' : 'live',
-      playbackStep: 0,
-    }))
-  }
-
-  function handlePlaybackStep(step: number) {
-    setSimMode({ type: 'playback', playbackStep: step })
-  }
-
+  const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
+  const dataContext = useMemo(() => service.getDataContext(), [service])
+  const { esg, activeAlerts } = telemetry
   const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
 
-  // Background canvas grid — subtle depth effect
-  const bgStyle = {
-    backgroundImage: `
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)
-    `,
-    backgroundSize: '40px 40px',
-  }
-
   return (
-    <MapProvider>
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      overflow: 'hidden',
-      background: '#07070E',
-      fontFamily: 'Inter, sans-serif',
-      ...bgStyle,
-    }}>
-      {/* Header + nav (single row) */}
+    <div className={shell.root}>
       <HeaderStrip
         esg={esg}
-        simMode={simMode}
-        onSimToggle={handleSimToggle}
-        batchId={batchId}
-        onBatchChange={setBatchId}
-        alertCount={activeAlerts.length}
+        alertCount={dataContext.disclosureMode ? 0 : activeAlerts.length}
         fieldAlertCount={fieldAlertCount}
         onAlertOpen={() => setAlertOpen(true)}
         view={view}
         onViewChange={setView}
+        disclosureMode={dataContext.disclosureMode}
       />
+      <DataModeBanner context={dataContext} />
 
-      {/* Playback banner */}
-      <AnimatePresence>
-        {simMode.type === 'playback' && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 32, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              overflow: 'hidden',
-              background: 'rgba(124,92,252,0.08)',
-              borderBottom: '1px solid rgba(124,92,252,0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <p style={{ margin: 0, fontSize: 10, color: '#9D80FF', fontWeight: 600, letterSpacing: '0.04em' }}>
-              ▶ PLAYBACK MODE — Live telemetry paused. Use the scrubber below to step through a batch journey.
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Content area */}
-      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
-        <AnimatePresence mode="wait">
-          {view === 'operator' && (
-            <motion.div
-              key="operator"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
+      <div className={shell.main}>
+        <Suspense
+          fallback={(
+            <div
+              style={{
+                background: W.bg,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 14,
+                flex: 1,
+                minHeight: 0,
+              }}
             >
-              <FieldView plant={plant} plantHistory={plantHistory} env={env} envHistory={envHistory} />
-            </motion.div>
+              <div style={{
+                width: 36, height: 36,
+                background: W.violet,
+                borderRadius: W.radius.sm,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: '-0.03em',
+                animation: 'pulse 1.5s ease-in-out infinite',
+              }}>
+                Æ
+              </div>
+              <span style={{
+                color: W.text4,
+                fontFamily: 'var(--font-mono)',
+                fontSize: 11,
+                letterSpacing: '0.06em',
+              }}>
+                Loading view…
+              </span>
+            </div>
           )}
-          {view === 'buyer' && (
-            <motion.div
-              key="buyer"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
-            >
-              <BuyerView batchId={batchId} />
-            </motion.div>
-          )}
-          {view === 'executive' && (
-            <motion.div
-              key="executive"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
-            >
-              <ExecutiveView esg={esg} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        >
+          <AnimatePresence mode="wait">
+            {view === 'operator' && (
+              <motion.div key="operator" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                transition={VIEW_TRANSITION} className={shell.viewLayer}>
+                <FieldView />
+              </motion.div>
+            )}
+            {view === 'buyer' && (
+              <motion.div key="buyer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                transition={VIEW_TRANSITION} className={shell.viewLayer}>
+                <BuyerView />
+              </motion.div>
+            )}
+            {view === 'executive' && (
+              <motion.div key="executive" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                transition={VIEW_TRANSITION} className={shell.viewLayer}>
+                <ExecutiveView />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Suspense>
       </div>
 
-      {/* Alert panel */}
       <AlertPanel
         alerts={activeAlerts}
         isOpen={alertOpen}
@@ -149,15 +111,20 @@ export default function App() {
         onDismiss={dismissAlert}
         onDismissAll={dismissAllAlerts}
       />
-
-      {/* Playback scrubber (floats above content when in playback mode) */}
-      <PlaybackScrubber
-        simMode={simMode}
-        onStepChange={handlePlaybackStep}
-        totalSteps={batch.molecular_timeline.length}
-        stepLabels={batch.molecular_timeline.map(s => s.step)}
-      />
     </div>
-    </MapProvider>
+  )
+}
+
+export default function App() {
+  const service = useMemo(() => createDataService(), [])
+
+  return (
+    <ErrorBoundary>
+      <DataServiceProvider service={service}>
+        <MapProvider>
+          <AppShell />
+        </MapProvider>
+      </DataServiceProvider>
+    </ErrorBoundary>
   )
 }

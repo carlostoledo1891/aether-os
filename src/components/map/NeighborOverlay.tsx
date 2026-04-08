@@ -1,4 +1,5 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
 import neighborsUrl from '../../data/geojson/caldeira-neighbors.geojson?url'
 
@@ -12,7 +13,7 @@ export function NeighborOverlay() {
         id="neighbor-fill"
         type="fill"
         paint={{
-          'fill-color': '#484870',
+          'fill-color': W.border3,
           'fill-opacity': 0.05,
         }}
       />
@@ -20,7 +21,7 @@ export function NeighborOverlay() {
         id="neighbor-line"
         type="line"
         paint={{
-          'line-color': '#484870',
+          'line-color': W.border3,
           'line-width': 1.2,
           'line-opacity': 0.35,
           'line-dasharray': [5, 4],

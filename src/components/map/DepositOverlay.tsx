@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import {
   emptyFeatureCollection,
   useGeoJsonFeatureCollection,
@@ -65,19 +66,19 @@ export function toDepositDetail(
 
 /** Fill color keyed by TREO grade: green = rich, violet = mid, cyan = lower */
 function treoFillColor(treo: number): string {
-  if (treo >= 3500) return '#F5A623'   // amber — ultra-high grade
-  if (treo >= 2800) return '#7C5CFC'   // violet — high grade
-  if (treo >= 2200) return '#00D4C8'   // cyan — resource grade
-  return '#9D80FF'                      // violet-soft — exploration
+  if (treo >= 3500) return W.amber   // ultra-high grade
+  if (treo >= 2800) return W.violet  // high grade
+  if (treo >= 2200) return W.cyan    // resource grade
+  return W.violetSoft                // exploration
 }
 
 /** Outline color by deposit status */
 function statusLineColor(status: DepositStatus): string {
   switch (status) {
-    case 'measured':    return '#22D68A'  // green
-    case 'indicated':   return '#7C5CFC'  // violet
-    case 'inferred':    return '#00D4C8'  // cyan
-    case 'exploration': return '#F5A623'  // amber
+    case 'measured':    return W.green
+    case 'indicated':   return W.violet
+    case 'inferred':    return W.cyan
+    case 'exploration': return W.amber
   }
 }
 
@@ -167,14 +168,14 @@ export function DepositOverlay({
           layout={{
             'text-field': ['get', 'name'],
             'text-size': 11,
-            'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+            'text-font': ['Open Sans Bold'],
             'text-anchor': 'center',
             'text-offset': [0, -0.6],
             'text-allow-overlap': false,
           }}
           paint={{
             'text-color': ['get', 'lineColor'],
-            'text-halo-color': '#060610',
+            'text-halo-color': W.mapHalo,
             'text-halo-width': 1.5,
             'text-opacity': 0.9,
           }}
@@ -190,14 +191,14 @@ export function DepositOverlay({
               ['concat', ['to-string', ['get', 'treo_ppm']], ' ppm peak'],
             ],
             'text-size': 9,
-            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+            'text-font': ['Open Sans Regular'],
             'text-anchor': 'center',
             'text-offset': [0, 0.6],
             'text-allow-overlap': false,
           }}
           paint={{
-            'text-color': '#ECECF8',
-            'text-halo-color': '#060610',
+            'text-color': W.text1,
+            'text-halo-color': W.mapHalo,
             'text-halo-width': 1.2,
             'text-opacity': 0.75,
           }}
@@ -210,7 +211,7 @@ export function DepositOverlay({
           id="deposit-hover-glow"
           type="line"
           paint={{
-            'line-color': '#FFFFFF',
+            'line-color': W.textInverse,
             'line-width': 3,
             'line-opacity': 0.3,
             'line-blur': 3,

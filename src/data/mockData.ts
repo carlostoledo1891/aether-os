@@ -1,4 +1,16 @@
-import type { PlantTelemetry, EnvTelemetry, ComplianceLedger } from '../types/telemetry'
+import type { PlantTelemetry, EnvTelemetry, ComplianceLedger, SpringTelemetry, SpringEvent } from '../types/telemetry'
+
+export const SPRING_COUNT = 1092
+
+/* ─── Domain Thresholds (single source of truth for alerts, ESG, and UI) ── */
+export const THRESHOLDS = {
+  sulfate_warning_ppm: 250,
+  nitrate_warning_ppm: 50,
+  radiation_critical_usv_h: 0.18,
+  ph_low: 3.9,
+  ph_high: 5.1,
+  recirculation_warning_pct: 94,
+} as const
 
 /* ─── Seed / Static Data ─────────────────────────────────────────────────── */
 
@@ -22,7 +34,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T06:12:00Z',
         status: 'verified',
         coordinates: { lat: -21.795, lng: -46.567 },
-        hash: '0x4f3a...d92c',
+        hash: '0x4f3a7c91b28e6d054a1f8c93d720eb4561cf9da8b53e271094f6a8d2e3c0d92c',
       },
       {
         step: 'Leaching',
@@ -30,7 +42,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T09:45:00Z',
         status: 'verified',
         coordinates: { lat: -21.797, lng: -46.568 },
-        hash: '0x7b1e...a3f1',
+        hash: '0x7b1e4d9f2a8c63057e1b94a0d5f2c87136ea4b9d82c0f61573e9a4d8b2a3f1e0',
       },
       {
         step: 'Precipitation',
@@ -38,7 +50,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T14:20:00Z',
         status: 'verified',
         coordinates: { lat: -21.797, lng: -46.568 },
-        hash: '0x2c9d...e7b0',
+        hash: '0x2c9d5e84f1a3b7602d4e91c8a6f0d35724be8c19f73a0652e4d1b98ca7f0e7b0',
       },
       {
         step: 'FJH Separation',
@@ -46,7 +58,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T18:30:00Z',
         status: 'verified',
         coordinates: { lat: -21.799, lng: -46.570 },
-        hash: '0x9a4f...c21d',
+        hash: '0x9a4f1b7e3d2c86a0594e1f8b27d3c96041ea5f8b29d7c31a064e8f2b1a9fc21d',
       },
       {
         step: 'Quality Assurance',
@@ -54,7 +66,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T21:00:00Z',
         status: 'active',
         coordinates: { lat: -21.799, lng: -46.570 },
-        hash: '0x1d8b...f49a',
+        hash: '0x1d8b3f6a2e7c940518d2b4a9c6e1f07835da9c2b4f6e180a73d5b92c4e8af49a',
       },
       {
         step: 'Export Logistics',
@@ -93,35 +105,35 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-03T07:00:00Z',
         status: 'verified',
         coordinates: { lat: -21.793, lng: -46.565 },
-        hash: '0x5e2a...b11c',
+        hash: '0x5e2a8b6c4d1f937028e4a9c1d3b7f06542ae8d1c9f3b7042e6d5a81b94c3b11c',
       },
       {
         step: 'Leaching',
         description: 'Ammonium sulfate ion-exchange leach. pH 4.5.',
         timestamp: '2026-04-03T11:00:00Z',
         status: 'verified',
-        hash: '0x8c4d...e29f',
+        hash: '0x8c4d2f1a6e9b73058d2c4a1f7e0b93d64528cf1a9e7b340862d5f18c4a7be29f',
       },
       {
         step: 'Precipitation',
         description: 'MREC precipitated. Grade 90.8% TREO.',
         timestamp: '2026-04-03T15:30:00Z',
         status: 'verified',
-        hash: '0x3f7b...a80d',
+        hash: '0x3f7b9c2e1d4a860573e1f4b8a2c9d60741fe3b8c2d9a47061e5d4b28a9c1a80d',
       },
       {
         step: 'FJH Separation',
         description: 'FJH cycle complete. Tb recovery: 79%.',
         timestamp: '2026-04-03T20:00:00Z',
         status: 'verified',
-        hash: '0xb2c1...d44e',
+        hash: '0xb2c14e8f3a7d960524e1b9f4c8d2a37061fb4e9c2a8d370615e4c1b8f29ad44e',
       },
       {
         step: 'Quality Assurance',
         description: 'TREO grade: 90.8%. Certificate issued.',
         timestamp: '2026-04-03T23:00:00Z',
         status: 'verified',
-        hash: '0x6a9e...f73b',
+        hash: '0x6a9e1c4b2f8d7305a4e1c9b3d7f2a06841ec5b9a2d8f430716e5a4c1b39ef73b',
       },
       {
         step: 'Export Logistics',
@@ -129,7 +141,7 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-05T06:00:00Z',
         status: 'verified',
         coordinates: { lat: 59.437, lng: 24.754 },
-        hash: '0xd4f0...9c1a',
+        hash: '0xd4f02e9c1a7b83064d2e1f9b4a8c73052e1da9c4b7f380261d5e4a9c8b1f9c1a',
       },
       {
         step: 'EU DBP Issued',
@@ -137,12 +149,75 @@ export const BATCHES: ComplianceLedger[] = [
         timestamp: '2026-04-06T00:00:00Z',
         status: 'verified',
         coordinates: { lat: 59.437, lng: 24.754 },
-        hash: '0xe7c3...2b5f',
+        hash: '0xe7c31d4a2b9f86057e2c1a4d8b3f970624ae1c5d9b7f28031e4d5a2c8f912b5f',
       },
     ],
     offtake_destination: 'Neo Performance Materials — Narva, Estonia (EU)',
     certificates: ['ISO 14001:2015', 'REIA-PCR-001', 'EU DBP Reg 2023/1542', 'Catena-X Registered'],
   },
+]
+
+const DEFAULT_SPRING_META = {
+  monitoring_tier: 'modeled_inferred' as const,
+  method: 'hydro_model_v1',
+  data_sources: ['inferred'] as string[],
+}
+
+function springIdFromIndex(i: number): string {
+  return `spring-${String(i + 1).padStart(4, '0')}`
+}
+
+/** Rich metadata for sentinel springs (GeoJSON ids); bulk springs use DEFAULT_SPRING_META */
+const SENTINEL_SPRING_OVERRIDES: Record<string, Partial<Pick<SpringTelemetry, 'monitoring_tier' | 'method' | 'data_sources' | 'last_field_visit' | 'linked_sensor_id'>>> = {
+  'spring-0001': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log', 'telemetry'], last_field_visit: '2026-03-18T14:00:00Z' },
+  'spring-0002': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-N01', data_sources: ['telemetry', 'inferred'], linked_sensor_id: 'PIZ-N01' },
+  'spring-0003': { monitoring_tier: 'direct', method: 'field_monthly_photo', data_sources: ['field_log'], last_field_visit: '2026-04-01T11:30:00Z' },
+  'spring-0004': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-C02', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-C02' },
+  'spring-0005': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-S03', data_sources: ['telemetry', 'field_log'], linked_sensor_id: 'PIZ-S03', last_field_visit: '2026-03-22T09:00:00Z' },
+  'spring-0006': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-E04', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-E04' },
+  'spring-0007': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log', 'telemetry'], last_field_visit: '2026-03-25T16:45:00Z' },
+  'spring-0008': { monitoring_tier: 'modeled_inferred', method: 'hydro_model_v1+open_meteo_context', data_sources: ['inferred', 'open_meteo'] },
+  'spring-0009': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-N01', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-N01' },
+  'spring-0010': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log'], last_field_visit: '2026-03-28T13:20:00Z' },
+  'spring-0011': { monitoring_tier: 'modeled_inferred', method: 'regional_baseflow_v2', data_sources: ['inferred'] },
+  'spring-0012': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-C02', data_sources: ['telemetry', 'inferred'], linked_sensor_id: 'PIZ-C02' },
+  'spring-0013': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log', 'telemetry'], last_field_visit: '2026-04-02T08:15:00Z' },
+  'spring-0014': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-E04', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-E04' },
+  'spring-0015': { monitoring_tier: 'modeled_inferred', method: 'hydro_model_v1', data_sources: ['inferred'] },
+  'spring-0016': { monitoring_tier: 'direct', method: 'field_monthly_photo', data_sources: ['field_log'], last_field_visit: '2026-03-15T10:00:00Z' },
+  'spring-0017': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-S03', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-S03' },
+  'spring-0018': { monitoring_tier: 'modeled_inferred', method: 'hydro_model_v1+open_meteo_context', data_sources: ['inferred', 'open_meteo'] },
+  'spring-0019': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log', 'telemetry'], last_field_visit: '2026-03-30T12:00:00Z' },
+  'spring-0020': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-N01', data_sources: ['telemetry', 'field_log'], linked_sensor_id: 'PIZ-N01', last_field_visit: '2026-03-27T15:30:00Z' },
+  'spring-0021': { monitoring_tier: 'modeled_inferred', method: 'regional_baseflow_v2', data_sources: ['inferred'] },
+  'spring-0022': { monitoring_tier: 'direct', method: 'field_quarterly_orifice', data_sources: ['field_log'], last_field_visit: '2026-04-04T09:45:00Z' },
+  'spring-0023': { monitoring_tier: 'sentinel_proxy', method: 'piezo_proxy:PIZ-C02', data_sources: ['telemetry'], linked_sensor_id: 'PIZ-C02' },
+  'spring-0024': { monitoring_tier: 'modeled_inferred', method: 'hydro_model_v1', data_sources: ['inferred', 'telemetry'] },
+}
+
+export function buildInitialSprings(): SpringTelemetry[] {
+  return Array.from({ length: SPRING_COUNT }, (_, i) => {
+    const id = springIdFromIndex(i)
+    const status: SpringTelemetry['status'] =
+      i < 917 ? 'Active' : i < 1048 ? 'Reduced' : 'Suppressed'
+    const ov = SENTINEL_SPRING_OVERRIDES[id]
+    return {
+      id,
+      status,
+      monitoring_tier: ov?.monitoring_tier ?? DEFAULT_SPRING_META.monitoring_tier,
+      method: ov?.method ?? DEFAULT_SPRING_META.method,
+      data_sources: ov?.data_sources ? [...ov.data_sources] : [...DEFAULT_SPRING_META.data_sources],
+      last_field_visit: ov?.last_field_visit,
+      linked_sensor_id: ov?.linked_sensor_id,
+    }
+  })
+}
+
+export const MOCK_SPRING_EVENTS: SpringEvent[] = [
+  { springId: 'spring-0001', ts: '2026-03-18T14:00:00Z', type: 'field_visit', note: 'Quarterly flow — within seasonal band' },
+  { springId: 'spring-0006', ts: '2026-03-25T08:00:00Z', type: 'sensor_proxy', note: 'PIZ-E04 drawdown correlated; spring class held Active→watch' },
+  { springId: 'spring-0014', ts: '2026-03-24T11:00:00Z', type: 'model_refresh', note: 'Twin recalibrated after east-margin piezo stress' },
+  { springId: 'spring-0002', ts: '2026-03-20T09:00:00Z', type: 'audit_note', note: 'CAR geometry verified against FBDS point' },
 ]
 
 export const INITIAL_PLANT_TELEMETRY: PlantTelemetry = {
@@ -186,10 +261,8 @@ export const INITIAL_ENV_TELEMETRY: EnvTelemetry = {
     radiation_usv_h: 0.14,
     udc_status: 'Normal',
   },
-  springs: Array.from({ length: 98 }, (_, i) => ({
-    id: `SPR-${String(i + 1).padStart(3, '0')}`,
-    status: i < 82 ? 'Active' : i < 94 ? 'Reduced' : 'Suppressed',
-  })) as EnvTelemetry['springs'],
+  springs: buildInitialSprings(),
+  springEvents: MOCK_SPRING_EVENTS,
 }
 
 /* ─── Financial data for Executive view ─────────────────────────────────── */
@@ -206,7 +279,7 @@ export const PROJECT_FINANCIALS = {
   payback_yrs: 3,
   lom_fcf_m: 2000,
   opex_per_kg: 8.91,
-  ndpr_opex: 21.80,
+  ndpr_opex: 22,
   annual_treo_t: 13584,
   annual_ndpr_t: 4228,
   annual_dytb_t: 130,
@@ -215,17 +288,13 @@ export const PROJECT_FINANCIALS = {
   throughput_mtpa: 6.0,
   exim_usd_m: 350,
   efa_aud_m: 70,
-  /* Legacy convenience aliases for backward compatibility */
-  npv_low_m: 821,
-  npv_high_m: 1300,
-  irr_pct: 36,
 }
 
 export const MARKET_PRICES = {
-  spot_ndpr_kg:    65,
-  green_ndpr_kg:   94,
-  spot_dytb_kg:   850,
-  green_dytb_kg: 1180,
+  spot_ndpr_kg:    67,
+  green_ndpr_kg:  135,
+  spot_dytb_kg:   350,
+  green_dytb_kg:  680,
 }
 
 export const BOARD_VALUE_AT_RISK = [
@@ -261,7 +330,7 @@ export const PREDICTIVE_HYDROLOGY_SCENARIOS = [
     drought_index: 0.42,
     recirculation_pct: 95.2,
     spring_preservation_pct: 97,
-    active_springs: 95,
+    active_springs: 1059,
     sulfate_guardband_ppm: 78,
     permitting_signal: 'Copam-ready',
     recommendation: 'Maintain dry-stacking and current drawdown caps.',
@@ -272,7 +341,7 @@ export const PREDICTIVE_HYDROLOGY_SCENARIOS = [
     drought_index: 0.58,
     recirculation_pct: 95.8,
     spring_preservation_pct: 95,
-    active_springs: 93,
+    active_springs: 1037,
     sulfate_guardband_ppm: 61,
     permitting_signal: 'Monitor closely',
     recommendation: 'Add contingency wells and seasonal pumping throttles.',
@@ -283,7 +352,7 @@ export const PREDICTIVE_HYDROLOGY_SCENARIOS = [
     drought_index: 0.71,
     recirculation_pct: 96.4,
     spring_preservation_pct: 93,
-    active_springs: 91,
+    active_springs: 1016,
     sulfate_guardband_ppm: 44,
     permitting_signal: 'Needs mitigation package',
     recommendation: 'Pre-negotiate adaptive operating envelope before LI hearing.',
@@ -297,7 +366,7 @@ export const SCALE_UP_PATHWAY = {
   current_digital_coverage_pct: 91,
   commercial_target_mtpa: 6.0,
   water_recirculation_target_pct: 95,
-  springs_monitored: 98,
+  springs_monitored: SPRING_COUNT,
   board_message: 'Use pilot telemetry and mocked predictive scenarios to prove Caldeira can scale without losing environmental legitimacy.',
 }
 
@@ -353,26 +422,66 @@ export const API_HANDOFFS = [
 
 export const CYBER_TRUST_PILLARS = [
   {
-    title: 'Zero-trust edge boundary',
-    detail: 'Plant gateways sign sensor payloads before forwarding any telemetry into the trust layer.',
-    status: 'Ready for pilot',
+    title: 'Zero-Trust Edge Gateways',
+    detail: 'IoT gateways at Poços de Caldas utilize hardware-based Trusted Execution Environments (TEEs) to encrypt data before it leaves the sensor array.',
+    status: 'Active',
+    protocol: 'TEE + mTLS',
   },
   {
-    title: 'Immutable event lineage',
-    detail: 'Every passport event, assay update, and API handoff is anchored to a tamper-evident chain.',
-    status: 'Board-safe narrative',
+    title: 'Data Sovereignty',
+    detail: 'All servers processing defense-bound material localized in allied jurisdictions (AWS GovCloud / Brazilian enterprise servers). Data never routes through hostile infrastructure.',
+    status: 'Enforced',
+    protocol: 'Geo-fenced routing',
   },
   {
-    title: 'Jurisdictional sovereignty',
-    detail: 'Prototype story assumes allied-region hosting and customer-controlled export domains.',
-    status: 'Hosting policy defined',
+    title: 'SOC 2 Type II Compliance',
+    detail: 'Continuous automated auditing proving data security, availability, and processing integrity to the Board and external auditors.',
+    status: 'Compliant',
+    protocol: 'Automated audit trail',
   },
   {
-    title: 'Audit-ready controls',
-    detail: 'Role-based access, signed webhooks, and retention logs map to SOC 2 style control language.',
-    status: 'Mock brief complete',
+    title: 'Immutable Ledger',
+    detail: 'Molecular-to-Magnet timeline hashed onto permissioned enterprise blockchain. Post-extraction tampering mathematically impossible.',
+    status: 'Active',
+    protocol: 'Permissioned blockchain',
   },
 ] as const
+
+export const HARDWARE_SENSORS = [
+  {
+    category: 'Core Process Sensors',
+    items: [
+      { name: 'Ultrasonic Flow Meters', location: 'Clamped onto exterior of water intake/outflow pipes', measures: '95% water recirculation', frequency: '2s' },
+      { name: 'Industrial pH & ORP Probes', location: 'Dropped directly into leaching vats', measures: 'pH 4.0–5.0 maintenance', frequency: '2s' },
+      { name: 'Inline XRF Analyzers', location: 'MREC precipitation output', measures: '>90% TREO grade', frequency: 'Per batch' },
+    ],
+  },
+  {
+    category: 'Environmental & Regulator (MPF)',
+    items: [
+      { name: 'Ion-Selective Electrodes', location: 'Wastewater discharge', measures: 'Trace nitrates + sulfates', frequency: '10s' },
+      { name: 'Telemetry Piezometers', location: 'Groundwater monitoring wells', measures: 'Hydrostatic pressure', frequency: '10s' },
+      { name: 'Scintillation Detectors', location: 'UDC legacy site perimeter', measures: 'Gamma radiation (μSv/h)', frequency: '10s' },
+    ],
+  },
+] as const
+
+export const SCOPE_3_TRACKING = {
+  reagent: 'Ammonium Sulfate (NH₄)₂SO₄',
+  supplier: 'AdvanSix Inc.',
+  supplier_origin: 'Hopewell, Virginia, USA',
+  feoc_status: 'Clear — no FEOC-flagged entities in ownership chain',
+  verification_method: 'EDI/API integration with supplier ERP systems',
+  carbon_footprint_kg: 0.94,
+  sanctions_check: 'Cross-referenced against U.S. FEOC database',
+  risk_note: 'If (NH₄)₂SO₄ is sourced from a FEOC-flagged supplier, the green premium is destroyed regardless of ore origin.',
+  supply_chain: [
+    { step: 'Manufacture', entity: 'AdvanSix · Hopewell, VA', status: 'verified' as const },
+    { step: 'Shipping', entity: 'FOB Houston → Santos port', status: 'verified' as const },
+    { step: 'Inland transport', entity: 'Bonded truck → Poços de Caldas', status: 'verified' as const },
+    { step: 'Plant intake', entity: 'CIP Pilot Circuit · leach vats', status: 'active' as const },
+  ],
+} as const
 
 export const DEAL_SCENARIOS = [
   {
@@ -424,9 +533,9 @@ export const PILOT_PLANT_PERFORMANCE = {
 
 /* ─── Uranium & Thorium Safety ─────────────────────────────────────────── */
 export const U_TH_SAFETY = {
-  primary_mineral: 'Bastnaesite (REE)CO₃F',
-  u_th_profile: 'Very low — bastnaesite structure contains minimal U/Th',
-  solubilization: 'U/Th do not solubilize at pH 4.0 salt-wash process',
+  primary_mineral: 'Ionic adsorption clay (IAC) — REE adsorbed on halloysite/kaolinite',
+  u_th_profile: 'Very low — ionic clay host contains minimal U/Th (not locked in primary mineral lattice)',
+  solubilization: 'U/Th do not solubilize at pH 4.0 ammonium sulfate ion-exchange process',
   mrec_classification: 'Safe for international transport and handling',
   radioactive_tailings: false,
   advantage_vs_hardrock: 'No acid baking or caustic cracking required — avoids radioactive concentrate issues common in monazite/bastnäsite hard-rock deposits',
@@ -446,7 +555,7 @@ export const PROJECT_TIMELINE = [
 
 /* ─── Resource Classification Breakdown ────────────────────────────────── */
 export const RESOURCE_CLASSIFICATION = {
-  global_bt: 1.5,
+  global_bt: 1.537,
   global_treo_ppm: 2359,
   measured_mt: 37,
   measured_treo_ppm: 2983,
@@ -490,7 +599,7 @@ export const DEPOSIT_DATA: DepositRecord[] = [
     area_km2: 9.9,
     dimensions: '2,600 × 3,800 m',
     orientation: 'NE-SW',
-    resource_note: 'High-grade core 36 Mt @ 4,345 ppm TREO. First mining area in PFS 20-yr plan.',
+    resource_note: 'Total 85 Mt. High-grade core 36 Mt @ 4,345 ppm TREO. First mining area in PFS 20-yr plan.',
     center: [-46.565, -21.848],
   },
   {
@@ -535,7 +644,7 @@ export const DEPOSIT_DATA: DepositRecord[] = [
     area_km2: 7.6,
     dimensions: '1,900 × 4,000 m',
     orientation: 'N-S',
-    resource_note: 'Maiden resource Apr 2025. Southern extension of Capão do Mel. High-grade: 32 Mt @ 4,130 ppm.',
+    resource_note: 'Maiden resource Apr 2025 (389 Mt total). Southern extension of Capão do Mel. High-grade subset: 32 Mt @ 4,130 ppm.',
     center: [-46.555, -21.878],
   },
   {

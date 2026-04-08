@@ -1,0 +1,30 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CALDEIRA-LICENCE-ENVELOPE",
+        "label": "Caldeira licence area (context)",
+        "kind": "licence-envelope",
+        "note": "193 km² union envelope from Caldeira_Project_Ultimate_v1 — context only; per-concession geometry is Mining License layer.",
+        "area_km2": 193,
+        "source_ref": "ultimate_v1_licence_union",
+        "as_of": "2026-04-07",
+        "confidence": "georeferenced_figure"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-46.68, -21.78],
+            [-46.45, -21.78],
+            [-46.42, -21.98],
+            [-46.65, -21.98],
+            [-46.68, -21.78]
+          ]
+        ]
+      }
+    }
+  ]
+}

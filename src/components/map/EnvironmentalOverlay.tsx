@@ -1,94 +1,258 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import envUrl from '../../data/geojson/caldeira-environmental.geojson?url'
+import apaUrl from '../../data/geojson/caldeira-apa-pedra-branca.geojson?url'
+import bufferUrl from '../../data/geojson/caldeira-apa-buffer.geojson?url'
+import monitoringUrl from '../../data/geojson/caldeira-environmental.geojson?url'
+import urbanUrl from '../../data/geojson/caldeira-urban-context.geojson?url'
+import udcUrl from '../../data/geojson/caldeira-reference-udc.geojson?url'
 
-export function EnvironmentalOverlay() {
-  const data = useGeoJsonFeatureCollection(envUrl)
-  if (!data) return null
+export const ENV_APA_FILL_LAYER_ID = 'env-apa-fill'
+export const ENV_BUFFER_FILL_LAYER_ID = 'env-buffer-fill'
+export const ENV_MONITORING_FILL_LAYER_ID = 'env-monitoring-fill'
+export const ENV_URBAN_FILL_LAYER_ID = 'env-urban-fill'
+/** City centroid (Point) — interactive on Hydro tab when urban layer on */
+export const ENV_URBAN_CENTROID_CORE_LAYER_ID = 'env-urban-centroid-core'
+export const UDC_REFERENCE_LAYER_ID = 'env-udc-reference'
+
+export interface EnvironmentalOverlayProps {
+  showApa?: boolean
+  showBuffer?: boolean
+  showMonitoring?: boolean
+  showUrban?: boolean
+  showUdc?: boolean
+}
+
+export function EnvironmentalOverlay({
+  showApa = true,
+  showBuffer = true,
+  showMonitoring = true,
+  showUrban = false,
+  showUdc = false,
+}: EnvironmentalOverlayProps) {
+  const apa = useGeoJsonFeatureCollection(apaUrl)
+  const buffer = useGeoJsonFeatureCollection(bufferUrl)
+  const monitoring = useGeoJsonFeatureCollection(monitoringUrl)
+  const urban = useGeoJsonFeatureCollection(urbanUrl)
+  const udc = useGeoJsonFeatureCollection(udcUrl)
 
   return (
-    <Source id="caldeira-env" type="geojson" data={data}>
-      {/* APA Pedra Branca — protected area fill */}
-      <Layer
-        id="env-apa-fill"
-        type="fill"
-        filter={['==', ['get', 'kind'], 'protected-area']}
-        paint={{
-          'fill-color': '#22D68A',
-          'fill-opacity': 0.06,
-        }}
-      />
-      <Layer
-        id="env-apa-line"
-        type="line"
-        filter={['==', ['get', 'kind'], 'protected-area']}
-        paint={{
-          'line-color': '#22D68A',
-          'line-width': 1.8,
-          'line-opacity': 0.55,
-          'line-dasharray': [4, 3],
-        }}
-      />
-      <Layer
-        id="env-apa-label"
-        type="symbol"
-        filter={['==', ['get', 'kind'], 'protected-area']}
-        layout={{
-          'text-field': ['get', 'label'],
-          'text-font': ['Open Sans Semibold'],
-          'text-size': 10,
-          'text-allow-overlap': true,
-        }}
-        paint={{
-          'text-color': 'rgba(34,214,138,0.75)',
-          'text-halo-color': 'rgba(6,6,16,0.95)',
-          'text-halo-width': 1.2,
-        }}
-      />
+    <>
+      {showApa && apa && (
+        <Source id="caldeira-env-apa" type="geojson" data={apa}>
+          <Layer
+            id={ENV_APA_FILL_LAYER_ID}
+            type="fill"
+            filter={['==', ['get', 'kind'], 'protected-area']}
+            paint={{ 'fill-color': W.green, 'fill-opacity': 0.06 }}
+          />
+          <Layer
+            id="env-apa-line"
+            type="line"
+            filter={['==', ['get', 'kind'], 'protected-area']}
+            paint={{
+              'line-color': W.green,
+              'line-width': 1.8,
+              'line-opacity': 0.55,
+              'line-dasharray': [4, 3],
+            }}
+          />
+          <Layer
+            id="env-apa-label"
+            type="symbol"
+            filter={['==', ['get', 'kind'], 'protected-area']}
+            layout={{
+              'text-field': ['get', 'label'],
+              'text-font': ['Open Sans Semibold'],
+              'text-size': 10,
+              'text-allow-overlap': true,
+            }}
+            paint={{
+              'text-color': 'rgba(34,214,138,0.75)',
+              'text-halo-color': 'rgba(6,6,16,0.95)',
+              'text-halo-width': 1.2,
+            }}
+          />
+        </Source>
+      )}
 
-      {/* 3 km buffer zone — dashed outline */}
-      <Layer
-        id="env-buffer-fill"
-        type="fill"
-        filter={['==', ['get', 'kind'], 'buffer-zone']}
-        paint={{
-          'fill-color': '#F5A623',
-          'fill-opacity': 0.04,
-        }}
-      />
-      <Layer
-        id="env-buffer-line"
-        type="line"
-        filter={['==', ['get', 'kind'], 'buffer-zone']}
-        paint={{
-          'line-color': '#F5A623',
-          'line-width': 1.4,
-          'line-opacity': 0.45,
-          'line-dasharray': [6, 4],
-        }}
-      />
+      {showBuffer && buffer && (
+        <Source id="caldeira-env-buffer" type="geojson" data={buffer}>
+          <Layer
+            id={ENV_BUFFER_FILL_LAYER_ID}
+            type="fill"
+            filter={['==', ['get', 'kind'], 'buffer-zone']}
+            paint={{ 'fill-color': W.amber, 'fill-opacity': 0.04 }}
+          />
+          <Layer
+            id="env-buffer-line"
+            type="line"
+            filter={['==', ['get', 'kind'], 'buffer-zone']}
+            paint={{
+              'line-color': W.amber,
+              'line-width': 1.4,
+              'line-opacity': 0.45,
+              'line-dasharray': [6, 4],
+            }}
+          />
+        </Source>
+      )}
 
-      {/* Water monitoring zone — cyan fill */}
-      <Layer
-        id="env-monitoring-fill"
-        type="fill"
-        filter={['==', ['get', 'kind'], 'monitoring-zone']}
-        paint={{
-          'fill-color': '#00D4C8',
-          'fill-opacity': 0.06,
-        }}
-      />
-      <Layer
-        id="env-monitoring-line"
-        type="line"
-        filter={['==', ['get', 'kind'], 'monitoring-zone']}
-        paint={{
-          'line-color': '#00D4C8',
-          'line-width': 1.2,
-          'line-opacity': 0.50,
-          'line-dasharray': [3, 2.5],
-        }}
-      />
-    </Source>
+      {showMonitoring && monitoring && (
+        <Source id="caldeira-env-monitoring" type="geojson" data={monitoring}>
+          <Layer
+            id={ENV_MONITORING_FILL_LAYER_ID}
+            type="fill"
+            filter={['==', ['get', 'kind'], 'monitoring-zone']}
+            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
+          />
+          <Layer
+            id="env-monitoring-line"
+            type="line"
+            filter={['==', ['get', 'kind'], 'monitoring-zone']}
+            paint={{
+              'line-color': W.cyan,
+              'line-width': 1.2,
+              'line-opacity': 0.5,
+              'line-dasharray': [3, 2.5],
+            }}
+          />
+        </Source>
+      )}
+
+      {showUrban && urban && (
+        <Source id="caldeira-env-urban" type="geojson" data={urban}>
+          <Layer
+            id={ENV_URBAN_FILL_LAYER_ID}
+            type="fill"
+            filter={['==', ['get', 'kind'], 'urban-context']}
+            paint={{ 'fill-color': W.text1, 'fill-opacity': 0.04 }}
+          />
+          <Layer
+            id="env-urban-line"
+            type="line"
+            filter={['==', ['get', 'kind'], 'urban-context']}
+            paint={{
+              'line-color': 'rgba(236,236,248,0.35)',
+              'line-width': 1,
+              'line-opacity': 0.5,
+              'line-dasharray': [2, 2],
+            }}
+          />
+          <Layer
+            id="env-urban-label"
+            type="symbol"
+            filter={['==', ['get', 'kind'], 'urban-context']}
+            layout={{
+              'text-field': ['get', 'label'],
+              'text-size': 9,
+              'text-font': ['Open Sans Regular'],
+            }}
+            paint={{
+              'text-color': 'rgba(236,236,248,0.5)',
+              'text-halo-color': W.mapHalo,
+              'text-halo-width': 1,
+            }}
+          />
+          <Layer
+            id="env-urban-centroid-glow"
+            type="circle"
+            filter={['==', ['get', 'kind'], 'urban-centroid']}
+            paint={{
+              'circle-radius': 14,
+              'circle-color': W.text1,
+              'circle-opacity': 0.08,
+            }}
+          />
+          <Layer
+            id={ENV_URBAN_CENTROID_CORE_LAYER_ID}
+            type="circle"
+            filter={['==', ['get', 'kind'], 'urban-centroid']}
+            paint={{
+              'circle-radius': 6,
+              'circle-color': W.mapSecondary,
+              'circle-opacity': 0.55,
+              'circle-stroke-color': W.mapHalo,
+              'circle-stroke-width': 1.5,
+            }}
+          />
+          <Layer
+            id="env-urban-centroid-label"
+            type="symbol"
+            filter={['==', ['get', 'kind'], 'urban-centroid']}
+            layout={{
+              'text-field': ['get', 'label'],
+              'text-size': 9,
+              'text-offset': [0, 1.15],
+              'text-font': ['Open Sans Regular'],
+            }}
+            paint={{
+              'text-color': 'rgba(236,236,248,0.55)',
+              'text-halo-color': W.mapHalo,
+              'text-halo-width': 1.2,
+            }}
+          />
+        </Source>
+      )}
+
+      {showUdc && udc && (
+        <Source id="caldeira-env-udc" type="geojson" data={udc}>
+          <Layer
+            id={UDC_REFERENCE_LAYER_ID}
+            type="circle"
+            paint={{
+              'circle-radius': 7,
+              'circle-color': W.red,
+              'circle-opacity': 0.35,
+              'circle-stroke-color': W.red,
+              'circle-stroke-width': 1.5,
+            }}
+          />
+          <Layer
+            id="env-udc-label"
+            type="symbol"
+            layout={{
+              'text-field': ['get', 'label'],
+              'text-size': 9,
+              'text-offset': [0, 1.2],
+              'text-font': ['Open Sans Regular'],
+            }}
+            paint={{
+              'text-color': 'rgba(255,77,77,0.85)',
+              'text-halo-color': W.mapHalo,
+              'text-halo-width': 1.2,
+            }}
+          />
+        </Source>
+      )}
+    </>
   )
+}
+
+/** Parse GeoJSON feature props for map inspector (APA, buffer, monitoring, urban, UDC). */
+export function parseEnvMapFeature(properties: Record<string, unknown>): {
+  id: string
+  label: string
+  kind: string
+  note: string
+  source_ref: string
+  as_of: string
+  confidence?: string
+} | null {
+  const id = properties.id
+  if (typeof id !== 'string') return null
+  const pop = properties.population_approx
+  const popNote = typeof pop === 'number' ? `~${pop.toLocaleString()} population (approx.)` : ''
+  const baseNote = String(properties.note ?? '')
+  const note = [baseNote, popNote].filter(Boolean).join(' · ')
+
+  return {
+    id,
+    label: String(properties.label ?? ''),
+    kind: String(properties.kind ?? ''),
+    note,
+    source_ref: String(properties.source_ref ?? ''),
+    as_of: String(properties.as_of ?? ''),
+    confidence: properties.confidence ? String(properties.confidence) : undefined,
+  }
 }

@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ENV-APA-BUFFER",
+        "label": "APA Pedra Branca — conceptual buffer",
+        "sublabel": "~10 km buffer narrative · advanced mitigation inside",
+        "kind": "buffer-zone",
+        "buffer_km": 10,
+        "status": "conceptual",
+        "note": "Large schematic rectangle for stakeholder context — not official FEAM/COPAM buffer geometry.",
+        "source_ref": "ops_reality_apa_buffer",
+        "as_of": "2026-04-07",
+        "confidence": "approximate"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-46.75, -21.8],
+            [-46.4, -21.8],
+            [-46.4, -22.06],
+            [-46.75, -22.06],
+            [-46.75, -21.8]
+          ]
+        ]
+      }
+    }
+  ]
+}

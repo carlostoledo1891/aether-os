@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIT-CDM-01",
+        "label": "PFS starter pit — Capão do Mel",
+        "engineering_kind": "pfs-pit",
+        "note": "Planned high-grade starter pit · Measured resource feed · ops reality layout (non-survey).",
+        "source_ref": "ops_reality_pfs_pit",
+        "as_of": "2026-04-07",
+        "confidence": "georeferenced_figure"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-46.545, -21.88],
+            [-46.535, -21.88],
+            [-46.535, -21.89],
+            [-46.545, -21.89],
+            [-46.545, -21.88]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA-DUMP-01",
+        "label": "Proposed spent clay dry-stack",
+        "engineering_kind": "spent-clay",
+        "note": "PFS-stage dry-stack · low footprint narrative · pilot-tested material handling.",
+        "source_ref": "ops_reality_spent_clay",
+        "as_of": "2026-04-07",
+        "confidence": "georeferenced_figure"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-46.538, -21.895],
+            [-46.532, -21.895],
+            [-46.532, -21.898],
+            [-46.538, -21.898],
+            [-46.538, -21.895]
+          ]
+        ]
+      }
+    }
+  ]
+}

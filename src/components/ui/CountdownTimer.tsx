@@ -33,24 +33,26 @@ export function CountdownTimer({ targetDate, label, color = 'amber' }: Countdown
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
-        {[
-          { v: time.days, u: 'd' },
-          { v: time.hours, u: 'h' },
-          { v: time.minutes, u: 'm' },
-        ].map(({ v, u }) => (
-          <span key={u} style={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
-            <span style={{
-              fontSize: 22, fontWeight: 600, color: c,
-              fontFamily: 'var(--font-mono)', letterSpacing: '-0.02em',
-            }}>
-              {String(v).padStart(2, '0')}
+      <div aria-live="polite" aria-atomic="true">
+        <div style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
+          {[
+            { v: time.days, u: 'd' },
+            { v: time.hours, u: 'h' },
+            { v: time.minutes, u: 'm' },
+          ].map(({ v, u }) => (
+            <span key={u} style={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+              <span style={{
+                fontSize: 22, fontWeight: 600, color: c,
+                fontFamily: 'var(--font-mono)', letterSpacing: '-0.02em',
+              }}>
+                {String(v).padStart(2, '0')}
+              </span>
+              <span style={{ fontSize: 10, color: W.text3, fontFamily: 'var(--font-mono)' }}>
+                {u}
+              </span>
             </span>
-            <span style={{ fontSize: 10, color: W.text3, fontFamily: 'var(--font-mono)' }}>
-              {u}
-            </span>
-          </span>
-        ))}
+          ))}
+        </div>
       </div>
       <span style={{
         fontSize: 10, fontWeight: 600, letterSpacing: '0.08em',

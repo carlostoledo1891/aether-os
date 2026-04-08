@@ -9,28 +9,30 @@ interface ViewSwitcherProps {
   alertCount?: number
 }
 
-const VIEWS: { id: ViewMode; label: string; sublabel: string; icon: typeof Map; color: string }[] = [
-  { id: 'operator',  label: 'License-to-Operate', sublabel: 'Field risk · hydrology · permits', icon: Map,         color: W.violet },
-  { id: 'buyer',     label: 'TradeTech',          sublabel: 'Passport · APIs · provenance',      icon: ShieldCheck, color: W.green },
-  { id: 'executive', label: 'Board Options',      sublabel: 'Value at risk · partner paths',     icon: BarChart3,   color: W.amber },
+const VIEWS: { id: ViewMode; label: string; icon: typeof Map; color: string }[] = [
+  { id: 'operator',  label: 'Field Operations',              icon: Map,         color: W.violet },
+  { id: 'buyer',     label: 'Compliance & Traceability',     icon: ShieldCheck, color: W.green },
+  { id: 'executive', label: 'Executive Overview',            icon: BarChart3,   color: W.amber },
 ]
 
 export function ViewSwitcher({ active, onChange, alertCount = 0 }: ViewSwitcherProps) {
   return (
-    <div style={{ display: 'flex', gap: 2, padding: '3px', background: 'rgba(255,255,255,0.04)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
-      {VIEWS.map(({ id, label, sublabel, icon: Icon, color }) => {
+    <div style={{ display: 'flex', gap: 2, padding: '3px', background: W.glass04, borderRadius: W.radius.lg, border: W.hairlineBorder }}>
+      {VIEWS.map(({ id, label, icon: Icon, color }) => {
         const isActive = active === id
         return (
           <button
             key={id}
+            type="button"
+            aria-current={isActive ? 'page' : undefined}
             onClick={() => onChange(id)}
             style={{
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              padding: '8px 14px',
-              borderRadius: 9,
+              padding: '7px 12px',
+              borderRadius: W.radius.md,
               border: 'none',
               cursor: 'pointer',
               background: 'transparent',
@@ -44,7 +46,7 @@ export function ViewSwitcher({ active, onChange, alertCount = 0 }: ViewSwitcherP
                 layoutId="view-pill"
                 style={{
                   position: 'absolute', inset: 0,
-                  borderRadius: 9,
+                  borderRadius: W.radius.md,
                   background: `linear-gradient(135deg, ${color}22, ${color}11)`,
                   border: `1px solid ${color}40`,
                   boxShadow: `0 0 12px ${color}20`,
@@ -53,7 +55,7 @@ export function ViewSwitcher({ active, onChange, alertCount = 0 }: ViewSwitcherP
               />
             )}
             <Icon
-              size={13}
+              size={12}
               style={{
                 color: isActive ? color : W.text4,
                 filter: isActive ? `drop-shadow(0 0 4px ${color}80)` : undefined,
@@ -64,15 +66,12 @@ export function ViewSwitcher({ active, onChange, alertCount = 0 }: ViewSwitcherP
             />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', zIndex: 1, gap: 1 }}>
               <span style={{
-                fontSize: 11, fontWeight: 600, letterSpacing: '0.02em',
+                fontSize: 10, fontWeight: 600, letterSpacing: '0.02em',
                 color: isActive ? W.text1 : W.text3,
                 transition: 'color 0.2s',
                 whiteSpace: 'nowrap',
               }}>
                 {label}
-              </span>
-              <span style={{ fontSize: 10, color: isActive ? W.text3 : W.text4, whiteSpace: 'nowrap', transition: 'color 0.2s' }}>
-                {sublabel}
               </span>
             </div>
             {id === 'operator' && alertCount > 0 && (
@@ -83,7 +82,7 @@ export function ViewSwitcher({ active, onChange, alertCount = 0 }: ViewSwitcherP
                 borderRadius: '50%',
                 fontSize: 8,
                 fontWeight: 700,
-                color: '#fff',
+                color: W.textInverse,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 zIndex: 2,
               }}>

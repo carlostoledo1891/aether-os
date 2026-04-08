@@ -1,5 +1,24 @@
 /* ─── Aether OS Telemetry Types ──────────────────────────────────────────── */
 
+export type SpringMonitoringTier = 'direct' | 'sentinel_proxy' | 'modeled_inferred'
+
+export interface SpringTelemetry {
+  id: string
+  status: 'Active' | 'Reduced' | 'Suppressed'
+  monitoring_tier: SpringMonitoringTier
+  method: string
+  data_sources: string[]
+  last_field_visit?: string
+  linked_sensor_id?: string
+}
+
+export interface SpringEvent {
+  springId: string
+  ts: string
+  type: 'field_visit' | 'sensor_proxy' | 'model_refresh' | 'audit_note'
+  note: string
+}
+
 export interface PlantTelemetry {
   timestamp: string
   flow_metrics: {
@@ -44,10 +63,9 @@ export interface EnvTelemetry {
     radiation_usv_h: number  // Target: ~0.14
     udc_status: 'Normal' | 'Elevated' | 'Alert'
   }
-  springs: Array<{
-    id: string
-    status: 'Active' | 'Reduced' | 'Suppressed'
-  }>
+  springs: SpringTelemetry[]
+  /** Sparse audit-style events for spring monitoring (demo) */
+  springEvents?: SpringEvent[]
 }
 
 export interface ComplianceLedger {

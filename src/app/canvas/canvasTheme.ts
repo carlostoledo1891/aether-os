@@ -1,5 +1,6 @@
 /* ─── Aether OS Canvas Theme ─────────────────────────────────────────────── */
-/* JS mirror of theme.css tokens for programmatic use in SVG, canvas, recharts */
+/* Canonical palette for TS/JS (inline styles, SVG, Recharts). Keep in sync with
+ * src/styles/theme.css :root — same names map to --w-* variables there. */
 
 export const W = {
   bg:           '#07070E',
@@ -31,7 +32,58 @@ export const W = {
   redGlow:      'rgba(255,77,77,0.22)',
   redSubtle:    'rgba(255,77,77,0.10)',
   glass:        'rgba(255,255,255,0.035)',
+  glass02:      'rgba(255,255,255,0.02)',
+  glass04:      'rgba(255,255,255,0.04)',
+  glass07:      'rgba(255,255,255,0.07)',
+  glass12:      'rgba(255,255,255,0.12)',
   glassHover:   'rgba(255,255,255,0.06)',
+  overlay88:    'rgba(6,6,16,0.88)',
+
+  /** App shell background grid (1px lines) */
+  appShellGridLine: 'rgba(255,255,255,0.012)',
+  /** Map HUD floating panels (springs counter, weather strip) */
+  mapHudPanelBg:    'rgba(5,5,16,0.82)',
+  mapHudPanelBgWQ:  'rgba(0,212,200,0.08)',
+  mapHudPanelBgWQWarn: 'rgba(245,166,35,0.12)',
+  mapHudBorderCyan: '1px solid rgba(0,212,200,0.18)',
+  mapHudBorderCyanStrong: '1px solid rgba(0,212,200,0.20)',
+  mapHudBorderAmber: '1px solid rgba(245,166,35,0.28)',
+  mapHudBorderRed: '1px solid rgba(255,77,77,0.25)',
+
+  /** App shell: top header bar (blur + tint) */
+  chromeHeaderBg: 'rgba(13,13,28,0.95)',
+  /** Full modal overlay */
+  scrim:          'rgba(0,0,0,0.5)',
+  /** Panel seams, tab bars */
+  hairlineBorder: '1px solid rgba(255,255,255,0.06)',
+  /** Glass cards, icon buttons, inputs */
+  chromeBorder:   '1px solid rgba(255,255,255,0.08)',
+  /** Data honesty strip (getDataContext) */
+  bannerBgMock:   'rgba(0,212,200,0.06)',
+  bannerBgLive:   'rgba(245,166,35,0.08)',
+  bannerEdgeMock: 'rgba(0,212,200,0.12)',
+  bannerEdgeLive: 'rgba(245,166,35,0.2)',
+  /** Map: water feature fill (dark blue tint) */
+  mapWaterFill:   '#0A1A28',
+  /** Map: text halo / label knockout (matches canvas) */
+  mapHalo:        '#060610',
+  /** Map: commercial plant marker */
+  mapCommercial:  '#8B1538',
+  /** Map: secondary / muted geometry */
+  mapSecondary:   '#B8B8D8',
+  /** High-contrast on accent fills */
+  textInverse:    '#ffffff',
+  /** Alert / destructive ring (e.g. bell when alerts active) */
+  redBorderSoft:  'rgba(255,77,77,0.3)',
+  /** Small alert count badges */
+  redBadgeBg:     'rgba(255,77,77,0.15)',
+
+  glass03:      'rgba(255,255,255,0.03)',
+  glass05:      'rgba(255,255,255,0.05)',
+  glass06:      'rgba(255,255,255,0.06)',
+  glass08:      'rgba(255,255,255,0.08)',
+
+  radius:       { xs: 4, sm: 7, md: 10, lg: 14 },
 } as const
 
 /* Domain lanes for REE vertical */

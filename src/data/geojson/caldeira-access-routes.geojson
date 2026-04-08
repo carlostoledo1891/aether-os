@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ACCESS-ROAD-PRIMARY",
+        "label": "Access road (concept)",
+        "kind": "access-route",
+        "note": "Pilot → mine/plant corridor from Caldeira_Project_Ultimate_v1 — schematic polyline, not surveyed alignment.",
+        "source_ref": "ultimate_v1_access_road",
+        "as_of": "2026-04-07",
+        "confidence": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-46.57, -21.78],
+          [-46.55, -21.85],
+          [-46.53, -21.9]
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,8 @@
+// GeoJSON `data` props use `as never` to bridge FeatureCollection/GeoJSON.GeoJSON
+// type mismatch between our typed GeoJSON and react-map-gl's maplibre binding.
 import { useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Layer, Source, useMap } from 'react-map-gl/maplibre'
+import { Layer, Marker, Source, useMap } from 'react-map-gl/maplibre'
 import type { EnvTelemetry, PlantTelemetry } from '../../types/telemetry'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -14,6 +16,7 @@ import {
 } from './geojson'
 import plantEdgesUrl from '../../data/geojson/plant-edges.geojson?url'
 import plantNodesUrl from '../../data/geojson/plant-nodes.geojson?url'
+import { MAP_STACKING } from './mapStacking'
 
 type Domain = 'extraction' | 'processing' | 'compliance' | 'monitor' | 'transport' | 'external'
 type NodeStatus = 'running' | 'success' | 'warning' | 'critical' | 'idle'
@@ -78,6 +81,114 @@ const SR: Record<NodeStatus, string> = {
   warning: W.amber,
   critical: W.red,
   idle: W.border3,
+}
+
+const PLANT_EDGE_CASING_PAINT = {
+  'line-color': W.glass08,
+  'line-width': ['+', ['get', 'lineWidth'], 2.2],
+  'line-opacity': 0.35,
+}
+
+const PLANT_EDGE_PROCESS_PAINT = {
+  'line-color': ['get', 'lineColor'],
+  'line-width': ['get', 'lineWidth'],
+  'line-opacity': 0.72,
+}
+
+const PLANT_EDGE_MONITOR_PAINT = {
+  'line-color': ['get', 'lineColor'],
+  'line-width': ['get', 'lineWidth'],
+  'line-opacity': 0.55,
+  'line-dasharray': [2, 2.8],
+}
+
+const PLANT_EDGE_RISK_PAINT = {
+  'line-color': ['get', 'lineColor'],
+  'line-width': ['get', 'lineWidth'],
+  'line-opacity': 0.62,
+  'line-dasharray': [1.5, 3.5],
+}
+
+const PLANT_NODE_GLOW_PAINT = {
+  'circle-radius': ['get', 'glowRadius'],
+  'circle-color': ['get', 'statusColor'],
+  'circle-opacity': ['match', ['get', 'status'], 'critical', 0.22, 'warning', 0.18, 'success', 0.14, 'running', 0.12, 0.08],
+  'circle-blur': 0.9,
+}
+
+const PLANT_NODE_CORE_PAINT = {
+  'circle-radius': ['get', 'radius'],
+  'circle-color': ['get', 'fillColor'],
+  'circle-stroke-color': ['get', 'strokeColor'],
+  'circle-stroke-width': ['case', ['boolean', ['get', 'isHub'], false], 2, ['boolean', ['get', 'isExternal'], false], 1, 1.5],
+  'circle-stroke-opacity': 0.95,
+}
+
+const PLANT_NODE_STATUS_PAINT = {
+  'circle-radius': ['case', ['boolean', ['get', 'isSensor'], false], 2.1, ['*', ['get', 'radius'], 0.34]],
+  'circle-color': ['get', 'statusColor'],
+  'circle-opacity': 0.98,
+}
+
+const PLANT_NODE_LABEL_MAIN_LAYOUT = {
+  'text-field': ['get', 'label'],
+  'text-font': ['Open Sans Semibold'],
+  'text-size': ['case', ['boolean', ['get', 'isHub'], false], 11, 9],
+  'text-offset': [0, 1.8] as [number, number],
+  'text-anchor': 'top' as const,
+  'text-allow-overlap': true,
+}
+
+const PLANT_NODE_LABEL_MAIN_PAINT = {
+  'text-color': ['get', 'labelColor'],
+  'text-halo-color': W.mapHalo,
+  'text-halo-width': 1.2,
+}
+
+const PLANT_NODE_LABEL_SENSOR_LAYOUT = {
+  'text-field': ['get', 'label'],
+  'text-font': ['Open Sans Semibold'],
+  'text-size': 9,
+  'text-offset': [1.15, 0] as [number, number],
+  'text-anchor': 'left' as const,
+  'text-allow-overlap': true,
+}
+
+const PLANT_NODE_LABEL_SENSOR_PAINT = {
+  'text-color': ['get', 'labelColor'],
+  'text-halo-color': W.mapHalo,
+  'text-halo-width': 1.2,
+}
+
+const PLANT_NODE_METRIC_LAYOUT = {
+  'text-field': ['get', 'metric'],
+  'text-font': ['Open Sans Regular'],
+  'text-size': 9,
+  'text-offset': [0, -2.25] as [number, number],
+  'text-anchor': 'bottom' as const,
+  'text-allow-overlap': true,
+}
+
+const PLANT_NODE_METRIC_PAINT = {
+  'text-color': ['get', 'labelColor'],
+  'text-halo-color': W.mapHalo,
+  'text-halo-width': 1.4,
+}
+
+const PLANT_NODE_HOVER_PAINT = {
+  'circle-radius': ['+', ['get', 'radius'], 10],
+  'circle-color': 'rgba(0,0,0,0)',
+  'circle-stroke-color': ['get', 'strokeColor'],
+  'circle-stroke-width': 1.8,
+  'circle-stroke-opacity': 0.82,
+}
+
+const PLANT_NODE_SELECTED_PAINT = {
+  'circle-radius': ['+', ['get', 'radius'], 12],
+  'circle-color': 'rgba(0,0,0,0)',
+  'circle-stroke-color': ['get', 'strokeColor'],
+  'circle-stroke-width': 1.6,
+  'circle-stroke-opacity': 0.75,
 }
 
 export const PLANT_NODE_LAYER_ID = 'plant-node-core'
@@ -205,6 +316,28 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
     [selectedNode],
   )
 
+  const pulseMarkers = useMemo(() => {
+    if (!nodesData) return null
+    return nodesData.features
+      .filter(f => f.properties.status === 'warning' || f.properties.status === 'critical')
+      .map(f => {
+        const [lng, lat] = f.geometry.coordinates
+        const color = SR[f.properties.status]
+        const size = (f.properties.radius + 14) * 2
+        return (
+          <Marker key={`pulse-${f.properties.id}`} longitude={lng} latitude={lat} anchor="center">
+            <div style={{
+              width: size, height: size, borderRadius: '50%',
+              background: `radial-gradient(circle, ${color}30 0%, ${color}00 70%)`,
+              border: `1.5px solid ${color}50`,
+              animation: 'warn-pulse-glow 2s ease-in-out infinite',
+              pointerEvents: 'none',
+            }} />
+          </Marker>
+        )
+      })
+  }, [nodesData])
+
   if (!staticEdges || !nodesData) return null
 
   const hoveredPalette = hoveredNode ? DC[hoveredNode.properties.domain] : null
@@ -215,98 +348,60 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
     <>
       {/* ── Edge linework ──────────────────────────────────────────────────── */}
       <Source id="plant-edges-source" type="geojson" data={staticEdges as never}>
-        <Layer id="plant-edge-casing" type="line" paint={{
-          'line-color': 'rgba(255,255,255,0.08)',
-          'line-width': ['+', ['get', 'lineWidth'], 2.2],
-          'line-opacity': 0.35,
-        }} />
+        <Layer id="plant-edge-casing" type="line" paint={PLANT_EDGE_CASING_PAINT as never} />
         <Layer id="plant-edge-process" type="line"
           filter={['==', ['get', 'variant'], 'process']}
-          paint={{ 'line-color': ['get', 'lineColor'], 'line-width': ['get', 'lineWidth'], 'line-opacity': 0.72 }}
+          paint={PLANT_EDGE_PROCESS_PAINT as never}
         />
         <Layer id="plant-edge-monitor" type="line"
           filter={['==', ['get', 'variant'], 'monitor']}
-          paint={{ 'line-color': ['get', 'lineColor'], 'line-width': ['get', 'lineWidth'], 'line-opacity': 0.55, 'line-dasharray': [2, 2.8] }}
+          paint={PLANT_EDGE_MONITOR_PAINT as never}
         />
         <Layer id="plant-edge-risk" type="line"
           filter={['==', ['get', 'variant'], 'risk']}
-          paint={{ 'line-color': ['get', 'lineColor'], 'line-width': ['get', 'lineWidth'], 'line-opacity': 0.62, 'line-dasharray': [1.5, 3.5] }}
+          paint={PLANT_EDGE_RISK_PAINT as never}
         />
       </Source>
 
       {/* ── Node circles + labels ──────────────────────────────────────────── */}
       <Source id="plant-nodes-source" type="geojson" data={nodesData as never}>
-        <Layer id="plant-node-glow" type="circle" paint={{
-          'circle-radius': ['get', 'glowRadius'],
-          'circle-color': ['get', 'statusColor'],
-          'circle-opacity': ['match', ['get', 'status'], 'critical', 0.22, 'warning', 0.18, 'success', 0.14, 'running', 0.12, 0.08],
-          'circle-blur': 0.9,
-        }} />
-        <Layer id={PLANT_NODE_LAYER_ID} type="circle" paint={{
-          'circle-radius': ['get', 'radius'],
-          'circle-color': ['get', 'fillColor'],
-          'circle-stroke-color': ['get', 'strokeColor'],
-          'circle-stroke-width': ['case', ['boolean', ['get', 'isHub'], false], 2, ['boolean', ['get', 'isExternal'], false], 1, 1.5],
-          'circle-stroke-opacity': 0.95,
-        }} />
-        <Layer id="plant-node-status" type="circle" paint={{
-          'circle-radius': ['case', ['boolean', ['get', 'isSensor'], false], 2.1, ['*', ['get', 'radius'], 0.34]],
-          'circle-color': ['get', 'statusColor'],
-          'circle-opacity': 0.98,
-        }} />
+        <Layer id="plant-node-glow" type="circle" paint={PLANT_NODE_GLOW_PAINT as never} />
+        <Layer id={PLANT_NODE_LAYER_ID} type="circle" paint={PLANT_NODE_CORE_PAINT as never} />
+        <Layer id="plant-node-status" type="circle" paint={PLANT_NODE_STATUS_PAINT as never} />
         <Layer id="plant-node-label-main" type="symbol"
           filter={['==', ['get', 'labelMode'], 'main']}
-          layout={{
-            'text-field': ['get', 'label'], 'text-font': ['Open Sans Semibold'],
-            'text-size': ['case', ['boolean', ['get', 'isHub'], false], 11, 9],
-            'text-offset': [0, 1.8], 'text-anchor': 'top', 'text-allow-overlap': true,
-          }}
-          paint={{ 'text-color': ['get', 'labelColor'], 'text-halo-color': 'rgba(6,6,16,0.95)', 'text-halo-width': 1.2 }}
+          layout={PLANT_NODE_LABEL_MAIN_LAYOUT as never}
+          paint={PLANT_NODE_LABEL_MAIN_PAINT as never}
         />
         <Layer id="plant-node-label-sensor" type="symbol"
           filter={['==', ['get', 'labelMode'], 'sensor']}
-          layout={{
-            'text-field': ['get', 'label'], 'text-font': ['Open Sans Semibold'], 'text-size': 9,
-            'text-offset': [1.15, 0], 'text-anchor': 'left', 'text-allow-overlap': true,
-          }}
-          paint={{ 'text-color': ['get', 'labelColor'], 'text-halo-color': 'rgba(6,6,16,0.95)', 'text-halo-width': 1.2 }}
+          layout={PLANT_NODE_LABEL_SENSOR_LAYOUT as never}
+          paint={PLANT_NODE_LABEL_SENSOR_PAINT as never}
         />
         <Layer id="plant-node-metric" type="symbol"
           filter={['all', ['!=', ['get', 'metric'], ''], ['==', ['get', 'labelMode'], 'main']]}
-          layout={{
-            'text-field': ['get', 'metric'], 'text-font': ['Open Sans Regular'], 'text-size': 9,
-            'text-offset': [0, -2.25], 'text-anchor': 'bottom', 'text-allow-overlap': true,
-          }}
-          paint={{ 'text-color': ['get', 'labelColor'], 'text-halo-color': 'rgba(6,6,16,0.95)', 'text-halo-width': 1.4 }}
+          layout={PLANT_NODE_METRIC_LAYOUT as never}
+          paint={PLANT_NODE_METRIC_PAINT as never}
         />
       </Source>
 
       {/* ── Hover / selection outlines (driven by parent state) ────────────── */}
       <Source id="plant-hover-source" type="geojson" data={hoverData as never}>
-        <Layer id="plant-node-hover" type="circle" paint={{
-          'circle-radius': ['+', ['get', 'radius'], 10],
-          'circle-color': 'rgba(0,0,0,0)',
-          'circle-stroke-color': ['get', 'strokeColor'],
-          'circle-stroke-width': 1.8,
-          'circle-stroke-opacity': 0.82,
-        }} />
+        <Layer id="plant-node-hover" type="circle" paint={PLANT_NODE_HOVER_PAINT as never} />
       </Source>
       <Source id="plant-selected-source" type="geojson" data={selectedData as never}>
-        <Layer id="plant-node-selected" type="circle" paint={{
-          'circle-radius': ['+', ['get', 'radius'], 12],
-          'circle-color': 'rgba(0,0,0,0)',
-          'circle-stroke-color': ['get', 'strokeColor'],
-          'circle-stroke-width': 1.6,
-          'circle-stroke-opacity': 0.75,
-        }} />
+        <Layer id="plant-node-selected" type="circle" paint={PLANT_NODE_SELECTED_PAINT as never} />
       </Source>
+
+      {/* ── Warning/critical pulse rings ─────────────────────────────────── */}
+      {pulseMarkers}
 
       {/* ── Bottom badge ───────────────────────────────────────────────────── */}
       <div style={{
         position: 'absolute', left: '50%', bottom: 16, transform: 'translateX(-50%)',
         fontSize: 8, color: 'rgba(124,92,252,0.60)', fontFamily: 'var(--font-mono)',
         letterSpacing: '0.08em', pointerEvents: 'none',
-        textShadow: '0 0 8px rgba(124,92,252,0.28)', zIndex: 12, whiteSpace: 'nowrap',
+        textShadow: '0 0 8px rgba(124,92,252,0.28)', zIndex: MAP_STACKING.plantBadge, whiteSpace: 'nowrap',
       }}>
         CALDEIRA PROJECT · 193 km² · 77 licenses
       </div>
@@ -334,8 +429,8 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
                 position: 'absolute', top, left, minWidth: 176, maxWidth: TOOLTIP_W,
                 transform: 'translateY(-50%)',
                 background: 'rgba(13,13,28,0.94)', backdropFilter: 'blur(12px)',
-                border: `1px solid ${hoveredPalette.stroke}35`, borderRadius: 10,
-                padding: '10px 12px', zIndex: 20,
+                border: `1px solid ${hoveredPalette.stroke}35`, borderRadius: W.radius.md,
+                padding: '10px 12px', zIndex: MAP_STACKING.tooltip,
                 boxShadow: `0 0 18px ${hoveredPalette.stroke}14`, pointerEvents: 'none',
               }}
             >
@@ -350,7 +445,7 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
               <p style={{ margin: '0 0 3px', fontSize: 11, fontWeight: 600, color: hoveredNode.properties.labelColor }}>{hoveredNode.properties.label}</p>
               <p style={{ margin: '0 0 7px', fontSize: 10, color: W.text4 }}>{hoveredNode.properties.sublabel}</p>
               {hoveredMetric && (
-                <div style={{ padding: '4px 8px', background: hoveredNode.properties.fillColor, border: `1px solid ${hoveredPalette.stroke}28`, borderRadius: 5, marginBottom: 6 }}>
+                <div style={{ padding: '4px 8px', background: hoveredNode.properties.fillColor, border: `1px solid ${hoveredPalette.stroke}28`, borderRadius: W.radius.sm, marginBottom: 6 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: hoveredNode.properties.labelColor, fontFamily: 'var(--font-mono)' }}>{hoveredMetric}</span>
                 </div>
               )}
@@ -366,8 +461,8 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
       <div style={{
         position: 'absolute', bottom: 12, left: 12, display: 'flex', gap: 10, alignItems: 'center',
         background: 'rgba(6,6,16,0.78)', backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, padding: '5px 10px',
-        zIndex: 15, pointerEvents: 'none',
+        border: `1px solid ${W.glass07}`, borderRadius: W.radius.sm, padding: '5px 10px',
+        zIndex: MAP_STACKING.plantLegend, pointerEvents: 'none',
       }}>
         {(Object.entries(DC) as [Domain, typeof DC[Domain]][])
           .filter(([domain]) => domain !== 'external')

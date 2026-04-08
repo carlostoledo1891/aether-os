@@ -1,0 +1,41 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PLANT-PILOT-01",
+        "label": "Meteoric Pilot Plant",
+        "sublabel": "Innovation & Research Center · Poços de Caldas",
+        "kind": "plant",
+        "status": "operational",
+        "details": "25 kg ore/hr · MREC design 1.8 kg/day · achieved ~2.6 kg/day · recoveries vs ANSTO: 70% Nd, 71% Pr, 56% Dy, 61% Tb · ~32.7% MREO.",
+        "source_ref": "ops_reality_plant_sites",
+        "as_of": "2026-04-07",
+        "confidence": "georeferenced_figure"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.575, -21.8]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PLANT-COMM-01",
+        "label": "Proposed commercial processing plant",
+        "sublabel": "PFS Jul 2025 · 18,000 tpa · adjacent Capão do Mel",
+        "kind": "plant",
+        "status": "planned",
+        "details": "US$250M US EXIM + US$50M EFA backing (narrative). Collar aligned to ops reality GeoJSON — verify against filed layout.",
+        "source_ref": "ops_reality_plant_sites",
+        "as_of": "2026-04-07",
+        "confidence": "georeferenced_figure"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.545, -21.885]
+      }
+    }
+  ]
+}

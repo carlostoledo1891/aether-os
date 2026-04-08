@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import {
   generatePlantTelemetry,
   generateEnvTelemetry,
@@ -7,6 +7,7 @@ import {
   INITIAL_PLANT_TELEMETRY,
   INITIAL_ENV_TELEMETRY,
 } from './mockGenerator'
+import { SPRING_COUNT, buildInitialSprings } from './mockData'
 
 describe('generatePlantTelemetry', () => {
   it('returns a new PlantTelemetry with fresh timestamp', () => {
@@ -84,9 +85,70 @@ describe('generateEnvTelemetry', () => {
     }
   })
 
-  it('preserves springs array from previous state', () => {
+  it('keeps spring count, GeoJSON-aligned ids, and monitoring metadata', () => {
     const result = generateEnvTelemetry(INITIAL_ENV_TELEMETRY)
-    expect(result.springs).toBe(INITIAL_ENV_TELEMETRY.springs)
+    expect(result.springs).toHaveLength(SPRING_COUNT)
+    expect(result.springs[0].id).toBe('spring-0001')
+    expect(result.springs[0].monitoring_tier).toBe('direct')
+    expect(result.springs[SPRING_COUNT - 1].id).toBe(`spring-${String(SPRING_COUNT).padStart(4, '0')}`)
+  })
+
+  it('links sentinel spring to linked piezo when drawdown is critical', () => {
+    const stressed = {
+      ...INITIAL_ENV_TELEMETRY,
+      aquifer: {
+        sensors: INITIAL_ENV_TELEMETRY.aquifer.sensors.map((s) =>
+          s.sensor_id === 'PIZ-E04'
+            ? { ...s, depth_meters: s.baseline_meters + 10 }
+            : s,
+        ),
+      },
+    }
+    const next = generateEnvTelemetry(stressed)
+    const sp6 = next.springs.find((s) => s.id === 'spring-0006')
+    expect(sp6?.linked_sensor_id).toBe('PIZ-E04')
+    expect(sp6?.status).toBe('Reduced')
+  })
+
+  it('when precipStress > 0.4, can downgrade modeled_inferred Active springs to Reduced', () => {
+    const prev = {
+      ...INITIAL_ENV_TELEMETRY,
+      aquifer: { sensors: [] },
+      springs: [
+        {
+          id: 'spring-test',
+          status: 'Active' as const,
+          monitoring_tier: 'modeled_inferred' as const,
+          method: 'hydro_model_v1',
+          data_sources: ['inferred'] as string[],
+        },
+      ],
+      springEvents: [],
+    }
+    const randomSpy = vi.spyOn(Math, 'random')
+    let n = 0
+    randomSpy.mockImplementation(() => {
+      n += 1
+      // First 3 calls: sulfate, nitrate, radiation drift — neutral delta
+      if (n <= 3) return 0.5
+      // 4th: precip branch — below 0.012 * 0.5 = 0.006
+      return 0.001
+    })
+    const next = generateEnvTelemetry(prev, 1, { precipStress: 0.5 })
+    randomSpy.mockRestore()
+    expect(next.springs[0]?.status).toBe('Reduced')
+  })
+
+  it('reuses prev.springs reference when no spring status changes (springsUnchanged)', () => {
+    const springs = buildInitialSprings().map((s) => ({ ...s, linked_sensor_id: undefined }))
+    const sensors = INITIAL_ENV_TELEMETRY.aquifer.sensors.map((s) => ({
+      ...s,
+      depth_meters: s.baseline_meters + 0.1,
+      status: 'Normal' as const,
+    }))
+    const prev = { ...INITIAL_ENV_TELEMETRY, aquifer: { sensors }, springs }
+    const next = generateEnvTelemetry(prev, 0)
+    expect(next.springs).toBe(prev.springs)
   })
 })
 
@@ -124,6 +186,21 @@ describe('calculateEsgScore', () => {
     const esg = calculateEsgScore(INITIAL_PLANT_TELEMETRY, INITIAL_ENV_TELEMETRY)
     const expected = Math.round(esg.operator * 0.33 + esg.regulator * 0.34 + esg.buyer * 0.33)
     expect(esg.overall).toBe(expected)
+  })
+
+  it('returns valid finite scores when aquifer has no sensors (NaN guard)', () => {
+    const env = {
+      ...INITIAL_ENV_TELEMETRY,
+      aquifer: { sensors: [] },
+    }
+    const esg = calculateEsgScore(INITIAL_PLANT_TELEMETRY, env)
+    expect(Number.isFinite(esg.overall)).toBe(true)
+    expect(Number.isFinite(esg.operator)).toBe(true)
+    expect(Number.isFinite(esg.regulator)).toBe(true)
+    expect(esg.overall).toBeGreaterThan(0)
+    expect(esg.overall).toBeLessThanOrEqual(100)
+    expect(esg.regulator).toBeGreaterThan(0)
+    expect(esg.regulator).toBeLessThanOrEqual(100)
   })
 })
 

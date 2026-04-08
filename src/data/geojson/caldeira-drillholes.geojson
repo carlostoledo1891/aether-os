@@ -1,42 +1,149 @@
 {
   "type": "FeatureCollection",
   "features": [
-    { "type": "Feature", "properties": { "id": "CPDAC0001", "deposit": "capao-do-mel", "treo_ppm": 4345, "mreo_pct": 27, "depth_m": 38, "campaign": "2025-pfs", "note": "High-grade core centre" }, "geometry": { "type": "Point", "coordinates": [-46.565, -21.848] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0002", "deposit": "capao-do-mel", "treo_ppm": 3852, "mreo_pct": 25, "depth_m": 34, "campaign": "2025-pfs" }, "geometry": { "type": "Point", "coordinates": [-46.558, -21.842] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0003", "deposit": "capao-do-mel", "treo_ppm": 3621, "mreo_pct": 24, "depth_m": 31, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.572, -21.842] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0004", "deposit": "capao-do-mel", "treo_ppm": 3341, "mreo_pct": 24, "depth_m": 29, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.572, -21.854] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0005", "deposit": "capao-do-mel", "treo_ppm": 3178, "mreo_pct": 23, "depth_m": 26, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.558, -21.854] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0006", "deposit": "capao-do-mel", "treo_ppm": 2890, "mreo_pct": 23, "depth_m": 24, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.551, -21.836] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0007", "deposit": "capao-do-mel", "treo_ppm": 2454, "mreo_pct": 22, "depth_m": 22, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.579, -21.848] } },
-    { "type": "Feature", "properties": { "id": "CPDAC0008", "deposit": "capao-do-mel", "treo_ppm": 2312, "mreo_pct": 21, "depth_m": 19, "campaign": "2022-infill" }, "geometry": { "type": "Point", "coordinates": [-46.565, -21.860] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0001", "deposit": "soberbo", "treo_ppm": 2954, "mreo_pct": 27, "depth_m": 25, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.615, -21.882] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0002", "deposit": "soberbo", "treo_ppm": 3124, "mreo_pct": 28, "depth_m": 28, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.608, -21.876] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0003", "deposit": "soberbo", "treo_ppm": 2876, "mreo_pct": 25, "depth_m": 22, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.622, -21.876] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0004", "deposit": "soberbo", "treo_ppm": 2658, "mreo_pct": 24, "depth_m": 19, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.622, -21.888] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0005", "deposit": "soberbo", "treo_ppm": 2812, "mreo_pct": 26, "depth_m": 21, "campaign": "2022-infill" }, "geometry": { "type": "Point", "coordinates": [-46.608, -21.888] } },
-    { "type": "Feature", "properties": { "id": "SBDAC0006", "deposit": "soberbo", "treo_ppm": 2234, "mreo_pct": 22, "depth_m": 16, "campaign": "2022-infill" }, "geometry": { "type": "Point", "coordinates": [-46.615, -21.870] } },
-    { "type": "Feature", "properties": { "id": "FGDAC0001", "deposit": "figueira", "treo_ppm": 2756, "mreo_pct": 24, "depth_m": 32, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.590, -21.818] } },
-    { "type": "Feature", "properties": { "id": "FGDAC0002", "deposit": "figueira", "treo_ppm": 2543, "mreo_pct": 23, "depth_m": 27, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.584, -21.812] } },
-    { "type": "Feature", "properties": { "id": "FGDAC0003", "deposit": "figueira", "treo_ppm": 2876, "mreo_pct": 25, "depth_m": 35, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.596, -21.812] } },
-    { "type": "Feature", "properties": { "id": "FGDAC0004", "deposit": "figueira", "treo_ppm": 2345, "mreo_pct": 22, "depth_m": 24, "campaign": "2022-infill" }, "geometry": { "type": "Point", "coordinates": [-46.590, -21.824] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0001", "deposit": "barra-do-pacu", "treo_ppm": 4130, "mreo_pct": 26, "depth_m": 42, "campaign": "2025-pfs", "note": "High-grade core; maiden resource Apr 2025" }, "geometry": { "type": "Point", "coordinates": [-46.555, -21.875] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0002", "deposit": "barra-do-pacu", "treo_ppm": 3645, "mreo_pct": 24, "depth_m": 36, "campaign": "2025-pfs" }, "geometry": { "type": "Point", "coordinates": [-46.548, -21.869] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0003", "deposit": "barra-do-pacu", "treo_ppm": 3412, "mreo_pct": 23, "depth_m": 31, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.562, -21.869] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0004", "deposit": "barra-do-pacu", "treo_ppm": 3256, "mreo_pct": 23, "depth_m": 28, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.562, -21.881] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0005", "deposit": "barra-do-pacu", "treo_ppm": 3089, "mreo_pct": 22, "depth_m": 26, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.548, -21.881] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0006", "deposit": "barra-do-pacu", "treo_ppm": 2456, "mreo_pct": 21, "depth_m": 22, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.555, -21.863] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0007", "deposit": "barra-do-pacu", "treo_ppm": 2234, "mreo_pct": 20, "depth_m": 19, "campaign": "2023-infill" }, "geometry": { "type": "Point", "coordinates": [-46.555, -21.893] } },
-    { "type": "Feature", "properties": { "id": "BPDAC0008", "deposit": "barra-do-pacu", "treo_ppm": 2178, "mreo_pct": 20, "depth_m": 17, "campaign": "2022-infill" }, "geometry": { "type": "Point", "coordinates": [-46.541, -21.875] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0107", "deposit": "agostinho", "treo_ppm": 19183, "mreo_pct": 38, "depth_m": 24, "campaign": "2025-pfs", "note": "Peak intercept published ASX Feb 2025; 6m @ 19,183 ppm within 24m @ 6,918 ppm hole" }, "geometry": { "type": "Point", "coordinates": [-46.520, -21.778] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0092", "deposit": "agostinho", "treo_ppm": 6918, "mreo_pct": 34, "depth_m": 24, "campaign": "2025-pfs", "note": "Published: 24m @ 6,918 ppm TREO" }, "geometry": { "type": "Point", "coordinates": [-46.527, -21.772] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0089", "deposit": "agostinho", "treo_ppm": 8456, "mreo_pct": 36, "depth_m": 18, "campaign": "2025-pfs" }, "geometry": { "type": "Point", "coordinates": [-46.513, -21.772] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0101", "deposit": "agostinho", "treo_ppm": 5432, "mreo_pct": 31, "depth_m": 20, "campaign": "2025-pfs" }, "geometry": { "type": "Point", "coordinates": [-46.527, -21.784] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0113", "deposit": "agostinho", "treo_ppm": 4891, "mreo_pct": 29, "depth_m": 16, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.513, -21.784] } },
-    { "type": "Feature", "properties": { "id": "AGOAC0088", "deposit": "agostinho", "treo_ppm": 3567, "mreo_pct": 27, "depth_m": 14, "campaign": "2024-resource" }, "geometry": { "type": "Point", "coordinates": [-46.520, -21.766] } },
-    { "type": "Feature", "properties": { "id": "CVSDD001", "deposit": "exploration-target", "treo_ppm": 8912, "mreo_pct": 28, "depth_m": 149.5, "campaign": "2023-exploration", "note": "Cupim Vermelho Sul: 149.5m @ 8,912 ppm TREO from surface incl. 52m @ 12,692 ppm from 61m" }, "geometry": { "type": "Point", "coordinates": [-46.592, -21.738] } },
-    { "type": "Feature", "properties": { "id": "BDPDD001", "deposit": "exploration-target", "treo_ppm": 3939, "mreo_pct": 24, "depth_m": 73.3, "campaign": "2023-exploration", "note": "73.3m @ 3,939 ppm TREO from surface incl. 42.3m @ 4,719 ppm" }, "geometry": { "type": "Point", "coordinates": [-46.558, -21.898] } },
-    { "type": "Feature", "properties": { "id": "CDMDD003", "deposit": "exploration-target", "treo_ppm": 1561, "mreo_pct": 21, "depth_m": 26.7, "campaign": "2023-exploration", "note": "26.7m @ 1,561 ppm TREO incl. 4.2m @ 3,582 ppm" }, "geometry": { "type": "Point", "coordinates": [-46.548, -21.842] } },
-    { "type": "Feature", "properties": { "id": "CRDD001", "deposit": "exploration-target", "treo_ppm": 2702, "mreo_pct": 23, "depth_m": 58, "campaign": "2023-exploration", "note": "58m @ 2,702 ppm TREO from surface incl. 33m @ 3,006 ppm from 5m" }, "geometry": { "type": "Point", "coordinates": [-46.575, -21.905] } },
-    { "type": "Feature", "properties": { "id": "CRDD002", "deposit": "exploration-target", "treo_ppm": 2194, "mreo_pct": 22, "depth_m": 28.4, "campaign": "2023-exploration", "note": "28.4m @ 2,194 ppm TREO incl. 12.1m @ 2,322 ppm from 5m" }, "geometry": { "type": "Point", "coordinates": [-46.580, -21.910] } }
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD009",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 3649,
+        "mreo_pct": 24,
+        "depth_m": 17,
+        "campaign": "2025-resource",
+        "hole_type": "DD",
+        "note": "16.9m @ 3649 ppm TREO · incl. 7m @ 5834 ppm TREO",
+        "intercept": "16.9m @ 3649ppm TREO",
+        "including": "7m @ 5834ppm TREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.542, -21.888] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD011",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 6575,
+        "mreo_pct": 24,
+        "depth_m": 25,
+        "campaign": "2025-resource",
+        "hole_type": "DD",
+        "note": "25m @ 6575 ppm TREO · incl. 4.5m @ 15598 ppm TREO",
+        "intercept": "25m @ 6575ppm TREO",
+        "including": "4.5m @ 15598ppm TREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.538, -21.885] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FGDD004",
+        "deposit": "figueira",
+        "treo_ppm": 1817,
+        "mreo_pct": 22,
+        "depth_m": 98,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": "97.7m @ 1817 ppm TREO · incl. 12.3m @ 3666 ppm TREO",
+        "intercept": "97.7m @ 1817ppm TREO",
+        "including": "12.3m @ 3666ppm TREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.482, -21.812] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0107",
+        "deposit": "agostinho",
+        "treo_ppm": 6918,
+        "mreo_pct": 27,
+        "depth_m": 24,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "24m @ 6918 ppm TREO from 0m · 27% MREO · incl. 6m @ 19183 ppm TREO (34.9% MREO)",
+        "intercept": "24m @ 6,918ppm TREO [0m] with 27% MREO",
+        "including": "6m @ 19,183ppm TREO [2m] with 34.9% MREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.615, -21.885] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0110",
+        "deposit": "agostinho",
+        "treo_ppm": 4422,
+        "mreo_pct": 28,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 4422 ppm TREO · 27.7% MREO · incl. 10m @ 7831 ppm TREO",
+        "intercept": "22m @ 4,422ppm TREO [0m] with 27.7% MREO",
+        "including": "10m @ 7,831ppm TREO [0m] with 35.6% MREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.613, -21.882] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD001",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 6406,
+        "mreo_pct": 26,
+        "depth_m": 143,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": "143m @ 6406 ppm TREO from 0m · incl. 8m @ 23946 ppm TREO @ 85m · 1170 ppm HMREO",
+        "intercept": "143m @ 6,406ppm TREO [0m]",
+        "including": "8m @ 23,946ppm TREO [85m] and 1,170 ppm HMREO",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.53, -21.86] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD001",
+        "deposit": "cupim-vermelho-sul",
+        "treo_ppm": 8912,
+        "mreo_pct": 28,
+        "depth_m": 150,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": "149.5m @ 8912 ppm TREO from 0m · incl. 52m @ 12692 ppm TREO @ 61m",
+        "intercept": "149.5m @ 8,912 ppm TREO [0m]",
+        "including": "52m @ 12,692ppm TREO [61m]",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.51, -21.85] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD0004",
+        "deposit": "cupim-vermelho-sul",
+        "treo_ppm": 3387,
+        "mreo_pct": 25,
+        "depth_m": 200,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": "200m @ 3387 ppm TREO from 0m · incl. 5m @ 11888 ppm TREO @ 36m",
+        "intercept": "200m @ 3,387ppm TREO [0m]",
+        "including": "5m @ 11,888ppm TREO [36m]",
+        "source_ref": "ops_reality_collars",
+        "as_of": "2026-04-07"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.512, -21.853] }
+    }
   ]
 }

@@ -30,6 +30,6 @@ describe('StatusChip', () => {
   it('applies md size padding', () => {
     const { container } = render(<StatusChip label="MD" size="md" />)
     const chip = container.firstChild as HTMLElement
-    expect(chip.style.padding).toBe('4px 12px')
+    expect(chip.style.padding).toBe('3px 10px')
   })
 })

@@ -1,11 +1,12 @@
 import { memo } from 'react'
-import { motion } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import { FileCheck, AlertTriangle } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { LicenseTimeline } from '../../components/ui/LicenseTimeline'
 import { W } from '../../app/canvas/canvasTheme'
-import { LICENSE_COLORS, LICENSE_ITEMS, LICENSE_ZONES } from './constants'
+import { LICENSE_ZONES } from './constants'
 import type { LicenseDetail } from '../../components/map/LicenseOverlay'
 
 interface LicensesPanelProps {
@@ -28,25 +29,7 @@ export const LicensesPanel = memo(function LicensesPanel({ selectedLicense, onSe
             Environmental Licensing
           </span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-          {LICENSE_ITEMS.map(({ label, full, sub, status }, i) => {
-            const color = LICENSE_COLORS[status]
-            return (
-              <div key={label} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 2 }}>
-                  <div style={{ width: 18, height: 18, borderRadius: 5, flexShrink: 0, background: status === 'pending' ? 'transparent' : `${color}20`, border: `1.5px solid ${color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: status !== 'pending' ? `0 0 5px ${color}40` : undefined }}>
-                    <span style={{ fontSize: 7, fontWeight: 800, color, fontFamily: 'var(--font-mono)' }}>{label}</span>
-                  </div>
-                  {i < 2 && <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.07)', margin: '3px 0' }}/>}
-                </div>
-                <div style={{ paddingBottom: i < 2 ? 10 : 0 }}>
-                  <span style={{ fontSize: 10, fontWeight: 600, color: W.text1, display: 'block', marginBottom: 1 }}>{full}</span>
-                  <span style={{ fontSize: 10, color: W.text4 }}>{sub}</span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <LicenseTimeline />
       </GlassCard>
 
       {LICENSE_ZONES.map(zone => (
@@ -70,6 +53,23 @@ export const LicensesPanel = memo(function LicensesPanel({ selectedLicense, onSe
             <div><span style={{ fontSize: 10, color: W.text4 }}>Area: </span><span style={{ fontSize: 11, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{zone.area} km²</span></div>
             <div><span style={{ fontSize: 10, color: W.text4 }}>Licences: </span><span style={{ fontSize: 11, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{zone.count}</span></div>
           </div>
+          
+          <AnimatePresence>
+            {selectedLicense?.id === zone.id && (
+              <motion.div
+                initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                animate={{ height: 'auto', opacity: 1, marginTop: 10 }}
+                exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <div style={{ paddingTop: 8, borderTop: W.hairlineBorder }}>
+                  <div style={{ padding: '6px 8px', background: W.glass03, borderRadius: W.radius.sm }}>
+                    <span style={{ fontSize: 10, color: W.text3, lineHeight: 1.4, display: 'block' }}>{zone.note}</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </GlassCard>
       ))}
 

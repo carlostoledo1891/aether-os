@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./server
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - HOST=0.0.0.0
+    volumes:
+      - api-data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  engine:
+    build: ./engine
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - AETHER_API_URL=http://api:3001
+      - TICK_MS=2000
+      - SITE_LAT=-21.815
+      - SITE_LNG=-46.585
+      - ENRICHER_OPENMETEO=1
+      - ENRICHER_BCB=1
+      - ENRICHER_USGS=1
+      # - ALPHA_VANTAGE_KEY=
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api-data:

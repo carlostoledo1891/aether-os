@@ -37,7 +37,11 @@ describe('canvasTheme W tokens', () => {
 
   it('exports glass tokens', () => {
     expect(W.glass).toBeDefined()
+    expect(W.glass02).toBeDefined()
     expect(W.glassHover).toBeDefined()
+    expect(W.chromeBorder).toBeDefined()
+    expect(W.hairlineBorder).toBeDefined()
+    expect(W.chromeHeaderBg).toBeDefined()
   })
 })
 
