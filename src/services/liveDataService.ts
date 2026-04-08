@@ -70,7 +70,10 @@ function createWsTelemetryStream() {
 
   function buildWsUrl(): string {
     const envWs = getWsUrl()
-    if (envWs) return `${envWs}/telemetry`
+    if (envWs) {
+      const base = envWs.replace(/\/+$/, '')
+      return base.endsWith('/ws') ? `${base}/telemetry` : `${base}/ws/telemetry`
+    }
     const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
     return `${protocol}//${location.host}/ws/telemetry`
   }

@@ -26,17 +26,14 @@ function isThenable(val: unknown): val is Promise<unknown> {
  */
 export function useServiceQuery<T>(key: string, selector: Selector<T>): QueryState<T> {
   const service = useAetherService()
+  const selectorRef = useRef(selector)
+  selectorRef.current = selector
+
   const [state, setState] = useState<QueryState<T>>(() => {
     const cached = dataCache.get(key)
     if (cached) return { data: cached.data as T, isLoading: false, error: null }
     return { data: undefined, isLoading: true, error: null }
   })
-  const mountedRef = useRef(true)
-
-  useEffect(() => {
-    mountedRef.current = true
-    return () => { mountedRef.current = false }
-  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -49,7 +46,7 @@ export function useServiceQuery<T>(key: string, selector: Selector<T>): QuerySta
 
     let result: T | Promise<T>
     try {
-      result = selector(service)
+      result = selectorRef.current(service)
     } catch (err) {
       setState({ data: undefined, isLoading: false, error: err instanceof Error ? err : new Error(String(err)) })
       return
@@ -72,22 +69,20 @@ export function useServiceQuery<T>(key: string, selector: Selector<T>): QuerySta
         if (cancelled) return
         dataCache.set(key, { data, at: Date.now() })
         inflightCache.delete(key)
-        if (mountedRef.current) setState({ data, isLoading: false, error: null })
+        setState({ data, isLoading: false, error: null })
       })
       .catch((err) => {
         if (cancelled) return
         inflightCache.delete(key)
-        if (mountedRef.current) {
-          setState({
-            data: undefined,
-            isLoading: false,
-            error: err instanceof Error ? err : new Error(String(err)),
-          })
-        }
+        setState({
+          data: undefined,
+          isLoading: false,
+          error: err instanceof Error ? err : new Error(String(err)),
+        })
       })
 
     return () => { cancelled = true }
-  }, [key, service, selector])
+  }, [key, service])
 
   return state
 }
@@ -104,17 +99,16 @@ export function useServiceQueryWithArg<T, A>(
 ): QueryState<T> {
   const service = useAetherService()
   const compositeKey = `${key}:${String(arg)}`
+  const selectorRef = useRef(selector)
+  selectorRef.current = selector
+  const argRef = useRef(arg)
+  argRef.current = arg
+
   const [state, setState] = useState<QueryState<T>>(() => {
     const cached = dataCache.get(compositeKey)
     if (cached) return { data: cached.data as T, isLoading: false, error: null }
     return { data: undefined, isLoading: true, error: null }
   })
-  const mountedRef = useRef(true)
-
-  useEffect(() => {
-    mountedRef.current = true
-    return () => { mountedRef.current = false }
-  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -127,7 +121,7 @@ export function useServiceQueryWithArg<T, A>(
 
     let result: T | Promise<T>
     try {
-      result = selector(service, arg)
+      result = selectorRef.current(service, argRef.current)
     } catch (err) {
       setState({ data: undefined, isLoading: false, error: err instanceof Error ? err : new Error(String(err)) })
       return
@@ -150,22 +144,20 @@ export function useServiceQueryWithArg<T, A>(
         if (cancelled) return
         dataCache.set(compositeKey, { data, at: Date.now() })
         inflightCache.delete(compositeKey)
-        if (mountedRef.current) setState({ data, isLoading: false, error: null })
+        setState({ data, isLoading: false, error: null })
       })
       .catch((err) => {
         if (cancelled) return
         inflightCache.delete(compositeKey)
-        if (mountedRef.current) {
-          setState({
-            data: undefined,
-            isLoading: false,
-            error: err instanceof Error ? err : new Error(String(err)),
-          })
-        }
+        setState({
+          data: undefined,
+          isLoading: false,
+          error: err instanceof Error ? err : new Error(String(err)),
+        })
       })
 
     return () => { cancelled = true }
-  }, [compositeKey, service, arg, selector])
+  }, [compositeKey, service])
 
   return state
 }
