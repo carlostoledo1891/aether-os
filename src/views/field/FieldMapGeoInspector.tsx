@@ -3,7 +3,7 @@ import { GlassCard } from '../../components/ui/GlassCard'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import type { FieldMapGeoSelection } from './fieldMapGeoSelection'
 
 export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
@@ -13,10 +13,9 @@ export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
   selection: FieldMapGeoSelection | null
   onClear: () => void
 }) {
-  const service = useAetherService()
-  const prov = service.getProvenanceProfile()
+  const { data: prov } = useServiceQuery('provenance', s => s.getProvenanceProfile())
 
-  if (!selection) return null
+  if (!selection || !prov) return null
 
   const kindChip =
     selection.kind === 'licenceEnvelope'

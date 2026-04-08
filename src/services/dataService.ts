@@ -335,55 +335,59 @@ export interface SpatialInsightBundle {
 export type { IssuerSnapshot }
 
 /* ─── The Service Contract ──────────────────────────────────────────────── */
+
+/** Return type that honestly represents sync (mock) or async (live) results. */
+export type MaybeAsync<T> = T | Promise<T>
+
 export interface AetherDataService {
   subscribeTelemetry(cb: TelemetryCallback): Unsubscribe
-  getHistory(range: TimeRangeKey): HistoricalTelemetry
+  getHistory(range: TimeRangeKey): MaybeAsync<HistoricalTelemetry>
 
-  getBatches(): ComplianceLedger[]
-  getBatch(id: string): ComplianceLedger | undefined
+  getBatches(): MaybeAsync<ComplianceLedger[]>
+  getBatch(id: string): MaybeAsync<ComplianceLedger | undefined>
 
-  getFinancialScenario(key: ScenarioKey): FinancialScenario
-  getSensitivityTable(): SensitivityPoint[]
+  getFinancialScenario(key: ScenarioKey): MaybeAsync<FinancialScenario>
+  getSensitivityTable(): MaybeAsync<SensitivityPoint[]>
 
-  getRiskRegister(): RiskItem[]
-  getIncidentLog(): IncidentRecord[]
+  getRiskRegister(): MaybeAsync<RiskItem[]>
+  getIncidentLog(): MaybeAsync<IncidentRecord[]>
 
-  getOfftakerPipeline(): OfftakerRecord[]
-  getCapitalSnapshot(): CapitalSnapshot
-  getDFSWorkstreams(): DFSWorkstream[]
-  getRegulatoryLog(): RegulatoryEntry[]
+  getOfftakerPipeline(): MaybeAsync<OfftakerRecord[]>
+  getCapitalSnapshot(): MaybeAsync<CapitalSnapshot>
+  getDFSWorkstreams(): MaybeAsync<DFSWorkstream[]>
+  getRegulatoryLog(): MaybeAsync<RegulatoryEntry[]>
 
-  getBenchmarks(): BenchmarkOperator[]
+  getBenchmarks(): MaybeAsync<BenchmarkOperator[]>
 
-  getAuditTrail(): AuditEvent[]
-  getESGFrameworks(): ESGFramework[]
+  getAuditTrail(): MaybeAsync<AuditEvent[]>
+  getESGFrameworks(): MaybeAsync<ESGFramework[]>
 
-  getProjectFinancials(): ProjectFinancials
-  getMarketPrices(): MarketPrices
-  getProjectTimeline(): readonly ProjectMilestone[]
-  getDepositData(): DepositRecord[]
-  getResourceClassification(): ResourceClassification
-  getHydrologyScenarios(): readonly HydrologyScenario[]
-  getScaleUpPathway(): ScaleUpPathway
-  getPlantPerformance(): PilotPlantPerformance
-  getHardwareSensors(): readonly HardwareSensorCategory[]
-  getCyberPillars(): readonly CyberTrustPillar[]
-  getApiHandoffs(): readonly ApiHandoff[]
-  getUThSafety(): UThSafety
-  getScope3Tracking(): Scope3Tracking
-  getSpringCount(): number
-  getThresholds(): DomainThresholds
+  getProjectFinancials(): MaybeAsync<ProjectFinancials>
+  getMarketPrices(): MaybeAsync<MarketPrices>
+  getProjectTimeline(): MaybeAsync<readonly ProjectMilestone[]>
+  getDepositData(): MaybeAsync<DepositRecord[]>
+  getResourceClassification(): MaybeAsync<ResourceClassification>
+  getHydrologyScenarios(): MaybeAsync<readonly HydrologyScenario[]>
+  getScaleUpPathway(): MaybeAsync<ScaleUpPathway>
+  getPlantPerformance(): MaybeAsync<PilotPlantPerformance>
+  getHardwareSensors(): MaybeAsync<readonly HardwareSensorCategory[]>
+  getCyberPillars(): MaybeAsync<readonly CyberTrustPillar[]>
+  getApiHandoffs(): MaybeAsync<readonly ApiHandoff[]>
+  getUThSafety(): MaybeAsync<UThSafety>
+  getScope3Tracking(): MaybeAsync<Scope3Tracking>
+  getSpringCount(): MaybeAsync<number>
+  getThresholds(): MaybeAsync<DomainThresholds>
   getDataContext(): DataContext
   /** Per-area provenance for badges (hydro, plant, regulatory narrative, etc.) */
-  getProvenanceProfile(): ProvenanceProfile
+  getProvenanceProfile(): MaybeAsync<ProvenanceProfile>
   /** Pack for JSON/CSV export — regulatory + audit slice + permitting risks */
-  getRegulatoryExportBundle(): RegulatoryExportBundle
-  getSpringHistory(springId: string): SpringEvent[]
+  getRegulatoryExportBundle(): MaybeAsync<RegulatoryExportBundle>
+  getSpringHistory(springId: string): MaybeAsync<SpringEvent[]>
 
   /** Citations + public narrative for executive disclaimers */
-  getIssuerSnapshot(): IssuerSnapshot
+  getIssuerSnapshot(): MaybeAsync<IssuerSnapshot>
   /** Pilot ↔ PFS / APA buffer heuristics */
-  getSpatialInsights(): SpatialInsightBundle
+  getSpatialInsights(): MaybeAsync<SpatialInsightBundle>
 
   dismissAlert(id: string): void
   dismissAllAlerts(): void

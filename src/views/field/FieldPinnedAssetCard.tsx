@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Settings, Layers } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
@@ -6,7 +6,7 @@ import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
 import type { PlantOverlayNodeDetail } from '../../components/map/PlantOverlay'
 import type { HydroOverlayNodeDetail } from '../../components/map/HydroOverlay'
 import type { MapTab } from './constants'
@@ -25,12 +25,18 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
   activeNode: PlantOverlayNodeDetail | HydroOverlayNodeDetail | null
   onClear: () => void
 }) {
-  const service = useAetherService()
-  const prov = useMemo(() => service.getProvenanceProfile(), [service])
+  const { data: prov, isLoading: loadingProv } = useServiceQuery('provenance', s => s.getProvenanceProfile())
 
-  if (!prov || !('sections' in prov)) {
-    return null
-  }
+  const springNodeId = mapTab === 'environment' && activeNode && 'nodeType' in activeNode && (activeNode as HydroOverlayNodeDetail).nodeType === 'spring'
+    ? activeNode.id
+    : null
+  const { data: springHistoryData } = useServiceQueryWithArg(
+    'spring-history',
+    springNodeId,
+    (s, id) => id ? s.getSpringHistory(id) : [],
+  )
+
+  if (loadingProv || !prov) return null
 
   return (
     <GlassCard
@@ -70,11 +76,11 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
         <div className="flex flex-wrap gap-1">
           {mapTab === 'environment' ? (
             <>
-              <ProvenanceBadge kind={prov.sections.hydro_spring_status.kind} title={prov.sections.hydro_spring_status.hint} />
-              <ProvenanceBadge kind={prov.sections.hydro_piezo_telemetry.kind} title={prov.sections.hydro_piezo_telemetry.hint} />
+              <ProvenanceBadge kind={prov?.sections?.hydro_spring_status?.kind} title={prov?.sections?.hydro_spring_status?.hint} />
+              <ProvenanceBadge kind={prov?.sections?.hydro_piezo_telemetry?.kind} title={prov?.sections?.hydro_piezo_telemetry?.hint} />
             </>
           ) : (
-            <ProvenanceBadge kind={prov.sections.plant_telemetry.kind} title={prov.sections.plant_telemetry.hint} />
+            <ProvenanceBadge kind={prov?.sections?.plant_telemetry?.kind} title={prov?.sections?.plant_telemetry?.hint} />
           )}
         </div>
       </div>
@@ -85,9 +91,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
         const hydroSpec = hydroNode && hydroNode.nodeType !== 'spring'
           ? HYDRO_NODE_SPECS[hydroNode.id]
           : undefined
-        const springHistory = hydroNode?.nodeType === 'spring'
-          ? service.getSpringHistory(hydroNode.id)
-          : []
+        const springHistory = springHistoryData ?? []
         return (
           <>
             <div className="mb-0.5 text-xs font-bold" style={{ color: W.text1 }}>{activeNode.label}</div>

@@ -1,11 +1,11 @@
-import { useMemo } from 'react'
 import { FileText, FlaskConical, QrCode, Send } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { BlockchainTimeline } from '../../components/BlockchainTimeline'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { ComplianceLedger } from '../../types/telemetry'
 
 interface TraceabilityTabProps {
@@ -15,12 +15,11 @@ interface TraceabilityTabProps {
 }
 
 export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: TraceabilityTabProps) {
-  const service = useAetherService()
-  const API_HANDOFFS = useMemo(() => service.getApiHandoffs(), [service])
-  const SCOPE_3_TRACKING = useMemo(() => service.getScope3Tracking(), [service])
+  const { data: API_HANDOFFS, isLoading: l1 } = useServiceQuery('api-handoffs', s => s.getApiHandoffs())
+  const { data: SCOPE_3_TRACKING, isLoading: l2 } = useServiceQuery('scope3', s => s.getScope3Tracking())
 
-  if (!Array.isArray(API_HANDOFFS) || !SCOPE_3_TRACKING) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading traceability...</div>
+  if (l1 || l2 || !API_HANDOFFS || !SCOPE_3_TRACKING) {
+    return <LoadingSkeleton variant="card" label="Loading traceability..." />
   }
 
   return (
@@ -53,13 +52,13 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
           {[
-            ['Reagent', SCOPE_3_TRACKING.reagent],
-            ['Supplier', SCOPE_3_TRACKING.supplier],
-            ['Origin', SCOPE_3_TRACKING.supplier_origin],
-            ['FEOC Status', SCOPE_3_TRACKING.feoc_status],
-            ['Verification', SCOPE_3_TRACKING.verification_method],
-            ['Carbon', `${SCOPE_3_TRACKING.carbon_footprint_kg.toFixed(2)} kg CO₂e/kg`],
-            ['Sanctions', SCOPE_3_TRACKING.sanctions_check],
+            ['Reagent', SCOPE_3_TRACKING?.reagent ?? '—'],
+            ['Supplier', SCOPE_3_TRACKING?.supplier ?? '—'],
+            ['Origin', SCOPE_3_TRACKING?.supplier_origin ?? '—'],
+            ['FEOC Status', SCOPE_3_TRACKING?.feoc_status ?? '—'],
+            ['Verification', SCOPE_3_TRACKING?.verification_method ?? '—'],
+            ['Carbon', `${(SCOPE_3_TRACKING?.carbon_footprint_kg ?? 0).toFixed(2)} kg CO₂e/kg`],
+            ['Sanctions', SCOPE_3_TRACKING?.sanctions_check ?? '—'],
           ].map(([label, value]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
               <span style={{ fontSize: 10, color: W.text3, flexShrink: 0 }}>{label}</span>
@@ -78,7 +77,7 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
               <div key={s.step} style={{ display: 'flex', gap: 8, alignItems: 'stretch' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, paddingTop: 4 }}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: sc, boxShadow: `0 0 5px ${sc}60`, flexShrink: 0 }} />
-                  {i < SCOPE_3_TRACKING.supply_chain.length - 1 && <div style={{ width: 1, flex: 1, minHeight: 10, background: `${sc}40` }} />}
+                  {i < (SCOPE_3_TRACKING?.supply_chain?.length ?? 0) - 1 && <div style={{ width: 1, flex: 1, minHeight: 10, background: `${sc}40` }} />}
                 </div>
                 <div style={{ paddingBottom: 6 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: W.text1 }}>{s.step}</span>
@@ -90,7 +89,7 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
         </div>
 
         <div style={{ marginTop: 8, padding: '7px 9px', background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.18)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 10, color: W.text2, lineHeight: 1.45 }}>{SCOPE_3_TRACKING.risk_note}</p>
+          <p style={{ margin: 0, fontSize: 10, color: W.text2, lineHeight: 1.45 }}>{SCOPE_3_TRACKING?.risk_note ?? '—'}</p>
         </div>
       </GlassCard>
 
@@ -145,7 +144,7 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
           </span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-          {API_HANDOFFS.map((handoff) => (
+          {(API_HANDOFFS ?? []).map((handoff) => (
             <div key={handoff.system} style={{ padding: '7px 9px', borderRadius: W.radius.sm, background: W.glass03, border: `1px solid ${W.glass07}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 3 }}>
                 <span style={{ fontSize: 9.5, color: W.text1, fontWeight: 700 }}>{handoff.system}</span>

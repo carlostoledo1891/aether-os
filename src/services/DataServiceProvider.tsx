@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo, type ReactNode } from 'react'
 import type { PlantTelemetry, EnvTelemetry, EsgScore, AlertItem } from '../types/telemetry'
-import type { AetherDataService, TimeRangeKey, HistoricalTelemetry } from './dataService'
+import type { AetherDataService, TimeRangeKey, HistoricalTelemetry, MaybeAsync } from './dataService'
 import { INITIAL_PLANT_TELEMETRY, INITIAL_ENV_TELEMETRY, calculateEsgScore } from '../data/mockGenerator'
 
 interface TelemetryState {
@@ -15,7 +15,7 @@ interface TelemetryState {
 interface DataServiceContextValue {
   service: AetherDataService
   telemetry: TelemetryState
-  getHistory: (range: TimeRangeKey) => HistoricalTelemetry
+  getHistory: (range: TimeRangeKey) => MaybeAsync<HistoricalTelemetry>
   dismissAlert: (id: string) => void
   dismissAllAlerts: () => void
 }

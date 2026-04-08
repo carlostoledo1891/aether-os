@@ -1,23 +1,22 @@
-import { useMemo } from 'react'
 import { Handshake } from 'lucide-react'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function PipelineTab() {
-  const service = useAetherService()
-  const offtakers = useMemo(() => service.getOfftakerPipeline(), [service])
+  const { data: offtakers, isLoading } = useServiceQuery('offtakers', s => s.getOfftakerPipeline())
 
-  if (!Array.isArray(offtakers)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading pipeline...</div>
+  if (isLoading || !offtakers) {
+    return <LoadingSkeleton variant="card" label="Loading pipeline..." />
   }
 
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 md:grid-cols-2">
-      {(Array.isArray(offtakers) ? offtakers : []).map((o) => (
+      {offtakers.map((o) => (
         <ExecutiveCard key={o.id} glow="cyan" className="flex min-h-[220px] flex-col">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">

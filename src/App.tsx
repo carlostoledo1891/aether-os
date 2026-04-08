@@ -1,7 +1,6 @@
 import { lazy, Suspense, useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ViewMode } from './types/telemetry'
-import type { DataContext, TelemetryTruth } from './services/dataService'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
 import { createMockDataService } from './services/mockDataService'
@@ -29,10 +28,7 @@ function AppShell() {
   const [alertOpen, setAlertOpen] = useState(false)
 
   const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
-  const rawDataContext = useMemo(() => service.getDataContext(), [service])
-  const dataContext: DataContext = rawDataContext && typeof rawDataContext === 'object' && 'disclosureMode' in rawDataContext
-    ? rawDataContext
-    : { mode: 'mock' as const, telemetry: 'simulated' as TelemetryTruth, presentationMode: false, disclosureMode: false, bannerLabel: '', detail: '' }
+  const dataContext = useMemo(() => service.getDataContext(), [service])
   const { esg, activeAlerts } = telemetry
   const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
 

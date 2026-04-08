@@ -1,18 +1,17 @@
-import { useMemo } from 'react'
 import { Landmark } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { CP_STATUS_COLOR, CP_STATUS_LABEL } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function CapitalTab() {
-  const service = useAetherService()
-  const capital = useMemo(() => service.getCapitalSnapshot(), [service])
+  const { data: capital, isLoading } = useServiceQuery('capital', s => s.getCapitalSnapshot())
 
-  if (!capital || typeof capital !== 'object' || !('total_capex_m' in capital)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading capital...</div>
+  if (isLoading || !capital) {
+    return <LoadingSkeleton variant="card" label="Loading capital..." />
   }
 
   return (
@@ -39,7 +38,7 @@ export function CapitalTab() {
               </div>
             ))}
           </div>
-          {(Array.isArray(capital?.funding_sources) ? capital.funding_sources : []).map((f) => {
+          {capital.funding_sources.map((f) => {
             const pct = f.committed_m > 0 ? (f.drawn_m / f.committed_m) * 100 : 0
             return (
               <div key={f.name} className="mb-3 last:mb-0">
@@ -66,8 +65,8 @@ export function CapitalTab() {
         <ExecutiveCard>
           <span className={`${ty.labelStrong} mb-3 block`}>Monthly Spend vs Budget</span>
           <div>
-            {(Array.isArray(capital?.monthly_spend) ? capital.monthly_spend : []).map((m, i) => {
-              const maxVal = Math.max(0, ...(Array.isArray(capital?.monthly_spend) ? capital.monthly_spend : []).map((x) => Math.max(x.budget_m, x.actual_m)))
+            {capital.monthly_spend.map((m, i) => {
+              const maxVal = Math.max(0, ...capital.monthly_spend.map((x) => Math.max(x.budget_m, x.actual_m)))
               const budgetPct = (m.budget_m / maxVal) * 100
               const actualPct = m.actual_m > 0 ? (m.actual_m / maxVal) * 100 : 0
               return (
@@ -118,7 +117,7 @@ export function CapitalTab() {
         <ExecutiveCard>
           <span className={`${ty.labelStrong} mb-3 block`}>Conditions Precedent</span>
           <div className="flex flex-col gap-2">
-            {(Array.isArray(capital?.conditions_precedent) ? capital.conditions_precedent : []).map((cp) => (
+            {capital.conditions_precedent.map((cp) => (
               <div
                 key={cp.id}
                 className="flex items-center gap-3 rounded-md border px-2 py-2.5"

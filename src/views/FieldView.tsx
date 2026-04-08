@@ -30,7 +30,8 @@ import { AccessRoutesOverlay, ACCESS_ROUTE_LINE_LAYER_ID } from '../components/m
 import { LicenceEnvelopeOverlay, LICENCE_ENVELOPE_FILL_LAYER_ID } from '../components/map/LicenceEnvelopeOverlay'
 import { NeighborOverlay } from '../components/map/NeighborOverlay'
 import { W } from '../app/canvas/canvasTheme'
-import { useTelemetry, useAetherService } from '../services/DataServiceProvider'
+import { useTelemetry } from '../services/DataServiceProvider'
+import { useServiceQuery } from '../hooks/useServiceQuery'
 import { useSiteWeather } from '../hooks/useSiteWeather'
 
 import type { MapTab } from './field/constants'
@@ -105,10 +106,9 @@ function pickFeatureByPriority(
 
 export function FieldView() {
   const { plant, env } = useTelemetry()
-  const service = useAetherService()
-  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service]) as ReturnType<typeof service.getProjectFinancials> | undefined
-  const PREDICTIVE_HYDROLOGY_SCENARIOS = useMemo(() => service.getHydrologyScenarios(), [service]) as ReturnType<typeof service.getHydrologyScenarios> | undefined
-  const SPRING_COUNT = useMemo(() => service.getSpringCount(), [service]) as number | undefined
+  const { data: PROJECT_FINANCIALS } = useServiceQuery('project-financials', s => s.getProjectFinancials())
+  const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
+  const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
@@ -369,7 +369,7 @@ export function FieldView() {
             { label: 'NdPr Ratio', value: `${plant.output.ndpr_ratio_pct.toFixed(1)}%`, sub: 'of TREO basket' },
             { label: 'Inflow', value: `${plant.flow_metrics.in_liters_sec.toFixed(0)} L/s`, sub: 'Process water in' },
             { label: 'NH₄ Feed', value: `${plant.leaching_circuit.ammonium_sulfate_ml_min.toFixed(0)} ml/min`, sub: 'Tracked reagent feed' },
-            { label: 'Annual NdPr', value: `${PROJECT_FINANCIALS?.annual_ndpr_t?.toLocaleString() ?? '—'} t/yr`, sub: 'LOM target' },
+            { label: 'Annual NdPr', value: `${PROJECT_FINANCIALS?.annual_ndpr_t.toLocaleString() ?? '—'} t/yr`, sub: 'LOM target' },
           ]
         : [
             { label: 'Spring Preservation', value: `${currentScenario?.spring_preservation_pct ?? '—'}%`, sub: currentScenario?.horizon ?? '' },

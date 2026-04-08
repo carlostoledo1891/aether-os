@@ -40,7 +40,9 @@ describe('DataServiceProvider', () => {
   it('useAetherService returns the service instance', () => {
     const { result } = renderHook(() => useAetherService(), { wrapper })
     expect(typeof result.current.getBatches).toBe('function')
-    expect(result.current.getBatches().length).toBeGreaterThan(0)
+    const batches = result.current.getBatches()
+    expect(!(batches instanceof Promise)).toBe(true)
+    if (!(batches instanceof Promise)) expect(batches.length).toBeGreaterThan(0)
   })
 
   it('useDataService throws outside provider', () => {

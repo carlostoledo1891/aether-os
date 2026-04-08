@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import { ScrollText } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { AUDIT_TYPE_COLOR, AUDIT_TYPE_LABEL } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
@@ -10,17 +12,16 @@ import ty from './executiveTypography.module.css'
 export function AuditTab() {
   const service = useAetherService()
   const dataCtx = useMemo(() => service.getDataContext(), [service])
-  const auditTrail = useMemo(() => service.getAuditTrail(), [service])
+  const { data: auditTrail, isLoading } = useServiceQuery('audit-trail', s => s.getAuditTrail())
   const [auditFilter, setAuditFilter] = useState<string>('all')
 
-  const safeAudit = Array.isArray(auditTrail) ? auditTrail : []
   const filteredAudit = useMemo(
-    () => (auditFilter === 'all' ? safeAudit : safeAudit.filter((e) => e.type === auditFilter)),
-    [safeAudit, auditFilter],
+    () => auditTrail ? (auditFilter === 'all' ? auditTrail : auditTrail.filter((e) => e.type === auditFilter)) : [],
+    [auditTrail, auditFilter],
   )
 
-  if (!Array.isArray(auditTrail)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading audit...</div>
+  if (isLoading || !auditTrail) {
+    return <LoadingSkeleton variant="card" label="Loading audit..." />
   }
 
   return (

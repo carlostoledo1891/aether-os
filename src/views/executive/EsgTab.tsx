@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 import { Leaf } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ESG_CATEGORY_COLOR, COVERAGE_STATUS_COLOR } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import { ExecutivePageIntro } from './ExecutivePageIntro'
@@ -16,16 +17,15 @@ function categoryToGlow(cat: string): 'cyan' | 'green' | 'violet' | 'amber' {
 }
 
 export function EsgTab() {
-  const service = useAetherService()
-  const esgFrameworks = useMemo(() => service.getESGFrameworks(), [service])
+  const { data: esgFrameworks, isLoading } = useServiceQuery('esg-frameworks', s => s.getESGFrameworks())
 
   const esgOverallCoverage = useMemo(() => {
-    if (!Array.isArray(esgFrameworks) || esgFrameworks.length === 0) return 0
+    if (!esgFrameworks || esgFrameworks.length === 0) return 0
     return Math.round(esgFrameworks.reduce((sum, f) => sum + f.coverage_pct, 0) / esgFrameworks.length)
   }, [esgFrameworks])
 
-  if (!Array.isArray(esgFrameworks)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading ESG...</div>
+  if (isLoading || !esgFrameworks) {
+    return <LoadingSkeleton variant="card" label="Loading ESG..." />
   }
 
   return (

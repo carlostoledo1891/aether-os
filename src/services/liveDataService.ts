@@ -138,42 +138,42 @@ export function createLiveDataService(): AetherDataService {
     },
 
     getHistory(range: TimeRangeKey) {
-      return api<HistoricalTelemetry>(`/api/telemetry/history?range=${range}`, 5000) as unknown as HistoricalTelemetry
+      return api<HistoricalTelemetry>(`/api/telemetry/history?range=${range}`, 5000)
     },
 
-    getBatches() { return api<ComplianceLedger[]>('/api/batches') as unknown as ComplianceLedger[] },
-    getBatch(id: string) { return api<ComplianceLedger | undefined>(`/api/batches/${id}`) as unknown as ComplianceLedger | undefined },
+    getBatches() { return api<ComplianceLedger[]>('/api/batches') },
+    getBatch(id: string) { return api<ComplianceLedger | undefined>(`/api/batches/${id}`) },
 
-    getFinancialScenario(key: ScenarioKey) { return api<FinancialScenario>(`/api/financials/scenario/${key}`) as unknown as FinancialScenario },
-    getSensitivityTable() { return api<SensitivityPoint[]>('/api/financials/sensitivity') as unknown as SensitivityPoint[] },
+    getFinancialScenario(key: ScenarioKey) { return api<FinancialScenario>(`/api/financials/scenario/${key}`) },
+    getSensitivityTable() { return api<SensitivityPoint[]>('/api/financials/sensitivity') },
 
-    getRiskRegister() { return api<RiskItem[]>('/api/risks') as unknown as RiskItem[] },
-    getIncidentLog() { return api<IncidentRecord[]>('/api/incidents') as unknown as IncidentRecord[] },
+    getRiskRegister() { return api<RiskItem[]>('/api/risks') },
+    getIncidentLog() { return api<IncidentRecord[]>('/api/incidents') },
 
-    getOfftakerPipeline() { return api<OfftakerRecord[]>('/api/offtakers') as unknown as OfftakerRecord[] },
-    getCapitalSnapshot() { return api<CapitalSnapshot>('/api/capital') as unknown as CapitalSnapshot },
-    getDFSWorkstreams() { return api<DFSWorkstream[]>('/api/dfs/workstreams') as unknown as DFSWorkstream[] },
-    getRegulatoryLog() { return api<RegulatoryEntry[]>('/api/regulatory') as unknown as RegulatoryEntry[] },
+    getOfftakerPipeline() { return api<OfftakerRecord[]>('/api/offtakers') },
+    getCapitalSnapshot() { return api<CapitalSnapshot>('/api/capital') },
+    getDFSWorkstreams() { return api<DFSWorkstream[]>('/api/dfs/workstreams') },
+    getRegulatoryLog() { return api<RegulatoryEntry[]>('/api/regulatory') },
 
-    getBenchmarks() { return api<BenchmarkOperator[]>('/api/benchmarks') as unknown as BenchmarkOperator[] },
-    getAuditTrail() { return api<AuditEvent[]>('/api/audit') as unknown as AuditEvent[] },
-    getESGFrameworks() { return api<ESGFramework[]>('/api/esg') as unknown as ESGFramework[] },
+    getBenchmarks() { return api<BenchmarkOperator[]>('/api/benchmarks') },
+    getAuditTrail() { return api<AuditEvent[]>('/api/audit') },
+    getESGFrameworks() { return api<ESGFramework[]>('/api/esg') },
 
-    getProjectFinancials() { return api<ProjectFinancials>('/api/project/financials') as unknown as ProjectFinancials },
-    getMarketPrices() { return api<MarketPrices>('/api/project/market-prices') as unknown as MarketPrices },
-    getProjectTimeline() { return api<readonly ProjectMilestone[]>('/api/project/timeline') as unknown as readonly ProjectMilestone[] },
-    getDepositData() { return api<DepositRecord[]>('/api/project/deposits') as unknown as DepositRecord[] },
-    getResourceClassification() { return api<ResourceClassification>('/api/project/resources') as unknown as ResourceClassification },
-    getHydrologyScenarios() { return api<readonly HydrologyScenario[]>('/api/project/hydrology') as unknown as readonly HydrologyScenario[] },
-    getScaleUpPathway() { return api<ScaleUpPathway>('/api/project/scale-up') as unknown as ScaleUpPathway },
-    getPlantPerformance() { return api<PilotPlantPerformance>('/api/project/plant-performance') as unknown as PilotPlantPerformance },
-    getHardwareSensors() { return api<readonly HardwareSensorCategory[]>('/api/project/hardware-sensors') as unknown as readonly HardwareSensorCategory[] },
-    getCyberPillars() { return api<readonly CyberTrustPillar[]>('/api/project/cyber-pillars') as unknown as readonly CyberTrustPillar[] },
-    getApiHandoffs() { return api<readonly ApiHandoff[]>('/api/project/api-handoffs') as unknown as readonly ApiHandoff[] },
-    getUThSafety() { return api<UThSafety>('/api/project/safety') as unknown as UThSafety },
-    getScope3Tracking() { return api<Scope3Tracking>('/api/project/scope3') as unknown as Scope3Tracking },
-    getSpringCount() { return api<{ count: number }>('/api/project/springs/count').then(r => r.count) as unknown as number },
-    getThresholds() { return api<DomainThresholds>('/api/project/thresholds') as unknown as DomainThresholds },
+    getProjectFinancials() { return api<ProjectFinancials>('/api/project/financials') },
+    getMarketPrices() { return api<MarketPrices>('/api/project/market-prices') },
+    getProjectTimeline() { return api<readonly ProjectMilestone[]>('/api/project/timeline') },
+    getDepositData() { return api<DepositRecord[]>('/api/project/deposits') },
+    getResourceClassification() { return api<ResourceClassification>('/api/project/resources') },
+    getHydrologyScenarios() { return api<readonly HydrologyScenario[]>('/api/project/hydrology') },
+    getScaleUpPathway() { return api<ScaleUpPathway>('/api/project/scale-up') },
+    getPlantPerformance() { return api<PilotPlantPerformance>('/api/project/plant-performance') },
+    getHardwareSensors() { return api<readonly HardwareSensorCategory[]>('/api/project/hardware-sensors') },
+    getCyberPillars() { return api<readonly CyberTrustPillar[]>('/api/project/cyber-pillars') },
+    getApiHandoffs() { return api<readonly ApiHandoff[]>('/api/project/api-handoffs') },
+    getUThSafety() { return api<UThSafety>('/api/project/safety') },
+    getScope3Tracking() { return api<Scope3Tracking>('/api/project/scope3') },
+    getSpringCount() { return api<{ count: number }>('/api/project/springs/count').then(r => r.count) },
+    getThresholds() { return api<DomainThresholds>('/api/project/thresholds') },
 
     getDataContext(): DataContext {
       const presentationMode = getPresentationMode()
@@ -215,24 +215,24 @@ export function createLiveDataService(): AetherDataService {
       }
     },
 
-    getProvenanceProfile(): ProvenanceProfile {
-      return api<ProvenanceProfile>('/api/provenance') as unknown as ProvenanceProfile
+    getProvenanceProfile() {
+      return api<ProvenanceProfile>('/api/provenance')
     },
 
-    getRegulatoryExportBundle(): RegulatoryExportBundle {
-      return api<RegulatoryExportBundle>('/api/export/regulatory') as unknown as RegulatoryExportBundle
+    getRegulatoryExportBundle() {
+      return api<RegulatoryExportBundle>('/api/export/regulatory')
     },
 
-    getSpringHistory(springId: string): SpringEvent[] {
-      return api<SpringEvent[]>(`/api/springs/${springId}/history`) as unknown as SpringEvent[]
+    getSpringHistory(springId: string) {
+      return api<SpringEvent[]>(`/api/springs/${springId}/history`)
     },
 
     getIssuerSnapshot() {
-      return api<IssuerSnapshot>('/api/issuer-snapshot') as unknown as IssuerSnapshot
+      return api<IssuerSnapshot>('/api/issuer-snapshot')
     },
 
     getSpatialInsights() {
-      return api<SpatialInsightBundle>('/api/spatial-insights') as unknown as SpatialInsightBundle
+      return api<SpatialInsightBundle>('/api/spatial-insights')
     },
 
     dismissAlert(id: string) {

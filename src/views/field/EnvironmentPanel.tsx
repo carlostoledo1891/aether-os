@@ -11,7 +11,9 @@ import { LicenseTimeline } from '../../components/ui/LicenseTimeline'
 import { SectionLabel } from '../../components/ui/SectionLabel'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
-import { useTelemetry, useDataService, useAetherService } from '../../services/DataServiceProvider'
+import { useTelemetry } from '../../services/DataServiceProvider'
+import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { TimeRangeKey } from '../../services/dataService'
 import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
@@ -27,18 +29,14 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
   siteWeather: SiteWeatherSnapshot
 }) {
   const { env } = useTelemetry()
-  const { getHistory } = useDataService()
-  const svc = useAetherService()
-  const rawScenarios = useMemo(() => svc.getHydrologyScenarios(), [svc])
-  const PREDICTIVE_HYDROLOGY_SCENARIOS = Array.isArray(rawScenarios) ? rawScenarios : []
-  const rawScaleUp = useMemo(() => svc.getScaleUpPathway(), [svc])
-  const SCALE_UP_PATHWAY = rawScaleUp && typeof rawScaleUp === 'object' && 'current_digital_coverage_pct' in rawScaleUp
-    ? rawScaleUp
-    : { current_digital_coverage_pct: 0, springs_monitored: 0 }
-  const rawSpringCount = useMemo(() => svc.getSpringCount(), [svc])
-  const SPRING_COUNT = typeof rawSpringCount === 'number' ? rawSpringCount : 0
+  const { data: scenarios, isLoading: loadingScenarios } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
+  const { data: scaleUp, isLoading: loadingScaleUp } = useServiceQuery('scale-up', s => s.getScaleUpPathway())
+  const { data: springCount, isLoading: loadingSpringCount } = useServiceQuery('spring-count', s => s.getSpringCount())
+  const { data: prov, isLoading: loadingProv } = useServiceQuery('provenance', s => s.getProvenanceProfile())
   const [range, setRange] = useState<TimeRangeKey>('24h')
-  const { envHistory, precipMmSeries } = getHistory(range)
+  const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
+  const envHistory = history?.envHistory ?? []
+  const precipMmSeries = history?.precipMmSeries ?? []
   const precipDays = range === '30d' ? 30 : range === '7d' ? 7 : 7
   const sulfateOk   = env.water_quality.sulfate_ppm < 250
   const nitrateOk   = env.water_quality.nitrate_ppm < 50
@@ -65,13 +63,15 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
     return { direct, sentinel, inferred }
   }, [env.springs])
 
+  if (loadingScenarios || loadingScaleUp || loadingSpringCount || loadingProv || !prov) {
+    return <LoadingSkeleton variant="card" label="Loading environment…" />
+  }
+
+  const PREDICTIVE_HYDROLOGY_SCENARIOS = scenarios ?? []
+  const SCALE_UP_PATHWAY = scaleUp ?? { current_digital_coverage_pct: 0, springs_monitored: 0 }
+  const SPRING_COUNT = springCount ?? 0
   const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS[1] ?? PREDICTIVE_HYDROLOGY_SCENARIOS[0]
   const currentScenarioStatus = (currentScenario?.status ?? 'stable') as 'stable' | 'watch' | 'action'
-  const prov = useMemo(() => svc.getProvenanceProfile(), [svc])
-
-  if (!currentScenario || !prov || !('sections' in prov)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading environment...</div>
-  }
 
   return (
     <motion.div

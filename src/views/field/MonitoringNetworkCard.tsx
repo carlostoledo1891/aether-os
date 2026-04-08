@@ -5,7 +5,7 @@ import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { SectionLabel } from '../../components/ui/SectionLabel'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { siteWeatherMetricsForPastDays, type SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import type { HydrologyScenario } from '../../services/dataService'
 
@@ -24,14 +24,13 @@ export const MonitoringNetworkCard = memo(function MonitoringNetworkCard({
   siteWeather,
   currentScenario,
 }: MonitoringNetworkCardProps) {
-  const svc = useAetherService()
-  const prov = useMemo(() => svc.getProvenanceProfile(), [svc])
+  const { data: prov } = useServiceQuery('provenance', s => s.getProvenanceProfile())
   const precipWindow = useMemo(
     () => siteWeatherMetricsForPastDays(siteWeather, precipDays),
     [siteWeather, precipDays],
   )
 
-  if (!prov || !('sections' in prov)) return null
+  if (!prov) return null
 
   return (
     <GlassCard animate={false} glow="cyan" className="shrink-0 px-[11px] py-[11px]">

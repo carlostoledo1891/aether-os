@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { motion } from 'motion/react'
 import { ShieldCheck, Leaf, Server, BarChart3 } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
@@ -7,7 +6,8 @@ import { StatusChip } from '../../components/ui/StatusChip'
 import { MetricDisplay } from '../../components/ui/MetricDisplay'
 import { GreenPremiumCard } from '../../components/GreenPremiumCard'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { ComplianceLedger } from '../../types/telemetry'
 
 interface ComplianceTabProps {
@@ -15,14 +15,13 @@ interface ComplianceTabProps {
 }
 
 export function ComplianceTab({ batch }: ComplianceTabProps) {
-  const service = useAetherService()
-  const benchmarks = useMemo(() => service.getBenchmarks(), [service])
-  const CYBER_TRUST_PILLARS = useMemo(() => service.getCyberPillars(), [service])
-  const U_TH_SAFETY = useMemo(() => service.getUThSafety(), [service])
-  const MARKET_PRICES = useMemo(() => service.getMarketPrices(), [service])
+  const { data: benchmarks, isLoading: l1 } = useServiceQuery('benchmarks', s => s.getBenchmarks())
+  const { data: CYBER_TRUST_PILLARS, isLoading: l2 } = useServiceQuery('cyber-pillars', s => s.getCyberPillars())
+  const { data: U_TH_SAFETY, isLoading: l3 } = useServiceQuery('uth-safety', s => s.getUThSafety())
+  const { data: MARKET_PRICES, isLoading: l4 } = useServiceQuery('market-prices', s => s.getMarketPrices())
 
-  if (!Array.isArray(benchmarks) || !MARKET_PRICES || !U_TH_SAFETY || !Array.isArray(CYBER_TRUST_PILLARS)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading compliance...</div>
+  if (l1 || l2 || l3 || l4 || !benchmarks || !CYBER_TRUST_PILLARS || !U_TH_SAFETY || !MARKET_PRICES) {
+    return <LoadingSkeleton variant="card" label="Loading compliance..." />
   }
 
   return (
@@ -106,7 +105,7 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
           </span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-          {CYBER_TRUST_PILLARS.map((pillar) => (
+          {(CYBER_TRUST_PILLARS ?? []).map((pillar) => (
             <div key={pillar.title} style={{ padding: '7px 9px', borderRadius: W.radius.sm, background: 'rgba(34,214,138,0.05)', border: '1px solid rgba(34,214,138,0.14)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 3 }}>
                 <span style={{ fontSize: 11, color: W.text1, fontWeight: 700 }}>{pillar.title}</span>
@@ -135,10 +134,10 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {[
-            ['Primary Mineral', U_TH_SAFETY.primary_mineral],
-            ['U/Th Profile', U_TH_SAFETY.u_th_profile],
-            ['Process Safety', U_TH_SAFETY.solubilization],
-            ['MREC Transport', U_TH_SAFETY.mrec_classification],
+            ['Primary Mineral', U_TH_SAFETY?.primary_mineral ?? '—'],
+            ['U/Th Profile', U_TH_SAFETY?.u_th_profile ?? '—'],
+            ['Process Safety', U_TH_SAFETY?.solubilization ?? '—'],
+            ['MREC Transport', U_TH_SAFETY?.mrec_classification ?? '—'],
           ].map(([label, value]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
               <span style={{ fontSize: 10, color: W.text3, flexShrink: 0 }}>{label}</span>
@@ -147,7 +146,7 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
           ))}
         </div>
         <div style={{ marginTop: 8, padding: '6px 8px', background: 'rgba(34,214,138,0.07)', border: '1px solid rgba(34,214,138,0.18)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>{U_TH_SAFETY.advantage_vs_hardrock}</p>
+          <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>{U_TH_SAFETY?.advantage_vs_hardrock ?? '—'}</p>
         </div>
       </GlassCard>
 
@@ -164,7 +163,7 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
             <span key={h} style={{ fontSize: 9, fontWeight: 700, color: W.text4, textTransform: 'uppercase' }}>{h}</span>
           ))}
         </div>
-        {benchmarks.map((b, i) => {
+        {(benchmarks ?? []).map((b, i) => {
           const isCaldeira = i === 0
           return (
             <div key={b.name} style={{
@@ -191,7 +190,9 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
         </div>
       </GlassCard>
 
-      <GreenPremiumCard prices={MARKET_PRICES} />
+      {MARKET_PRICES && (
+        <GreenPremiumCard prices={MARKET_PRICES} />
+      )}
     </div>
   )
 }

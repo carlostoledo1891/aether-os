@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { DollarSign, Landmark, Link2 } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { ScenarioKey } from '../../services/dataService'
 import { SCENARIO_LABELS } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
@@ -9,17 +10,16 @@ import { ExecutivePageIntro } from './ExecutivePageIntro'
 import ty from './executiveTypography.module.css'
 
 export function FinancialsTab() {
-  const service = useAetherService()
   const [scenario, setScenario] = useState<ScenarioKey>('consensus')
 
-  const fin = useMemo(() => service.getFinancialScenario(scenario), [service, scenario]) as ReturnType<typeof service.getFinancialScenario> | undefined
-  const sensitivityTable = useMemo(() => service.getSensitivityTable(), [service]) as ReturnType<typeof service.getSensitivityTable> | undefined
-  const PROJECT_FINANCIALS = useMemo(() => service.getProjectFinancials(), [service]) as ReturnType<typeof service.getProjectFinancials> | undefined
-  const PROJECT_TIMELINE = useMemo(() => service.getProjectTimeline(), [service]) as ReturnType<typeof service.getProjectTimeline> | undefined
-  const snap = useMemo(() => service.getIssuerSnapshot(), [service]) as ReturnType<typeof service.getIssuerSnapshot> | undefined
+  const { data: fin, isLoading: loadingFin } = useServiceQueryWithArg('financials', scenario, (s, k) => s.getFinancialScenario(k))
+  const { data: sensitivityTable, isLoading: loadingSens } = useServiceQuery('sensitivity', s => s.getSensitivityTable())
+  const { data: PROJECT_FINANCIALS, isLoading: loadingProj } = useServiceQuery('project-financials', s => s.getProjectFinancials())
+  const { data: PROJECT_TIMELINE, isLoading: loadingTL } = useServiceQuery('project-timeline', s => s.getProjectTimeline())
+  const { data: snap, isLoading: loadingSnap } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
 
-  if (!fin || !snap || !PROJECT_FINANCIALS || !sensitivityTable || !PROJECT_TIMELINE) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading financials...</div>
+  if (loadingFin || loadingSens || loadingProj || loadingTL || loadingSnap || !fin || !sensitivityTable || !PROJECT_FINANCIALS || !PROJECT_TIMELINE || !snap) {
+    return <LoadingSkeleton variant="card" label="Loading financials..." />
   }
 
   return (
@@ -106,7 +106,7 @@ export function FinancialsTab() {
                 <span className={`${ty.th} text-right`}>Pre-Tax NPV</span>
                 <span className={`${ty.th} text-right`}>Post-Tax NPV</span>
               </div>
-              {(Array.isArray(sensitivityTable) ? sensitivityTable : []).map((row) => {
+              {sensitivityTable.map((row) => {
                 const isActive = row.ndpr_price === fin?.ndpr_price_kg
                 return (
                   <div
@@ -146,7 +146,7 @@ export function FinancialsTab() {
 
         <ExecutiveCard title="Milestones" icon={Landmark} iconColor="green">
           <div className="flex flex-col gap-3">
-            {(Array.isArray(PROJECT_TIMELINE) ? PROJECT_TIMELINE : []).map(({ milestone, date, status, detail }) => (
+            {PROJECT_TIMELINE.map(({ milestone, date, status, detail }) => (
               <div key={milestone} className="flex items-start gap-3">
                 <span
                   className="mt-1.5 h-2 w-2 shrink-0 rounded-full"

@@ -1,20 +1,20 @@
 import { useMemo } from 'react'
 import { ShieldAlert } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import type { RiskItem } from '../../services/dataService'
 import { RISK_COLOR, riskScoreColor } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function RiskTab() {
-  const service = useAetherService()
-  const risks = useMemo(() => service.getRiskRegister(), [service])
-  const risksByScore = useMemo(() => Array.isArray(risks) ? [...risks].sort((a: RiskItem, b: RiskItem) => b.score - a.score) : [], [risks])
+  const { data: risks, isLoading } = useServiceQuery('risks', s => s.getRiskRegister())
+  const risksByScore = useMemo(() => risks ? [...risks].sort((a: RiskItem, b: RiskItem) => b.score - a.score) : [], [risks])
 
-  if (!Array.isArray(risks) || risks.length === 0) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading risks...</div>
+  if (isLoading || !risks) {
+    return <LoadingSkeleton variant="card" label="Loading risks..." />
   }
 
   return (
@@ -27,7 +27,7 @@ export function RiskTab() {
               : tier === 'high'
                 ? [8, 11, 'High', W.amber]
                 : [1, 7, 'Medium', W.green]
-          const count = (Array.isArray(risks) ? risks : []).filter((r) => r.score >= min && r.score <= max).length
+          const count = risks.filter((r) => r.score >= min && r.score <= max).length
           return (
             <ExecutiveCard key={tier} className="!p-4">
               <div className={`${ty.labelStrong} mb-1`} style={{ color: clr }}>

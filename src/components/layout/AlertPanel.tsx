@@ -1,9 +1,9 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, AlertTriangle, AlertCircle, Info, BellOff, Clock, User, FileText } from 'lucide-react'
 import type { AlertItem } from '../../types/telemetry'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import type { IncidentRecord } from '../../services/dataService'
 import panelStyles from './AlertPanel.module.css'
 
@@ -46,9 +46,7 @@ function incidentResolutionTime(inc: IncidentRecord): string {
 }
 
 export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }: AlertPanelProps) {
-  const service = useAetherService()
-  const rawIncidents = useMemo(() => service.getIncidentLog(), [service])
-  const incidents = Array.isArray(rawIncidents) ? rawIncidents : ([] as IncidentRecord[])
+  const { data: incidents = [] } = useServiceQuery('incidents', s => s.getIncidentLog())
   const active = alerts.filter(a => !a.dismissed)
   const [tab, setTab] = useState<PanelTab>('active')
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -148,7 +146,7 @@ export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }:
             <div style={{ display: 'flex', gap: 0, borderBottom: W.hairlineBorder }}>
               {([
                 { id: 'active' as PanelTab, label: 'Active Alerts', count: active.length, ariaLabel: 'Active Alerts tab' as const },
-                { id: 'history' as PanelTab, label: 'Incident Log', count: incidents.length, ariaLabel: 'Incident Log tab' as const },
+                { id: 'history' as PanelTab, label: 'Incident Log', count: (incidents ?? []).length, ariaLabel: 'Incident Log tab' as const },
               ]).map(({ id, label, count, ariaLabel }) => (
                 <button
                   key={id}
@@ -224,7 +222,7 @@ export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }:
 
               {tab === 'history' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {incidents.map(inc => {
+                  {(incidents ?? []).map(inc => {
                     const { color, bg, border } = severityMap[inc.severity]
                     const withinSla = inc.acknowledgedAt
                       ? (new Date(inc.acknowledgedAt).getTime() - new Date(inc.triggeredAt).getTime()) / 60000 <= inc.slaMinutes

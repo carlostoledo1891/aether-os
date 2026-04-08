@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
 import { FileBarChart, Rocket } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
@@ -46,19 +46,18 @@ const PLATFORM_ROADMAP = [
 ] as const
 
 export function DfsTab() {
-  const service = useAetherService()
-  const dfsWorkstreams = useMemo(() => service.getDFSWorkstreams(), [service])
-  const regulatory = useMemo(() => service.getRegulatoryLog(), [service])
+  const { data: dfsWorkstreams, isLoading: loadingDfs } = useServiceQuery('dfs-workstreams', s => s.getDFSWorkstreams())
+  const { data: regulatory, isLoading: loadingReg } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
 
-  if (!Array.isArray(dfsWorkstreams) || !Array.isArray(regulatory)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading DFS...</div>
+  if (loadingDfs || loadingReg || !dfsWorkstreams || !regulatory) {
+    return <LoadingSkeleton variant="card" label="Loading DFS..." />
   }
 
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
       <ExecutiveCard title="Ausenco DFS Workstreams" icon={FileBarChart} iconColor="green" glow="green">
         <div className="flex flex-col gap-4">
-          {(Array.isArray(dfsWorkstreams) ? dfsWorkstreams : []).map((ws) => {
+          {dfsWorkstreams.map((ws) => {
             const barColor =
               ws.status === 'on_track'
                 ? W.green
@@ -110,7 +109,7 @@ export function DfsTab() {
           DFS-relevant regulatory touchpoints — for full agency matrix, exports, and MPF thread see the Agencies tab.
         </p>
         <div className="flex flex-col gap-3">
-          {(Array.isArray(regulatory) ? regulatory : []).map((r) => (
+          {regulatory.map((r) => (
             <div
               key={r.id}
               className="rounded-lg border px-4 py-4"

@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import { useCallback } from 'react'
 import { Building2, Download, Link2 } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { ExecutivePageIntro } from './ExecutivePageIntro'
@@ -8,6 +8,8 @@ import { SectionLabel } from '../../components/ui/SectionLabel'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
 import { useAetherService, useTelemetry } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { RegulatoryEntry } from '../../services/dataService'
 
 function regulatoryToCsv(rows: RegulatoryEntry[]): string {
@@ -23,27 +25,12 @@ function regulatoryToCsv(rows: RegulatoryEntry[]): string {
 export function PermitsAgenciesTab() {
   const service = useAetherService()
   const { env } = useTelemetry()
-  const regulatory = useMemo(() => service.getRegulatoryLog(), [service])
-  const risks = useMemo(() => service.getRiskRegister(), [service])
-  const audit = useMemo(() => service.getAuditTrail(), [service])
-  const thresholds = useMemo(() => service.getThresholds(), [service])
-  const profile = useMemo(() => service.getProvenanceProfile(), [service])
-  const spatial = useMemo(() => service.getSpatialInsights(), [service])
-
-  const safeRegulatory = Array.isArray(regulatory) ? regulatory : []
-  const safeRisks = Array.isArray(risks) ? risks : []
-  const safeAudit = Array.isArray(audit) ? audit : []
-
-  const mpfEntry = useMemo(() => safeRegulatory.find(r => r.id === 'REG-04'), [safeRegulatory])
-  const r01 = useMemo(() => safeRisks.find(r => r.id === 'R01'), [safeRisks])
-  const linkedAudits = useMemo(
-    () => safeAudit.filter(e => r01?.relatedAuditIds?.includes(e.id)),
-    [safeAudit, r01],
-  )
-
-  if (!Array.isArray(regulatory) || !thresholds || !spatial) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading agencies...</div>
-  }
+  const { data: regulatory, isLoading: l1 } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
+  const { data: risks, isLoading: l2 } = useServiceQuery('risks', s => s.getRiskRegister())
+  const { data: audit, isLoading: l3 } = useServiceQuery('audit-trail', s => s.getAuditTrail())
+  const { data: thresholds, isLoading: l4 } = useServiceQuery('thresholds', s => s.getThresholds())
+  const { data: profile, isLoading: l5 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
+  const { data: spatial, isLoading: l6 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
 
   const downloadJson = useCallback(() => {
     const bundle = service.getRegulatoryExportBundle()
@@ -56,7 +43,7 @@ export function PermitsAgenciesTab() {
   }, [service])
 
   const downloadCsv = useCallback(() => {
-    const csv = regulatoryToCsv(regulatory)
+    const csv = regulatoryToCsv(regulatory ?? [])
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
@@ -64,6 +51,14 @@ export function PermitsAgenciesTab() {
     a.click()
     URL.revokeObjectURL(a.href)
   }, [regulatory])
+
+  if (l1 || l2 || l3 || l4 || l5 || l6 || !profile) {
+    return <LoadingSkeleton variant="card" label="Loading agencies…" />
+  }
+
+  const mpfEntry = (regulatory ?? []).find(r => r.id === 'REG-04')
+  const r01 = (risks ?? []).find(r => r.id === 'R01')
+  const linkedAudits = (audit ?? []).filter(e => r01?.relatedAuditIds?.includes(e.id))
 
   const wq = env.water_quality
   const sulfate = wq.sulfate_ppm
@@ -89,9 +84,9 @@ export function PermitsAgenciesTab() {
           <Download size={12} />
           Regulatory log (CSV)
         </button>
-        <ProvenanceBadge kind={profile?.sections?.regulatory_log?.kind} title={profile?.sections?.regulatory_log?.hint} />
-        <ProvenanceBadge kind={profile?.sections?.audit_ledger?.kind} title={profile?.sections?.audit_ledger?.hint} />
-        {profile?.sections?.map_geometry ? (
+        <ProvenanceBadge kind={profile.sections.regulatory_log.kind} title={profile.sections.regulatory_log.hint} />
+        <ProvenanceBadge kind={profile.sections.audit_ledger.kind} title={profile.sections.audit_ledger.hint} />
+        {profile.sections.map_geometry ? (
           <ProvenanceBadge kind={profile.sections.map_geometry.kind} title={profile.sections.map_geometry.hint} />
         ) : null}
       </div>
@@ -139,7 +134,7 @@ export function PermitsAgenciesTab() {
               </tr>
             </thead>
             <tbody>
-              {(Array.isArray(regulatory) ? regulatory : []).map((r) => (
+              {(regulatory ?? []).map((r) => (
                 <tr
                   key={r.id}
                   className="border-b transition-colors hover:bg-white/[0.03]"

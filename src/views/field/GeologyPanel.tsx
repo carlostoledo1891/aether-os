@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Mountain, Drill, Link2 } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
@@ -8,7 +8,8 @@ import { BarComparison } from '../../components/charts/BarComparison'
 import { SectionLabel } from '../../components/ui/SectionLabel'
 import { MutedCaption } from '../../components/ui/MutedCaption'
 import { W } from '../../app/canvas/canvasTheme'
-import { useAetherService } from '../../services/DataServiceProvider'
+import { useServiceQuery } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { DepositDetail } from '../../components/map/DepositOverlay'
 
 const EXPLORATION_HIGHLIGHTS = [
@@ -25,13 +26,12 @@ interface GeologyPanelProps {
 }
 
 export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSelectDeposit }: GeologyPanelProps) {
-  const service = useAetherService()
-  const DEPOSIT_DATA = useMemo(() => service.getDepositData(), [service])
-  const RESOURCE_CLASSIFICATION = useMemo(() => service.getResourceClassification(), [service])
-  const snap = useMemo(() => service.getIssuerSnapshot(), [service])
+  const { data: DEPOSIT_DATA, isLoading: l1 } = useServiceQuery('deposit-data', s => s.getDepositData())
+  const { data: RESOURCE_CLASSIFICATION, isLoading: l2 } = useServiceQuery('resource-class', s => s.getResourceClassification())
+  const { data: snap, isLoading: l3 } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
 
-  if (!Array.isArray(DEPOSIT_DATA) || !RESOURCE_CLASSIFICATION || !snap || !('resource' in snap)) {
-    return <div style={{ padding: 24, color: 'var(--w-text4)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>Loading geology...</div>
+  if (l1 || l2 || l3 || !DEPOSIT_DATA || !RESOURCE_CLASSIFICATION || !snap) {
+    return <LoadingSkeleton variant="card" label="Loading geology..." />
   }
 
   return (
@@ -68,10 +68,10 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         </MutedCaption>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, marginBottom: 8 }}>
           {[
-            { k: 'Global MRE', v: `${RESOURCE_CLASSIFICATION.global_bt} Bt`, c: W.text1, sub: `@ ${RESOURCE_CLASSIFICATION.global_treo_ppm.toLocaleString()} ppm TREO` },
-            { k: 'M&I', v: `${RESOURCE_CLASSIFICATION.mi_mt} Mt`, c: W.text1, sub: `@ ${RESOURCE_CLASSIFICATION.mi_treo_ppm.toLocaleString()} ppm TREO` },
-            { k: 'Measured', v: `${RESOURCE_CLASSIFICATION.measured_mt} Mt`, c: W.text1, sub: `@ ${RESOURCE_CLASSIFICATION.measured_treo_ppm.toLocaleString()} ppm TREO` },
-            { k: 'MREO avg', v: `${RESOURCE_CLASSIFICATION.mreo_avg_pct}%`, c: W.text1, sub: 'Magnetic fraction' },
+            { k: 'Global MRE', v: `${RESOURCE_CLASSIFICATION?.global_bt ?? '—'} Bt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.global_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
+            { k: 'M&I', v: `${RESOURCE_CLASSIFICATION?.mi_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.mi_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
+            { k: 'Measured', v: `${RESOURCE_CLASSIFICATION?.measured_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.measured_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
+            { k: 'MREO avg', v: `${RESOURCE_CLASSIFICATION?.mreo_avg_pct ?? '—'}%`, c: W.text1, sub: 'Magnetic fraction' },
           ].map(({ k, v, c, sub }) => (
             <div key={k} style={{ padding: '6px 8px', borderRadius: W.radius.sm, background: `${c}0F`, border: `1px solid ${c}22` }}>
               <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{k}</div>
@@ -87,9 +87,9 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         <BarComparison
           height={20}
           items={[
-            { label: `Global ${RESOURCE_CLASSIFICATION.global_bt} Bt`, value: RESOURCE_CLASSIFICATION.global_bt * 1000, color: W.amber, sublabel: `@ ${RESOURCE_CLASSIFICATION.global_treo_ppm.toLocaleString()} ppm TREO` },
-            { label: `M&I ${RESOURCE_CLASSIFICATION.mi_mt} Mt`, value: RESOURCE_CLASSIFICATION.mi_mt, color: W.violetSoft, sublabel: `@ ${RESOURCE_CLASSIFICATION.mi_treo_ppm.toLocaleString()} ppm TREO` },
-            { label: `Measured ${RESOURCE_CLASSIFICATION.measured_mt} Mt`, value: RESOURCE_CLASSIFICATION.measured_mt, color: W.green, sublabel: `@ ${RESOURCE_CLASSIFICATION.measured_treo_ppm.toLocaleString()} ppm TREO` },
+            { label: `Global ${RESOURCE_CLASSIFICATION?.global_bt ?? '—'} Bt`, value: (RESOURCE_CLASSIFICATION?.global_bt ?? 0) * 1000, color: W.amber, sublabel: `@ ${(RESOURCE_CLASSIFICATION?.global_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
+            { label: `M&I ${RESOURCE_CLASSIFICATION?.mi_mt ?? '—'} Mt`, value: RESOURCE_CLASSIFICATION?.mi_mt ?? 0, color: W.violetSoft, sublabel: `@ ${(RESOURCE_CLASSIFICATION?.mi_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
+            { label: `Measured ${RESOURCE_CLASSIFICATION?.measured_mt ?? '—'} Mt`, value: RESOURCE_CLASSIFICATION?.measured_mt ?? 0, color: W.green, sublabel: `@ ${(RESOURCE_CLASSIFICATION?.measured_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
           ]}
         />
       </GlassCard>
@@ -113,7 +113,7 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         </div>
       </GlassCard>
 
-      {DEPOSIT_DATA.map(dep => (
+      {(DEPOSIT_DATA ?? []).map(dep => (
         <GlassCard
           key={dep.id}
           animate={false}

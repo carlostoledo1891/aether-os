@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { memo, useState, type Dispatch, type SetStateAction } from 'react'
 import { motion } from 'motion/react'
 import { Cpu, Droplets, FlaskConical, Gauge, MapPinned, Zap } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
@@ -9,7 +9,9 @@ import { SparkLine } from '../../components/charts/SparkLine'
 import { BarComparison } from '../../components/charts/BarComparison'
 import { TimeRangeSelector } from '../../components/ui/TimeRangeSelector'
 import { W } from '../../app/canvas/canvasTheme'
-import { useTelemetry, useDataService, useAetherService } from '../../services/DataServiceProvider'
+import { useTelemetry } from '../../services/DataServiceProvider'
+import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
+import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import type { TimeRangeKey } from '../../services/dataService'
 import { CHAIN_STEPS, DOMAIN_COLOR, phVariant } from './constants'
 import { SectionLabel } from '../../components/ui/SectionLabel'
@@ -24,19 +26,22 @@ export const OperationsPanel = memo(function OperationsPanel({
   setOpsMapLayers: Dispatch<SetStateAction<FieldOpsMapLayers>>
 }) {
   const { plant } = useTelemetry()
-  const { getHistory } = useDataService()
-  const svc = useAetherService()
-  const PILOT_PLANT_PERFORMANCE = useMemo(() => svc.getPlantPerformance(), [svc])
-  const HARDWARE_SENSORS = useMemo(() => svc.getHardwareSensors(), [svc])
-  const spatial = useMemo(() => svc.getSpatialInsights(), [svc])
+  const { data: PILOT_PLANT_PERFORMANCE, isLoading: l1 } = useServiceQuery('plant-perf', s => s.getPlantPerformance())
+  const { data: HARDWARE_SENSORS, isLoading: l2 } = useServiceQuery('hardware-sensors', s => s.getHardwareSensors())
+  const { data: spatial, isLoading: l3 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
   const [range, setRange] = useState<TimeRangeKey>('24h')
-  const { plantHistory } = getHistory(range)
+  const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
+  const plantHistory = history?.plantHistory ?? []
   const phVal      = plant.leaching_circuit.ph_level
   const phColor    = phVariant(phVal)
   const recircOk   = plant.flow_metrics.recirculation_pct >= 95
   const phData     = plantHistory.map(h => h.leaching_circuit.ph_level)
   const recircData = plantHistory.map(h => h.flow_metrics.recirculation_pct)
   const treoData   = plantHistory.map(h => h.output.treo_grade_pct)
+
+  if (l1 || l2 || l3 || !PILOT_PLANT_PERFORMANCE || !HARDWARE_SENSORS || !spatial) {
+    return <LoadingSkeleton variant="card" label="Loading operations..." />
+  }
 
   return (
     <motion.div
