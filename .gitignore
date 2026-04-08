@@ -14,6 +14,7 @@ dist-ssr
 
 # SQLite database (generated at runtime by the server)
 *.db
+*.db-shm
 *.db-journal
 *.db-wal
 
