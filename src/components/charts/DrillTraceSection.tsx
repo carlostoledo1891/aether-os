@@ -35,7 +35,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   const d = payload[0].payload
   return (
     <div style={{
-      background: W.panelBg, border: `1px solid ${W.glass10}`, borderRadius: W.radius.sm,
+      background: W.panel, border: `1px solid ${W.glass12}`, borderRadius: W.radius.sm,
       padding: '8px 10px', maxWidth: 240, fontSize: 10, lineHeight: 1.5,
     }}>
       <div style={{ fontWeight: 700, color: gradeColor(d.treo_ppm), marginBottom: 3 }}>
@@ -113,7 +113,7 @@ export function DrillTraceSection() {
             dataKey="id"
             tick={{ fontSize: 8, fill: W.text4, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
-            axisLine={{ stroke: W.glass10 }}
+            axisLine={{ stroke: W.glass12 }}
             interval={0}
             angle={-35}
             textAnchor="end"
@@ -124,7 +124,7 @@ export function DrillTraceSection() {
             reversed
             tick={{ fontSize: 9, fill: W.text4, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
-            axisLine={{ stroke: W.glass10 }}
+            axisLine={{ stroke: W.glass12 }}
             label={{ value: 'Depth (m)', angle: -90, position: 'insideLeft', offset: 10, style: { fontSize: 9, fill: W.text4 } }}
             width={45}
           />

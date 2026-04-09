@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { memo, useCallback, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { motion } from 'motion/react'
 import { AlertTriangle, Droplets, FileCheck, Globe, Layers, MapPinned, Phone, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
