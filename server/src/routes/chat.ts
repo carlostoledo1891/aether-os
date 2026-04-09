@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify'
-import { streamText, tool } from 'ai'
+import { streamText, tool, convertToModelMessages, type UIMessage } from 'ai'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { z } from 'zod'
 import { readFileSync, existsSync } from 'node:fs'
@@ -219,17 +219,16 @@ export async function chatRoutes(app: FastifyInstance) {
     const modelId = process.env.AI_MODEL ?? 'gemini-2.5-flash-preview-04-17'
     const google = createGoogleGenerativeAI({ apiKey })
 
-    const { messages } = req.body as {
-      messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>
-    }
+    const { messages } = req.body as { messages: UIMessage[] }
+    const modelMessages = await convertToModelMessages(messages)
 
     const result = streamText({
       model: google(modelId),
       system: SYSTEM_PROMPT,
-      messages,
+      messages: modelMessages,
       tools: buildTools(),
     })
 
-    result.pipeTextStreamToResponse(reply.raw)
+    result.pipeUIMessageStreamToResponse(reply.raw)
   })
 }

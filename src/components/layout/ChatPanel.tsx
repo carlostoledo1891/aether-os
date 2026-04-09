@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, type FormEvent, type KeyboardEvent, type ChangeEvent } from 'react'
+import { useState, useRef, useEffect, useCallback, type KeyboardEvent, type ChangeEvent } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, Send, Sparkles, Paperclip, FileText } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
@@ -17,10 +17,17 @@ interface AttachedFile {
   preview: string
 }
 
+function getMessageText(parts: Array<{ type: string; text?: string }>): string {
+  return parts
+    .filter((p): p is { type: 'text'; text: string } => p.type === 'text' && typeof p.text === 'string')
+    .map((p) => p.text)
+    .join('')
+}
+
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
-    api: '/api/chat',
-  })
+  const { messages, sendMessage, status, error } = useChat()
+  const [input, setInput] = useState('')
+  const isLoading = status === 'streaming' || status === 'submitted'
 
   const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -65,17 +72,19 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [isOpen, onClose])
 
+  const doSend = useCallback(() => {
+    const text = input.trim()
+    if (!text) return
+    sendMessage({ text })
+    setInput('')
+    setAttachedFile(null)
+  }, [input, sendMessage])
+
   const onKeyDownInput = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSubmit(e as unknown as FormEvent<HTMLFormElement>)
-      setAttachedFile(null)
+      doSend()
     }
-  }
-
-  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    handleSubmit(e)
-    setAttachedFile(null)
   }
 
   const handleFileSelect = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
@@ -166,22 +175,22 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 </div>
               )}
 
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  className={m.role === 'user' ? styles.msgUser : styles.msgAssistant}
-                >
-                  {typeof m.content === 'string'
-                    ? m.content.split('\n').map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          {i < m.content.split('\n').length - 1 && <br />}
-                        </span>
-                      ))
-                    : String(m.content)
-                  }
-                </div>
-              ))}
+              {messages.map((m) => {
+                const text = getMessageText(m.parts)
+                return (
+                  <div
+                    key={m.id}
+                    className={m.role === 'user' ? styles.msgUser : styles.msgAssistant}
+                  >
+                    {text.split('\n').map((line: string, i: number) => (
+                      <span key={i}>
+                        {line}
+                        {i < text.split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
+                  </div>
+                )
+              })}
 
               {isLoading && (
                 <div className={styles.loadingDots}>
@@ -225,7 +234,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             )}
 
             {/* Input */}
-            <form onSubmit={onFormSubmit} className={styles.inputRow}>
+            <form onSubmit={(e) => { e.preventDefault(); doSend() }} className={styles.inputRow}>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -252,7 +261,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 ref={inputRef}
                 className={styles.inputField}
                 value={input}
-                onChange={handleInputChange}
+                onChange={(e) => setInput(e.target.value)}
                 onKeyDown={onKeyDownInput}
                 placeholder={attachedFile ? `Ask about ${attachedFile.filename}...` : 'Ask Vero AI...'}
                 rows={1}
