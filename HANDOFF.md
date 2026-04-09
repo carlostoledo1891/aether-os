@@ -145,6 +145,7 @@ aether-os/
 │   ├── config/
 │   │   └── env.ts                      getDataMode, getApiBaseUrl, getWsUrl, getDisclosureMode (Vite env helpers)
 │   ├── hooks/
+│   │   ├── useServiceQuery.ts          useServiceQuery + useServiceQueryWithArg — async-aware data fetching with dedup cache
 │   │   └── useSiteWeather.ts           Open-Meteo precip (optional) + mockDailyPrecipSeries fallback
 │   ├── app/canvas/
 │   │   └── canvasTheme.ts              W{} token object (JS mirror of CSS vars), DOMAIN_COLORS, StatusType
@@ -163,7 +164,8 @@ aether-os/
 │   │   │   ├── TimeRangeSelector.tsx  24h/7d/30d toggle for sparkline history
 │   │   │   ├── SectionLabel.tsx       uppercase panel section titles
 │   │   │   ├── MutedCaption.tsx       disclaimer / helper paragraph style
-│   │   │   └── HairlineDivider.tsx    1px separator (horizontal or vertical)
+│   │   │   ├── HairlineDivider.tsx    1px separator (horizontal or vertical)
+│   │   │   └── LoadingSkeleton.tsx    pulsing glass-effect loading placeholder (card/row/metric/full variants)
 │   │   ├── charts/
 │   │   │   ├── SparkLine.tsx           Recharts LineChart with threshold bands
 │   │   │   ├── GaugeChart.tsx          circular SVG gauge
@@ -307,9 +309,11 @@ The system runs as three independent processes connected via HTTP and WebSocket:
 **Why this architecture:** The engine generates data that looks and behaves like real sensor/instrument telemetry, posted to real HTTP endpoints. The frontend talks to real REST/WebSocket endpoints. When actual sensor data (LAPOC, SCADA) arrives, the engine's synthetic generators are replaced — no frontend or server changes needed. Data provenance tags track every source.
 
 ### Data Service Layer
-- **`AetherDataService`** (`src/services/dataService.ts`) — single interface contract for all data access (telemetry, scenarios, risks, off-takers, capital, audit, ESG, **`getIssuerSnapshot()`**, **`getSpatialInsights()`**, etc.)
-- **`MockDataService`** (`src/services/mockDataService.ts`) — used when `VITE_DATA_MODE` is unset or not `live`. Client-side mock data with no network calls.
-- **`LiveDataService`** (`src/services/liveDataService.ts`) — selected when `getDataMode() === 'live'`. **Now a real backend client:** fetches domain data from `/api/*` endpoints with TTL caching, and receives real-time telemetry via `WebSocket` at `/ws/telemetry`. Falls back to mock data if the backend is unreachable.
+- **`AetherDataService`** (`src/services/dataService.ts`) — single interface contract for all data access. All `get*` methods return `MaybeAsync<T>` (= `T | Promise<T>`) — mock returns `T` synchronously, live returns `Promise<T>`. Exception: `getDataContext()` is always synchronous.
+- **`MockDataService`** (`src/services/mockDataService.ts`) — used when `VITE_DATA_MODE` is unset or not `live`. Client-side mock data with no network calls. Returns `T` (satisfies `MaybeAsync<T>`).
+- **`LiveDataService`** (`src/services/liveDataService.ts`) — selected when `getDataMode() === 'live'`. Fetches domain data from `/api/*` endpoints with 30s TTL caching, receives real-time telemetry via `WebSocket` at `/ws/telemetry`. Returns `Promise<T>`. Falls back to cached data if backend is unreachable. WebSocket URL auto-detects `/ws` prefix.
+- **`useServiceQuery` hook** (`src/hooks/useServiceQuery.ts`) — bridges sync/async service methods for React components. Returns `{ data, isLoading, error }`. Uses dedup cache (200ms window) and inflight request sharing. Selector stored in `useRef` to prevent re-render loops. `useServiceQueryWithArg` variant for methods with dynamic arguments.
+- **`LoadingSkeleton`** (`src/components/ui/LoadingSkeleton.tsx`) — consistent loading state shown when `isLoading` is true. Variants: `card`, `row`, `metric`, `full`.
 - **`DataServiceProvider`** (`src/services/DataServiceProvider.tsx`) — React Context + hooks:
   - `useDataService()` — full service instance
   - `useTelemetry()` — current telemetry snapshot (plant + env + esg + alerts + history)
@@ -598,7 +602,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | PDF export polish | Medium | Currently `window.print()`; replace with `jsPDF` or Puppeteer |
 | Localization (i18n) | Low | EN/PT toggle was deliberately removed; re-add via a proper i18n library if needed |
 | Mobile layout | Low | Currently optimized for 1440px+; 16:9 pitch screens |
-| Expand test coverage | Low | 151 tests (129 frontend + 22 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add heavier RTL coverage for map shells when stable. |
+| Expand test coverage | Low | 151 tests (129 frontend + 22 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add integration test for live mode + production smoke test. |
 | Overlay throttle optimization | Low | Throttle `tick` updates with `requestAnimationFrame` for smoother panning |
 | ~~IR Disclosure Mode~~ | ~~Done~~ | ✅ `VITE_DISCLOSURE_MODE=1` — hides simulated panels, violet banner, DISCLOSURE badge in header |
 | ~~Community disclaimer card~~ | ~~Done~~ | ✅ Always-visible in EnvironmentPanel — explains modeled spring status + data provenance |
@@ -638,7 +642,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | 98 Interactive Springs | Generated 98 spring points spread inside Caldeira boundary polygon. Springs clickable (`HYDRO_SPRING_LAYER_ID` + `toSpringDetail`). `SPRING_COUNT` constant extracted to `mockData.ts`. |
 | CTO roadmap & trust pass (2026-04) | App shell (`AppShell.module.css`), `getDataMode` + `createLiveDataService`, `env.ts` / `liveTelemetry.ts`, Field splits (`FieldBottomMetrics`, `FieldPinnedAssetCard`, `MonitoringNetworkCard`), hydro mappers + `MAP_STACKING`, Open-Meteo + `useSiteWeather`, expanded Vitest coverage, `.github/workflows/ci.yml`, **FieldView = two map tabs** (Operations \| Hydro Twin), field `FIELD_VIEW_STATE.zoom` **10.98**. |
 | [Pre-Pitch Sprint](9671ef66-ee46-4dfd-8484-ad20c71491bc) | **12-task pre-pitch sprint.** Data integrity: fixed 10 inconsistencies (resource 1.537 Bt sum, IAC mineralogy, deposit notes, FCF/FEOC data-driven, funded_m alignment, spring count in ESG). Refactors: audit filter chips, keyboard a11y on expandable cards, NeighborOverlay wired, CSS token sync, DFS regulatory log differentiation, MapLibre `readonly` tuple build fixes. New features: IR disclosure mode (`VITE_DISCLOSURE_MODE`), community disclaimer card, ASX citation badges, platform roadmap stepper. Demo polish: branded loading skeleton, BuyerView empty state + hooks order fix. Quality gate: 0 lint errors, 131 tests, clean production build. |
-| [Synthetic Data Bridge](c7b1afd8-1a6a-4e0e-a1f3-0ffec8cc219a) | **Production elevation: 3-process architecture.** Scaffolded `server/` (Fastify 5.8 + SQLite + WebSocket), `engine/` (simulation bot + 4 external API enrichers: Open-Meteo, BCB PTAX, USGS Seismic, Alpha Vantage). Rewrote `liveDataService.ts` to use real `fetch()` + `WebSocket`. 40+ REST endpoints seeded from mockData. LAPOC ingestion contract (`LapocTelemetryPayload`). Docker Compose (3 services). `npm run dev:all`. Vite proxy. Dynamic provenance. Persona re-evaluation: weighted avg 6.8 → 7.3. **Live App Deployment:** 5 code fixes (DB_PATH, WS URL, CORS, ingest guard, backoff), 22 server tests, engine API key, frontend resilience (connectionStatus), CI update. |
+| [Synthetic Data Bridge](c7b1afd8-1a6a-4e0e-a1f3-0ffec8cc219a) | **Production elevation: 3-process architecture.** Scaffolded `server/` (Fastify 5.8 + SQLite + WebSocket), `engine/` (simulation bot + 4 external API enrichers: Open-Meteo, BCB PTAX, USGS Seismic, Alpha Vantage). Rewrote `liveDataService.ts` to use real `fetch()` + `WebSocket`. 40+ REST endpoints seeded from mockData. LAPOC ingestion contract (`LapocTelemetryPayload`). Docker Compose (3 services). `npm run dev:all`. Vite proxy. Dynamic provenance. Persona re-evaluation: weighted avg 6.8 → 7.3. **Live App Deployment:** 5 code fixes (DB_PATH, WS URL, CORS, ingest guard, backoff), 22 server tests, engine API key, frontend resilience (connectionStatus), CI update. **Data Layer Refactor (2026-04-09):** `MaybeAsync<T>` types, `useServiceQuery` hook, `LoadingSkeleton`, 17 view files migrated from broken `useMemo` pattern, band-aids removed, two hotfixes (infinite re-render loop + WS URL path). |
 
 ---
 
@@ -946,4 +950,105 @@ When ending a session, update this file with:
 
 ---
 
-*Last updated: 2026-04-08 — Live App Deployment code preparation complete: 5 production code fixes (DB_PATH, WS URL, CORS, ingest guard, WS backoff), 22 server integration tests, engine API key on all ingest calls, frontend connection resilience (degraded/offline states in banner), CI updated. 151 total tests, 0 lint errors. Next: Railway + Vercel deployment (manual), password protection, UptimeRobot, production smoke test.*
+---
+
+## Session Log — 2026-04-09 (Data Layer Refactor — Async/Sync Architecture Fix)
+
+**What was completed this session:**
+
+### Root Cause: Sync/Async Type-Safety Violation (the core production bug)
+
+The live deployment at `aether-os-blond.vercel.app` was crashing with blank screens, `TypeError: Cannot read properties of undefined`, and React error #185 (infinite update depth). Root cause: `liveDataService` returns `Promise<T>` from every `get*` method but cast them `as unknown as T` to satisfy the synchronous `AetherDataService` interface. Components called these via `useMemo(() => service.getFoo())`, stored the raw Promise object, then crashed when accessing `.property` on it.
+
+### Phase 0: Fix Production
+1. **CORS_ORIGIN** — updated on Railway to `https://aether-os-blond.vercel.app` (user action).
+2. **Vercel redeploy** — triggered fresh production build to fix CSS hash mismatch (user action).
+
+### Phase 1: `useServiceQuery` Hook (new file)
+3. **`src/hooks/useServiceQuery.ts`** — lightweight hook that bridges sync (mock) and async (live) service methods. Returns `{ data, isLoading, error }`. Auto-detects sync vs async via `isThenable()`. Shared dedup cache (`inflightCache` Map) and data cache (`dataCache` Map, 200ms window). No external dependencies (no react-query/SWR).
+4. **`useServiceQueryWithArg`** — variant for methods with dynamic arguments (e.g. `getHistory(range)`, `getFinancialScenario(key)`). Composite cache key: `${key}:${arg}`.
+
+### Phase 2: Honest Interface Types
+5. **`MaybeAsync<T>` type** — `export type MaybeAsync<T> = T | Promise<T>` added to `src/services/dataService.ts`.
+6. **`AetherDataService` interface** — all `get*` methods updated from `T` to `MaybeAsync<T>`. Exception: `getDataContext()` stays synchronous (reads module-level state). `subscribeTelemetry()` already uses callback pattern.
+7. **`liveDataService.ts`** — removed all `as unknown as T` casts. Promises now flow through honestly.
+
+### Phase 3: `LoadingSkeleton` Component (new file)
+8. **`src/components/ui/LoadingSkeleton.tsx`** — consistent loading state matching glass-card aesthetic. Variants: `card`, `row`, `metric`, `full`. Pulsing animation via `skeleton-pulse` keyframe in `index.css`. Uses `W.*` tokens, `aria-label` for accessibility.
+
+### Phase 4: Migrated All 17 View/Component Files
+9. **Pattern applied everywhere:**
+   ```
+   // Before (broken in live mode)
+   const risks = useMemo(() => service.getRiskRegister(), [service])
+   // risks is Promise<RiskItem[]> at runtime, typed as RiskItem[]
+   
+   // After (correct)
+   const { data: risks, isLoading } = useServiceQuery('risks', s => s.getRiskRegister())
+   if (isLoading || !risks) return <LoadingSkeleton variant="card" />
+   // risks is genuinely RiskItem[]
+   ```
+10. **Files migrated:** `FieldView.tsx`, `EnvironmentPanel.tsx`, `OperationsPanel.tsx`, `FieldPinnedAssetCard.tsx`, `FieldMapGeoInspector.tsx`, `GeologyPanel.tsx`, `MonitoringNetworkCard.tsx`, `AlertPanel.tsx`, `BuyerView.tsx`, `ComplianceTab.tsx`, `TraceabilityTab.tsx`, `FinancialsTab.tsx`, `CapitalTab.tsx`, `PipelineTab.tsx`, `RiskTab.tsx`, `EsgTab.tsx`, `AuditTab.tsx`, `DfsTab.tsx`, `PermitsAgenciesTab.tsx`.
+11. **`App.tsx`** — `getDataContext()` stays `useMemo` (synchronous). Removed old band-aid guards.
+
+### Phase 5: History Async Handling
+12. **`EnvironmentPanel.tsx` and `OperationsPanel.tsx`** — migrated `getHistory(range)` to `useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))`.
+13. **`FieldPinnedAssetCard.tsx`** — migrated `getSpringHistory(id)` to `useServiceQueryWithArg('spring-history', springNodeId, ...)` lifted out of inline render function.
+
+### Phase 6: Band-Aid Removal + Validation
+14. **Removed all defensive guards:** `Array.isArray()` checks on service data, unnecessary optional chaining, `as ReturnType<...>` casts, inline `<div>Loading...</div>` fallbacks.
+15. **Fixed test files:** `mockDataService.test.ts` — added `sync<T>()` helper to unwrap `MaybeAsync<T>` in test assertions (mock service returns synchronously). `DataServiceProvider.test.tsx` — type narrowing for `getBatches()` result.
+
+### Hotfix 1: Infinite Re-Render Loop (React Error #185)
+16. **Root cause:** `selector` parameter (e.g. `s => s.getRiskRegister()`) is an inline arrow function → new reference every render → re-triggers `useEffect` dependency → `setState` → re-render → infinite loop.
+17. **Fix:** Stored `selector` in `useRef` and removed it from `useEffect` dependency array. Effect now only re-runs when `key` or `service` changes.
+
+### Hotfix 2: WebSocket URL Path
+18. **Root cause:** `buildWsUrl()` appended `/telemetry` to `VITE_WS_URL`. If the env var was `wss://...railway.app` (without `/ws`), the result was `wss://...railway.app/telemetry` instead of `wss://...railway.app/ws/telemetry`.
+19. **Fix:** Auto-detect whether `/ws` is already present in the URL. If not, prepend it.
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **129 tests passing** (`vitest run` — 19 files)
+- **Clean production build** (`vite build`)
+- **3 commits pushed to GitHub, auto-deployed to Vercel**
+
+### Files Changed (28 total)
+
+| Category | Files |
+|----------|-------|
+| **New** | `src/hooks/useServiceQuery.ts`, `src/components/ui/LoadingSkeleton.tsx` |
+| **Interface** | `src/services/dataService.ts` (MaybeAsync), `src/services/liveDataService.ts` (removed casts + WS fix), `src/services/DataServiceProvider.tsx` |
+| **Views** | All 17 view/component files listed above |
+| **Tests** | `mockDataService.test.ts`, `DataServiceProvider.test.tsx` |
+| **Styles** | `src/styles/index.css` (skeleton-pulse keyframe) |
+
+**What is in progress:** Nothing — refactor is complete.
+
+**What should be done next (priority order):**
+
+1. **Verify live deployment** — click through all 3 views at `aether-os-blond.vercel.app` with zero console errors. This is the gate before any feature work resumes.
+2. **Add production smoke test** — CI step or post-deploy check that verifies the live URL loads without crash. Every persona flagged the broken deployment.
+3. **Add integration test for live mode** — one test that renders a component with a mock server and verifies no infinite loops and correct data flow.
+4. **DPP field-mapping table** in Compliance tab — CEN/CENELEC mandatory passport field mapping.
+5. **OpenAPI spec generation** from Fastify routes — SCADA integrator's top request.
+6. **Source TAM/SAM/SOM** — methodology footnote or analyst report citation.
+7. **Portuguese community context card** for Brazil-facing deployments.
+
+**Decisions made this session:**
+
+- **`MaybeAsync<T>` over separate sync/async interfaces** — one interface serves both mock (sync) and live (async) implementations. TypeScript enforces that callers handle both cases. Mock service returns `T` which satisfies `T | Promise<T>`.
+- **`useServiceQuery` over react-query/SWR** — the app has ~30 endpoints with seeded data; a 50-line custom hook suffices without adding a dependency.
+- **Selector in `useRef`** — prevents infinite re-renders from inline arrow functions. Trade-off: the effect won't re-run if the selector's closure captures new values. For service method calls (stable references), this is correct. `useServiceQueryWithArg` exists for dynamic arguments.
+- **200ms dedup window** — prevents duplicate fetches when multiple components mount simultaneously with the same cache key. Works in concert with the 30s TTL cache in `liveDataService`.
+- **No score change in persona evaluations** — this was an infrastructure fix that restores the live deployment. No persona scores move because no user-facing capability changed.
+
+**Known issues introduced:**
+
+- **Selector `useRef` pattern is fragile** — if a future developer writes `s => s.getHistory(someLocalVar)` inside `useServiceQuery` (instead of `useServiceQueryWithArg`), the closure will be stale. Document this contract.
+- **Two-layer cache** — `liveDataService` (30s TTL) + `useServiceQuery` (200ms dedup). Both layers agree on freshness semantics but the interaction is not tested.
+- **HANDOFF.md was not updated in the deploy commits** — protocol violation, corrected now.
+
+---
+
+*Last updated: 2026-04-09 — Data Layer Refactor complete: MaybeAsync<T> types, useServiceQuery hook, LoadingSkeleton, 17 view files migrated, band-aids removed, two hotfixes (infinite re-render + WS URL). 129 tests, 0 TS errors, clean build. Deployed to Vercel via GitHub. Next: verify live link, add smoke test, integration test for live mode.*
