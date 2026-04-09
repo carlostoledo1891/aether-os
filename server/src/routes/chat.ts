@@ -216,7 +216,7 @@ export async function chatRoutes(app: FastifyInstance) {
       })
     }
 
-    const modelId = process.env.AI_MODEL ?? 'gemini-2.5-flash-preview-04-17'
+    const modelId = process.env.AI_MODEL ?? 'gemini-2.5-flash'
     const google = createGoogleGenerativeAI({ apiKey })
 
     const { messages } = req.body as { messages: UIMessage[] }
