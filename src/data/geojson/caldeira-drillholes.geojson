@@ -30,7 +30,21 @@
         "elev_m": 1313,
         "easting_utm": 335776,
         "northing_utm": 7576398,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.3,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -58,7 +72,21 @@
         "elev_m": 1308,
         "easting_utm": 335778,
         "northing_utm": 7576500,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2,
+            "to_m": 17.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -86,7 +114,21 @@
         "elev_m": 1309,
         "easting_utm": 335759,
         "northing_utm": 7576596,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.7,
+            "to_m": 19,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -114,7 +156,21 @@
         "elev_m": 1307,
         "easting_utm": 335679,
         "northing_utm": 7576707,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 19,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -142,7 +198,21 @@
         "elev_m": 1311,
         "easting_utm": 335677,
         "northing_utm": 7576603,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 22.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -170,7 +240,21 @@
         "elev_m": 1316,
         "easting_utm": 335676,
         "northing_utm": 7576502,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 18.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -198,7 +282,21 @@
         "elev_m": 1320,
         "easting_utm": 335669,
         "northing_utm": 7576406,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 15,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -226,7 +324,21 @@
         "elev_m": 1315,
         "easting_utm": 335584,
         "northing_utm": 7576408,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.6,
+            "to_m": 19,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -254,7 +366,21 @@
         "elev_m": 1312,
         "easting_utm": 335574,
         "northing_utm": 7576503,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 19,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -282,7 +408,21 @@
         "elev_m": 1289,
         "easting_utm": 335459,
         "northing_utm": 7576523,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -310,7 +450,21 @@
         "elev_m": 1290,
         "easting_utm": 335477,
         "northing_utm": 7576595,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.2,
+            "to_m": 13,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -338,7 +492,21 @@
         "elev_m": 1286,
         "easting_utm": 335476,
         "northing_utm": 7576699,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 17,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -366,7 +534,27 @@
         "elev_m": 1297,
         "easting_utm": 335575,
         "northing_utm": 7576705,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 19.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.1,
+            "to_m": 27,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -394,7 +582,21 @@
         "elev_m": 1305,
         "easting_utm": 335574,
         "northing_utm": 7576601,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -422,7 +624,33 @@
         "elev_m": 1323,
         "easting_utm": 335674,
         "northing_utm": 7576300,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 16.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.3,
+            "to_m": 32,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 32,
+            "to_m": 36.5,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -450,7 +678,27 @@
         "elev_m": 1290,
         "easting_utm": 335064,
         "northing_utm": 7576499,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 20.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.5,
+            "to_m": 37.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -478,7 +726,27 @@
         "elev_m": 1279,
         "easting_utm": 334956,
         "northing_utm": 7576401,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 22.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.8,
+            "to_m": 37,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -506,7 +774,27 @@
         "elev_m": 1281,
         "easting_utm": 334976,
         "northing_utm": 7576504,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 13.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.7,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -534,7 +822,21 @@
         "elev_m": 1274,
         "easting_utm": 334978,
         "northing_utm": 7576695,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -562,7 +864,27 @@
         "elev_m": 1289,
         "easting_utm": 335174,
         "northing_utm": 7576702,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 23.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 23.4,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -590,7 +912,21 @@
         "elev_m": 1279,
         "easting_utm": 335345,
         "northing_utm": 7576691,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.3,
+            "to_m": 13,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -618,7 +954,21 @@
         "elev_m": 1286,
         "easting_utm": 335361,
         "northing_utm": 7576593,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 14,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -646,7 +996,27 @@
         "elev_m": 1305,
         "easting_utm": 335193,
         "northing_utm": 7576497,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 20.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.1,
+            "to_m": 45.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -674,7 +1044,21 @@
         "elev_m": 1315,
         "easting_utm": 335275,
         "northing_utm": 7576394,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -702,7 +1086,21 @@
         "elev_m": 1279,
         "easting_utm": 334828,
         "northing_utm": 7576306,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 23,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -730,7 +1128,21 @@
         "elev_m": 1277,
         "easting_utm": 334825,
         "northing_utm": 7576497,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 15,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -758,7 +1170,27 @@
         "elev_m": 1280,
         "easting_utm": 334966,
         "northing_utm": 7576300,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.2,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22,
+            "to_m": 35,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -786,7 +1218,27 @@
         "elev_m": 1301,
         "easting_utm": 335090,
         "northing_utm": 7576300,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 18.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.7,
+            "to_m": 34,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -814,7 +1266,27 @@
         "elev_m": 1317,
         "easting_utm": 335272,
         "northing_utm": 7576297,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 19.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.2,
+            "to_m": 37,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -842,7 +1314,27 @@
         "elev_m": 1306,
         "easting_utm": 335184,
         "northing_utm": 7576290,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 20.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.3,
+            "to_m": 31.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -870,7 +1362,27 @@
         "elev_m": 1288,
         "easting_utm": 335077,
         "northing_utm": 7576201,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 16.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.6,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -898,7 +1410,21 @@
         "elev_m": 1282,
         "easting_utm": 334960,
         "northing_utm": 7576116,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 16,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -926,7 +1452,27 @@
         "elev_m": 1281,
         "easting_utm": 334823,
         "northing_utm": 7576111,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 13.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.7,
+            "to_m": 26,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -954,7 +1500,27 @@
         "elev_m": 1283,
         "easting_utm": 335098,
         "northing_utm": 7576123,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.6,
+            "to_m": 15,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15,
+            "to_m": 50,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -982,7 +1548,33 @@
         "elev_m": 1291,
         "easting_utm": 335176,
         "northing_utm": 7576117,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 13.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.6,
+            "to_m": 31.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 31.7,
+            "to_m": 46,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1010,7 +1602,27 @@
         "elev_m": 1296,
         "easting_utm": 335267,
         "northing_utm": 7576102,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 20.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.8,
+            "to_m": 37,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1038,7 +1650,27 @@
         "elev_m": 1309,
         "easting_utm": 335276,
         "northing_utm": 7576198,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 14.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.9,
+            "to_m": 34,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1066,7 +1698,27 @@
         "elev_m": 1306,
         "easting_utm": 335180,
         "northing_utm": 7576209,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 20.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.4,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1094,7 +1746,27 @@
         "elev_m": 1321,
         "easting_utm": 335477,
         "northing_utm": 7576196,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 22.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.2,
+            "to_m": 34,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1122,7 +1794,33 @@
         "elev_m": 1319,
         "easting_utm": 335382,
         "northing_utm": 7576199,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 21.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.1,
+            "to_m": 49.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 49.3,
+            "to_m": 50,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1150,7 +1848,27 @@
         "elev_m": 1305,
         "easting_utm": 335379,
         "northing_utm": 7576099,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 12.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.6,
+            "to_m": 36,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1178,7 +1896,27 @@
         "elev_m": 1314,
         "easting_utm": 335470,
         "northing_utm": 7576102,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 22.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.5,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1206,7 +1944,27 @@
         "elev_m": 1321,
         "easting_utm": 335582,
         "northing_utm": 7576106,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.6,
+            "to_m": 16.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.2,
+            "to_m": 35.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1234,7 +1992,27 @@
         "elev_m": 1320,
         "easting_utm": 335676,
         "northing_utm": 7576003,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 12.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.2,
+            "to_m": 37.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1262,7 +2040,33 @@
         "elev_m": 1331,
         "easting_utm": 335776,
         "northing_utm": 7576004,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 16.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.7,
+            "to_m": 32.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 32.4,
+            "to_m": 33,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1290,7 +2094,33 @@
         "elev_m": 1338,
         "easting_utm": 335862,
         "northing_utm": 7575907,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 1.7,
+            "lithology": "alluvium",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 1.7,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 21.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.9,
+            "to_m": 38,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1318,7 +2148,27 @@
         "elev_m": 1321,
         "easting_utm": 335678,
         "northing_utm": 7575901,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 22.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.7,
+            "to_m": 44,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1346,7 +2196,21 @@
         "elev_m": 1302,
         "easting_utm": 335474,
         "northing_utm": 7575900,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1374,7 +2238,21 @@
         "elev_m": 1293,
         "easting_utm": 335277,
         "northing_utm": 7575903,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.2,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1402,7 +2280,27 @@
         "elev_m": 1260,
         "easting_utm": 336673,
         "northing_utm": 7576303,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 1.5,
+            "lithology": "alluvium",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 1.5,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 19,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1430,7 +2328,21 @@
         "elev_m": 1256,
         "easting_utm": 336797,
         "northing_utm": 7576295,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1458,7 +2370,27 @@
         "elev_m": 1258,
         "easting_utm": 336767,
         "northing_utm": 7576097,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 23.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 23.3,
+            "to_m": 32,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1486,7 +2418,21 @@
         "elev_m": 1256,
         "easting_utm": 336783,
         "northing_utm": 7575907,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 16,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1514,7 +2460,27 @@
         "elev_m": 1258,
         "easting_utm": 336769,
         "northing_utm": 7575697,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 18.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.2,
+            "to_m": 25.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1542,7 +2508,21 @@
         "elev_m": 1256,
         "easting_utm": 336779,
         "northing_utm": 7575517,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.2,
+            "to_m": 11,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1570,7 +2550,21 @@
         "elev_m": 1260,
         "easting_utm": 336605,
         "northing_utm": 7575507,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 16.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1598,7 +2592,33 @@
         "elev_m": 1270,
         "easting_utm": 336544,
         "northing_utm": 7575662,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 21.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.3,
+            "to_m": 38.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 38.3,
+            "to_m": 50,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1626,7 +2646,27 @@
         "elev_m": 1300,
         "easting_utm": 336272,
         "northing_utm": 7575804,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 17.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.9,
+            "to_m": 33,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1654,7 +2694,21 @@
         "elev_m": 1291,
         "easting_utm": 336362,
         "northing_utm": 7575813,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 19.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1682,7 +2736,27 @@
         "elev_m": 1297,
         "easting_utm": 336376,
         "northing_utm": 7575895,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 17.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.9,
+            "to_m": 27,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1710,7 +2784,21 @@
         "elev_m": 1270,
         "easting_utm": 336621,
         "northing_utm": 7575888,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 20,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1738,7 +2826,27 @@
         "elev_m": 1290,
         "easting_utm": 336576,
         "northing_utm": 7576097,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 21.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.2,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1766,7 +2874,27 @@
         "elev_m": 1282,
         "easting_utm": 336575,
         "northing_utm": 7576206,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 14.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.5,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1794,7 +2922,27 @@
         "elev_m": 1270,
         "easting_utm": 336602,
         "northing_utm": 7576300,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 20.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.8,
+            "to_m": 27.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1822,7 +2970,27 @@
         "elev_m": 1264,
         "easting_utm": 336679,
         "northing_utm": 7576189,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 22.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.9,
+            "to_m": 31.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1850,7 +3018,21 @@
         "elev_m": 1275,
         "easting_utm": 336672,
         "northing_utm": 7576089,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 18.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1878,7 +3060,21 @@
         "elev_m": 1286,
         "easting_utm": 336576,
         "northing_utm": 7575994,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1906,7 +3102,27 @@
         "elev_m": 1296,
         "easting_utm": 336467,
         "northing_utm": 7575999,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 22.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.2,
+            "to_m": 32,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1934,7 +3150,27 @@
         "elev_m": 1293,
         "easting_utm": 336474,
         "northing_utm": 7576099,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 18.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.6,
+            "to_m": 50,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1962,7 +3198,21 @@
         "elev_m": 1283,
         "easting_utm": 336476,
         "northing_utm": 7576202,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 21.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -1990,7 +3240,21 @@
         "elev_m": 1265,
         "easting_utm": 336478,
         "northing_utm": 7576294,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2018,7 +3282,21 @@
         "elev_m": 1268,
         "easting_utm": 336445,
         "northing_utm": 7576266,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 20.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2046,7 +3324,33 @@
         "elev_m": 1285,
         "easting_utm": 336397,
         "northing_utm": 7576103,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 10.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 10.9,
+            "to_m": 28.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 28.8,
+            "to_m": 50,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2074,7 +3378,33 @@
         "elev_m": 1299,
         "easting_utm": 336379,
         "northing_utm": 7576004,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 19.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.7,
+            "to_m": 45.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 45.9,
+            "to_m": 50,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2102,7 +3432,21 @@
         "elev_m": 1314,
         "easting_utm": 336276,
         "northing_utm": 7575906,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2130,7 +3474,27 @@
         "elev_m": 1302,
         "easting_utm": 336276,
         "northing_utm": 7575996,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 11.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.6,
+            "to_m": 36.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2158,7 +3522,27 @@
         "elev_m": 1317,
         "easting_utm": 336179,
         "northing_utm": 7575897,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 15.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.8,
+            "to_m": 27.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2186,7 +3570,33 @@
         "elev_m": 1317,
         "easting_utm": 336189,
         "northing_utm": 7575809,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 19.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.1,
+            "to_m": 49.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 49.3,
+            "to_m": 50,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2214,7 +3624,27 @@
         "elev_m": 1300,
         "easting_utm": 336186,
         "northing_utm": 7575996,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 11.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.9,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2242,7 +3672,27 @@
         "elev_m": 1286,
         "easting_utm": 336267,
         "northing_utm": 7576083,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 13.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.2,
+            "to_m": 37.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2270,7 +3720,21 @@
         "elev_m": 1263,
         "easting_utm": 336487,
         "northing_utm": 7576391,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 17.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2298,7 +3762,27 @@
         "elev_m": 1276,
         "easting_utm": 336467,
         "northing_utm": 7576491,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 18.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.3,
+            "to_m": 35,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2326,7 +3810,27 @@
         "elev_m": 1280,
         "easting_utm": 336368,
         "northing_utm": 7576407,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.2,
+            "to_m": 16.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.6,
+            "to_m": 33.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2354,7 +3858,21 @@
         "elev_m": 1265,
         "easting_utm": 336570,
         "northing_utm": 7576503,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 24,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2382,7 +3900,21 @@
         "elev_m": 1257,
         "easting_utm": 336674,
         "northing_utm": 7576511,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2,
+            "to_m": 12,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2410,7 +3942,21 @@
         "elev_m": 1254,
         "easting_utm": 336762,
         "northing_utm": 7576683,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2438,7 +3984,27 @@
         "elev_m": 1266,
         "easting_utm": 336571,
         "northing_utm": 7576618,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 14.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.7,
+            "to_m": 30,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2466,7 +4032,33 @@
         "elev_m": 1263,
         "easting_utm": 336581,
         "northing_utm": 7576718,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 10.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 10.7,
+            "to_m": 35.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 35.7,
+            "to_m": 40.1,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2494,7 +4086,21 @@
         "elev_m": 1271,
         "easting_utm": 336476,
         "northing_utm": 7576703,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 19.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2522,7 +4128,33 @@
         "elev_m": 1275,
         "easting_utm": 336479,
         "northing_utm": 7576602,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 11.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.3,
+            "to_m": 41.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 41.5,
+            "to_m": 43.5,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2550,7 +4182,27 @@
         "elev_m": 1289,
         "easting_utm": 336374,
         "northing_utm": 7576601,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 11.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.8,
+            "to_m": 30.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2578,7 +4230,21 @@
         "elev_m": 1288,
         "easting_utm": 336385,
         "northing_utm": 7576697,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2606,7 +4272,21 @@
         "elev_m": 1303,
         "easting_utm": 336275,
         "northing_utm": 7576597,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 16,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2634,7 +4314,21 @@
         "elev_m": 1303,
         "easting_utm": 336279,
         "northing_utm": 7576699,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.4,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2662,7 +4356,21 @@
         "elev_m": 1304,
         "easting_utm": 336177,
         "northing_utm": 7576701,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 13,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2690,7 +4398,27 @@
         "elev_m": 1307,
         "easting_utm": 336175,
         "northing_utm": 7576602,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 18.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.4,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2718,7 +4446,27 @@
         "elev_m": 1313,
         "easting_utm": 336072,
         "northing_utm": 7576399,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 21.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.1,
+            "to_m": 50,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2746,7 +4494,27 @@
         "elev_m": 1309,
         "easting_utm": 336078,
         "northing_utm": 7576494,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2774,7 +4542,21 @@
         "elev_m": 1300,
         "easting_utm": 336077,
         "northing_utm": 7576602,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 20,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2802,7 +4584,27 @@
         "elev_m": 1288,
         "easting_utm": 336063,
         "northing_utm": 7576692,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.3,
+            "to_m": 18.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.1,
+            "to_m": 35.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2830,7 +4632,21 @@
         "elev_m": 1291,
         "easting_utm": 335990,
         "northing_utm": 7576598,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 22.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2858,7 +4674,21 @@
         "elev_m": 1298,
         "easting_utm": 335977,
         "northing_utm": 7576505,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 17,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2886,7 +4716,27 @@
         "elev_m": 1306,
         "easting_utm": 335975,
         "northing_utm": 7576402,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 17.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.6,
+            "to_m": 26,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2914,7 +4764,27 @@
         "elev_m": 1314,
         "easting_utm": 336043,
         "northing_utm": 7576303,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 19.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.1,
+            "to_m": 40,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2942,7 +4812,27 @@
         "elev_m": 1316,
         "easting_utm": 335974,
         "northing_utm": 7576202,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 16.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.2,
+            "to_m": 37,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2970,7 +4860,27 @@
         "elev_m": 1310,
         "easting_utm": 336080,
         "northing_utm": 7576203,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.6,
+            "to_m": 18.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.6,
+            "to_m": 30,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -2998,7 +4908,21 @@
         "elev_m": 1289,
         "easting_utm": 336179,
         "northing_utm": 7576207,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 24.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3026,7 +4950,27 @@
         "elev_m": 1325,
         "easting_utm": 335966,
         "northing_utm": 7576098,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 18.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.7,
+            "to_m": 28,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3054,7 +4998,21 @@
         "elev_m": 1304,
         "easting_utm": 336082,
         "northing_utm": 7576096,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 19.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3082,7 +5040,21 @@
         "elev_m": 1310,
         "easting_utm": 336078,
         "northing_utm": 7575999,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3110,7 +5082,21 @@
         "elev_m": 1327,
         "easting_utm": 335978,
         "northing_utm": 7575990,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.7,
+            "to_m": 23.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3138,7 +5124,27 @@
         "elev_m": 1336,
         "easting_utm": 335871,
         "northing_utm": 7576001,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.7,
+            "to_m": 14.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.3,
+            "to_m": 33,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3166,7 +5172,27 @@
         "elev_m": 1330,
         "easting_utm": 335677,
         "northing_utm": 7576114,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 18,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18,
+            "to_m": 34.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3194,7 +5220,33 @@
         "elev_m": 1327,
         "easting_utm": 335676,
         "northing_utm": 7576206,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 15.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.6,
+            "to_m": 46.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 46.9,
+            "to_m": 50,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3222,7 +5274,27 @@
         "elev_m": 1322,
         "easting_utm": 335573,
         "northing_utm": 7576184,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 15.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.7,
+            "to_m": 40,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3250,7 +5322,21 @@
         "elev_m": 1311,
         "easting_utm": 335575,
         "northing_utm": 7576302,
-        "crs_epsg": 31983
+        "crs_epsg": 31983,
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 25,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3279,7 +5365,27 @@
         "easting_utm": 336154,
         "northing_utm": 7576539,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 12.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.5,
+            "to_m": 43.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3308,7 +5414,27 @@
         "easting_utm": 336312,
         "northing_utm": 7576339,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 16.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.9,
+            "to_m": 37.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3337,7 +5463,33 @@
         "easting_utm": 335295,
         "northing_utm": 7576309,
         "crs_epsg": 31983,
-        "asx_status": "Pending"
+        "asx_status": "Pending",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2,
+            "to_m": 11.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.3,
+            "to_m": 32.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 32.4,
+            "to_m": 65.7,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3366,7 +5518,27 @@
         "easting_utm": 336024,
         "northing_utm": 7576672,
         "crs_epsg": 31983,
-        "asx_status": "Pending"
+        "asx_status": "Pending",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 22.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.2,
+            "to_m": 45.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3395,7 +5567,27 @@
         "easting_utm": 336445,
         "northing_utm": 7576235,
         "crs_epsg": 31983,
-        "asx_status": "Pending"
+        "asx_status": "Pending",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 16.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.8,
+            "to_m": 33.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3424,7 +5616,33 @@
         "easting_utm": 346168,
         "northing_utm": 7566529,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 19.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.6,
+            "to_m": 40.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 40.7,
+            "to_m": 73.3,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3453,7 +5671,33 @@
         "easting_utm": 346372,
         "northing_utm": 7566554,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 17.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.3,
+            "to_m": 47.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 47.3,
+            "to_m": 58.6,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3482,7 +5726,27 @@
         "easting_utm": 345958,
         "northing_utm": 7566534,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 17.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.3,
+            "to_m": 39.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3511,7 +5775,27 @@
         "easting_utm": 346259,
         "northing_utm": 7565955,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.9,
+            "to_m": 19.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.2,
+            "to_m": 29.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3540,7 +5824,33 @@
         "easting_utm": 345999,
         "northing_utm": 7565311,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 18.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.7,
+            "to_m": 43.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 43.2,
+            "to_m": 52.1,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3569,7 +5879,33 @@
         "easting_utm": 346252,
         "northing_utm": 7565523,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 1,
+            "lithology": "alluvium",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 1,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 15.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.9,
+            "to_m": 43.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3598,7 +5934,27 @@
         "easting_utm": 346437,
         "northing_utm": 7566998,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 19.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.6,
+            "to_m": 31.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3627,7 +5983,27 @@
         "easting_utm": 345620,
         "northing_utm": 7567610,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 11.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.6,
+            "to_m": 20.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3656,7 +6032,33 @@
         "easting_utm": 345785,
         "northing_utm": 7565709,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 12.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.2,
+            "to_m": 30.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 30.5,
+            "to_m": 31.3,
+            "lithology": "tinguaite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3685,7 +6087,21 @@
         "easting_utm": 347477,
         "northing_utm": 7567044,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 18.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3714,7 +6130,21 @@
         "easting_utm": 346611,
         "northing_utm": 7567019,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.7,
+            "to_m": 9.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3743,7 +6173,33 @@
         "easting_utm": 345993,
         "northing_utm": 7566806,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 12.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.8,
+            "to_m": 45.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 45.6,
+            "to_m": 46.4,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3772,7 +6228,33 @@
         "easting_utm": 346893,
         "northing_utm": 7567309,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2,
+            "to_m": 13.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.8,
+            "to_m": 31,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 31,
+            "to_m": 39.4,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3801,7 +6283,27 @@
         "easting_utm": 347081,
         "northing_utm": 7567706,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 15.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.9,
+            "to_m": 40.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3830,7 +6332,27 @@
         "easting_utm": 346569,
         "northing_utm": 7566704,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 16,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16,
+            "to_m": 29.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3859,7 +6381,33 @@
         "easting_utm": 346632,
         "northing_utm": 7567196,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 19.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.1,
+            "to_m": 53.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 53.8,
+            "to_m": 57.8,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3888,7 +6436,27 @@
         "easting_utm": 346621,
         "northing_utm": 7566802,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 16.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.2,
+            "to_m": 26,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3917,7 +6485,33 @@
         "easting_utm": 345109,
         "northing_utm": 7566811,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 18.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.6,
+            "to_m": 36.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 36.9,
+            "to_m": 41.1,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3946,7 +6540,33 @@
         "easting_utm": 344998,
         "northing_utm": 7567684,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.3,
+            "to_m": 11.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.8,
+            "to_m": 36.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 36.6,
+            "to_m": 45.9,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -3975,7 +6595,33 @@
         "easting_utm": 343700,
         "northing_utm": 7574295,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 17.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.2,
+            "to_m": 36.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 36.7,
+            "to_m": 81.6,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4004,7 +6650,27 @@
         "easting_utm": 344068,
         "northing_utm": 7574647,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 14.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.5,
+            "to_m": 35.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4033,7 +6699,33 @@
         "easting_utm": 343049,
         "northing_utm": 7575205,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 15.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.8,
+            "to_m": 31.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 31.6,
+            "to_m": 75.3,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4062,7 +6754,33 @@
         "easting_utm": 344485,
         "northing_utm": 7574505,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 14.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.6,
+            "to_m": 48.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 48.9,
+            "to_m": 66.8,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4091,7 +6809,33 @@
         "easting_utm": 343988,
         "northing_utm": 7574303,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.3,
+            "to_m": 12.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.5,
+            "to_m": 34.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 34.6,
+            "to_m": 120.1,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4120,7 +6864,33 @@
         "easting_utm": 332897,
         "northing_utm": 7571351,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 20.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.2,
+            "to_m": 35.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 35.6,
+            "to_m": 39.5,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4149,7 +6919,33 @@
         "easting_utm": 334117,
         "northing_utm": 7580334,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 15.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.3,
+            "to_m": 45.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 45.3,
+            "to_m": 82.6,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4178,7 +6974,27 @@
         "easting_utm": 335429,
         "northing_utm": 7577831,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 13.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.8,
+            "to_m": 32.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4207,7 +7023,27 @@
         "easting_utm": 334919,
         "northing_utm": 7580056,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 15.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.2,
+            "to_m": 17.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4236,7 +7072,27 @@
         "easting_utm": 336006,
         "northing_utm": 7575471,
         "crs_epsg": 31983,
-        "asx_status": "Pending"
+        "asx_status": "Pending",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.2,
+            "to_m": 19.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.5,
+            "to_m": 23.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4265,7 +7121,27 @@
         "easting_utm": 342883,
         "northing_utm": 7576691,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 22.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.7,
+            "to_m": 23.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4294,7 +7170,27 @@
         "easting_utm": 341677,
         "northing_utm": 7579290,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 12.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.5,
+            "to_m": 28.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4323,7 +7219,33 @@
         "easting_utm": 342535,
         "northing_utm": 7578363,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.8,
+            "to_m": 22.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.4,
+            "to_m": 37.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 37.5,
+            "to_m": 43,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4352,7 +7274,27 @@
         "easting_utm": 343854,
         "northing_utm": 7578257,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 16.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.8,
+            "to_m": 31.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4381,7 +7323,27 @@
         "easting_utm": 345059,
         "northing_utm": 7578282,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.9,
+            "to_m": 13,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13,
+            "to_m": 22.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4410,7 +7372,33 @@
         "easting_utm": 340077,
         "northing_utm": 7575858,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 23.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 23.1,
+            "to_m": 39.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 39.1,
+            "to_m": 149.5,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4439,7 +7427,33 @@
         "easting_utm": 340953,
         "northing_utm": 7575108,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 19.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.2,
+            "to_m": 40.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 40.5,
+            "to_m": 70.8,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4468,7 +7482,33 @@
         "easting_utm": 340564,
         "northing_utm": 7575629,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 14.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.9,
+            "to_m": 37,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 37,
+            "to_m": 56.6,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4497,7 +7537,33 @@
         "easting_utm": 339756,
         "northing_utm": 7575833,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 20.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.1,
+            "to_m": 45.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 45.4,
+            "to_m": 200,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4526,7 +7592,33 @@
         "easting_utm": 340326,
         "northing_utm": 7575683,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.1,
+            "to_m": 17.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.5,
+            "to_m": 55.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 55.5,
+            "to_m": 200.6,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4555,7 +7647,27 @@
         "easting_utm": 337939,
         "northing_utm": 7581336,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.5,
+            "to_m": 18.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 18.1,
+            "to_m": 33.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4584,7 +7696,27 @@
         "easting_utm": 338448,
         "northing_utm": 7579639,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 17.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 17.9,
+            "to_m": 37.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4613,7 +7745,27 @@
         "easting_utm": 338887,
         "northing_utm": 7579957,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 14.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.5,
+            "to_m": 15.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4642,7 +7794,27 @@
         "easting_utm": 339144,
         "northing_utm": 7579358,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 16.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.2,
+            "to_m": 21.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4671,7 +7843,21 @@
         "easting_utm": 338052,
         "northing_utm": 7580242,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 12.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4700,7 +7886,27 @@
         "easting_utm": 337372,
         "northing_utm": 7578861,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.3,
+            "to_m": 22.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22.8,
+            "to_m": 33.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4729,7 +7935,27 @@
         "easting_utm": 336613,
         "northing_utm": 7579372,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3,
+            "to_m": 14.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.7,
+            "to_m": 27.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4758,7 +7984,27 @@
         "easting_utm": 339844,
         "northing_utm": 7579731,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.7,
+            "to_m": 16.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.6,
+            "to_m": 22.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4787,7 +8033,21 @@
         "easting_utm": 339441,
         "northing_utm": 7579947,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 22.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4816,7 +8076,27 @@
         "easting_utm": 339932,
         "northing_utm": 7580147,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 15,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15,
+            "to_m": 23.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4845,7 +8125,27 @@
         "easting_utm": 339640,
         "northing_utm": 7580342,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.7,
+            "to_m": 16.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.3,
+            "to_m": 18.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4874,7 +8174,21 @@
         "easting_utm": 332724,
         "northing_utm": 7570003,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 15,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4903,7 +8217,33 @@
         "easting_utm": 341854,
         "northing_utm": 7572049,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 21.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.4,
+            "to_m": 53.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 53.8,
+            "to_m": 61.8,
+            "lithology": "tinguaite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4932,7 +8272,39 @@
         "easting_utm": 341239,
         "northing_utm": 7572677,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.4,
+            "to_m": 19.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.3,
+            "to_m": 42.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 42.3,
+            "to_m": 47.7,
+            "lithology": "tinguaite",
+            "weathering": "fresh"
+          },
+          {
+            "from_m": 47.7,
+            "to_m": 84.5,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4961,7 +8333,27 @@
         "easting_utm": 340849,
         "northing_utm": 7572859,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 20.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.8,
+            "to_m": 45.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -4990,7 +8382,33 @@
         "easting_utm": 340882,
         "northing_utm": 7571408,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 15.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.8,
+            "to_m": 53.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 53.8,
+            "to_m": 111.9,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5019,7 +8437,27 @@
         "easting_utm": 340893,
         "northing_utm": 7572112,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.7,
+            "to_m": 15.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.2,
+            "to_m": 20.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5048,7 +8486,33 @@
         "easting_utm": 341236,
         "northing_utm": 7573390,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 13.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.7,
+            "to_m": 46.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 46.9,
+            "to_m": 59,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5077,7 +8541,33 @@
         "easting_utm": 340993,
         "northing_utm": 7573311,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.2,
+            "to_m": 14.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.6,
+            "to_m": 53.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 53.3,
+            "to_m": 71,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5106,7 +8596,33 @@
         "easting_utm": 341530,
         "northing_utm": 7571146,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 1.1,
+            "lithology": "alluvium",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 1.1,
+            "to_m": 4.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.6,
+            "to_m": 24.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 24.4,
+            "to_m": 31.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5135,7 +8651,33 @@
         "easting_utm": 341876,
         "northing_utm": 7573324,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 14.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.8,
+            "to_m": 48.5,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 48.5,
+            "to_m": 96.7,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5164,7 +8706,27 @@
         "easting_utm": 331993,
         "northing_utm": 7582304,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 14.1,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.1,
+            "to_m": 18,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5193,7 +8755,27 @@
         "easting_utm": 330836,
         "northing_utm": 7583313,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 15.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.7,
+            "to_m": 24.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5222,7 +8804,33 @@
         "easting_utm": 339398,
         "northing_utm": 7576452,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 14.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.2,
+            "to_m": 42,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 42,
+            "to_m": 143,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5251,7 +8859,33 @@
         "easting_utm": 339579,
         "northing_utm": 7574617,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.8,
+            "to_m": 19.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 19.6,
+            "to_m": 41.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 41.6,
+            "to_m": 46.2,
+            "lithology": "fresh_phonolite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5280,7 +8914,21 @@
         "easting_utm": 338908,
         "northing_utm": 7577850,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.5,
+            "to_m": 12.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5309,7 +8957,33 @@
         "easting_utm": 339473,
         "northing_utm": 7575793,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.2,
+            "to_m": 16.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.3,
+            "to_m": 41.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 41.2,
+            "to_m": 62.6,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5338,7 +9012,33 @@
         "easting_utm": 339377,
         "northing_utm": 7576605,
         "crs_epsg": 31983,
-        "asx_status": "Pending"
+        "asx_status": "Pending",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.2,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.2,
+            "to_m": 13.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 13.2,
+            "to_m": 31.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 31.9,
+            "to_m": 126.3,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5367,7 +9067,27 @@
         "easting_utm": 338389,
         "northing_utm": 7571708,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.8,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.8,
+            "to_m": 16.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.4,
+            "to_m": 32.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5396,7 +9116,27 @@
         "easting_utm": 348327,
         "northing_utm": 7567059,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 23.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 23.3,
+            "to_m": 44.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5425,7 +9165,27 @@
         "easting_utm": 348798,
         "northing_utm": 7569486,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.5,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.5,
+            "to_m": 11.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 11.7,
+            "to_m": 18.2,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5454,7 +9214,33 @@
         "easting_utm": 349085,
         "northing_utm": 7568049,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.1,
+            "to_m": 12.4,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.4,
+            "to_m": 29,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          },
+          {
+            "from_m": 29,
+            "to_m": 31.5,
+            "lithology": "nepheline_syenite",
+            "weathering": "fresh"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5483,7 +9269,27 @@
         "easting_utm": 348991,
         "northing_utm": 7570681,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.7,
+            "to_m": 15.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 15.6,
+            "to_m": 19.8,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5512,7 +9318,27 @@
         "easting_utm": 350299,
         "northing_utm": 7569907,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 12.2,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 12.2,
+            "to_m": 31.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5541,7 +9367,27 @@
         "easting_utm": 348119,
         "northing_utm": 7568005,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.6,
+            "to_m": 22,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 22,
+            "to_m": 23.4,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5570,7 +9416,21 @@
         "easting_utm": 349844,
         "northing_utm": 7570495,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 10.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5599,7 +9459,27 @@
         "easting_utm": 347976,
         "northing_utm": 7569982,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.4,
+            "to_m": 10.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 10.7,
+            "to_m": 11.1,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5628,7 +9508,27 @@
         "easting_utm": 349904,
         "northing_utm": 7570592,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.6,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.6,
+            "to_m": 21.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 21.9,
+            "to_m": 29.3,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5657,7 +9557,27 @@
         "easting_utm": 350004,
         "northing_utm": 7570493,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 3.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 3.3,
+            "to_m": 16.8,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 16.8,
+            "to_m": 29.6,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5686,7 +9606,27 @@
         "easting_utm": 348196,
         "northing_utm": 7569900,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 20.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 20.9,
+            "to_m": 38.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5715,7 +9655,27 @@
         "easting_utm": 348804,
         "northing_utm": 7569298,
         "crs_epsg": 31983,
-        "asx_status": "Previously Reported"
+        "asx_status": "Previously Reported",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 2.1,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.1,
+            "to_m": 14.9,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.9,
+            "to_m": 28.9,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5744,7 +9704,27 @@
         "easting_utm": 334357,
         "northing_utm": 7569580,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.9,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.9,
+            "to_m": 14.6,
+            "lithology": "saprolite",
+            "weathering": "high"
+          },
+          {
+            "from_m": 14.6,
+            "to_m": 15.7,
+            "lithology": "weathered_phonolite",
+            "weathering": "moderate"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5773,7 +9753,27 @@
         "easting_utm": 334497,
         "northing_utm": 7568580,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 1,
+            "lithology": "alluvium",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 1,
+            "to_m": 2.7,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 2.7,
+            "to_m": 14.7,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5802,7 +9802,21 @@
         "easting_utm": 333481,
         "northing_utm": 7570748,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4,
+            "to_m": 19.5,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",
@@ -5831,7 +9845,21 @@
         "easting_utm": 333947,
         "northing_utm": 7566812,
         "crs_epsg": 31983,
-        "asx_status": "This Release"
+        "asx_status": "This Release",
+        "lithology_intervals": [
+          {
+            "from_m": 0,
+            "to_m": 4.3,
+            "lithology": "laterite",
+            "weathering": "complete"
+          },
+          {
+            "from_m": 4.3,
+            "to_m": 6.3,
+            "lithology": "saprolite",
+            "weathering": "high"
+          }
+        ]
       },
       "geometry": {
         "type": "Point",

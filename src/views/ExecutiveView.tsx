@@ -16,6 +16,7 @@ import { DfsTab } from './executive/DfsTab'
 import { PermitsAgenciesTab } from './executive/PermitsAgenciesTab'
 import { AuditTab } from './executive/AuditTab'
 import { EsgTab } from './executive/EsgTab'
+import { StakeholdersTab } from './executive/StakeholdersTab'
 import shell from './ExecutiveShell.module.css'
 
 export function ExecutiveView() {
@@ -60,10 +61,10 @@ export function ExecutiveView() {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.18 }}
             >
-              <div className="min-w-0 rounded-lg border border-[var(--w-glass-07)] bg-[var(--w-glass-04)] p-4 md:p-5">
+              <div className="min-w-0">
                 <GeologyPanel selectedDeposit={selectedDeposit} onSelectDeposit={setSelectedDeposit} />
               </div>
-              <div className="min-w-0 rounded-lg border border-[var(--w-glass-07)] bg-[var(--w-glass-04)] p-4 md:p-5">
+              <div className="min-w-0">
                 <LicensesPanel selectedLicense={selectedLicense} onSelectLicense={setSelectedLicense} />
               </div>
             </motion.div>
@@ -106,6 +107,11 @@ export function ExecutiveView() {
           {activeTab === 'esg' && (
             <motion.div key="esg" className={shell.tabPane} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
               <EsgTab />
+            </motion.div>
+          )}
+          {activeTab === 'stakeholders' && (
+            <motion.div key="stakeholders" className={shell.tabPane} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
+              <StakeholdersTab />
             </motion.div>
           )}
         </AnimatePresence>

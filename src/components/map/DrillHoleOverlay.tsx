@@ -31,6 +31,7 @@ interface DrillHoleProperties extends FeatureProperties {
   note: string | null
   source_ref?: string
   as_of?: string
+  lithology_intervals?: { from_m: number; to_m: number; lithology: string; weathering: string }[]
 }
 
 type DrillHoleFeature = Feature<DrillHoleProperties, PointGeometry>
@@ -48,6 +49,7 @@ export interface DrillHoleDetail {
   as_of?: string
   intercept?: string
   including?: string
+  lithology_intervals?: { from_m: number; to_m: number; lithology: string; weathering: string }[]
 }
 
 export const DRILL_LAYER_ID = 'drill-hole-core'
@@ -70,6 +72,9 @@ export function toDrillHoleDetail(
     as_of: properties.as_of ? String(properties.as_of) : undefined,
     intercept: properties.intercept ? String(properties.intercept) : undefined,
     including: properties.including ? String(properties.including) : undefined,
+    lithology_intervals: Array.isArray(properties.lithology_intervals)
+      ? (properties.lithology_intervals as { from_m: number; to_m: number; lithology: string; weathering: string }[])
+      : undefined,
   }
 }
 

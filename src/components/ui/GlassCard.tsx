@@ -13,12 +13,12 @@ interface GlassCardProps {
 
 const insetTop = `inset 0 1px 0 ${W.glass07}`
 const glowMap = {
-  violet: `0 0 20px ${W.violetGlow}, ${insetTop}`,
-  cyan:   `0 0 20px ${W.cyanGlow}, ${insetTop}`,
-  green:  `0 0 20px ${W.greenGlow}, ${insetTop}`,
-  amber:  `0 0 20px ${W.amberGlow}, ${insetTop}`,
-  red:    `0 0 20px ${W.redGlow}, ${insetTop}`,
-  none:   `inset 0 1px 0 ${W.glass04}`,
+  violet: `0 0 12px ${W.violetGlow}, ${insetTop}`,
+  cyan:   `0 0 12px ${W.cyanGlow}, ${insetTop}`,
+  green:  `0 0 12px ${W.greenGlow}, ${insetTop}`,
+  amber:  `0 0 12px ${W.amberGlow}, ${insetTop}`,
+  red:    `0 0 12px ${W.redGlow}, ${insetTop}`,
+  none:   `inset 0 1px 0 ${W.glass03}`,
 }
 
 export function GlassCard({

@@ -28,7 +28,7 @@ export function CapitalTab() {
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
       <div className="flex min-w-0 flex-col gap-4">
-        <ExecutiveCard title="Capital Deployment" icon={Landmark} iconColor="violet" glow="violet">
+        <ExecutiveCard title="Capital Deployment" icon={Landmark} iconColor="violet">
           <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(
               [
@@ -40,7 +40,7 @@ export function CapitalTab() {
               <div
                 key={label}
                 className="rounded-lg px-3 py-2.5"
-                style={{ border: `1px solid ${W.glass07}`, background: W.glass03 }}
+                style={{ border: 'none', background: W.glass03 }}
               >
                 <div className={`${ty.label} mb-1`}>{label}</div>
                 <div className={`${ty.value} text-[15px]`} style={{ color: clr }}>
@@ -160,7 +160,7 @@ export function CapitalTab() {
         </ExecutiveCard>
 
         {dscr && dscr.length > 0 && (
-          <ExecutiveCard title="DSCR Projections (10yr LOM)" icon={TrendingUp} iconColor="cyan" glow="cyan">
+          <ExecutiveCard title="DSCR Projections (10yr LOM)" icon={TrendingUp} iconColor="cyan">
             <div style={{ width: '100%', height: 220 }}>
               <ResponsiveContainer>
                 <LineChart data={dscr} margin={{ top: 8, right: 12, bottom: 4, left: 0 }}>
@@ -195,7 +195,7 @@ export function CapitalTab() {
         )}
 
         {drawdown && drawdown.length > 0 && (
-          <ExecutiveCard title="Drawdown Schedule" icon={Calendar} iconColor="violet" glow="violet">
+          <ExecutiveCard title="Drawdown Schedule" icon={Calendar} iconColor="violet">
             <div className="flex flex-col gap-0">
               {drawdown.map((d, i) => {
                 const pct = (d.cumulative_m / 443) * 100

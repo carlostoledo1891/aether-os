@@ -15,6 +15,7 @@ interface AlertPanelProps {
   onClose: () => void
   onDismiss: (id: string) => void
   onDismissAll: () => void
+  onNavigate?: (alert: AlertItem) => void
 }
 
 const severityMap = {
@@ -45,7 +46,7 @@ function incidentResolutionTime(inc: IncidentRecord): string {
   return mins < 60 ? `${mins} min` : `${(mins / 60).toFixed(1)} hr`
 }
 
-export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }: AlertPanelProps) {
+export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll, onNavigate }: AlertPanelProps) {
   const { data: incidents = [] } = useServiceQuery('incidents', s => s.getIncidentLog())
   const active = alerts.filter(a => !a.dismissed)
   const [tab, setTab] = useState<PanelTab>('active')
@@ -225,10 +226,33 @@ export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }:
                             </button>
                           </div>
                           <p style={{ fontSize: 10, color: W.text2, margin: 0, lineHeight: 1.5 }}>{alert.detail}</p>
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: 10, color: color, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{alert.source}</span>
                             <span style={{ fontSize: 10, color: W.text4, fontFamily: 'var(--font-mono)' }}>{timeAgo(alert.timestamp)}</span>
                           </div>
+                          {onNavigate && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onNavigate(alert)
+                              }}
+                              style={{
+                                background: 'none',
+                                border: `1px solid ${W.glass12}`,
+                                borderRadius: 4,
+                                color: W.cyan,
+                                cursor: 'pointer',
+                                fontSize: 9,
+                                padding: '2px 6px',
+                                marginTop: 4,
+                                transition: 'background 0.15s',
+                              }}
+                              onMouseEnter={e => e.currentTarget.style.background = W.glass06}
+                              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+                            >
+                              Go to source →
+                            </button>
+                          )}
                         </motion.div>
                       )
                     })

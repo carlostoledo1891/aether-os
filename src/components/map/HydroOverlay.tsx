@@ -247,7 +247,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         const status = telem?.status ?? 'Active'
         const tier = telem?.monitoring_tier ?? 'modeled_inferred'
         const circleOpacity = tierCircleOpacity(tier)
-        const color = status === 'Active' ? W.blue : status === 'Reduced' ? W.blueMuted : W.blueDark
+        const color = status === 'Active' ? W.teal : status === 'Reduced' ? W.tealMuted : W.tealDark
         const radius = springPinRadiusPx(status, tier)
         const lastVisit = telem?.last_field_visit
         const lastFieldVisitDisplay = lastVisit
@@ -364,34 +364,11 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
       {/* ── Warning/critical pulse rings ─────────────────────────────────── */}
       {pulseMarkers}
 
-      {/* ── WQ + weather (Open-Meteo optional; mock fallback) ─────────────── */}
+      {/* ── WQ badge (always visible) ────────────────────────────────────── */}
       <div className={styles.hudColumn} style={{ zIndex: MAP_STACKING.hudMetrics }}>
         <div className={`${styles.wqBadge} ${waterQualityAlert ? styles.wqBadgeWarn : styles.wqBadgeOk}`}>
           WQ · SO4 {env.water_quality.sulfate_ppm.toFixed(0)} ppm · NO3 {env.water_quality.nitrate_ppm.toFixed(0)} ppm
         </div>
-        {weatherStrip && (
-          <div
-            className={`${styles.weatherPanel} ${weatherStrip.anomalyMm < -5 ? styles.weatherBorderDry : styles.weatherBorderNeutral}`}
-          >
-            <div style={{ color: W.cyan, fontWeight: 700, marginBottom: 2 }}>
-              {weatherStrip.loading ? 'Precip · …' : `Precip · ${weatherStrip.windowPrecipMm.toFixed(1)} mm (window)`}
-              <span style={{ color: W.text4, fontWeight: 500, marginLeft: 6 }}>
-                {weatherStrip.source === 'openmeteo' ? 'Open-Meteo' : 'mock'}
-              </span>
-            </div>
-            <div style={{ color: W.text4 }}>
-              vs ~{weatherStrip.windowPrecipMm - weatherStrip.anomalyMm > 0
-                ? (weatherStrip.windowPrecipMm - weatherStrip.anomalyMm).toFixed(1)
-                : '—'} mm norm · Δ {weatherStrip.anomalyMm >= 0 ? '+' : ''}{weatherStrip.anomalyMm.toFixed(1)} mm
-            </div>
-            <div style={{ color: W.text4, marginTop: 3 }}>
-              Scenario {weatherStrip.scenarioHorizon}: drought index {weatherStrip.scenarioDroughtIndex.toFixed(2)} — rainfall context for twin narratives only.
-            </div>
-            {weatherStrip.error && (
-              <div style={{ color: W.amber, marginTop: 3 }}>{weatherStrip.error}</div>
-            )}
-          </div>
-        )}
         {showRainStressBadge && (
           <div className={styles.rainStressBadge}>
             Rain deficit vs norm · watch springs
@@ -399,33 +376,56 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         )}
       </div>
 
-      {/* ── Spring counter (below FieldView map title strip — avoids covering header text) ── */}
+      {/* ── Consolidated Monitoring card ──────────────────────────────────── */}
       <div
         className={`${styles.springCounter} ${springCounts.suppressed > 0 ? styles.springCounterBorderAlert : styles.springCounterBorderOk}`}
         style={{ zIndex: MAP_STACKING.hud }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
-            <span style={{ fontSize: 16, fontWeight: 800, color: W.cyan, fontFamily: 'var(--font-mono)' }}>
-              {springCounts.active + springCounts.reduced + springCounts.suppressed}
-            </span>
-            <span style={{ fontSize: 10, color: W.text4 }}>/{staticSprings?.features.length ?? 0}</span>
+        <div style={{ fontSize: 10, fontWeight: 600, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+          Monitoring
+        </div>
+        {/* Springs section */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.teal, display: 'inline-block' }} />
+            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.teal, fontWeight: 600 }}>{springCounts.active} Active</span>
           </div>
-          <div style={{ width: 1, height: 18, background: W.glass08 }} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <span style={{ fontSize: 9, fontWeight: 700, color: W.text3, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Springs Monitored
-            </span>
-            <div style={{ display: 'flex', gap: 6, fontSize: 9, fontFamily: 'var(--font-mono)' }}>
-              <span style={{ color: W.blue }}>{springCounts.active} Active</span>
-              {springCounts.reduced > 0 && <span style={{ color: W.blueMuted }}>{springCounts.reduced} Reduced</span>}
-              {springCounts.suppressed > 0 && <span style={{ color: W.blueDark }}>{springCounts.suppressed} Suppressed</span>}
+          {springCounts.reduced > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.tealMuted, display: 'inline-block' }} />
+              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.tealMuted, fontWeight: 600 }}>{springCounts.reduced} Reduced</span>
             </div>
+          )}
+          {springCounts.suppressed > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.tealDark, display: 'inline-block' }} />
+              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.tealDark, fontWeight: 600 }}>{springCounts.suppressed} Suppressed</span>
+            </div>
+          )}
+        </div>
+        <div style={{ height: 1, background: W.glass08, margin: '4px 0' }} />
+        {/* Precipitation section */}
+        {weatherStrip && (
+          <div style={{ display: 'flex', gap: 8, fontSize: 11, color: W.text2, marginTop: 6 }}>
+            <span style={{ fontWeight: 600 }}>
+              {weatherStrip.loading ? '…' : `${weatherStrip.windowPrecipMm.toFixed(1)} mm`}
+            </span>
+            <span style={{ color: W.text4 }}>30-day</span>
+            <span style={{ color: weatherStrip.anomalyMm < 0 ? W.amber : W.cyan, fontFamily: 'var(--font-mono)' }}>
+              Δ {weatherStrip.anomalyMm >= 0 ? '+' : ''}{weatherStrip.anomalyMm.toFixed(1)} mm
+            </span>
+            <span style={{
+              fontSize: 9,
+              padding: '0 4px',
+              borderRadius: 3,
+              background: W.glass06,
+              color: W.text4,
+              fontFamily: 'var(--font-mono)',
+            }}>
+              {weatherStrip.source === 'openmeteo' ? 'Open-Meteo' : 'mock'}
+            </span>
           </div>
-        </div>
-        <div style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)', letterSpacing: '0.03em', lineHeight: 1.35 }}>
-          Public FBDS/CAR locations · Status colors modeled (not field-verified)
-        </div>
+        )}
       </div>
 
       {/* ── Hover tooltip card ─────────────────────────────────────────────── */}
@@ -534,7 +534,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         {[
           { label: 'Piezometer', color: W.cyan },
           { label: 'UDC Site', color: W.red },
-          { label: 'Spring', color: W.blue },
+          { label: 'Spring', color: W.teal },
           { label: 'Water Feature', color: W.cyan },
         ].map(({ label, color }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>

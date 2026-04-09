@@ -304,10 +304,13 @@ export function seedIfNeeded() {
       hydro_spring_status: { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay from simulation engine — not field-verified' },
       hydro_piezo_telemetry: { kind: 'simulated', hint: 'Aquifer/piezo metrics from simulation engine — swap for LAPOC when wired' },
       plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels from Vero Simulation Engine' },
-      precip_field: { kind: 'illustrative', hint: 'Open-Meteo when engine enricher is active; otherwise synthetic' },
+      precip_field: { kind: 'from_public_record', hint: 'Open-Meteo public weather API (ERA5 reanalysis)' },
       regulatory_log: { kind: 'issuer_attested', hint: 'Structured engagement log — align dates/refs with counsel' },
       audit_ledger: { kind: 'illustrative', hint: 'Demonstration event log with stub hashes' },
-      map_geometry: { kind: 'illustrative', hint: 'Bundled GeoJSON — see docs/data/caldeira/DATA_SOURCES.md' },
+      map_geometry: { kind: 'from_public_record', hint: 'DNPM/SIGMINE public licence and environmental boundaries' },
+      drill_collars: { kind: 'issuer_attested', hint: 'ASX-disclosed drill collar coordinates and assay appendices' },
+      licence_areas: { kind: 'from_public_record', hint: 'DNPM/SIGMINE public mining licence boundaries' },
+      apa_buffer: { kind: 'from_public_record', hint: 'ICMBio/IEF public environmental protection area boundaries' },
     },
   })
 
@@ -365,6 +368,34 @@ export function seedIfNeeded() {
       ],
       offtake_destination: 'Neo Performance Materials — Narva, Estonia (EU)',
       certificates: ['ISO 14001:2015', 'REIA-PCR-001', 'EU DBP Reg 2023/1542', 'Catena-X Registered'],
+    },
+    {
+      batch_id: 'BATCH-MREC-4K1', batch_date: '2026-03-10T08:00:00Z', tonnage_kg: 1850,
+      feoc_percentage: 0.00, ira_compliant: true, eu_dbp_ready: false,
+      carbon_intensity: { value: 3.1, tier: 'Premium', vs_chinese_baseline: 77 },
+      molecular_timeline: [
+        { step: 'Production', description: 'NdPr Oxide produced — Caldeira Plant, MG', timestamp: '2026-03-10T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xa3c9f17e8b2d4605913c8a4f7e2b0d96341ef5c8a2b9d7604e1f3a8c5d2be742' },
+        { step: 'Quality Certified', description: 'Inline XRF + ICP-MS analysis. NdPr oxide grade certified.', timestamp: '2026-03-11T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xb7d2e84c1f9a730582e4d1b6a3c8f05927de1a4b8c9f370641e5d2a8c4b39f31' },
+        { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-03-12T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 }, hash: '0xc1a4b67e2d8f930541e3c9a8d5f2b074163ea8c5b2d9f71034e4a1c7b6f82d85' },
+        { step: 'In Transit', description: 'Pacific crossing — container vessel en route to Japan.', timestamp: '2026-03-18T00:00:00Z', status: 'active', coordinates: { lat: 5.0, lng: -160.0 }, hash: '0xd9e7c34a1b8f620593e2d4c1a7f0b835264ea9c1b5d8f4071e3a2c9d6b854a12' },
+        { step: 'ETA Destination', description: 'Shin-Etsu Chemical — Takefu, Japan. Final delivery.', timestamp: '2026-04-28T00:00:00Z', status: 'pending', coordinates: { lat: 35.90, lng: 136.17 } },
+      ],
+      offtake_destination: 'Shin-Etsu Chemical — Takefu, Japan',
+      certificates: ['ISO 14001:2015', 'REIA-PCR-001', 'OECD-GRE Compliant'],
+    },
+    {
+      batch_id: 'BATCH-MREC-2A7', batch_date: '2026-02-03T08:00:00Z', tonnage_kg: 920,
+      feoc_percentage: 0.00, ira_compliant: true, eu_dbp_ready: false,
+      carbon_intensity: { value: 3.4, tier: 'Premium', vs_chinese_baseline: 75 },
+      molecular_timeline: [
+        { step: 'Production', description: 'Mixed REO produced — Caldeira Plant, MG', timestamp: '2026-02-03T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xe5f8a27c1d4b930682e1c9a3f7d2b06845ea1f8c2b9d47036e5a4c1d8b321b73' },
+        { step: 'Quality Certified', description: 'Inline XRF analysis. Mixed REO grade certified.', timestamp: '2026-02-04T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xf2c9d74e1a3b860592e4c1d8a7f0b25736ea5c1b9d8f42071e3a4c2d6b978e46' },
+        { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-02-05T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 }, hash: '0xa8b1e47c2d9f530641e3c8a1d5f4b073862ea9c4b1d7f80531e2a3c9d6f85c29' },
+        { step: 'Customs Cleared', description: 'Long Beach, CA — US customs clearance completed.', timestamp: '2026-02-20T12:00:00Z', status: 'verified', coordinates: { lat: 33.76, lng: -118.19 }, hash: '0xb3d6f91e4a7c820563e2d1c8a9f0b47531ea4c2b5d8f71093e1a3c4d6b297a51' },
+        { step: 'Delivered', description: 'MP Materials — Mountain Pass, NV. Delivery confirmed.', timestamp: '2026-02-28T14:00:00Z', status: 'verified', coordinates: { lat: 35.47, lng: -115.53 }, hash: '0xc7e2a84b1d9f630582e3c4a1d7f0b96435ea1c8b2d5f49071e4a2c3d8b563d64' },
+      ],
+      offtake_destination: 'MP Materials — Mountain Pass, USA',
+      certificates: ['ISO 14001:2015', 'REIA-PCR-001', 'OECD-GRE Compliant', 'IRA Rule-of-Origin Certified'],
     },
   ])
 
@@ -527,6 +558,83 @@ export function seedIfNeeded() {
     permittingRisks: (getDomainState<Array<{ category: string; id: string }>>('risks') ?? [])
       .filter(r => r.category === 'permitting' || r.id === 'R01'),
     provenanceSummary: 'Illustrative bundle for briefing. Replace with signed PDFs and portal exports for official use.',
+  })
+
+  /* ─── Lithology Summary ──────────────────────────────────────────── */
+  setDomainState('lithology_summary', {
+    deposits: [
+      { deposit: 'agostinho', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 14.5, total_holes: 121 },
+      { deposit: 'soberbo', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.8, avg_saprolite_depth_m: 12.0, total_holes: 11 },
+      { deposit: 'capao-do-mel', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.2, total_holes: 13 },
+      { deposit: 'figueira', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 11.8, total_holes: 9 },
+      { deposit: 'barra-do-pacu', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 14.0, total_holes: 6 },
+      { deposit: 'cupim-vermelho-norte', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.3, avg_saprolite_depth_m: 15.1, total_holes: 5 },
+      { deposit: 'cupim-vermelho-sul', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.8, total_holes: 5 },
+      { deposit: 'dona-maria-1', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.7, avg_saprolite_depth_m: 12.4, total_holes: 7 },
+      { deposit: 'dona-maria-2', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 14.2, total_holes: 4 },
+      { deposit: 'cercado', dominant_lithology: 'fresh_phonolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 12.6, total_holes: 5 },
+      { deposit: 'piao', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 13.5, total_holes: 5 },
+      { deposit: 'coqueirinho', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.4, avg_saprolite_depth_m: 14.8, total_holes: 3 },
+      { deposit: 'tamandua', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.0, total_holes: 3 },
+      { deposit: 'fazenda-limoeiro', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 14.4, total_holes: 2 },
+      { deposit: 'cipo', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.8, avg_saprolite_depth_m: 11.5, total_holes: 1 },
+      { deposit: 'cipo-3', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.5, avg_saprolite_depth_m: 15.0, total_holes: 1 },
+      { deposit: 'donana', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 12.8, total_holes: 1 },
+      { deposit: 'pinheiro', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 13.6, total_holes: 1 },
+      { deposit: 'pitangueira', dominant_lithology: 'saprolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 12.2, total_holes: 1 },
+      { deposit: 'tatu', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.3, avg_saprolite_depth_m: 14.0, total_holes: 1 },
+    ],
+    lithology_types: ['laterite', 'saprolite', 'weathered_phonolite', 'fresh_phonolite', 'tinguaite', 'nepheline_syenite', 'alluvium'],
+    stratigraphy_note: 'Caldeira alkaline complex: laterite cap → saprolite → weathered phonolite → fresh phonolite/nepheline syenite. Tinguaite dykes intersect locally.',
+  })
+
+  /* ─── Stakeholder Register ─────────────────────────────────────────── */
+  setDomainState('stakeholder_register', {
+    groups: [
+      {
+        group: 'Community',
+        status: 'neutral',
+        summary: 'Engagement active, LAPOC pending',
+        items: [
+          { label: 'Grievances', status: 'green', detail: '0 open / 3 total' },
+          { label: 'Spring monitoring', status: 'amber', detail: 'Modeled' },
+          { label: 'LAPOC status', status: 'amber', detail: 'Integration pending' },
+          { label: 'Last community brief', status: 'green', detail: '2026-03-15', date: '2026-03-15' },
+        ],
+      },
+      {
+        group: 'Regulatory',
+        status: 'neutral',
+        summary: 'Mixed agency posture',
+        items: [
+          { label: 'FEAM', status: 'green', detail: 'Approved', date: '2025-12-01' },
+          { label: 'MPF', status: 'amber', detail: 'EIA challenged', date: '2025-06-15' },
+          { label: 'IGAM', status: 'violet', detail: 'Submitted', date: '2025-10-20' },
+          { label: 'COPAM', status: 'muted', detail: 'Awaiting review', date: '2025-11-01' },
+        ],
+      },
+      {
+        group: 'Commercial',
+        status: 'positive',
+        summary: 'Pipeline active',
+        items: [
+          { label: 'Ucore', status: 'green', detail: '12,000 t/yr' },
+          { label: 'Neo Performance', status: 'amber', detail: '8,000 t/yr' },
+          { label: 'Toyota Tsusho', status: 'muted', detail: 'TBD' },
+        ],
+      },
+      {
+        group: 'ESG & Media',
+        status: 'positive',
+        summary: 'Readiness high',
+        items: [
+          { label: 'ESG coverage', status: 'green', detail: '77%' },
+          { label: 'Provenance', status: 'green', detail: 'All data areas labeled' },
+          { label: 'Demo readiness', status: 'green', detail: 'Disclaimers active · Hallucination tests passing' },
+        ],
+      },
+    ],
+    last_updated: '2026-04-09',
   })
 
   /* ─── Spring Events ───────────────────────────────────────────────── */

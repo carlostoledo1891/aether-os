@@ -19,6 +19,13 @@ export interface SpringEvent {
   note: string
 }
 
+export interface ChannelMeta {
+  unit: string
+  precision: number
+  sample_rate_hz: number
+  staleness_threshold_ms: number
+}
+
 export interface PlantTelemetry {
   timestamp: string
   flow_metrics: {
@@ -39,6 +46,7 @@ export interface PlantTelemetry {
     mrec_kg_hr: number
     ndpr_ratio_pct: number
   }
+  channel_meta?: Record<string, ChannelMeta>
 }
 
 export interface EnvTelemetry {

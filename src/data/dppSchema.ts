@@ -64,6 +64,65 @@ export function getDppCoverage(): { mapped: number; stub: number; pending: numbe
   return { mapped, stub, pending, total: DPP_FIELD_MAPPINGS.length, pct: Math.round((mapped / DPP_FIELD_MAPPINGS.length) * 100) }
 }
 
+/* ─── CEN/CENELEC Schema Validation ────────────────────────────────── */
+
+export interface DppValidationResult {
+  valid: boolean
+  errors: string[]
+  warnings: string[]
+  coverage_pct: number
+  field_count: { mapped: number; stub: number; pending: number; total: number }
+}
+
+export function validateDppExport(batchData: Record<string, unknown>): DppValidationResult {
+  const errors: string[] = []
+  const warnings: string[] = []
+
+  const requiredKeywords = ['unique battery identifier', 'manufacturer identification', 'manufacturing date', 'manufacturing location']
+  for (const keyword of requiredKeywords) {
+    const mapping = DPP_FIELD_MAPPINGS.find(f => f.field.toLowerCase() === keyword)
+    if (!mapping) continue
+    const exportKey = keyword.replace(/ /g, '_')
+    if (!batchData[exportKey]) {
+      if (mapping.status === 'mapped') {
+        warnings.push(`${mapping.field}: mapped but value not provided in export`)
+      } else if (mapping.status === 'pending') {
+        errors.push(`${mapping.field}: required field pending implementation`)
+      }
+    }
+  }
+
+  const coverage = getDppCoverage()
+
+  if (!batchData.schema_version) {
+    warnings.push('Missing schema_version field — defaults to 0.1.0-draft')
+  }
+
+  if (!batchData.regulation_ref) {
+    warnings.push('Missing regulation_ref field — should cite EU 2023/1542 Annex VI')
+  }
+
+  const pendingRequired = DPP_FIELD_MAPPINGS.filter(f => f.status === 'pending' && f.category === 'Identification')
+  for (const f of pendingRequired) {
+    errors.push(`${f.field}: pending — required for CEN/CENELEC EN 45557 compliance`)
+  }
+
+  const stubFields = DPP_FIELD_MAPPINGS.filter(f => f.status === 'stub')
+  for (const f of stubFields) {
+    warnings.push(`${f.field}: stub implementation — review before submission`)
+  }
+
+  const valid = errors.length === 0
+
+  return {
+    valid,
+    errors,
+    warnings,
+    coverage_pct: coverage.pct,
+    field_count: { mapped: coverage.mapped, stub: coverage.stub, pending: coverage.pending, total: coverage.total },
+  }
+}
+
 export interface DppExportJson {
   schema_version: string
   regulation_ref: string

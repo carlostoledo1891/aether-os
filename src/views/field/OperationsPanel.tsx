@@ -1,6 +1,6 @@
-import { memo, useState, type Dispatch, type SetStateAction } from 'react'
+import { memo, useState } from 'react'
 import { motion } from 'motion/react'
-import { Cpu, Droplets, FlaskConical, Gauge, MapPinned, Zap } from 'lucide-react'
+import { Cpu, Droplets, FlaskConical, Gauge, Zap } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -16,16 +16,7 @@ import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { TimeRangeKey } from '../../services/dataService'
 import { CHAIN_STEPS, DOMAIN_COLOR, phVariant } from './constants'
 import { SectionLabel } from '../../components/ui/SectionLabel'
-import type { FieldOpsMapLayers } from './fieldMapLayers'
-import type { DrillHoleType } from '../../components/map/DrillHoleOverlay'
-
-export const OperationsPanel = memo(function OperationsPanel({
-  opsMapLayers,
-  setOpsMapLayers,
-}: {
-  opsMapLayers: FieldOpsMapLayers
-  setOpsMapLayers: Dispatch<SetStateAction<FieldOpsMapLayers>>
-}) {
+export const OperationsPanel = memo(function OperationsPanel() {
   const { plant } = useTelemetry()
   const { data: PILOT_PLANT_PERFORMANCE, isLoading: l1, error: e1 } = useServiceQuery('plant-perf', s => s.getPlantPerformance())
   const { data: HARDWARE_SENSORS, isLoading: l2, error: e2 } = useServiceQuery('hardware-sensors', s => s.getHardwareSensors())
@@ -53,80 +44,6 @@ export const OperationsPanel = memo(function OperationsPanel({
       transition={{ duration: 0.2 }}
       className="flex flex-col gap-2"
     >
-      <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
-        <div className="mb-2 flex items-center gap-1.5">
-          <MapPinned size={11} style={{ color: W.violetSoft }} />
-          <SectionLabel wideTracking>Map layers</SectionLabel>
-        </div>
-        <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-wide" style={{ color: W.text4 }}>
-          Terrain-aligned
-        </div>
-        <div className="mb-2 flex flex-col gap-1.5">
-          {(
-            [
-              ['plantSites', 'Pilot + commercial plant sites'] as const,
-              ['tenements', 'Mining licences (per block)'] as const,
-              ['pfsEngineering', 'PFS starter pit + spent clay'] as const,
-              ['drillHoles', 'Named drill collars'] as const,
-              ['accessRoutes', 'Access road (concept)'] as const,
-              ['licenceEnvelope', 'Caldeira 193 km² envelope'] as const,
-              ['apa', 'APA Pedra Branca (protected area)'] as const,
-            ] as const
-          ).map(([key, label]) => (
-            <label key={key} className="flex cursor-pointer items-center gap-2 text-[10px]" style={{ color: W.text3 }}>
-              <input
-                type="checkbox"
-                checked={opsMapLayers[key]}
-                onChange={(e) => setOpsMapLayers((L) => ({ ...L, [key]: e.target.checked }))}
-                className="accent-violet-500"
-              />
-              {label}
-            </label>
-          ))}
-        </div>
-        <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-wide" style={{ color: W.text4 }}>
-          Legacy / rehearsal
-        </div>
-        <div className="mb-2 flex flex-col gap-1.5">
-          {(
-            [
-              ['deposits', 'Deposit shell polygons (overlap licences)'] as const,
-              ['infra', 'Logistics mesh (ports, grid, supply art)'] as const,
-              ['plantSchematic', 'Pilot flow schematic (telemetry nodes)'] as const,
-              ['neighbors', 'Adjacent tenement (district context)'] as const,
-            ] as const
-          ).map(([key, label]) => (
-            <label key={key} className="flex cursor-pointer items-center gap-2 text-[10px]" style={{ color: W.text3 }}>
-              <input
-                type="checkbox"
-                checked={opsMapLayers[key]}
-                onChange={(e) => setOpsMapLayers((L) => ({ ...L, [key]: e.target.checked }))}
-                className="accent-violet-500"
-              />
-              {label}
-            </label>
-          ))}
-        </div>
-        <div className="mb-1 text-[9px] font-semibold uppercase tracking-wide" style={{ color: W.text4 }}>
-          Hole type
-        </div>
-        <select
-          className="w-full cursor-pointer rounded-md border border-[var(--w-glass-07)] bg-[var(--w-glass-04)] px-2 py-1.5 font-mono text-[10px] text-[var(--w-text2)]"
-          value={opsMapLayers.holeTypeFilter}
-          onChange={(e) =>
-            setOpsMapLayers((L) => ({
-              ...L,
-              holeTypeFilter: e.target.value as DrillHoleType | 'all',
-            }))
-          }
-        >
-          <option value="all">All (DD + AC + Auger)</option>
-          <option value="DD">Diamond (DD)</option>
-          <option value="AC">Air core (AC)</option>
-          <option value="AUGER">Auger</option>
-        </select>
-      </GlassCard>
-
       <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
         <SectionLabel wideTracking>Spatial cross-check</SectionLabel>
         <p className="mt-1.5 text-[10px] leading-snug" style={{ color: W.text3 }}>

@@ -1,5 +1,5 @@
 /**
- * AI Hallucination Test Suite — v8 Demo Gate
+ * AI Hallucination Test Suite — v8 Quality Gate
  *
  * 10 geological/financial questions with known answers from the seed data,
  * plus 1 "I don't know" negative test. Requires GOOGLE_GENERATIVE_AI_API_KEY.

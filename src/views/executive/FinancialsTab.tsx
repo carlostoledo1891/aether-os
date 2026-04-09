@@ -73,7 +73,7 @@ export function FinancialsTab() {
           ))}
         </div>
 
-        <ExecutiveCard title={`${fin?.label ?? '—'} Scenario`} icon={DollarSign} iconColor="green" glow="green">
+        <ExecutiveCard title={`${fin?.label ?? '—'} Scenario`} icon={DollarSign} iconColor="green">
           <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-2.5 xl:grid-cols-3">
             {([
               ['Pre-Tax NPV₈', `$${fin?.npv_pretax_m ?? 0}M`, `IRR ${fin?.irr_pretax_pct ?? 0}%`],
@@ -86,7 +86,7 @@ export function FinancialsTab() {
               <div
                 key={label}
                 className="min-w-0 rounded-lg px-2.5 py-2 sm:px-3 sm:py-2.5"
-                style={{ border: `1px solid ${W.glass07}`, background: W.glass03 }}
+                style={{ border: 'none', background: W.glass03 }}
               >
                 <div className={`${ty.label} mb-1`}>{label}</div>
                 <div className={`${ty.value} mb-0.5`}>{value}</div>

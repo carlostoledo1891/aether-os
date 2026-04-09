@@ -459,7 +459,7 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
 
       {/* ── Legend ──────────────────────────────────────────────────────────── */}
       <div style={{
-        position: 'absolute', bottom: 12, left: 12, display: 'flex', gap: 10, alignItems: 'center',
+        position: 'absolute', bottom: 12, right: 12, display: 'flex', gap: 10, alignItems: 'center',
         background: 'rgba(6,6,16,0.78)', backdropFilter: 'blur(10px)',
         border: `1px solid ${W.glass07}`, borderRadius: W.radius.sm, padding: '5px 10px',
         zIndex: MAP_STACKING.plantLegend, pointerEvents: 'none',

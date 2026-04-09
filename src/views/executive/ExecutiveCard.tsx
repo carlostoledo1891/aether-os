@@ -25,7 +25,7 @@ export function ExecutiveCard({
   headerClassName = '',
 }: ExecutiveCardProps) {
   return (
-    <GlassCard glow={glow} animate={false} className={`p-4 md:p-5 ${className}`}>
+    <GlassCard glow={glow} animate={false} className={`p-3 md:p-4 ${className}`}>
       {title ? (
         <div className={`mb-3 flex items-center gap-2 ${headerClassName}`}>
           {Icon ? <GlowingIcon icon={Icon} color={iconColor} size={14} /> : null}

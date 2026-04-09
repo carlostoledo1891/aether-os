@@ -9,12 +9,12 @@ interface StatusChipProps {
 }
 
 const variantMap = {
-  green:  { bg: `${W.green}1F`,  border: `${W.green}4D`,  text: W.green },
-  amber:  { bg: `${W.amber}1F`,  border: `${W.amber}4D`,  text: W.amber },
-  red:    { bg: `${W.red}1F`,    border: `${W.red}4D`,    text: W.red },
-  violet: { bg: `${W.violet}1F`, border: `${W.violet}4D`, text: W.violetSoft },
-  cyan:   { bg: `${W.cyan}1F`,   border: `${W.cyan}4D`,   text: W.cyan },
-  muted:  { bg: `${W.border3}26`, border: `${W.border3}4D`, text: W.text3 },
+  green:  { bg: `${W.green}12`,  text: W.green },
+  amber:  { bg: `${W.amber}12`,  text: W.amber },
+  red:    { bg: `${W.red}12`,    text: W.red },
+  violet: { bg: `${W.violet}12`, text: W.violetSoft },
+  cyan:   { bg: `${W.cyan}12`,   text: W.cyan },
+  muted:  { bg: `${W.border3}12`, text: W.text3 },
 } as const
 
 export const StatusChip = memo(function StatusChip({ label, variant = 'muted', dot = false, size = 'sm' }: StatusChipProps) {
@@ -28,7 +28,7 @@ export const StatusChip = memo(function StatusChip({ label, variant = 'muted', d
       alignItems: 'center',
       gap: 5,
       background: v.bg,
-      border: `1px solid ${v.border}`,
+      border: 'none',
       borderRadius: W.radius.lg,
       padding,
       fontSize,

@@ -48,6 +48,10 @@ const TOOL_LABELS: Record<string, string> = {
   queryDrawdown: 'Drawdown Schedule',
   queryPricing: 'Pricing Model',
   queryMarketSizing: 'Market Sizing',
+  queryLithology: 'Lithology',
+  queryDPPValidation: 'DPP Validation',
+  queryStakeholders: 'Stakeholders',
+  querySecurityArchitecture: 'Security',
 }
 
 function getToolLabel(toolName: string): string {

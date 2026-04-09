@@ -58,7 +58,7 @@ export function DfsTab() {
 
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
-      <ExecutiveCard title="Ausenco DFS Workstreams" icon={FileBarChart} iconColor="green" glow="green">
+      <ExecutiveCard title="Ausenco DFS Workstreams" icon={FileBarChart} iconColor="green">
         <div className="flex flex-col gap-4">
           {dfsWorkstreams.map((ws) => {
             const barColor =
@@ -160,7 +160,7 @@ export function DfsTab() {
         </div>
       </ExecutiveCard>
 
-      <ExecutiveCard title="Vero Platform Roadmap" icon={Rocket} iconColor="violet" glow="violet" className="col-span-full">
+      <ExecutiveCard title="Vero Platform Roadmap" icon={Rocket} iconColor="violet" className="col-span-full">
         <div className="flex flex-col gap-5">
           {PLATFORM_ROADMAP.map((p, i) => {
             const color = p.status === 'active' ? W.violet : W.text4

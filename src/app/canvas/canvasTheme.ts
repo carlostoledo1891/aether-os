@@ -2,6 +2,13 @@
 /* Canonical palette for TS/JS (inline styles, SVG, Recharts). Keep in sync with
  * src/styles/theme.css :root — same names map to --w-* variables there. */
 
+/**
+ * Contrast policy (WCAG 2.1 AA):
+ * - text1: primary body text, ≥7:1 on bg — AAA
+ * - text2: secondary labels, ≥5:1 on bg — AA
+ * - text3: muted captions, ≥4.5:1 on bg — AA (lightened in v10)
+ * - text4: decorative/meta only, ~4.8:1 — borderline AA; never for essential info
+ */
 export const W = {
   bg:           '#07070E',
   canvas:       '#060610',
@@ -13,8 +20,8 @@ export const W = {
   border3:      '#424270',
   text1:        '#ECECF8',
   text2:        '#A0A0C8',
-  text3:        '#6B6B98',
-  text4:        '#6464A0',
+  text3:        '#8888B8',
+  text4:        '#7878B0',
   violet:       '#7C5CFC',
   violetSoft:   '#9D80FF',
   violetGlow:   'rgba(124,92,252,0.25)',
@@ -27,6 +34,9 @@ export const W = {
   blueSubtle:   'rgba(59,130,246,0.10)',
   blueMuted:    '#60A5FA',
   blueDark:     '#1E40AF',
+  teal:         '#00D4C8',
+  tealMuted:    '#009E95',
+  tealDark:     '#006B66',
   green:        '#22D68A',
   greenGlow:    'rgba(34,214,138,0.22)',
   greenSubtle:  'rgba(34,214,138,0.10)',

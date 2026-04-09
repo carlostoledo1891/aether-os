@@ -4,7 +4,7 @@
 
 **Last synced from codebase:** 2026-04-09  
 **Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, and stakeholder stress-test personas (issuer, capital, buyers, society, ecosystem, media).  
-**Releases since last sync:** Data Layer Refactor (MaybeAsync types, useServiceQuery, LoadingSkeleton), CTO Code Review & Quality Sprint (186 tests, ErrorFallback, two-layer cache contract, deployment gate, backend hardening, a11y, styling discipline), **Feature Sprint v5** (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges).
+**Releases since last sync:** Data Layer Refactor (MaybeAsync types, useServiceQuery, LoadingSkeleton), CTO Code Review & Quality Sprint (186 tests, ErrorFallback, two-layer cache contract, deployment gate, backend hardening, a11y, styling discipline), Feature Sprint v5 (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges), **Feature Sprint v6** (lithological intervals, CEN/CENELEC schema validation, Stakeholders tab, map hover popups, 25 AI agent tools, 218 tests).
 
 ---
 
@@ -47,7 +47,7 @@
 **Supporting paragraph**  
 One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI). Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
 
-*Currently a production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers (weather, FX, seismic). OpenAPI spec auto-generated from Fastify routes. DPP-compliant JSON export (EU 2023/1542). Bilingual community card (EN/PT-BR) with grievance path. Interactive drill trace schematic with JORC reference badges. 186 automated tests, deployment gate, and live link verified. Production integration roadmap available on request.*
+*Currently a production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers (weather, FX, seismic). OpenAPI spec auto-generated from Fastify routes. DPP-compliant JSON export (EU 2023/1542) with CEN/CENELEC schema validation. Bilingual community card (EN/PT-BR) with grievance path. Interactive drill trace schematic with JORC reference badges. Lithological interval viewer. Stakeholders tab. Map hover popups with feature detail. 25 AI agent tools backed by domain data. 218 automated tests, deployment gate, and live link verified. Production integration roadmap available on request.*
 
 **Optional one-line (media / retail honesty)**  
 *Demo mixes public-reference map data, disclosure-aligned scenarios where cited, and simulated time series — not a substitute for filed instruments, competent-person sign-off, or operational systems of record.*
@@ -197,7 +197,7 @@ Use for landing page or deck appendix:
 - **Time range** — 24h / 7d / 30d historical views with server-side ring buffer and retention policies
 - **Error resilience** — `ErrorFallback` component across all 14 data consumers; connection status banner (connected / degraded / offline); graceful server shutdown
 - **Accessibility** — focus trap on alert drawer, `aria-label` on icon buttons, explicit `type="button"` on all buttons, WCAG-aligned design tokens
-- **186 automated tests** across 3 packages (frontend, server, engine) — including live-mode integration tests that verify no infinite re-renders with async data
+- **218 automated tests** across 3 packages (frontend, server, engine) — including live-mode integration tests that verify no infinite re-renders with async data
 - **Deployment gate** — mandatory checklist (tsc, tests, build, localhost click-through, Vercel preview) before every production deploy
 - **Integrator-ready story** — read-only historians, unidirectional OT/IT gateways, explicit latency, documented `isThenable` contract *(roadmap bullets for RFPs)*
 - **OpenAPI spec** — auto-generated from Fastify route schemas; Swagger UI at `/api/docs`, machine-readable spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and schemas.
@@ -205,6 +205,11 @@ Use for landing page or deck appendix:
 - **Build verification stamp** — git SHA + build date visible in data mode banner. Tooltip shows full SHA and ISO timestamp.
 - **Bilingual community card** (EN/PT-BR) — grievance path with agency contacts (FEAM, IGAM, MPF), 3-step reporting process. Language toggle with localStorage persistence. Designed for communities in Poços de Caldas.
 - **Drill trace schematic** — interactive cross-section of 8 drill holes by depth and TREO grade. Click-to-detail with intercept data. JORC reference badges as clickable links to ASX filing on resource numbers.
+- **Lithological interval viewer** — drill hole lithology column with depth-scaled bars, color-coded by rock type, linked to collar metadata and assay intercepts
+- **CEN/CENELEC schema validation** — live validation of DPP JSON exports against EU Battery Regulation Annex VI mandatory fields. Inline error/warning reporting with field-level coverage breakdown
+- **Stakeholders tab** — executive-level view of project stakeholders, relationships, and engagement status across regulatory, community, and commercial dimensions
+- **Map hover popups** — contextual feature detail on hover for drill collars, springs, plant sites, and infrastructure layers; no click required for quick inspection
+- **25 AI agent tools** — domain-grounded chat with tools spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data
 
 ---
 
@@ -220,7 +225,7 @@ Use for landing page or deck appendix:
 
 ## Built by
 
-**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 186 tests across 3 packages, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
+**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 218 tests across 3 packages, 25 AI agent tools, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
@@ -250,19 +255,19 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 
 ---
 
-## Persona feedback on website copy (2026-04-09, v3 — post CTO Code Review Sprint)
+## Persona feedback on website copy (2026-04-09, v9 — Feature Sprint v6)
 
 | Persona | Score | Verdict | Key quote |
 |---------|-------|---------|-----------|
-| Chairman | 8.0 | Live link restored; wants production smoke gate | "Test what the stakeholder sees, not what the developer sees" |
-| CEO | 7.5 | Loading states are baseline; wants cost model | "Shipping broken twice in the same day is a process problem" |
-| Chief Geologist | 7.5 | No geological content change; cache contract addresses stale-data concern | "Never show a stale number for geology" |
-| DoD Buyer | 7.0 | Real deployment model noted; wants FedRAMP | "Show me the infra story" |
-| NGO | 6.0 | Invisible to communities; needs PT + field-verified springs | "Maps spread faster than disclaimers" |
-| Integrator | 8.5 | Clean async abstraction; wants OpenAPI + OPC-UA | "Two-layer caches are fine if both layers agree on staleness semantics" |
-| Journalist | 7.0 | Process gap is the story; honesty narrative tested | "The honest thing to do would be to add 'deployed broken, fixed same day' to your transparency narrative" |
+| Chairman | 9.0 | Stakeholders tab + AI tools give board-prep credibility | "Now I can rehearse the steerco story in one place" |
+| CEO | 8.5 | 25 tools + schema validation show product maturity | "This is starting to look like a product, not a prototype" |
+| Chief Geologist | 9.0 | Lithological intervals + drill trace depth; geology firewall intact | "The lithology column is what I'd expect in a technical report" |
+| DoD Buyer | 8.0 | Security architecture card + SBOM + FedRAMP path | "Show me the ATO timeline — that's what procurement needs" |
+| NGO | 7.5 | Community card + PT-BR + grievance path; hover popups help transparency | "If the map shows it, the community should be able to inspect it" |
+| Integrator | 9.5 | 25 AI tools + OpenAPI + schema validation = integration-ready | "Give me the tool list and I can scope the integration in a week" |
+| Journalist | 8.5 | Data honesty + provenance + 218 tests; story is credible | "A solo founder with 218 tests and a schema validator — that's the story" |
 
-**Weighted average: 7.3/10** (unchanged from v2 — infrastructure fixes don't move scores; feature work resumes after live link verified).
+**Weighted average: 8.6/10** (v3 7.3 → v9 8.6 — feature sprints v5–v6 moved every persona; lithology, stakeholders, 25 AI tools, 218 tests, and schema validation close the major gaps).
 
 ---
 

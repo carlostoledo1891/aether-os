@@ -2,13 +2,17 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ShieldCheck, FileText, Download, ChevronDown } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
-import { Marker } from 'react-map-gl/maplibre'
+import { Marker, useMap } from 'react-map-gl/maplibre'
 import { GlassCard } from '../components/ui/GlassCard'
 import { CountdownTimer } from '../components/ui/CountdownTimer'
 import { MapBase, BUYER_VIEW_STATE } from '../components/map/MapBase'
+import type { MapLayerMouseEvent } from '../components/map/MapBase'
 import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
-import { DepositOverlay } from '../components/map/DepositOverlay'
+import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverlay'
 import { InfraOverlay } from '../components/map/InfraOverlay'
+import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
+import type { MapPopupData } from '../components/map/MapFeaturePopup'
+import type { ComplianceLedger } from '../types/telemetry'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { W } from '../app/canvas/canvasTheme'
 import { ComplianceTab } from './buyer/ComplianceTab'
@@ -18,6 +22,27 @@ import styles from './BuyerView.module.css'
 const BATCH_DEPOSIT_MAP: Record<string, string> = {
   'BATCH-MREC-8X9': 'capao-do-mel',
   'BATCH-MREC-7W2': 'soberbo',
+  'BATCH-MREC-4K1': 'capao-do-mel',
+  'BATCH-MREC-2A7': 'capao-do-mel',
+}
+
+function BatchFitBounds({ mapId, timeline }: { mapId: string; timeline: ComplianceLedger['molecular_timeline'] }) {
+  const maps = useMap()
+  const mapRef = maps[mapId as keyof typeof maps] ?? maps.current
+
+  useEffect(() => {
+    if (!mapRef) return
+    const coords = timeline.filter(s => s.coordinates).map(s => s.coordinates!)
+    if (coords.length < 2) return
+    const lngs = coords.map(c => c.lng)
+    const lats = coords.map(c => c.lat)
+    mapRef.fitBounds(
+      [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]],
+      { padding: 60, duration: 1000 },
+    )
+  }, [mapRef, timeline])
+
+  return null
 }
 
 type BuyerTab = 'compliance' | 'traceability'
@@ -46,6 +71,8 @@ export function BuyerView() {
   const [activeTab, setActiveTab] = useState<BuyerTab>('compliance')
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
 
+  const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
+
   const handleStepClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
   }, [])
@@ -53,6 +80,35 @@ export function BuyerView() {
   const handleMarkerClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
     setActiveTab('traceability')
+  }, [])
+
+  const buyerInteractiveLayerIds = [DEPOSIT_LAYER_ID]
+
+  const handleBuyerMouseEnter = useCallback((e: MapLayerMouseEvent) => {
+    const feat = e.features?.[0]
+    const layerId = feat?.layer?.id
+    const props = feat?.properties as Record<string, unknown> | undefined
+    const px = e.point
+    if (layerId === DEPOSIT_LAYER_ID && props) {
+      setPopupData({
+        x: px.x, y: px.y,
+        data: {
+          title: String(props.name ?? props.id ?? ''),
+          accentColor: W.cyan,
+          rows: [
+            { label: 'Status', value: String(props.status ?? '—') },
+            { label: 'TREO', value: `${Number(props.treo_ppm ?? 0)} ppm` },
+            { label: 'Tonnage', value: `${Number(props.tonnage_mt ?? 0)} Mt` },
+          ],
+        },
+      })
+      return
+    }
+    setPopupData(null)
+  }, [])
+
+  const handleBuyerMouseLeave = useCallback(() => {
+    setPopupData(null)
   }, [])
 
   const exportTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -105,7 +161,15 @@ export function BuyerView() {
               transition: 'border-color 0.4s, box-shadow 0.4s',
             }}
           >
-            <MapBase id="buyerField" initialViewState={BUYER_VIEW_STATE}>
+            <MapBase
+              id="buyerField"
+              initialViewState={BUYER_VIEW_STATE}
+              interactiveLayerIds={buyerInteractiveLayerIds}
+              cursor={popupData ? 'pointer' : ''}
+              onMouseEnter={handleBuyerMouseEnter}
+              onMouseLeave={handleBuyerMouseLeave}
+            >
+              <BatchFitBounds mapId="buyerField" timeline={batch.molecular_timeline} />
               <CaldeiraBoundary />
               <DepositOverlay highlightId={originDepositId} />
               <InfraOverlay showRoute mapId="buyerField" />
@@ -131,7 +195,7 @@ export function BuyerView() {
                 )
               })}
             </MapBase>
-
+            <MapFeaturePopup data={popupData?.data ?? null} x={popupData?.x ?? 0} y={popupData?.y ?? 0} />
           </div>
         </div>
 

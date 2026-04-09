@@ -39,6 +39,14 @@ export interface LicenceEnvelopeMapDetail {
   confidence?: string
 }
 
+export interface BoundaryMapDetail {
+  name: string
+  area_km2: number
+  type: string
+  age: string
+  geology: string
+}
+
 export function toAccessRouteDetail(props: Record<string, unknown>): AccessRouteMapDetail | null {
   const id = props.id
   if (typeof id !== 'string') return null
@@ -87,3 +95,4 @@ export type FieldMapGeoSelection =
   | { kind: 'env'; detail: EnvMapFeatureDetail }
   | { kind: 'route'; detail: AccessRouteMapDetail }
   | { kind: 'licenceEnvelope'; detail: LicenceEnvelopeMapDetail }
+  | { kind: 'boundary'; detail: BoundaryMapDetail }

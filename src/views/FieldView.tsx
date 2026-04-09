@@ -8,7 +8,7 @@ import { PlantOverlay, PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../compone
 import type { PlantOverlayNodeDetail } from '../components/map/PlantOverlay'
 import { HydroOverlay, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID, toHydroNodeDetail, toSpringDetail } from '../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../components/map/HydroOverlay'
-import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
+import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from '../components/map/CaldeiraBoundary'
 import {
   EnvironmentalOverlay,
   ENV_APA_FILL_LAYER_ID,
@@ -28,6 +28,9 @@ import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from '../component
 import { AccessRoutesOverlay, ACCESS_ROUTE_LINE_LAYER_ID } from '../components/map/AccessRoutesOverlay'
 import { LicenceEnvelopeOverlay, LICENCE_ENVELOPE_FILL_LAYER_ID } from '../components/map/LicenceEnvelopeOverlay'
 import { NeighborOverlay } from '../components/map/NeighborOverlay'
+import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
+import { MapLayerPicker } from '../components/map/MapLayerPicker'
+import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import { W } from '../app/canvas/canvasTheme'
 import { useTelemetry } from '../services/DataServiceProvider'
 import { useServiceQuery } from '../hooks/useServiceQuery'
@@ -39,7 +42,7 @@ import { OperationsPanel } from './field/OperationsPanel'
 import { EnvironmentPanel } from './field/EnvironmentPanel'
 import { FieldBottomMetrics } from './field/FieldBottomMetrics'
 import { FieldPinnedAssetCard } from './field/FieldPinnedAssetCard'
-import { FieldMapGeoInspector } from './field/FieldMapGeoInspector'
+// FieldMapGeoInspector content merged into FieldPinnedAssetCard
 import {
   DEFAULT_FIELD_ENV_LAYERS,
   DEFAULT_FIELD_OPS_LAYERS,
@@ -96,7 +99,11 @@ function pickFeatureByPriority(
   return undefined
 }
 
-export function FieldView() {
+interface FieldViewProps {
+  highlightFeatureId?: string | null
+}
+
+export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const { plant, env } = useTelemetry()
   const springsRef = useRef(env.springs)
   springsRef.current = env.springs
@@ -111,6 +118,7 @@ export function FieldView() {
   const [geoSelection, setGeoSelection] = useState<FieldMapGeoSelection | null>(null)
   const [opsMapLayers, setOpsMapLayers] = useState<FieldOpsMapLayers>(DEFAULT_FIELD_OPS_LAYERS)
   const [envMapLayers, setEnvMapLayers] = useState<FieldEnvMapLayers>(DEFAULT_FIELD_ENV_LAYERS)
+  const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
 
   const interactiveLayerIds = useMemo(() => {
     if (mapTab === 'operations') {
@@ -125,6 +133,7 @@ export function FieldView() {
       if (opsMapLayers.accessRoutes) ids.push(ACCESS_ROUTE_LINE_LAYER_ID)
       if (opsMapLayers.licenceEnvelope) ids.push(LICENCE_ENVELOPE_FILL_LAYER_ID)
       if (opsMapLayers.apa) ids.push(ENV_APA_FILL_LAYER_ID, 'env-apa-label')
+      ids.push(CALDEIRA_BOUNDARY_LAYER_ID)
       return ids
     }
     const e: string[] = [HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID]
@@ -140,6 +149,7 @@ export function FieldView() {
       )
     }
     if (envMapLayers.udc) e.push(UDC_REFERENCE_LAYER_ID, 'env-udc-label')
+    e.push(CALDEIRA_BOUNDARY_LAYER_ID)
     return e
   }, [mapTab, opsMapLayers, envMapLayers])
 
@@ -147,22 +157,130 @@ export function FieldView() {
     (e: MapLayerMouseEvent) => {
       const feat = e.features?.[0]
       const layerId = feat?.layer?.id
-      const id = feat?.properties?.id
+      const props = feat?.properties as Record<string, unknown> | undefined
+      const id = props?.id
+      const px = e.point
       if (
         (layerId === PLANT_NODE_LAYER_ID || layerId === OPS_PLANT_SITE_CORE_LAYER_ID) &&
         typeof id === 'string'
       ) {
         setHoveredNodeId(id)
         setMapHoverHint(null)
+        setPopupData(null)
         return
       }
       if (mapTab === 'environment' && (layerId === HYDRO_NODE_LAYER_ID || layerId === HYDRO_SPRING_LAYER_ID) && typeof id === 'string') {
         setHoveredNodeId(id)
         setMapHoverHint(null)
+        setPopupData(null)
         return
       }
+
+      if (layerId === DRILL_LAYER_ID && typeof id === 'string') {
+        setHoveredNodeId(id)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: String(id),
+            accentColor: W.violetSoft,
+            rows: [
+              { label: 'TREO', value: `${Number(props?.treo_ppm ?? 0)} ppm` },
+              { label: 'Depth', value: `${Number(props?.depth_m ?? 0)} m` },
+              { label: 'Deposit', value: String(props?.deposit ?? '—') },
+              { label: 'Type', value: String(props?.hole_type ?? '—') },
+            ],
+          },
+        })
+        return
+      }
+      if (layerId === DEPOSIT_LAYER_ID && props) {
+        setHoveredNodeId(null)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: String(props.name ?? props.id ?? ''),
+            accentColor: W.cyan,
+            rows: [
+              { label: 'Status', value: String(props.status ?? '—') },
+              { label: 'TREO', value: `${Number(props.treo_ppm ?? 0)} ppm` },
+              { label: 'Tonnage', value: `${Number(props.tonnage_mt ?? 0)} Mt` },
+            ],
+          },
+        })
+        return
+      }
+      if (layerId === PFS_ENGINEERING_FILL_LAYER_ID && props) {
+        setHoveredNodeId(null)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: String(props.label ?? props.id ?? ''),
+            accentColor: W.amber,
+            rows: [
+              { label: 'Type', value: String(props.engineering_kind ?? '—') },
+              ...(props.note ? [{ label: 'Note', value: String(props.note) }] : []),
+            ],
+          },
+        })
+        return
+      }
+      if (layerId === INFRA_POINT_CORE_LAYER_ID && props) {
+        setHoveredNodeId(null)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: String(props.label ?? props.id ?? ''),
+            accentColor: W.green,
+            rows: [
+              { label: 'Kind', value: String(props.kind ?? '—') },
+              ...(props.sublabel ? [{ label: 'Detail', value: String(props.sublabel) }] : []),
+            ],
+          },
+        })
+        return
+      }
+      if (layerId === LICENSE_LAYER_ID && props) {
+        setHoveredNodeId(null)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: String(props.name ?? props.id ?? ''),
+            accentColor: W.violet,
+            rows: [
+              { label: 'Status', value: String(props.status ?? '—') },
+              { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
+            ],
+          },
+        })
+        return
+      }
+
+      if (layerId === CALDEIRA_BOUNDARY_LAYER_ID) {
+        setHoveredNodeId(null)
+        setMapHoverHint(null)
+        setPopupData({
+          x: px.x, y: px.y,
+          data: {
+            title: 'Caldeira Alkaline Complex',
+            accentColor: W.violet,
+            rows: [
+              { label: 'Area', value: '~193 km²' },
+              { label: 'Type', value: 'Alkaline intrusion' },
+              { label: 'Age', value: '~80 Ma (Cretaceous)' },
+            ],
+          },
+        })
+        return
+      }
+
       setHoveredNodeId(null)
-      const label = feat?.properties?.label ?? feat?.properties?.name ?? feat?.properties?.id
+      setPopupData(null)
+      const label = props?.label ?? props?.name ?? props?.id
       if (typeof label === 'string') setMapHoverHint(label)
     },
     [mapTab],
@@ -171,11 +289,34 @@ export function FieldView() {
   const handleMouseLeave = useCallback(() => {
     setHoveredNodeId(null)
     setMapHoverHint(null)
+    setPopupData(null)
   }, [])
 
   const handleMapClick = useCallback(
     (e: MapLayerMouseEvent) => {
       const feats = e.features
+
+      const boundaryFeat = feats?.find(f => f.layer?.id === CALDEIRA_BOUNDARY_LAYER_ID)
+      if (boundaryFeat) {
+        setSelectedPlantNode(null)
+        setSelectedHydroNode(null)
+        setGeoSelection((g) =>
+          g?.kind === 'boundary'
+            ? null
+            : {
+                kind: 'boundary',
+                detail: {
+                  name: 'Caldeira Alkaline Complex',
+                  area_km2: 193,
+                  type: 'Alkaline intrusion',
+                  age: '~80 Ma (Cretaceous)',
+                  geology: 'Phonolite-tinguaite-nepheline syenite complex with laterite cap',
+                },
+              },
+        )
+        return
+      }
+
       if (mapTab === 'operations') {
         const feat = pickFeatureByPriority(feats, OPS_LAYER_PRIORITY as unknown as string[])
         if (!feat?.properties) return
@@ -350,6 +491,39 @@ export function FieldView() {
     [weather, currentScenario],
   )
 
+  const layerToggles = useMemo(() => {
+    if (mapTab === 'operations') {
+      return [
+        { id: 'plantSites', label: 'Pilot + commercial plant sites', checked: opsMapLayers.plantSites },
+        { id: 'tenements', label: 'Mining licences (per block)', checked: opsMapLayers.tenements },
+        { id: 'pfsEngineering', label: 'PFS starter pit + spent clay', checked: opsMapLayers.pfsEngineering },
+        { id: 'drillHoles', label: 'Named drill collars', checked: opsMapLayers.drillHoles },
+        { id: 'accessRoutes', label: 'Access road (concept)', checked: opsMapLayers.accessRoutes },
+        { id: 'licenceEnvelope', label: 'Caldeira 193 km² envelope', checked: opsMapLayers.licenceEnvelope },
+        { id: 'apa', label: 'APA Pedra Branca (protected area)', checked: opsMapLayers.apa },
+        { id: 'deposits', label: 'Deposit shell polygons', checked: opsMapLayers.deposits },
+        { id: 'infra', label: 'Logistics mesh', checked: opsMapLayers.infra },
+        { id: 'plantSchematic', label: 'Pilot flow schematic', checked: opsMapLayers.plantSchematic },
+        { id: 'neighbors', label: 'Adjacent tenement', checked: opsMapLayers.neighbors },
+      ]
+    }
+    return [
+      { id: 'apa', label: 'APA Pedra Branca (core)', checked: envMapLayers.apa },
+      { id: 'buffer', label: 'APA buffer ring', checked: envMapLayers.buffer },
+      { id: 'monitoring', label: 'Monitoring / cumulative zone', checked: envMapLayers.monitoring },
+      { id: 'urban', label: 'Urban context (OSM-style)', checked: envMapLayers.urban },
+      { id: 'udc', label: 'UDC / reference footprint', checked: envMapLayers.udc },
+    ]
+  }, [mapTab, opsMapLayers, envMapLayers])
+
+  const handleLayerToggle = useCallback((id: string) => {
+    if (mapTab === 'operations') {
+      setOpsMapLayers(prev => ({ ...prev, [id]: !prev[id as keyof FieldOpsMapLayers] }))
+    } else {
+      setEnvMapLayers(prev => ({ ...prev, [id]: !prev[id as keyof FieldEnvMapLayers] }))
+    }
+  }, [mapTab, setOpsMapLayers, setEnvMapLayers])
+
   const activeNode: PlantOverlayNodeDetail | HydroOverlayNodeDetail | null =
     mapTab === 'operations' ? selectedPlantNode : mapTab === 'environment' ? selectedHydroNode : null
   const isPinned = activeNode !== null
@@ -426,7 +600,7 @@ export function FieldView() {
                   {opsMapLayers.accessRoutes && <AccessRoutesOverlay />}
                   {opsMapLayers.drillHoles && (
                     <DrillHoleOverlay
-                      hoveredHoleId={null}
+                      hoveredHoleId={hoveredNodeId}
                       holeTypeFilter={opsMapLayers.holeTypeFilter}
                     />
                   )}
@@ -473,7 +647,77 @@ export function FieldView() {
                 </>
               )}
             </MapBase>
-
+            <MapFeaturePopup data={popupData?.data ?? null} x={popupData?.x ?? 0} y={popupData?.y ?? 0} />
+            <AnimatePresence>
+              {highlightFeatureId && (
+                <motion.div
+                  key="highlight-pulse"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: 'absolute',
+                    top: 8,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '3px 10px',
+                    borderRadius: W.radius.sm,
+                    background: W.violetSubtle,
+                    border: `1px solid ${W.violet}40`,
+                    fontSize: 9,
+                    fontWeight: 600,
+                    color: W.violetSoft,
+                    fontFamily: 'var(--font-mono)',
+                    pointerEvents: 'none',
+                    animation: 'pulse 1.5s ease-in-out infinite',
+                    zIndex: 50,
+                  }}
+                >
+                  Alert source: {highlightFeatureId}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <MapLayerPicker layers={layerToggles} onToggle={handleLayerToggle} />
+            {mapTab === 'operations' && (
+              <div style={{
+                position: 'absolute',
+                bottom: 12,
+                right: 12,
+                zIndex: 8,
+                background: W.glass06,
+                backdropFilter: 'blur(12px)',
+                border: `1px solid ${W.glass12}`,
+                borderRadius: 8,
+                padding: '8px 10px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+                fontSize: 10,
+                color: W.text3,
+              }}>
+                <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 9 }}>Legend</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+                  <span>TREO ≥ 2.0%</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#eab308' }} />
+                  <span>TREO 1.0–2.0%</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444' }} />
+                  <span>TREO &lt; 1.0%</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ width: 8, height: 3, borderRadius: 1, background: W.violet }} />
+                  <span>Licence area</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ width: 8, height: 3, borderRadius: 1, background: '#fff3', border: '1px dashed #fff6' }} />
+                  <span>Caldeira boundary</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <FieldBottomMetrics tabKey={mapTab} items={bottomMetrics} />
@@ -487,22 +731,18 @@ export function FieldView() {
             isPinned={isPinned}
             isHovering={isHovering && !geoSelection}
             activeNode={activeNode}
+            geoSelection={geoSelection}
             onClear={clearPinnedNode}
+            onClearGeo={handleClearGeoSelection}
           />
-
-          <FieldMapGeoInspector selection={geoSelection} onClear={handleClearGeoSelection} />
 
           <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
             <AnimatePresence mode="wait">
               {mapTab === 'operations' && (
-                <OperationsPanel opsMapLayers={opsMapLayers} setOpsMapLayers={setOpsMapLayers} />
+                <OperationsPanel />
               )}
               {mapTab === 'environment' && (
-                <EnvironmentPanel
-                  envMapLayers={envMapLayers}
-                  setEnvMapLayers={setEnvMapLayers}
-                  siteWeather={weather}
-                />
+                <EnvironmentPanel siteWeather={weather} />
               )}
             </AnimatePresence>
           </div>

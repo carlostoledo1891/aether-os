@@ -9,6 +9,8 @@ import type {
   ScaleUpPathway, PilotPlantPerformance, HardwareSensorCategory,
   CyberTrustPillar, ApiHandoff, UThSafety, Scope3Tracking,
   DomainThresholds, ResourceClassification, SpatialInsightBundle,
+  LithologySummary,
+  StakeholderRegister,
   TelemetryTick,
 } from './dataService'
 import type { DepositRecord } from '../data/mockData'
@@ -252,6 +254,14 @@ export function createLiveDataService(): AetherDataService {
 
     getSpatialInsights() {
       return api<SpatialInsightBundle>('/api/spatial-insights')
+    },
+
+    getLithologySummary() {
+      return api<LithologySummary>('/api/geology/lithology')
+    },
+
+    getStakeholderRegister() {
+      return api<StakeholderRegister>('/api/stakeholders')
     },
 
     dismissAlert(id: string) {

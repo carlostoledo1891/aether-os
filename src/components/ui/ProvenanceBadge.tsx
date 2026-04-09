@@ -24,14 +24,13 @@ export function ProvenanceBadge({ kind, title, className = '', style }: Provenan
   return (
     <span
       title={title ?? PROVENANCE_SHORT_LABEL[kind]}
-      className={`inline-flex max-w-full items-center rounded px-1.5 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wide ${className}`}
-      style={{
-        color: c,
-        background: `${c}18`,
-        border: `1px solid ${c}40`,
-        ...style,
-      }}
+      className={`inline-flex max-w-full items-center gap-1.5 font-mono text-[8px] font-semibold uppercase tracking-wide ${className}`}
+      style={{ color: W.text4, ...style }}
     >
+      <span
+        className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ background: c }}
+      />
       {PROVENANCE_SHORT_LABEL[kind]}
     </span>
   )

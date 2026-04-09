@@ -3,6 +3,8 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
 import caldeiraBoundaryUrl from '../../data/geojson/caldeira-boundary.geojson?url'
 
+export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-fill'
+
 /**
  * Renders the outer limit of the Caldeira Project Area as a MapLibre polygon.
  * Three stacked layers (outermost → innermost):

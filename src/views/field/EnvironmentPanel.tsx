@@ -1,6 +1,6 @@
-import { memo, useCallback, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
-import { AlertTriangle, Droplets, FileCheck, Globe, Layers, MapPinned, Phone, RadioTower } from 'lucide-react'
+import { AlertTriangle, ChevronDown, Droplets, FileCheck, Globe, Layers, Phone, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -19,16 +19,11 @@ import type { TimeRangeKey } from '../../services/dataService'
 import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
 import { COMMUNITY_STRINGS, type CommunityLang } from '../../data/communityTranslations'
-import type { FieldEnvMapLayers } from './fieldMapLayers'
 import css from './EnvironmentPanel.module.css'
 
 export const EnvironmentPanel = memo(function EnvironmentPanel({
-  envMapLayers,
-  setEnvMapLayers,
   siteWeather,
 }: {
-  envMapLayers: FieldEnvMapLayers
-  setEnvMapLayers: Dispatch<SetStateAction<FieldEnvMapLayers>>
   siteWeather: SiteWeatherSnapshot
 }) {
   const { env } = useTelemetry()
@@ -46,6 +41,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       return next
     })
   }, [])
+  const [provExpanded, setProvExpanded] = useState(false)
   const [range, setRange] = useState<TimeRangeKey>('24h')
   const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
   const envHistory = history?.envHistory ?? []
@@ -95,45 +91,37 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       transition={{ duration: 0.2 }}
       className={css.root}
     >
-      <div className="flex flex-wrap items-center gap-1.5">
-        <ProvenanceBadge kind={prov.sections.hydro_spring_geometry.kind} title={prov.sections.hydro_spring_geometry.hint} />
-        <ProvenanceBadge kind={prov.sections.hydro_spring_status.kind} title={prov.sections.hydro_spring_status.hint} />
-        <ProvenanceBadge kind={prov.sections.hydro_piezo_telemetry.kind} title={prov.sections.hydro_piezo_telemetry.hint} />
-        <ProvenanceBadge kind={prov.sections.precip_field.kind} title={prov.sections.precip_field.hint} />
-        {prov.sections.map_geometry ? (
-          <ProvenanceBadge kind={prov.sections.map_geometry.kind} title={prov.sections.map_geometry.hint} />
-        ) : null}
+      <div>
+        <button
+          type="button"
+          onClick={() => setProvExpanded(p => !p)}
+          className="inline-flex items-center gap-1.5 font-mono text-[8px] font-semibold uppercase tracking-wide"
+          style={{ color: W.text4, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+        >
+          <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: W.violet }} />
+          Data provenance
+          <ChevronDown size={9} style={{ transform: provExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+        </button>
+        {provExpanded && (
+          <div className="flex flex-wrap items-center gap-1.5 mt-1">
+            <ProvenanceBadge kind={prov.sections.hydro_spring_geometry.kind} title={prov.sections.hydro_spring_geometry.hint} />
+            <ProvenanceBadge kind={prov.sections.hydro_spring_status.kind} title={prov.sections.hydro_spring_status.hint} />
+            <ProvenanceBadge kind={prov.sections.hydro_piezo_telemetry.kind} title={prov.sections.hydro_piezo_telemetry.hint} />
+            <ProvenanceBadge kind={prov.sections.precip_field.kind} title={prov.sections.precip_field.hint} />
+            {prov.sections.map_geometry ? (
+              <ProvenanceBadge kind={prov.sections.map_geometry.kind} title={prov.sections.map_geometry.hint} />
+            ) : null}
+          </div>
+        )}
+        <div className="flex items-center gap-1.5 mt-1">
+          <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: W.amber }} />
+          <span className="font-mono text-[8px] font-semibold uppercase tracking-wide" style={{ color: W.text4 }}>
+            LAPOC field instruments · integration pending
+          </span>
+        </div>
       </div>
 
       <CommunityNoticeCard lang={communityLang} onToggleLang={toggleLang} />
-
-      <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
-        <div className="mb-2 flex items-center gap-1.5">
-          <MapPinned size={11} style={{ color: W.cyan }} />
-          <SectionLabel wideTracking>Environmental map layers</SectionLabel>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          {(
-            [
-              ['apa', 'APA Pedra Branca (core)'] as const,
-              ['buffer', 'APA buffer ring'] as const,
-              ['monitoring', 'Monitoring / cumulative zone'] as const,
-              ['urban', 'Urban context (OSM-style)'] as const,
-              ['udc', 'UDC / reference footprint'] as const,
-            ] as const
-          ).map(([key, label]) => (
-            <label key={key} className="flex cursor-pointer items-center gap-2 text-[10px]" style={{ color: W.text3 }}>
-              <input
-                type="checkbox"
-                checked={envMapLayers[key]}
-                onChange={(e) => setEnvMapLayers((L) => ({ ...L, [key]: e.target.checked }))}
-                className="accent-cyan-500"
-              />
-              {label}
-            </label>
-          ))}
-        </div>
-      </GlassCard>
 
       {/* Time range selector */}
       <div className={css.timeRangeRow}>

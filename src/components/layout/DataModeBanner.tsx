@@ -74,31 +74,24 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
         borderBottom: `1px solid ${bannerBorder}`,
       }}
     >
-      <span style={{
-        fontSize: 10,
-        fontWeight: 700,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: bannerColor,
-        fontFamily: 'var(--font-mono)',
-      }}>
-        {statusMsg || context.bannerLabel}
+      <span style={{ color: W.text2, fontWeight: 600, fontSize: 11 }}>
+        Meteoric Resources{' '}
+        <span style={{ color: W.text4, fontWeight: 400 }}>—</span>{' '}
+        <span style={{ color: W.text3, fontWeight: 400 }}>Caldeira Project</span>
       </span>
-      {!statusMsg && (
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <span style={{
-          fontSize: 9,
-          color: W.text4,
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: bannerColor,
           fontFamily: 'var(--font-mono)',
-          lineHeight: 1.35,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          flex: 1,
-          minWidth: 0,
         }}>
-          {context.detail}
+          {statusMsg || context.bannerLabel}
         </span>
-      )}
+      </div>
       {showLastTick && (
         <span
           style={{

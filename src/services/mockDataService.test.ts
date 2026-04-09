@@ -197,7 +197,7 @@ describe('createMockDataService', () => {
     const p = sync(svc.getProvenanceProfile())
     expect(p.sections.hydro_spring_geometry?.kind).toBe('from_public_record')
     expect(p.sections.plant_telemetry?.kind).toBe('simulated')
-    expect(p.sections.map_geometry?.kind).toBe('illustrative')
+    expect(p.sections.map_geometry?.kind).toBe('from_public_record')
   })
 
   it('getIssuerSnapshot returns resource and citations', () => {

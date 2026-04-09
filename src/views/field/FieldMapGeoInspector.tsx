@@ -3,6 +3,7 @@ import { GlassCard } from '../../components/ui/GlassCard'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
+import { LITH_COLORS, LITH_LABELS } from '../../components/charts/lithologyPalette'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import type { FieldMapGeoSelection } from './fieldMapGeoSelection'
 
@@ -82,6 +83,67 @@ export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
           {selection.detail.source_ref && (
             <div className="font-mono text-[9px]" style={{ color: W.text4 }}>
               {selection.detail.source_ref} · {selection.detail.as_of ?? '—'}
+            </div>
+          )}
+
+          {selection.detail.lithology_intervals && selection.detail.lithology_intervals.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 9, fontWeight: 600, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+                Lithology profile
+              </div>
+              <div style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden', gap: 1 }}>
+                {selection.detail.lithology_intervals.map((interval: { from_m: number; to_m: number; lithology: string }, idx: number) => (
+                  <div
+                    key={idx}
+                    style={{
+                      flex: interval.to_m - interval.from_m,
+                      background: LITH_COLORS[interval.lithology] ?? '#555',
+                      minWidth: 2,
+                    }}
+                    title={`${LITH_LABELS[interval.lithology] ?? interval.lithology}: ${interval.from_m}\u2013${interval.to_m}m`}
+                  />
+                ))}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
+                {[...new Set(selection.detail.lithology_intervals.map((i: { lithology: string }) => i.lithology))].map((lith: string) => (
+                  <div key={lith} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: 2, background: LITH_COLORS[lith] ?? '#555' }} />
+                    <span style={{ fontSize: 8, color: W.text4 }}>{LITH_LABELS[lith] ?? lith}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {selection.detail.lithology_intervals && selection.detail.lithology_intervals.length > 0 && (
+            <div style={{ marginTop: 10, display: 'flex', gap: 10 }}>
+              <div style={{ width: 32, height: 180, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5, flexShrink: 0 }}>
+                {selection.detail.lithology_intervals.map((interval: { from_m: number; to_m: number; lithology: string }, idx: number) => {
+                  const total = selection.detail.depth_m || selection.detail.lithology_intervals![selection.detail.lithology_intervals!.length - 1].to_m
+                  const pct = ((interval.to_m - interval.from_m) / total) * 100
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        flex: `${pct} 0 0`,
+                        background: LITH_COLORS[interval.lithology] ?? '#555',
+                        minHeight: 2,
+                        position: 'relative' as const,
+                      }}
+                    >
+                      {pct > 15 && (
+                        <span style={{ position: 'absolute', left: 36, top: '50%', transform: 'translateY(-50%)', fontSize: 8, color: W.text3, whiteSpace: 'nowrap' }}>
+                          {interval.from_m}\u2013{interval.to_m}m
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>0m</span>
+                <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>{selection.detail.depth_m}m</span>
+              </div>
             </div>
           )}
         </div>

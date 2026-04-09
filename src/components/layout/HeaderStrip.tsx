@@ -1,4 +1,4 @@
-import { Bell, MessageSquare } from 'lucide-react'
+import { Bell, Sparkles } from 'lucide-react'
 import type { EsgScore, ViewMode } from '../../types/telemetry'
 import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
@@ -74,8 +74,10 @@ export function HeaderStrip({
         <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} />
       </div>
 
-      {/* Right: ESG + chat + alerts */}
+      {/* Right: ESG ring → AI chat → Alerts */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <EsgScoreRing esg={esg} compact />
+
         {onChatOpen && (
           <button
             type="button"
@@ -90,7 +92,7 @@ export function HeaderStrip({
               borderRadius: W.radius.sm, cursor: 'pointer', outline: 'none',
             }}
           >
-            <MessageSquare size={13} style={{ color: W.violet }} />
+            <Sparkles size={13} style={{ color: W.violet }} />
             <span style={{
               position: 'absolute', top: -2, right: -2,
               width: 6, height: 6, background: W.violet,
@@ -98,7 +100,6 @@ export function HeaderStrip({
             }} />
           </button>
         )}
-        <EsgScoreRing esg={esg} compact />
 
         <button
           type="button"

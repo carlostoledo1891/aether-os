@@ -1,5 +1,6 @@
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { CheckCircle, Circle, Clock, MapPin } from 'lucide-react'
+import { CheckCircle, Circle, Clock, MapPin, Copy, Check } from 'lucide-react'
 import type { ComplianceLedger } from '../types/telemetry'
 import { W } from '../app/canvas/canvasTheme'
 
@@ -24,6 +25,15 @@ function formatTime(ts: string): string {
 }
 
 export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }: BlockchainTimelineProps) {
+  const [copiedHash, setCopiedHash] = useState<string | null>(null)
+
+  const handleCopyHash = useCallback(async (hash: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    await navigator.clipboard.writeText(hash)
+    setCopiedHash(hash)
+    setTimeout(() => setCopiedHash(null), 2000)
+  }, [])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       <p style={{ margin: '0 0 10px', fontSize: 9, color: W.text4, lineHeight: 1.4 }}>
@@ -115,14 +125,28 @@ export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }:
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {step.hash && (
-                    <span title={step.hash} style={{
-                      fontSize: 9, color: color, fontFamily: 'var(--font-mono)',
-                      background: bg, border: `1px solid ${border}`,
-                      padding: '1px 6px', borderRadius: W.radius.xs,
-                      maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap', display: 'inline-block',
-                    }}>
-                      {step.hash}
+                    <span
+                      title="Click to copy full hash"
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => handleCopyHash(step.hash!, e)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); handleCopyHash(step.hash!, e as unknown as React.MouseEvent) } }}
+                      style={{
+                        fontSize: 9, color: copiedHash === step.hash ? W.green : color,
+                        fontFamily: 'var(--font-mono)',
+                        background: copiedHash === step.hash ? `${W.green}1F` : bg,
+                        border: `1px solid ${copiedHash === step.hash ? `${W.green}4D` : border}`,
+                        padding: '1px 6px', borderRadius: W.radius.xs,
+                        maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4,
+                        cursor: 'pointer', transition: 'all 0.2s',
+                      }}
+                    >
+                      {copiedHash === step.hash ? (
+                        <><Check size={8} /> Copied!</>
+                      ) : (
+                        <><Copy size={8} /> {step.hash}</>
+                      )}
                     </span>
                   )}
                   {step.coordinates && (

@@ -38,7 +38,7 @@ export function EsgTab() {
       </ExecutivePageIntro>
 
       <div className="flex flex-wrap gap-3">
-        <ExecutiveCard glow="cyan" className="min-w-[200px] flex-1 !p-4">
+        <ExecutiveCard className="min-w-[200px] flex-1 !p-4">
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className={`${ty.label} mb-1`}>Overall Coverage</div>

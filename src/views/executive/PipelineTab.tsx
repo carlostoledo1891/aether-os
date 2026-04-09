@@ -19,7 +19,7 @@ export function PipelineTab() {
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-4 md:grid-cols-2">
       {offtakers.map((o) => (
-        <ExecutiveCard key={o.id} glow="cyan" className="flex min-h-[220px] flex-col">
+        <ExecutiveCard key={o.id} className="flex min-h-[220px] flex-col">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">
               <GlowingIcon icon={Handshake} color="cyan" size={14} />

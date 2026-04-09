@@ -41,6 +41,8 @@ import type {
   BenchmarkOperator,
   AuditEvent,
   ESGFramework,
+  LithologySummary,
+  StakeholderRegister,
 } from './dataService'
 
 const TICK_MS = 2000
@@ -105,8 +107,8 @@ function buildProvenanceProfile(): ProvenanceProfile {
       },
       plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels simulated for UI rehearsal' },
       precip_field: {
-        kind: 'illustrative',
-        hint: 'Open-Meteo optional; otherwise deterministic mock precip for same window',
+        kind: 'from_public_record',
+        hint: 'Open-Meteo public weather API (ERA5 reanalysis)',
       },
       regulatory_log: {
         kind: 'issuer_attested',
@@ -117,8 +119,20 @@ function buildProvenanceProfile(): ProvenanceProfile {
         hint: 'Demonstration event log with stub hashes — not a controlled legal record',
       },
       map_geometry: {
-        kind: 'illustrative',
-        hint: 'Bundled GeoJSON for Caldeira — each feature carries source_ref; see docs/data/caldeira/DATA_SOURCES.md. Not cadastral survey.',
+        kind: 'from_public_record',
+        hint: 'DNPM/SIGMINE public licence and environmental boundaries',
+      },
+      drill_collars: {
+        kind: 'issuer_attested',
+        hint: 'ASX-disclosed drill collar coordinates and assay appendices',
+      },
+      licence_areas: {
+        kind: 'from_public_record',
+        hint: 'DNPM/SIGMINE public mining licence boundaries',
+      },
+      apa_buffer: {
+        kind: 'from_public_record',
+        hint: 'ICMBio/IEF public environmental protection area boundaries',
       },
     },
   }
@@ -337,13 +351,13 @@ function sha256Stub(input: string): string {
 }
 
 const AUDIT_TRAIL: AuditEvent[] = [
-  { id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event', actor: 'System', action: 'Aether OS instance started', detail: 'Production environment boot — all sensor feeds connected. Firmware v2.4.1.', hash: sha256Stub('AUD-001-system-start') },
+  { id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event', actor: 'System', action: 'Vero instance started', detail: 'Production environment boot — all sensor feeds connected. Firmware v2.4.1.', hash: sha256Stub('AUD-001-system-start') },
   { id: 'AUD-002', timestamp: '2026-04-06T08:02:14Z', type: 'compliance_check', actor: 'System', action: 'FEOC compliance sweep completed', detail: 'Full supply chain re-verified against FEOC database v2026-04-05. 0 flagged entities. 47 suppliers checked.', hash: sha256Stub('AUD-002-feoc-sweep') },
   { id: 'AUD-003', timestamp: '2026-04-05T16:30:00Z', type: 'batch_created', actor: 'J. Santos (Process Eng.)', action: 'Batch BATCH-MREC-8X9 initiated', detail: 'MREC precipitation run started. Feed material from Capão do Mel pit. Target: 142 kg MREC.', hash: sha256Stub('AUD-003-batch-create'), relatedEntityId: 'BATCH-MREC-8X9' },
   { id: 'AUD-004', timestamp: '2026-04-05T14:12:00Z', type: 'alert_triggered', actor: 'Sensor Array', action: 'pH exceedance alert triggered', detail: 'Leach circuit pH rose to 5.12, exceeding 5.0 threshold. Alert dispatched to on-call process engineer.', hash: sha256Stub('AUD-004-alert-ph'), relatedEntityId: 'alert-ph-high' },
   { id: 'AUD-005', timestamp: '2026-04-05T14:58:00Z', type: 'alert_resolved', actor: 'J. Santos (Process Eng.)', action: 'pH exceedance alert resolved', detail: 'Ammonium sulfate feed rate increased 12%. pH returned to 4.4. Total response time: 46 min.', hash: sha256Stub('AUD-005-alert-resolve'), relatedEntityId: 'alert-ph-high' },
-  { id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued', actor: 'Aether OS', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2. Hash anchored to permissioned ledger.', hash: sha256Stub('AUD-006-dbp-issue'), relatedEntityId: 'BATCH-MREC-7W2' },
-  { id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff', actor: 'Aether OS', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. Digital Battery Passport synchronized to Ucore ERP via REST API. HTTP 200.', hash: sha256Stub('AUD-007-api-push'), relatedEntityId: 'ucore' },
+  { id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued', actor: 'Vero', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2. Hash anchored to permissioned ledger.', hash: sha256Stub('AUD-006-dbp-issue'), relatedEntityId: 'BATCH-MREC-7W2' },
+  { id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff', actor: 'Vero', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. Digital Battery Passport synchronized to Ucore ERP via REST API. HTTP 200.', hash: sha256Stub('AUD-007-api-push'), relatedEntityId: 'ucore' },
   { id: 'AUD-008', timestamp: '2026-04-03T09:10:00Z', type: 'alert_triggered', actor: 'Sensor Array', action: 'Sulfate containment critical alert', detail: 'Discharge sulfate reached 247 ppm, approaching 250 ppm regulatory limit. Automatic flow reduction triggered.', hash: sha256Stub('AUD-008-sulfate-alert') },
   { id: 'AUD-009', timestamp: '2026-04-03T10:45:00Z', type: 'alert_resolved', actor: 'M. Costa (Env. Manager)', action: 'Sulfate containment resolved', detail: 'Discharge flow reduced 30%. Contingency filtration activated. Sulfate dropped to 218 ppm. FEAM notified.', hash: sha256Stub('AUD-009-sulfate-resolve') },
   { id: 'AUD-010', timestamp: '2026-04-02T11:30:00Z', type: 'regulatory_submission', actor: 'VP Environment', action: 'Additional hydrological data submitted to FEAM', detail: 'Piezometer data package (Q1 2026) and updated hydrological model delivered to FEAM via SUPRAM portal.', hash: sha256Stub('AUD-010-feam-submit'), relatedEntityId: 'REG-03' },
@@ -404,8 +418,85 @@ const ESG_FRAMEWORKS: ESGFramework[] = [
   },
 ]
 
+/* ─── Lithology Summary ────────────────────────────────────────────────── */
+const LITHOLOGY_SUMMARY: LithologySummary = {
+  deposits: [
+    { deposit: 'agostinho', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 14.5, total_holes: 121 },
+    { deposit: 'soberbo', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.8, avg_saprolite_depth_m: 12.0, total_holes: 11 },
+    { deposit: 'capao-do-mel', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.2, total_holes: 13 },
+    { deposit: 'figueira', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 11.8, total_holes: 9 },
+    { deposit: 'barra-do-pacu', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 14.0, total_holes: 6 },
+    { deposit: 'cupim-vermelho-norte', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.3, avg_saprolite_depth_m: 15.1, total_holes: 5 },
+    { deposit: 'cupim-vermelho-sul', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.8, total_holes: 5 },
+    { deposit: 'dona-maria-1', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.7, avg_saprolite_depth_m: 12.4, total_holes: 7 },
+    { deposit: 'dona-maria-2', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 14.2, total_holes: 4 },
+    { deposit: 'cercado', dominant_lithology: 'fresh_phonolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 12.6, total_holes: 5 },
+    { deposit: 'piao', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 13.5, total_holes: 5 },
+    { deposit: 'coqueirinho', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.4, avg_saprolite_depth_m: 14.8, total_holes: 3 },
+    { deposit: 'tamandua', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 13.0, total_holes: 3 },
+    { deposit: 'fazenda-limoeiro', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.2, avg_saprolite_depth_m: 14.4, total_holes: 2 },
+    { deposit: 'cipo', dominant_lithology: 'weathered_phonolite', avg_laterite_depth_m: 2.8, avg_saprolite_depth_m: 11.5, total_holes: 1 },
+    { deposit: 'cipo-3', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.5, avg_saprolite_depth_m: 15.0, total_holes: 1 },
+    { deposit: 'donana', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.0, avg_saprolite_depth_m: 12.8, total_holes: 1 },
+    { deposit: 'pinheiro', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.1, avg_saprolite_depth_m: 13.6, total_holes: 1 },
+    { deposit: 'pitangueira', dominant_lithology: 'saprolite', avg_laterite_depth_m: 2.9, avg_saprolite_depth_m: 12.2, total_holes: 1 },
+    { deposit: 'tatu', dominant_lithology: 'saprolite', avg_laterite_depth_m: 3.3, avg_saprolite_depth_m: 14.0, total_holes: 1 },
+  ],
+  lithology_types: ['laterite', 'saprolite', 'weathered_phonolite', 'fresh_phonolite', 'tinguaite', 'nepheline_syenite', 'alluvium'],
+  stratigraphy_note: 'Caldeira alkaline complex: laterite cap → saprolite → weathered phonolite → fresh phonolite/nepheline syenite. Tinguaite dykes intersect locally.',
+}
+
+/* ─── Stakeholder Register ──────────────────────────────────────────────── */
+const STAKEHOLDER_REGISTER: StakeholderRegister = {
+  groups: [
+    {
+      group: 'Community',
+      status: 'neutral',
+      summary: 'Engagement active, LAPOC pending',
+      items: [
+        { label: 'Grievances', status: 'green', detail: '0 open / 3 total' },
+        { label: 'Spring monitoring', status: 'amber', detail: 'Modeled' },
+        { label: 'LAPOC status', status: 'amber', detail: 'Integration pending' },
+        { label: 'Last community brief', status: 'green', detail: '2026-03-15', date: '2026-03-15' },
+      ],
+    },
+    {
+      group: 'Regulatory',
+      status: 'neutral',
+      summary: 'Mixed agency posture',
+      items: [
+        { label: 'FEAM', status: 'green', detail: 'Approved', date: '2025-12-01' },
+        { label: 'MPF', status: 'amber', detail: 'EIA challenged', date: '2025-06-15' },
+        { label: 'IGAM', status: 'violet', detail: 'Submitted', date: '2025-10-20' },
+        { label: 'COPAM', status: 'muted', detail: 'Awaiting review', date: '2025-11-01' },
+      ],
+    },
+    {
+      group: 'Commercial',
+      status: 'positive',
+      summary: 'Pipeline active',
+      items: [
+        { label: 'Ucore', status: 'green', detail: '12,000 t/yr' },
+        { label: 'Neo Performance', status: 'amber', detail: '8,000 t/yr' },
+        { label: 'Toyota Tsusho', status: 'muted', detail: 'TBD' },
+      ],
+    },
+    {
+      group: 'ESG & Media',
+      status: 'positive',
+      summary: 'Readiness high',
+      items: [
+        { label: 'ESG coverage', status: 'green', detail: '77%' },
+        { label: 'Provenance', status: 'green', detail: 'All data areas labeled' },
+        { label: 'Demo readiness', status: 'green', detail: 'Disclaimers active · Hallucination tests passing' },
+      ],
+    },
+  ],
+  last_updated: '2026-04-09',
+}
+
 /* ─── Synthetic History Generator ───────────────────────────────────────── */
-const DRIFT_SCALE: Record<TimeRangeKey, number> = { '24h': 1, '7d': 2.5, '30d': 5 }
+const DRIFT_SCALE: Record<TimeRangeKey, number> = { '24h': 1, '7d': 4, '30d': 8 }
 
 function syntheticPrecipMmForIndex(i: number, range: TimeRangeKey): number {
   const mul = range === '24h' ? 0.32 : range === '7d' ? 1 : 1.15
@@ -418,8 +509,8 @@ function generateSyntheticHistory(length: number, range: TimeRangeKey) {
   const envHistory = [INITIAL_ENV_TELEMETRY]
   const precipMmSeries = [syntheticPrecipMmForIndex(0, range)]
   for (let i = 1; i < length; i++) {
-    plantHistory.push(generatePlantTelemetry(plantHistory[i - 1], scale))
-    envHistory.push(generateEnvTelemetry(envHistory[i - 1], scale))
+    plantHistory.push(generatePlantTelemetry(plantHistory[i - 1], scale, i))
+    envHistory.push(generateEnvTelemetry(envHistory[i - 1], scale, undefined, i))
     precipMmSeries.push(syntheticPrecipMmForIndex(i, range))
   }
   return { plantHistory, envHistory, precipMmSeries }
@@ -562,6 +653,10 @@ export function createMockDataService(): AetherDataService {
         apaHeuristicNote: SPATIAL_INSIGHTS.apa_buffer_note,
       }
     },
+
+    getLithologySummary() { return LITHOLOGY_SUMMARY },
+
+    getStakeholderRegister() { return STAKEHOLDER_REGISTER },
 
     dismissAlert(id: string) {
       alerts = alerts.map(a => a.id === id ? { ...a, dismissed: true } : a)

@@ -1,6 +1,7 @@
-import { lazy, Suspense, useCallback, useState, useMemo } from 'react'
+import { lazy, Suspense, useCallback, useRef, useState, useMemo } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import type { ViewMode } from './types/telemetry'
+import type { AlertItem, ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
 import { createMockDataService } from './services/mockDataService'
@@ -13,6 +14,9 @@ import { DataModeBanner } from './components/layout/DataModeBanner'
 import { AlertPanel } from './components/layout/AlertPanel'
 import { ChatPanel } from './components/layout/ChatPanel'
 import shell from './AppShell.module.css'
+
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const PitchDeck = lazy(() => import('./pages/PitchDeck'))
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
 
@@ -28,12 +32,29 @@ function AppShell() {
   const [view, setView] = useState<ViewMode>('operator')
   const [alertOpen, setAlertOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+  const [highlightFeatureId, setHighlightFeatureId] = useState<string | null>(null)
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
   const closeAlertPanel = useCallback(() => setAlertOpen(false), [])
   const openAlertPanel = useCallback(() => { setChatOpen(false); setAlertOpen(true) }, [])
   const openChatPanel = useCallback(() => { setAlertOpen(false); setChatOpen(true) }, [])
   const closeChatPanel = useCallback(() => setChatOpen(false), [])
+
+  const handleAlertNavigate = useCallback((alert: AlertItem) => {
+    if (alert.source === 'operator') {
+      setView('operator')
+    } else if (alert.source === 'buyer') {
+      setView('buyer')
+    } else {
+      setView('operator')
+    }
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current)
+    setHighlightFeatureId(alert.id)
+    highlightTimerRef.current = setTimeout(() => setHighlightFeatureId(null), 5000)
+    setAlertOpen(false)
+  }, [])
+
   const dataContext = useMemo(() => service.getDataContext(), [service])
   const { esg, activeAlerts } = telemetry
   const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
@@ -92,7 +113,7 @@ function AppShell() {
             {view === 'operator' && (
               <motion.div key="operator" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 transition={VIEW_TRANSITION} className={shell.viewLayer}>
-                <FieldView />
+                <FieldView highlightFeatureId={highlightFeatureId} />
               </motion.div>
             )}
             {view === 'buyer' && (
@@ -117,13 +138,20 @@ function AppShell() {
         onClose={closeAlertPanel}
         onDismiss={dismissAlert}
         onDismissAll={dismissAllAlerts}
+        onNavigate={handleAlertNavigate}
       />
       <ChatPanel isOpen={chatOpen} onClose={closeChatPanel} />
     </div>
   )
 }
 
-export default function App() {
+const PageFallback = () => (
+  <div style={{ background: W.bg, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: W.text1 }}>
+    Loading…
+  </div>
+)
+
+function DashboardShell() {
   const service = useMemo(() => createDataService(), [])
 
   return (
@@ -134,5 +162,15 @@ export default function App() {
         </MapProvider>
       </DataServiceProvider>
     </ErrorBoundary>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/lp" element={<Suspense fallback={<PageFallback />}><LandingPage /></Suspense>} />
+      <Route path="/pitch-deck" element={<Suspense fallback={<PageFallback />}><PitchDeck /></Suspense>} />
+      <Route path="/*" element={<DashboardShell />} />
+    </Routes>
   )
 }

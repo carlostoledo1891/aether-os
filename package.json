@@ -17,6 +17,7 @@
     "build:all": "npm --prefix server run build && npm --prefix engine run build && npm run build",
     "install:all": "npm install && npm --prefix server install && npm --prefix engine install",
     "build:caldeira-geojson": "tsx scripts/caldeira-build/buildCaldeiraGeojson.ts",
+    "fit:licence-hulls": "node scripts/fit-licence-hulls.mjs",
     "check:pilot-plant-links": "tsx scripts/caldeira-build/checkPilotPlantLinks.ts",
     "validate:pilot-plant": "tsx scripts/caldeira-build/validatePilotPlant.ts"
   },
@@ -28,6 +29,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-map-gl": "^8.1.0",
+    "react-router-dom": "^7.14.0",
     "recharts": "^3.8.1"
   },
   "devDependencies": {

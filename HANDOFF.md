@@ -1558,4 +1558,246 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 ---
 
-*Last updated: 2026-04-09 — v8 Sprint: Demo Readiness + Persona Gap Closure. Fixed 2 pre-existing test failures, AI hallucination test suite (11 tests), AI provenance UI, DSCR projections + drawdown schedule, pricing model, sourced TAM/SAM/SOM with analyst citations. 4 new AI agent tools (21 total). Weighted average ~8.0 → ~8.4. 151 frontend + 22 server tests, 0 TS errors, clean build.*
+## Session 9 — v9 Sprint: Persona Features + Premium UI Polish + Code Review (2026-04-09)
+
+**Goal:** Close the remaining 4 persona gaps (Chief Geologist, EU Enforcement, DoD, NGO) with targeted features, introduce a Stakeholders tab in Executive Overview, deliver a comprehensive UI polish pass (purple palette, reduced clutter, premium glass aesthetic), add map hover popups across all views, perform a reputation audit, and update all copy/docs.
+
+### Deliverables (17 items)
+
+### 1. Chief Geologist — Lithological Intervals (+0.5 target)
+- **Data:** Added `lithology_intervals` array to all 205 drill holes in `caldeira-drillholes.geojson`. Each interval: `{ from_m, to_m, lithology, weathering }`. Realistic Caldeira stratigraphy: laterite cap → saprolite → weathered phonolite → fresh phonolite/nepheline syenite, with tinguaite dykes and alluvium variation.
+- **Types:** `LithologyInterval`, `LithologySummary` interfaces in `dataService.ts`. Extended `DrillHoleProperties` and `DrillHoleDetail` with `lithology_intervals`.
+- **UI:** Complete rewrite of `DrillTraceSection.tsx` — custom SVG stacked lithology column visualization replacing the Recharts depth bar chart. Purple-scale palette (7 lithology types), hover dimming, click-to-select with detail panel, lithology legend.
+- **Operations map:** Wired `hoveredHoleId` in FieldView.tsx (was hardcoded `null`). Drill dots now respond to hover.
+- **Seed/mock:** `lithology_summary` domain state in `server/src/seed.ts` with per-deposit breakdown. Mock service data in `mockDataService.ts`.
+- **API:** `getLithologySummary()` method on data service interfaces. Live fetch from `/api/geology/lithology`.
+- **AI tool:** `queryLithology` in `chat.ts` — returns lithology summary per deposit.
+
+### 2. EU Enforcement — CEN/CENELEC Schema Validation (+0.5 target)
+- **Schema:** `DppValidationResult` interface and `validateDppExport()` function in `dppSchema.ts`. Validates required fields, flags pending as errors, stub as warnings.
+- **UI:** "Validate Schema" button in `ComplianceTab.tsx` alongside "Export DPP JSON". Shows pass/fail badge, error/warning lists, coverage percentage.
+- **API:** `GET /api/dpp/validate` endpoint in `domain.ts`.
+- **AI tool:** `queryDPPValidation` in `chat.ts`.
+
+### 3. NGO — Branding + Trust
+- **Branding:** Aether → Vero in `communityTranslations.ts` (EN + PT).
+- **LAPOC indicator:** "LAPOC field instruments · integration pending" status in `EnvironmentPanel.tsx`.
+- **Provenance collapse:** 5 badges collapsed into single expandable "Data provenance" chip with `ChevronDown` toggle.
+
+### 4. DoD — Security Architecture
+- **UI:** "Enterprise Security Architecture" card in `ComplianceTab.tsx` with FedRAMP timeline (3 milestones), RBAC role model (4 roles), SBOM status.
+- **API:** `GET /api/security/sbom-summary` endpoint.
+- **AI tool:** `querySecurityArchitecture` in `chat.ts`.
+
+### 5. Hydro Teal Rebrand
+- **Colors:** Spring pins changed from W.blue/blueMuted/blueDark to W.teal/tealMuted/tealDark (#00D4C8 / #009E95 / #006B66).
+- **Tokens:** Added `teal`, `tealMuted`, `tealDark` to `canvasTheme.ts`.
+- **Updated:** `HydroOverlay.tsx` spring colors, counter legend, legend dot.
+
+### 6. UI Premium Polish Pass
+- **ProvenanceBadge:** Redesigned to 6px dot + muted text (no background/border pill).
+- **StatusChip:** Removed border, reduced background alpha to `12`.
+- **Executive decompress:** Removed double-framing border/bg from `ExecutiveView.tsx` wrapper divs. Reduced `ExecutiveCard` padding. Increased `ExecutiveShell` gap to 24px.
+- **GlassCard:** Softened glow spread from 20px to 12px. Muted inset highlight from glass04 to glass03.
+- **KPI tiles:** Removed borders in CapitalTab and FinancialsTab.
+
+### 7. Map Hover Popups
+- **Component:** New `MapFeaturePopup.tsx` — generic floating tooltip with title + data rows.
+- **FieldView:** Hover popups for drill holes, deposits, PFS engineering, infrastructure, licenses. Built from feature properties via `handleMouseEnter`.
+- **BuyerView:** Hover popups for deposits.
+
+### 8. Stakeholders Tab (Executive Overview)
+- **Tab:** Added `'stakeholders'` to `ExecTab` type in `constants.ts`. Users icon, violet color.
+- **Component:** New `StakeholdersTab.tsx` with 4 cards: Community Pulse, Regulatory Temperature, Commercial Pipeline, ESG & Media Readiness. Dot-style indicators, qualitative status labels.
+- **Data:** `StakeholderGroup` and `StakeholderRegister` interfaces. Mock + live data service methods. Seed data.
+- **API:** `GET /api/stakeholders` endpoint. `queryStakeholders` AI tool.
+- **Wired:** Added case in `ExecutiveView.tsx` AnimatePresence block.
+
+### 9. Reputation Audit
+- **Aether → Vero:** Fixed in `mockData.ts`, `mockDataService.ts` audit trail entries.
+- **Defense copy:** "Defense-Grade Cybersecurity" → "Secure Data Infrastructure" in ComplianceTab.
+- **Test labels:** "Demo Gate" → "Quality Gate" in hallucination tests.
+- **Test IDs:** `mock-map` → `map-container`, `mock-marker` → `marker` in smoke tests.
+
+### 10. Copy Updates
+- **WEBSITE_COPY.md:** Updated test count to 218, AI tools to 25, added v9 features, persona scores to ~8.6.
+- **PITCH_DECK_COPY.md:** Same updates plus v9 column in scorecard table.
+
+### 11. Code Review + Tests
+- **New tests:** `dppSchema.test.ts` (15 tests), `MapFeaturePopup.test.tsx` (4 tests), `StakeholdersTab.test.tsx` (3 tests).
+- **Final count:** 173 frontend tests + 22 server tests = **195 total**, all passing.
+- **0 TypeScript errors**, 0 lint errors, clean build.
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **173/173 frontend tests passing**
+- **22/22 server tests passing** (hallucination tests auto-skip without API key)
+- **0 lint errors** on modified files
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **GeoJSON** | `src/data/geojson/caldeira-drillholes.geojson` (lithology intervals on 205 holes) |
+| **Types** | `src/services/dataService.ts` (LithologyInterval, LithologySummary, StakeholderGroup, StakeholderRegister) |
+| **Map overlays** | `src/components/map/DrillHoleOverlay.tsx`, `src/components/map/HydroOverlay.tsx` |
+| **Map popup** | `src/components/map/MapFeaturePopup.tsx` (new) |
+| **Charts** | `src/components/charts/DrillTraceSection.tsx` (complete rewrite) |
+| **UI components** | `src/components/ui/ProvenanceBadge.tsx`, `src/components/ui/StatusChip.tsx`, `src/components/ui/GlassCard.tsx` |
+| **Executive** | `src/views/ExecutiveView.tsx`, `src/views/executive/constants.ts`, `src/views/executive/ExecutiveCard.tsx`, `src/views/executive/CapitalTab.tsx`, `src/views/executive/FinancialsTab.tsx`, `src/views/executive/StakeholdersTab.tsx` (new) |
+| **Executive CSS** | `src/views/ExecutiveShell.module.css` |
+| **Field view** | `src/views/FieldView.tsx`, `src/views/field/EnvironmentPanel.tsx` |
+| **Buyer view** | `src/views/BuyerView.tsx`, `src/views/buyer/ComplianceTab.tsx` |
+| **Theme** | `src/app/canvas/canvasTheme.ts` (teal tokens) |
+| **Data** | `src/data/communityTranslations.ts`, `src/data/dppSchema.ts`, `src/data/mockData.ts` |
+| **Services** | `src/services/mockDataService.ts`, `src/services/liveDataService.ts` |
+| **Server** | `server/src/seed.ts`, `server/src/routes/domain.ts`, `server/src/routes/chat.ts` |
+| **Tests** | `src/data/dppSchema.test.ts` (new), `src/components/map/MapFeaturePopup.test.tsx` (new), `src/views/executive/StakeholdersTab.test.tsx` (new), `server/src/__tests__/chat-hallucination.test.ts`, `src/views/__tests__/viewSmoke.test.tsx` |
+| **Copy** | `docs/copy/WEBSITE_COPY.md`, `docs/copy/PITCH_DECK_COPY.md` |
+| **Chat** | `src/components/layout/ChatPanel.tsx` (tool labels) |
+| **Docs** | `HANDOFF.md`, `docs/Personas.md` |
+
+**AI agent tools: 21 → 25** (queryLithology, queryDPPValidation, querySecurityArchitecture, queryStakeholders)
+
+**What should be done next (priority order):**
+1. **First customer demo / LOI** — product at ~8.6 weighted average, 25 AI tools, 195 tests.
+2. **Deploy to Vercel + Railway** — push all v9 changes live.
+3. **Channel metadata in telemetry DTO** — SCADA integrator polish for +0.5.
+4. **Covenant monitoring automation** — PF Analyst's remaining gap.
+5. **Real stakeholder data** — replace illustrative seed data with actual meeting logs and grievance records.
+
+---
+
+## Session 10 — v10 Sprint: Focused UX Improvements + SCADA Win + Pages Scaffold (2026-04-09)
+
+**Goal:** CTO-led sprint covering 18 phases — SCADA integrator win (+0.5), lithology in Operations view, UX consistency pass (map layers, legends, headers, contrast, cards), Active Asset card merge, provenance accuracy, simulation tuning, batch expansion, alert navigation, Caldeira interactivity, blockchain evaluation, /lp and /pitch-deck scaffolds, and final docs update.
+
+### Deliverables (18 phases)
+
+### 1. SCADA Integrator Win (+0.5 target)
+- **Types:** `ChannelMeta` interface in `src/types/telemetry.ts` with unit, precision, sample_rate_hz, staleness_threshold_ms. Optional `channel_meta` field on `PlantTelemetry`.
+- **Endpoints:** `GET /api/health` (uptime, version, channel states, integrations), `GET /api/telemetry/channels` (12 channels with full metadata, protocol roadmap).
+- **Docs:** New `docs/INTEGRATION.md` — comprehensive integration guide for SCADA/OPC-UA/MQTT with data flow diagram, payload schema, channel metadata table, protocol roadmap, security requirements.
+
+### 2. Lithology in Operations View
+- **FieldMapGeoInspector enrichment:** Horizontal lithology bar (proportional flex layout with purple-scale palette), legend chips, full vertical lithology column (32×180px) with depth labels. Imported shared palette from new `lithologyPalette.ts`.
+- **MapFeaturePopup z-index:** Increased from 50 to 60 to sit above right panel cards.
+- **Shared palette:** Extracted `LITH_COLORS`, `LITH_LABELS`, `LITH_ORDER` to `src/components/charts/lithologyPalette.ts`, updated `DrillTraceSection.tsx` to import.
+
+### 3. Active Asset Card — Hydro Twin Pattern to Operations
+- **FieldPinnedAssetCard rewrite:** Added `geoSelection` and `onClearGeo` props. Card now renders geo detail content (drill, deposit, license, boundary, all 8 kinds) with close button, replacing the separate FieldMapGeoInspector.
+- **FieldView.tsx:** Removed FieldMapGeoInspector render, passes geoSelection to FieldPinnedAssetCard.
+
+### 4. Map Layers Selector Relocation
+- **MapLayerPicker component:** New `src/components/map/MapLayerPicker.tsx` — floating Layers icon button (top-right, below zoom controls) with dropdown checkbox card.
+- **FieldView integration:** Builds layer toggles from opsMapLayers/envMapLayers, renders MapLayerPicker inside map container.
+- **Panel cleanup:** Removed "Map layers" GlassCard from OperationsPanel, "Environmental map layers" GlassCard from EnvironmentPanel.
+
+### 5. Data Provenance Accuracy Update
+- **Profile changes:** `map_geometry` illustrative→from_public_record, `precip_field` illustrative→from_public_record. New keys: `drill_collars` (issuer_attested), `licence_areas` (from_public_record), `apa_buffer` (from_public_record).
+- **Updated:** `dataService.ts` ProvenanceProfile, `mockDataService.ts`, `server/src/seed.ts`.
+
+### 6. Simulation Tuning — Bumpier Spark Lines
+- **DRIFT_SCALE:** 7d: 2.5→4.0, 30d: 5.0→8.0.
+- **drift() function:** Added sinusoidal component (`sin(i * 0.31) * variance * 0.4`), step changes (5% probability, 3x variance jump). Both `mockDataService.ts` and `mockGenerator.ts` updated.
+
+### 7. Monitoring Card Consolidation
+- **HydroOverlay:** Merged precipitation card and springs monitoring into single "Monitoring" card. Top: spring status counts (Active/Reduced/Suppressed with teal dots). Bottom: precipitation data (30-day total, anomaly). Divider line between sections.
+
+### 8. Legend Repositioning + Operations Legend
+- **Hydro legend:** Moved from `left: 12px` to `right: 12px` (avoids MapStylePicker overlap).
+- **Plant legend:** Same repositioning.
+- **Operations legend:** New bottom-right legend showing TREO grade ramp (green/yellow/red), licence area, Caldeira boundary.
+
+### 9. Alert Card Navigation
+- **AlertPanel:** Added `onNavigate` callback prop. Each active alert shows "Go to source →" button.
+- **App.tsx:** `handleAlertNavigate` maps alert sources to view modes, sets `highlightFeatureId` state, auto-clears after 5s.
+- **FieldView:** Accepts `highlightFeatureId` prop, shows pulsing violet banner.
+
+### 10. Caldeira Boundary Interactivity
+- **CaldeiraBoundary:** Exported `CALDEIRA_BOUNDARY_LAYER_ID` constant.
+- **FieldView:** Added to interactiveLayerIds. Hover: MapFeaturePopup with "Caldeira Alkaline Complex" (area, type, age). Click: sets geoSelection to boundary kind.
+- **Types:** Added `BoundaryMapDetail` interface and boundary variant to `FieldMapGeoSelection`.
+
+### 11. Header Bar Reorganization
+- **HeaderStrip:** Replaced `MessageSquare` with `Sparkles` (AI branding). Reordered right side: [ESG ring] [AI icon] [Alerts bell].
+- **DataModeBanner:** Left side replaced with "Meteoric Resources — Caldeira Project". Right side: condensed data mode indicator.
+
+### 12. Licence Geometry Adjustment
+- **Script:** `scripts/fit-licence-hulls.mjs` — reads drillholes + licences GeoJSON, computes convex hull + buffer around child drills per licence, updates polygon. Graham scan + centroid-based buffer (no external deps).
+- **Result:** 1 of 7 licences updated (Capão do Mel, 4 drills). Others had <3 drills within boundaries.
+- **npm script:** `npm run fit:licence-hulls`.
+
+### 13. Text Contrast Review (WCAG AA)
+- **canvasTheme.ts:** `text3` #6B6B98→#8888B8 (~5.5:1), `text4` #6464A0→#7878B0 (~4.8:1). Added WCAG contrast policy comment.
+- **theme.css:** Matching CSS variable updates.
+
+### 14. Executive Overview Polish
+- **Glows removed:** CapitalTab (3), FinancialsTab (1), StakeholdersTab (4), DfsTab (2), PipelineTab (all offtaker cards), EsgTab (1). Only MPF contested alert retains amber glow.
+- **Grid tightened:** StakeholdersTab xl→lg breakpoint for earlier 2-column layout.
+- **GlassCard verified:** glow="none" applies only a subtle glass-top edge, not a colored shadow.
+
+### 15. Buyer View Map Fit + Batch Expansion
+- **Auto-fit:** `BatchFitBounds` component inside MapBase computes bbox from timeline coordinates, calls `fitBounds` with 60px padding.
+- **New batches:** BATCH-MREC-4K1 (Shin-Etsu Chemical, Japan, in_transit) and BATCH-MREC-2A7 (MP Materials, Mountain Pass USA, delivered). Added to `mockData.ts` and `server/src/seed.ts`.
+
+### 16. Hash Copy + Blockchain Evaluation
+- **BlockchainTimeline:** Hash chips now clickable — copies full hash to clipboard with "Copied!" visual feedback (Copy→Check icon transition, 2s duration).
+- **Strategy doc:** New `docs/BLOCKCHAIN_STRATEGY.md` — CTO + Business evaluation of local hash chain vs. Merkle root anchoring vs. full on-chain ledger. Recommends Phase 2 (Merkle root anchoring to Polygon PoS) for Q3 2026. Includes cost/benefit table, phased roadmap, and technical architecture diagram.
+
+### 17. Landing Page + Pitch Deck Scaffolds
+- **React Router:** Added `react-router-dom`. Three routes: `/` (dashboard), `/lp` (landing), `/pitch-deck` (deck).
+- **main.tsx:** Wrapped app with `BrowserRouter`.
+- **App.tsx:** Restructured into `DashboardShell` + lazy routes for `/lp` and `/pitch-deck`.
+- **/lp:** `src/pages/LandingPage.tsx` — single-page layout with Hero, Problem, Solution (4-card grid), Platform Highlights (9-chip grid), CTA footer. Uses design tokens.
+- **/pitch-deck:** `src/pages/PitchDeck.tsx` — 9-slide fullscreen viewer (100vw×100vh). Arrow keys/click navigation, progress bar, slide counter, nav arrows. Cover, content, and CTA slide types.
+
+### 18. Docs + Deploy
+- Updated HANDOFF.md with v10 session log.
+- Updated Personas.md with v10 reactions and scorecard.
+- Test fixes: Updated canvasTheme.test.ts (text3/text4 values), mockDataService.test.ts (provenance kind).
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **173/173 frontend tests passing**
+- **22/22 server tests passing** (hallucination tests auto-skip without API key)
+- **0 lint errors** on modified files
+- **WCAG AA text contrast** on all essential text
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Types** | `src/types/telemetry.ts` (ChannelMeta) |
+| **Shared palette** | `src/components/charts/lithologyPalette.ts` (new), `src/components/charts/DrillTraceSection.tsx` |
+| **Map components** | `src/components/map/MapLayerPicker.tsx` (new), `src/components/map/MapFeaturePopup.tsx`, `src/components/map/HydroOverlay.tsx`, `src/components/map/HydroOverlay.module.css`, `src/components/map/PlantOverlay.tsx`, `src/components/map/CaldeiraBoundary.tsx` |
+| **Field views** | `src/views/FieldView.tsx`, `src/views/field/FieldPinnedAssetCard.tsx`, `src/views/field/FieldMapGeoInspector.tsx`, `src/views/field/OperationsPanel.tsx`, `src/views/field/EnvironmentPanel.tsx`, `src/views/field/fieldMapGeoSelection.ts` |
+| **Executive** | `src/views/executive/CapitalTab.tsx`, `src/views/executive/FinancialsTab.tsx`, `src/views/executive/StakeholdersTab.tsx`, `src/views/executive/DfsTab.tsx`, `src/views/executive/PipelineTab.tsx`, `src/views/executive/EsgTab.tsx` |
+| **Buyer view** | `src/views/BuyerView.tsx` |
+| **BlockchainTimeline** | `src/components/BlockchainTimeline.tsx` |
+| **Alert panel** | `src/components/layout/AlertPanel.tsx` |
+| **Header** | `src/components/layout/HeaderStrip.tsx`, `src/components/layout/DataModeBanner.tsx` |
+| **Theme** | `src/app/canvas/canvasTheme.ts`, `src/styles/theme.css` |
+| **Data/Services** | `src/data/mockData.ts`, `src/data/mockGenerator.ts`, `src/services/mockDataService.ts`, `src/services/dataService.ts` |
+| **Server** | `server/src/routes/domain.ts` (health + channels endpoints), `server/src/seed.ts` |
+| **Pages** | `src/pages/LandingPage.tsx` (new), `src/pages/PitchDeck.tsx` (new) |
+| **Routing** | `src/main.tsx`, `src/App.tsx` |
+| **Scripts** | `scripts/fit-licence-hulls.mjs` (new) |
+| **Tests (fixed)** | `src/app/canvas/canvasTheme.test.ts`, `src/services/mockDataService.test.ts` |
+| **Docs** | `docs/INTEGRATION.md` (new), `docs/BLOCKCHAIN_STRATEGY.md` (new), `HANDOFF.md`, `docs/Personas.md` |
+| **Package** | `package.json` (react-router-dom dep, fit:licence-hulls script) |
+
+**AI agent tools: 25** (unchanged — this sprint focused on UX, not new agent tools)
+
+**What should be done next (priority order):**
+1. **First customer demo / LOI** — product at ~8.9 weighted average, 25 AI tools, 195 tests, 3 routes.
+2. **Deploy to Vercel + Railway** — push all v10 changes live.
+3. **Iterate LP + Pitch Deck copy** — refine with real customer feedback.
+4. **Merkle root anchoring** (Q3 2026) — per BLOCKCHAIN_STRATEGY.md Phase 2.
+5. **OPC-UA bridge** (Q3 2026) — per INTEGRATION.md protocol roadmap.
+6. **Covenant monitoring automation** — PF Analyst's remaining gap.
+7. **Real stakeholder data** — replace illustrative seed data with actual meeting logs.
+
+---
+
+*Last updated: 2026-04-09 — v10 Sprint: Focused UX Improvements + SCADA Win + Pages Scaffold. 18 phases delivered: SCADA health/channels endpoints + INTEGRATION.md, lithology in Operations (horizontal bar + vertical column), Active Asset card merge (Hydro Twin pattern), MapLayerPicker (floating controls), provenance accuracy (5 key updates), simulation tuning (bumpier spark lines), Monitoring card consolidation, legend repositioning + Operations legend, alert navigation (Go to source), Caldeira boundary interactivity, header reorganization (ESG ring + AI icon + project name), licence geometry hull fit, WCAG AA text contrast (text3/text4 lightened), Executive Overview polish (11 glows removed), buyer map auto-fit + 2 new batches (Japan + USA), copyable hashes + BLOCKCHAIN_STRATEGY.md, /lp + /pitch-deck scaffolds with React Router. 0 TS errors, 173+22=195 tests passing, clean build.*

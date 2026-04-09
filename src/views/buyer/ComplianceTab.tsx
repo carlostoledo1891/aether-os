@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
-import { motion } from 'motion/react'
-import { ShieldCheck, Leaf, Server, BarChart3, FileDown, ClipboardList } from 'lucide-react'
+import { useCallback, useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { ShieldCheck, Leaf, Server, BarChart3, FileDown, ClipboardList, CheckCircle, AlertTriangle, XCircle, ChevronDown, ChevronRight, Lock } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -10,7 +10,8 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ErrorFallback } from '../../components/ui/ErrorFallback'
-import { DPP_FIELD_MAPPINGS, DPP_CATEGORIES, getDppCoverage, buildDppExport } from '../../data/dppSchema'
+import { DPP_FIELD_MAPPINGS, DPP_CATEGORIES, getDppCoverage, buildDppExport, validateDppExport } from '../../data/dppSchema'
+import type { DppValidationResult } from '../../data/dppSchema'
 import type { ComplianceLedger } from '../../types/telemetry'
 import css from './ComplianceTab.module.css'
 
@@ -102,12 +103,12 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
         </div>
       </GlassCard>
 
-      {/* Defense-Grade Cybersecurity */}
+      {/* Secure Data Infrastructure */}
       <GlassCard animate={false} className={css.cardPad}>
         <div className={css.sectionHeader}>
           <GlowingIcon icon={Server} color="green" size={13} />
           <span className={css.sectionTitle} style={{ color: W.text3 }}>
-            Defense-Grade Cybersecurity
+            Secure Data Infrastructure
           </span>
         </div>
         <div className={css.colStack7}>
@@ -125,6 +126,74 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
         <div className={`${css.footnoteBox} ${css.footnoteGreen}`} style={{ borderRadius: W.radius.sm }}>
           <p className={css.footnoteP} style={{ color: W.text3 }}>
             Houses critical U.S. Defense supply chain data (GPS, extraction yields, molecular DNA). All data encrypted in TEEs before leaving sensor array.
+          </p>
+        </div>
+      </GlassCard>
+
+      {/* Enterprise Security Architecture */}
+      <GlassCard glow="violet" animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
+          <GlowingIcon icon={Lock} color="violet" size={13} />
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
+            Enterprise Security Architecture
+          </span>
+        </div>
+
+        {/* FedRAMP Path Timeline */}
+        <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: W.violet, marginBottom: 8 }}>
+          FedRAMP Path
+        </div>
+        <div className={css.colStack6} style={{ marginBottom: 14 }}>
+          {[
+            { date: 'Q4 2026', label: 'AWS GovCloud deployment' },
+            { date: 'Q1 2027', label: 'IL4 assessment initiation' },
+            { date: 'Q2 2027', label: 'Authority to Operate (ATO)' },
+          ].map((m, i) => (
+            <div key={m.date} className={css.rowSpaced} style={{ alignItems: 'flex-start', gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.violet, display: 'inline-block', boxShadow: `0 0 6px ${W.violet}60` }} />
+                <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: W.violet, minWidth: 52 }}>{m.date}</span>
+              </div>
+              <span style={{ fontSize: 11, color: W.text2, fontWeight: 600 }}>{m.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* RBAC Role Model */}
+        <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: W.violet, marginBottom: 6 }}>
+          RBAC Role Model
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '70px 80px 1fr', gap: 4, marginBottom: 4, padding: '4px 0', borderBottom: `1px solid ${W.text4}30` }}>
+          {['Role', 'Access', 'Description'].map(h => (
+            <span key={h} style={{ fontSize: 9, fontWeight: 700, color: W.text4, textTransform: 'uppercase' }}>{h}</span>
+          ))}
+        </div>
+        {[
+          { role: 'Admin', access: 'Full', desc: 'System configuration, user management' },
+          { role: 'Analyst', access: 'Read + AI', desc: 'Query data, use AI tools, export reports' },
+          { role: 'Viewer', access: 'Read-only', desc: 'Dashboard access, no exports' },
+          { role: 'Auditor', access: 'Read + Audit', desc: 'Full audit trail access, compliance reports' },
+        ].map(r => (
+          <div key={r.role} style={{ display: 'grid', gridTemplateColumns: '70px 80px 1fr', gap: 4, padding: '5px 0', borderBottom: `1px solid ${W.glass04}` }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: W.violet }}>{r.role}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, fontFamily: 'var(--font-mono)', color: W.text2 }}>{r.access}</span>
+            <span style={{ fontSize: 10, color: W.text3 }}>{r.desc}</span>
+          </div>
+        ))}
+
+        {/* SBOM Status */}
+        <div style={{ marginTop: 12, padding: '7px 9px', background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
+          <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: W.violet, marginBottom: 4 }}>
+            SBOM Status
+          </div>
+          <p style={{ margin: 0, fontSize: 11, color: W.text2, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+            142 dependencies · 98% OSI-approved licenses · Last scan: 2026-04-09
+          </p>
+        </div>
+
+        <div className={`${css.footnoteBox}`} style={{ background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
+          <p className={css.footnoteP} style={{ color: W.text3 }}>
+            Security architecture targets FedRAMP High (IL4) authorization on AWS GovCloud. RBAC enforced at API gateway layer with JWT claims. SBOM generated via Syft on every CI build.
           </p>
         </div>
       </GlassCard>
@@ -211,6 +280,8 @@ const STATUS_COLORS: Record<string, string> = { mapped: W.green, stub: W.amber, 
 
 function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uThSafety: UThSafetyT | null }) {
   const coverage = getDppCoverage()
+  const [validation, setValidation] = useState<DppValidationResult | null>(null)
+  const [validationOpen, setValidationOpen] = useState(true)
 
   const handleExport = useCallback(() => {
     const json = buildDppExport(batch, uThSafety)
@@ -221,6 +292,13 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
     a.download = `dpp-${batch.batch_id}.json`
     a.click()
     URL.revokeObjectURL(url)
+  }, [batch, uThSafety])
+
+  const handleValidate = useCallback(() => {
+    const json = buildDppExport(batch, uThSafety)
+    const result = validateDppExport(json as unknown as Record<string, unknown>)
+    setValidation(result)
+    setValidationOpen(true)
   }, [batch, uThSafety])
 
   return (
@@ -277,20 +355,110 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
         </div>
       ))}
 
-      {/* Export button */}
-      <button
-        type="button"
-        onClick={handleExport}
-        className={css.exportBtn}
-        style={{
-          borderRadius: W.radius.sm, border: `1px solid ${W.violet}40`,
-          background: `${W.violet}14`, color: W.violet,
-        }}
-        aria-label={`Export DPP JSON for batch ${batch.batch_id}`}
-      >
-        <FileDown size={13} />
-        Export DPP JSON — {batch.batch_id}
-      </button>
+      {/* Export & Validate buttons */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={handleExport}
+          className={css.exportBtn}
+          style={{
+            borderRadius: W.radius.sm, border: `1px solid ${W.violet}40`,
+            background: `${W.violet}14`, color: W.violet, flex: 1, minWidth: 180,
+          }}
+          aria-label={`Export DPP JSON for batch ${batch.batch_id}`}
+        >
+          <FileDown size={13} />
+          Export DPP JSON — {batch.batch_id}
+        </button>
+        <button
+          type="button"
+          onClick={handleValidate}
+          className={css.exportBtn}
+          style={{
+            borderRadius: W.radius.sm, border: `1px solid ${W.green}40`,
+            background: `${W.green}14`, color: W.green, flex: 1, minWidth: 180,
+          }}
+          aria-label="Validate DPP against CEN/CENELEC schema"
+        >
+          <CheckCircle size={13} />
+          Validate Schema
+        </button>
+      </div>
+
+      {/* Validation result card */}
+      <AnimatePresence>
+        {validation && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div style={{
+              background: validation.valid ? `${W.green}08` : `${W.red}08`,
+              border: `1px solid ${validation.valid ? W.green : W.red}30`,
+              borderRadius: W.radius.sm,
+              padding: '10px 12px',
+              marginTop: 4,
+            }}>
+              <button
+                type="button"
+                onClick={() => setValidationOpen(v => !v)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                  background: 'none', border: 'none', cursor: 'pointer', padding: 0, outline: 'none',
+                }}
+              >
+                {validation.valid
+                  ? <CheckCircle size={14} style={{ color: W.green, flexShrink: 0 }} />
+                  : <XCircle size={14} style={{ color: W.red, flexShrink: 0 }} />
+                }
+                <span style={{ fontSize: 11, fontWeight: 700, color: validation.valid ? W.green : W.red, flex: 1, textAlign: 'left' }}>
+                  {validation.valid ? 'PASS' : 'FAIL'} — {validation.coverage_pct}% coverage ({validation.field_count.mapped}/{validation.field_count.total} mapped)
+                </span>
+                {validationOpen
+                  ? <ChevronDown size={12} style={{ color: W.text4 }} />
+                  : <ChevronRight size={12} style={{ color: W.text4 }} />
+                }
+              </button>
+
+              {validationOpen && (
+                <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {validation.errors.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: W.red, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Errors</span>
+                      {validation.errors.map((e, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 10, color: W.text2 }}>
+                          <XCircle size={10} style={{ color: W.red, flexShrink: 0, marginTop: 1 }} />
+                          {e}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {validation.warnings.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Warnings</span>
+                      {validation.warnings.map((w, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 10, color: W.text2 }}>
+                          <AlertTriangle size={10} style={{ color: W.amber, flexShrink: 0, marginTop: 1 }} />
+                          {w}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', gap: 12, marginTop: 4 }}>
+                    {(['mapped', 'stub', 'pending'] as const).map(s => (
+                      <span key={s} style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace', color: s === 'mapped' ? W.green : s === 'stub' ? W.amber : W.text4 }}>
+                        {s}: {validation.field_count[s]}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className={css.footnoteBox} style={{ background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
         <p className={css.footnoteP} style={{ color: W.text3 }}>

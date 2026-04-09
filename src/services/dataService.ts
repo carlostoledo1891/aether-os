@@ -4,6 +4,26 @@ import type { IssuerSnapshot } from '../data/caldeira/issuerSnapshot'
 
 export type { DepositRecord, DepositStatus }
 
+/* ─── Lithology ─────────────────────────────────────────────────────────── */
+export interface LithologyInterval {
+  from_m: number
+  to_m: number
+  lithology: string
+  weathering: 'complete' | 'high' | 'moderate' | 'fresh'
+}
+
+export interface LithologySummary {
+  deposits: {
+    deposit: string
+    dominant_lithology: string
+    avg_laterite_depth_m: number
+    avg_saprolite_depth_m: number
+    total_holes: number
+  }[]
+  lithology_types: string[]
+  stratigraphy_note: string
+}
+
 /* ─── Time Range ────────────────────────────────────────────────────────── */
 export type TimeRangeKey = '24h' | '7d' | '30d'
 
@@ -398,6 +418,19 @@ export interface SpatialInsightBundle {
 
 export type { IssuerSnapshot }
 
+/* ─── Stakeholder Register ──────────────────────────────────────────────── */
+export interface StakeholderGroup {
+  group: string
+  status: 'positive' | 'neutral' | 'contested' | 'adversarial' | 'pending'
+  summary: string
+  items: { label: string; status: string; detail: string; date?: string }[]
+}
+
+export interface StakeholderRegister {
+  groups: StakeholderGroup[]
+  last_updated: string
+}
+
 /* ─── The Service Contract ──────────────────────────────────────────────── */
 
 /** Return type that honestly represents sync (mock) or async (live) results. */
@@ -456,6 +489,10 @@ export interface AetherDataService {
   getIssuerSnapshot(): MaybeAsync<IssuerSnapshot>
   /** Pilot ↔ PFS / APA buffer heuristics */
   getSpatialInsights(): MaybeAsync<SpatialInsightBundle>
+
+  getLithologySummary(): MaybeAsync<LithologySummary>
+
+  getStakeholderRegister(): MaybeAsync<StakeholderRegister>
 
   dismissAlert(id: string): void
   dismissAllAlerts(): void

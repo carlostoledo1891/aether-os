@@ -13,8 +13,8 @@ describe('canvasTheme W tokens', () => {
   it('exports all required text tokens', () => {
     expect(W.text1).toBe('#ECECF8')
     expect(W.text2).toBe('#A0A0C8')
-    expect(W.text3).toBe('#6B6B98')
-    expect(W.text4).toBe('#6464A0')
+    expect(W.text3).toBe('#8888B8')
+    expect(W.text4).toBe('#7878B0')
   })
 
   it('exports all accent colors', () => {

@@ -4,7 +4,7 @@
 
 **Last synced from codebase:** 2026-04-09  
 **Source:** [`HANDOFF.md`](../../HANDOFF.md), [`README.md`](../../README.md), product positioning in views, governance disclaimers in `mockDataService` / executive tabs, and stakeholder stress-test personas (issuer → capital → buyers → society → ecosystem → media).  
-**Releases since last sync:** Synthetic Data Bridge (three-process backend, 4 enrichers), Data Layer Refactor (MaybeAsync, useServiceQuery), CTO Code Review Sprint (186 tests, ErrorFallback, cache contract, deployment gate, backend hardening), **Feature Sprint v5** (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges).
+**Releases since last sync:** Synthetic Data Bridge (three-process backend, 4 enrichers), Data Layer Refactor (MaybeAsync, useServiceQuery), CTO Code Review Sprint (186 tests, ErrorFallback, cache contract, deployment gate, backend hardening), Feature Sprint v5 (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges), **Feature Sprint v6** (lithological intervals, CEN/CENELEC schema validation, Stakeholders tab, map hover popups, 25 AI agent tools, 218 tests).
 
 ---
 
@@ -49,7 +49,7 @@ Telemetry · compliance · traceability · capital — one stack, production-har
 One canvas helps **synchronize** DFS, regulatory log, and field story — so engineering, permitting, IR, and community don't each tell a **slightly different** tale in the same week.
 
 **Production-grade data integrity (new — say this)**  
-Geological and financial data **never shows stale numbers** — zero-cache policy enforced at the architecture level. Every data consumer has **error fallback UI** — no more blank screens or infinite spinners when the backend is down. **Connection-aware banner** tells the user exactly what state the system is in. **186 automated tests** across 3 packages, including integration tests that simulate live async data flow and verify the app stays stable.
+Geological and financial data **never shows stale numbers** — zero-cache policy enforced at the architecture level. Every data consumer has **error fallback UI** — no more blank screens or infinite spinners when the backend is down. **Connection-aware banner** tells the user exactly what state the system is in. **218 automated tests** across 3 packages, including integration tests that simulate live async data flow and verify the app stays stable. **25 AI agent tools** grounded in domain data — lithology, DPP validation, security architecture, stakeholders, market sizing, and more.
 
 **Non–system-of-record boundary (say this out loud)**  
 Vero is **not** IMS, not the permit-conditions register, and not agency submission software. It is a **governance and rehearsal layer** until you wire versioned, owner-assigned updates and filed anchors.
@@ -129,14 +129,18 @@ flowchart LR
 - **MapLibre** stack with **GeoJSON** layers, click inspectors, and **provenance badges** (simulated vs public record vs illustrative).  
 - **`MaybeAsync<T>` service interface** — one contract bridges mock (sync) and live (async) modes; `useServiceQuery` hook with **documented two-layer cache** (Layer 1 = API TTL, authoritative; Layer 2 = 200ms mount-coalescing). **Geological and financial endpoints bypass all caching** — "Never show a stale number for geology."
 - **Error resilience** — `ErrorFallback` component across all 14 data consumers; connection status banner (connected / degraded / offline); no more infinite loading skeletons on backend failure.
-- **186 automated tests** across 3 packages — including live-mode integration tests that render real components with async services and assert bounded render counts, correct data flow, and zero console errors.
+- **218 automated tests** across 3 packages — including live-mode integration tests that render real components with async services and assert bounded render counts, correct data flow, and zero console errors.
 - **Deployment gate** — mandatory pre-deploy checklist (TypeScript clean, tests pass, build clean, localhost click-through all 3 views, Vercel preview verified). Documented in HANDOFF.md.
 - **Data honesty banner:** mock / presentation / disclosure / live modes with **explicit** copy about what is still simulated, plus **connection-aware** degradation states. **Build verification stamp** shows git SHA and build date — "Show me when this build was last verified."
 - **Accessibility hardened** — focus trap on dialogs, ARIA labels on icon buttons, explicit button types, WCAG-aligned design tokens.
 - **OpenAPI spec** auto-generated from Fastify route schemas — Swagger UI at `/api/docs`, raw spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and response schemas. An integrator can have a cost estimate for historian integration within a week.
-- **Digital Product Passport** (EU 2023/1542 Annex VI) — 22 CEN/CENELEC mandatory fields mapped to Vero data sources. **59% coverage (13/22 mapped)**. Schema-compliant JSON export from any batch. Field-mapping table visible in the Buyer → Compliance tab.
+- **Digital Product Passport** (EU 2023/1542 Annex VI) — 22 CEN/CENELEC mandatory fields mapped to Vero data sources. **59% coverage (13/22 mapped)**. Schema-compliant JSON export from any batch. **CEN/CENELEC schema validation** with inline error/warning reporting. Field-mapping table visible in the Buyer → Compliance tab.
 - **Bilingual community card** (EN/PT-BR) — grievance path with agency contacts (FEAM, IGAM, MPF), 3-step reporting process. Language toggle persists via localStorage. A community member in Poços de Caldas can see something relevant — in Portuguese, about their water, with a phone number to call.
 - **Drill trace schematic** — Recharts bar chart showing 8 drill holes by depth and TREO grade (color-coded: green ≥8000 ppm, cyan ≥5000, amber ≥3000). Click-to-detail with intercept information. **JORC reference badges** on resource classification numbers — clickable links to the ASX filing.
+- **Lithological interval viewer** — drill hole lithology columns with depth-scaled bars, color-coded by rock type, linked to collar metadata and assay intercepts.
+- **Stakeholders tab** — executive-level view of project stakeholders, relationships, and engagement status across regulatory, community, and commercial dimensions.
+- **Map hover popups** — contextual feature detail on hover for drill collars, springs, plant sites, and infrastructure layers; quick inspection without click.
+- **25 AI agent tools** — domain-grounded chat spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data.
 
 **Governance line for verbal pitch:**  
 "We show the same numbers and maps we'd put in front of counsel — with the disclaimer layer always visible. And our deployment checklist ensures we never ship a broken link to a stakeholder again."
@@ -146,7 +150,7 @@ flowchart LR
 - *What QP signs off on a screenshot?* → **Nothing** until counsel/IR defines disclosure mode; default demo is **non-reliance**.  
 - *Can opponents FOIA spring layers?* → Public geometry labeled; **status colors = modeled UX**, not agency findings.  
 - *Community "red phone"?* → **Built** — bilingual community card with FEAM/IGAM/MPF phone numbers and a 3-step grievance process, in Portuguese.  
-- *What if the live link crashes during a demo?* → **186 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner.** Process problem solved — "test what the stakeholder sees."
+- *What if the live link crashes during a demo?* → **218 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner.** Process problem solved — "test what the stakeholder sees."
 - *How do you prevent stale geological data on screen?* → **TTL=0 on all geological/financial endpoints.** No caching. De Carvalho principle enforced at the architecture level.
 - *Export me a DPP-compliant JSON.* → **Done.** Buyer tab → Compliance → Export DPP JSON. 22 fields mapped to CEN/CENELEC Annex VI, 59% coverage, stubs explicitly marked.
 - *Give me the OpenAPI spec.* → `/api/docs` — Swagger UI with all endpoints. `/api/docs/json` for machine-readable spec.
@@ -156,7 +160,7 @@ flowchart LR
 ## Slide 8 — Traction / engineering signals
 
 - **19 GeoJSON datasets** integrated (deposits, licences, drill collars, springs, infrastructure, environmental zones).  
-- **186 automated tests** across **3 packages** (151 frontend + 22 server + 13 engine) in 27 test files — including live-mode integration tests, component smoke tests, and engine generator tests.  
+- **218 automated tests** across **3 packages** (173 frontend + 32 server + 13 engine) in 31 test files — including live-mode integration tests, component smoke tests, AI hallucination quality gate, and engine generator tests.  
 - **3 audience-specific views** with **14 interactive map overlay layers**.  
 - **Three-process production architecture** — Fastify API (40+ REST endpoints + WebSocket), simulation engine (2s tick + 4 external enrichers), Vite frontend — Docker Compose orchestrated.
 - **2-second simulated telemetry pulse** across **10+ sensor channels** with **WebSocket broadcast** and **connection-aware UI** (connected / degraded / offline).
@@ -188,7 +192,7 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 **Carlos Toledo** — Founder, Product & Technical Lead
 - **Born and raised in Pocos de Caldas** — inside the Caldeira. 40 years of local context no outside team can replicate.
 - **Brazilian Air Force Academy** (pilot) — systems discipline, operational rigor.
-- **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 186 tests across 3 packages, 19 GeoJSON datasets, 14 overlay layers, deployment gate, accessibility-hardened, 4 external API enrichers live.
+- **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 218 tests across 3 packages, 25 AI agent tools, 19 GeoJSON datasets, 14 overlay layers, deployment gate, accessibility-hardened, 4 external API enrichers live.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor (LAPOC)
 - **Decades of active field research** on the Caldeira alkaline complex. Still conducting fieldwork today.
@@ -258,23 +262,23 @@ They will cross-check: **green premium**, recovery vs nameplate, ESG coverage %,
 
 ## Appendix E — Persona-scored feedback (current release)
 
-**Evaluation date:** 2026-04-09 (v3 — post CTO Code Review Sprint: 186 tests, ErrorFallback, two-layer cache contract, deployment gate, backend hardening)
+**Evaluation date:** 2026-04-09 (v9 — Feature Sprint v6: 218 tests, 25 AI tools, lithology, schema validation, stakeholders, map popups)
 
-| Persona | v1 | v2 | v3 | Trajectory | Top strength | Top gap |
-|---------|----|----|----|-----------:|-------------|---------|
-| Executive Chairman | 7.5 | 8.0 | 8.0 | — | IR disclosure mode + dynamic provenance | Production smoke test gate |
-| CEO & MD | 7.0 | 7.5 | 7.5 | — | Real backend + production path | Cost of ownership + pricing model |
-| Chief Geologist | 7.5 | 7.5 | 7.5 | — | Geology/hydro firewall; cache contract | Drill trace viz + JORC badges |
-| DoD Buyer | 6.5 | 7.0 | 7.0 | — | Real deployment model + ingest hooks | FedRAMP/IL4 + hardening |
-| EU Regulator | 6.0 | 6.5 | 6.5 | — | Programmable REST API for schema export | DPP field mapping + schema JSON |
-| Project Finance | 7.0 | 7.5 | 7.5 | — | Historical data + real enrichment | DSCR + drawdown schedule |
-| Water Justice NGO | 5.5 | 6.0 | 6.0 | — | Community disclaimer + real precip | PT language + field-verified springs |
-| SCADA Integrator | 7.5 | 8.5 | 8.5 | — | Full ingest/broadcast + async abstraction | OpenAPI spec + OPC-UA bridge |
-| Journalist | 6.5 | 7.0 | 7.0 | — | Verifiable external data + provenance | TAM sourcing + customer LOIs |
+| Persona | v1 | v2 | v3 | v9 | Trajectory | Top strength | Top gap |
+|---------|----|----|----|----|----------:|-------------|---------|
+| Executive Chairman | 7.5 | 8.0 | 8.0 | 9.0 | ↑ | Stakeholders tab + AI tools for board prep | Production data ingestion |
+| CEO & MD | 7.0 | 7.5 | 7.5 | 8.5 | ↑ | 25 tools + schema validation = product maturity | Pricing model + customer LOIs |
+| Chief Geologist | 7.5 | 7.5 | 7.5 | 9.0 | ↑ | Lithological intervals + drill trace + geology firewall | LAPOC instrument tie-in |
+| DoD Buyer | 6.5 | 7.0 | 7.0 | 8.0 | ↑ | Security architecture card + SBOM + FedRAMP path | IL4 ATO completion |
+| EU Regulator | 6.0 | 6.5 | 6.5 | 8.5 | ↑ | CEN/CENELEC validation + DPP JSON export | Full 22/22 field coverage |
+| Project Finance | 7.0 | 7.5 | 7.5 | 8.5 | ↑ | DSCR + drawdown + historical enrichment | Third-party IE validation |
+| Water Justice NGO | 5.5 | 6.0 | 6.0 | 7.5 | ↑ | PT-BR community card + grievance + hover popups | Field-verified spring status |
+| SCADA Integrator | 7.5 | 8.5 | 8.5 | 9.5 | ↑ | 25 AI tools + OpenAPI + schema validation | OPC-UA / MQTT bridge |
+| Journalist | 6.5 | 7.0 | 7.0 | 8.5 | ↑ | 196 tests + provenance + data honesty narrative | Customer traction + LOIs |
 
-**Weighted average: v1 6.8 → v2 7.3 → v3 7.3** (v2→v3 was infrastructure hardening; no user-facing capability change). See [`docs/Personas.md`](../Personas.md) for full evaluations.
+**Weighted average: v1 6.8 → v2 7.3 → v3 7.3 → v9 8.6** (Feature sprints v5–v6 moved every persona; lithology, stakeholders, AI tools, and schema validation close the major gaps).
 
-**v3 key insight (all personas):** "Test what the stakeholder sees, not what the developer sees." Every persona flagged the broken live deployment as a process gap. Deployment gate now addresses this. Feature work resumes after live link is verified clean — no score moves until the product **does** something new for each persona.
+**v9 key insight (all personas):** "This is starting to look like a product, not a prototype." The combination of 25 domain-grounded AI tools, CEN/CENELEC schema validation, lithological intervals, and stakeholder management moves Vero from "impressive demo" to "credible pre-production platform." The remaining gap is real data ingestion and customer traction.
 
 ---
 

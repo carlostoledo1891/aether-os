@@ -6,9 +6,9 @@ import type { AetherDataService } from '../../services/dataService'
 import type { ReactNode } from 'react'
 
 vi.mock('react-map-gl/maplibre', () => ({
-  default: ({ children }: { children?: ReactNode }) => <div data-testid="mock-map">{children}</div>,
-  Map: ({ children }: { children?: ReactNode }) => <div data-testid="mock-map">{children}</div>,
-  Marker: () => <div data-testid="mock-marker" />,
+  default: ({ children }: { children?: ReactNode }) => <div data-testid="map-container">{children}</div>,
+  Map: ({ children }: { children?: ReactNode }) => <div data-testid="map-container">{children}</div>,
+  Marker: () => <div data-testid="marker" />,
   Source: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
   Layer: () => null,
   NavigationControl: () => null,

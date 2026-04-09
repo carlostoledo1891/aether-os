@@ -1,10 +1,10 @@
 import { W } from '../../app/canvas/canvasTheme'
 import type { ConditionPrecedent, AuditEventType, ScenarioKey } from '../../services/dataService'
 import {
-  DollarSign, Mountain, ShieldAlert, Handshake, Landmark, FileBarChart, ScrollText, Leaf, Building2,
+  DollarSign, Mountain, ShieldAlert, Handshake, Landmark, FileBarChart, ScrollText, Leaf, Building2, Users,
 } from 'lucide-react'
 
-export type ExecTab = 'assets' | 'financials' | 'risk' | 'pipeline' | 'capital' | 'dfs' | 'permits' | 'audit' | 'esg'
+export type ExecTab = 'assets' | 'financials' | 'risk' | 'pipeline' | 'capital' | 'dfs' | 'permits' | 'audit' | 'esg' | 'stakeholders'
 
 export const TAB_ITEMS: { id: ExecTab; label: string; icon: typeof DollarSign; color: string }[] = [
   { id: 'assets',     label: 'Assets',      icon: Mountain,     color: W.amber },
@@ -16,6 +16,7 @@ export const TAB_ITEMS: { id: ExecTab; label: string; icon: typeof DollarSign; c
   { id: 'permits',    label: 'Agencies',     icon: Building2,    color: W.amber },
   { id: 'audit',      label: 'Audit',        icon: ScrollText,   color: W.text2 },
   { id: 'esg',        label: 'ESG',          icon: Leaf,         color: W.cyan },
+  { id: 'stakeholders', label: 'Stakeholders', icon: Users,     color: W.violet },
 ]
 
 export const SCENARIO_LABELS: { key: ScenarioKey; label: string }[] = [
