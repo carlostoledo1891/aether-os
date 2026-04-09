@@ -37,12 +37,45 @@ describe('domain endpoints (seeded data)', () => {
     expect(Array.isArray(res.json())).toBe(true)
   })
 
-  it('GET /api/audit returns audit events', async () => {
+  it('GET /api/audit returns chain-linked audit events', async () => {
     const res = await app.inject({ method: 'GET', url: '/api/audit' })
     expect(res.statusCode).toBe(200)
     const body = res.json()
     expect(Array.isArray(body)).toBe(true)
-    expect(body.length).toBeGreaterThan(0)
+    expect(body.length).toBe(15)
+    expect(body[0].chain_hash).toBeDefined()
+    expect(body[0].payload_hash).toBeDefined()
+    expect(body[0].prev_hash).toBeDefined()
+    expect(body[0].sequence).toBeDefined()
+  })
+
+  it('GET /api/audit?type=batch_created filters by type', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/audit?type=batch_created' })
+    expect(res.statusCode).toBe(200)
+    const body = res.json()
+    expect(body.length).toBe(2)
+    expect(body.every((e: { type: string }) => e.type === 'batch_created')).toBe(true)
+  })
+
+  it('GET /api/audit/verify-chain returns valid', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/audit/verify-chain' })
+    expect(res.statusCode).toBe(200)
+    const body = res.json()
+    expect(body.valid).toBe(true)
+    expect(body.length).toBe(15)
+  })
+
+  it('GET /api/audit/:eventId returns a single event', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/audit/AUD-001' })
+    expect(res.statusCode).toBe(200)
+    const body = res.json()
+    expect(body.id).toBe('AUD-001')
+    expect(body.chain_hash).toBeDefined()
+  })
+
+  it('GET /api/audit/:eventId returns 404 for unknown', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/audit/NOPE' })
+    expect(res.statusCode).toBe(404)
   })
 
   it('GET /api/esg returns ESG frameworks', async () => {

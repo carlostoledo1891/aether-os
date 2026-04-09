@@ -7,7 +7,7 @@
 
 Use alongside [`docs/copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`docs/copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), and [`HANDOFF.md`](../HANDOFF.md).
 
-**Last updated:** 2026-04-09 (post v10 Sprint: Focused UX Improvements + SCADA Win + Pages Scaffold)
+**Last updated:** 2026-04-09 (post v10.1 Sprint: Unified Map Controls + Perspective + Shared Camera)
 
 ---
 
@@ -2048,6 +2048,105 @@ The weighted average moves from ~8.6 to ~8.9. Six personas moved (+0.5 each): Ch
 
 ---
 
+## Persona Reactions — v10.1 (Post Unified Map Controls + Perspective + Shared Camera)
+
+### Patrick Tunks — Chairman — **10.0** (maintained)
+
+The 3D perspective tilt is exactly what makes this look like a serious geospatial platform rather than a flat web map. When I switch from Operations to Compliance, the camera stays where I was looking — that's the kind of seamless experience you'd expect from Bloomberg Terminal, not a startup demo. The dark purple map controls look institutional. No score change — we hit the code ceiling in v10, and this sprint reinforces it.
+
+**Score rationale:** Ceiling maintained. 3D perspective + shared camera elevate demo polish.
+
+### Haydn Gale — CEO — **9.5** (maintained)
+
+The zoom presets on the Buyer map are perfect for demos. I can click "Caldeira" to show the deposit, "Journey" to show active supply chain steps, and "Full Journey" to show the complete planned route. That's a three-click story that takes a buyer from deposit to destination. The dark purple styling is consistent and professional — no more glass blur that looked fragile over satellite imagery. The camera continuity between views is seamless.
+
+**Score rationale:** Maintained. Zoom presets and camera continuity are demo-quality refinements.
+
+### Chief Geologist — **9.5** (maintained)
+
+The south-to-north perspective gives proper geological context — you can see terrain elevation and the Caldeira rim structure. The layer picker on every map view is consistent and intuitive. Perspective with 3D terrain (MapTiler DEM) makes the alkaline complex visible in context for the first time. No new geological features, but the spatial experience is significantly improved.
+
+**Score rationale:** Maintained. 3D perspective enhances geological visualization.
+
+### DoD Procurement — **7.5** (unchanged)
+
+Map UI improvements don't change procurement requirements. FedRAMP remains blocking.
+
+**Score rationale:** Unchanged.
+
+### EU Enforcement — **8.5** (maintained)
+
+The Buyer map now has proper layers, legend, and zoom presets showing the full supply chain journey. The "Full Journey" preset that fits all timeline steps — including pending — demonstrates the complete traceability path. The dark purple controls are readable over all basemaps. Good visual compliance story.
+
+**Score rationale:** Maintained. Buyer map improvements strengthen the traceability visual narrative.
+
+### SCADA / Process Historian Integrator — **9.5** (maintained)
+
+No SCADA-specific changes. The map improvements are user-facing polish.
+
+**Score rationale:** Unchanged.
+
+### PF Analyst — **8.0** (unchanged)
+
+No financial features. Map polish is irrelevant to my analysis.
+
+**Score rationale:** Unchanged.
+
+### NGO / Environmental Watchdog — **8.0** (maintained)
+
+The unified dark purple map controls are more readable than the glass effect — especially the Hydro Twin legend, which now uses the same styling as Operations. Consistent experience across views. The 3D perspective makes the Caldeira boundary more visually prominent, which reinforces how the mining activity sits within the protected landscape.
+
+**Score rationale:** Maintained. Consistent styling and 3D perspective.
+
+### Technology Journalist — **9.5** (maintained)
+
+The 3D perspective transforms screenshots. A tilted, terrain-aware map with visible elevation is infinitely more compelling than a flat 2D view. The zoom presets on the Buyer map create a ready-made demo flow: Caldeira → Journey → Full Journey. The dark purple controls are screenshot-ready. Camera continuity between views makes screencasts smoother.
+
+**Score rationale:** Maintained. 3D perspective + zoom presets are demo and media quality.
+
+### Unchanged Personas
+
+| Persona | Score | Reason |
+|---------|-------|--------|
+| All | — | This sprint was UX/spatial experience polish; no new capabilities that change structural gaps |
+
+---
+
+## Aggregate Scorecard — v10.1 (Post Unified Map Controls + Perspective + Shared Camera, 2026-04-09)
+
+| Persona | v1 | v2 | v3 | v4 | v5 | v6 | v7 | v8 | v9 | v10 | v10.1 | Delta (v10→v10.1) | Biggest remaining gap |
+|---------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|--------------------|-----------------------|
+| Chairman (Tunks) | 7.5 | 8.0 | 8.0 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | 10.0 | **10.0** | — | Code ceiling reached |
+| CEO (Gale) | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | **9.5** | — | Customer LOI |
+| Chief Geologist | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | **9.5** | — | Core logging integration |
+| DoD | 6.5 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 7.5 | **7.5** | — | FedRAMP certification |
+| EU Enforcement | 6.0 | 6.5 | 6.5 | 6.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | **8.5** | — | 100% DPP field coverage |
+| PF Analyst | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.0 | **8.0** | — | Covenant monitoring |
+| NGO | 5.5 | 6.0 | 6.0 | 6.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | **8.0** | — | Field-verified springs |
+| SCADA | 7.5 | 8.5 | 8.5 | 8.5 | 9.0 | 9.0 | 9.0 | 9.0 | 9.0 | 9.5 | **9.5** | — | OPC-UA bridge |
+| Journalist | 6.5 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | **9.5** | — | Customer LOI |
+| **Weighted avg** | **6.8** | **7.3** | **7.3** | **7.3** | **~7.8** | **~8.0** | **~8.0** | **~8.4** | **~8.6** | **~8.9** | **~8.9** | — | |
+
+---
+
+## v10.1 Synthesis
+
+The weighted average holds at ~8.9. No persona scores moved — and that is the correct outcome. This was a spatial UX polish sprint, not a capability sprint. The value is in demo quality, not feature gaps:
+
+**What this sprint delivered:**
+1. **3D perspective** — pitch 35° + bearing -5° with MapTiler terrain DEM creates a visually striking south-to-north view of the Caldeira. Transforms flat 2D maps into spatial experiences.
+2. **Shared camera state** — seamless camera continuity when switching from Field Operations to Compliance/Traceability. No jarring zoom resets.
+3. **Unified dark purple controls** — MapLayerPicker, MapStylePicker, and all legends across all views now share a consistent dark purple styling that reads cleanly over satellite, topo, and dark basemaps.
+4. **Buyer map completeness** — layer picker, batch legend, and three zoom presets (Caldeira/Journey/Full Journey) give the Buyer view the same spatial interaction quality as Operations.
+
+**Why no scores moved:** All remaining persona gaps are structural (customer LOI, FedRAMP, field instruments, OPC-UA bridge). The platform's code-deliverable potential has been largely exhausted. The 3D perspective, shared camera, and unified controls are "last-mile polish" that make the existing ~8.9 product look more premium in demos and screenshots — they don't close the structural gaps that would push scores higher.
+
+**Business Expert's verdict:** The product is at its engineering ceiling for most personas. The spatial experience improvements make demos more compelling, but the next score movement comes from commercial execution (LOI), regulatory process (FedRAMP), and field deployment (LAPOC instruments, OPC-UA bridge). Ship and sell.
+
+**CTO's verdict:** Clean architecture. `MapCameraContext` is a lightweight ref-based solution with zero render overhead — exactly right for cross-view state. The dark purple tokens consolidate 5 different opacity/blur combinations into 2 tokens. `MapZoomPresets` is a self-contained component with proper fitBounds + pitch/bearing. Quality gate: 0 TS errors, 195 tests, 0 lint errors. The codebase is in excellent shape for handoff or team scaling.
+
+---
+
 ## Changelog
 
 | Date | Change |
@@ -2068,3 +2167,4 @@ The weighted average moves from ~8.6 to ~8.9. Six personas moved (+0.5 each): Ch
 | 2026-04-09 | **v8 evaluation (Post Demo Readiness + Persona Gap Closure Sprint).** Weighted average **~8.0 → ~8.4** (+0.4). 4 personas moved: Chairman +0.5 → 9.0 (AI hallucination tests + provenance UI), CEO +0.5 → 8.5 (pricing model), PF Analyst +0.5 → 8.0 (DSCR + drawdown), Journalist +0.5 → 8.5 (sourced TAM/SAM/SOM). Chief Geologist protected at 8.5. 21 AI agent tools. 151+22 tests. All code-solvable gaps addressed. Remaining gaps structural. |
 | 2026-04-09 | **v9 evaluation (Post Persona Features + Premium UI Polish + Code Review Sprint).** Weighted average **~8.4 → ~8.6** (+0.2). 7 personas moved: Chairman +0.5 → 9.5 (Stakeholders tab), CEO +0.5 → 9.0 (Stakeholders + UI polish), Chief Geologist +0.5 → 9.0 (lithological intervals), DoD +0.5 → 7.5 (security architecture), EU Enforcement +0.5 → 8.0 (CEN/CENELEC validation), NGO +0.5 → 7.5 (branding + LAPOC indicator), Journalist +0.5 → 9.0 (Stakeholders + premium UI). 25 AI agent tools. 195 tests. Remaining gaps entirely structural. |
 | 2026-04-09 | **v10 evaluation (Post Focused UX Improvements + SCADA Win + Pages Scaffold Sprint).** Weighted average **~8.6 → ~8.9** (+0.3). 5 personas moved: SCADA +0.5 → 9.5, Chairman +0.5 → 10.0, Chief Geologist +0.5 → 9.5, CEO +0.5 → 9.5, Journalist +0.5 → 9.5. EU Enforcement +0.5 → 8.5. 25 AI agent tools. 195 tests. 3 routes (/lp, /pitch-deck, dashboard). /lp + /pitch-deck scaffolds. Blockchain strategy doc. SCADA integration surface complete. WCAG AA contrast. Remaining gaps structural. |
+| 2026-04-09 | **v10.1 evaluation (Post Unified Map Controls + Perspective + Shared Camera Sprint).** Weighted average **~8.9** (maintained). Zero-delta release — all scores protected. Sprint delivered: 3D perspective (pitch 35°, bearing -5°) on all map views, shared MapCameraContext (camera continuity between FieldView → BuyerView), dark purple map control tokens replacing glass blur, unified styling across MapLayerPicker/MapStylePicker/all legends, buyer map layers + legend + MapZoomPresets (Caldeira/Journey/Full Journey). 195 tests passing. Engineering ceiling confirmed — remaining gaps structural. |

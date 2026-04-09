@@ -23,7 +23,7 @@ export function getDb(): Database.Database {
   return db
 }
 
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 2
 
 const MIGRATIONS: Array<(d: Database.Database) => void> = [
   // v0 → v1: initial schema
@@ -89,6 +89,29 @@ const MIGRATIONS: Array<(d: Database.Database) => void> = [
       source TEXT NOT NULL,
       ingested_at TEXT NOT NULL
     );
+  `)
+  },
+
+  // v1 → v2: append-only audit event chain (Phase 0 blockchain foundation)
+  (d) => {
+    d.exec(`
+    CREATE TABLE IF NOT EXISTS audit_events (
+      sequence          INTEGER PRIMARY KEY AUTOINCREMENT,
+      event_id          TEXT    NOT NULL UNIQUE,
+      timestamp         TEXT    NOT NULL,
+      type              TEXT    NOT NULL,
+      actor             TEXT    NOT NULL,
+      action            TEXT    NOT NULL,
+      detail            TEXT    NOT NULL,
+      payload_hash      TEXT    NOT NULL,
+      prev_hash         TEXT    NOT NULL,
+      chain_hash        TEXT    NOT NULL,
+      related_entity_id TEXT,
+      anchor_batch_id   INTEGER
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_audit_type ON audit_events(type);
+    CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_events(timestamp);
   `)
   },
 ]

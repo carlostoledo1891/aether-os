@@ -3,7 +3,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
 import caldeiraBoundaryUrl from '../../data/geojson/caldeira-boundary.geojson?url'
 
-export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-fill'
+export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-line'
 
 /**
  * Renders the outer limit of the Caldeira Project Area as a MapLibre polygon.
@@ -42,13 +42,13 @@ export function CaldeiraBoundary() {
         }}
       />
 
-      {/* Solid border — full opacity purple */}
+      {/* Solid border — full opacity purple, wider for easier click target */}
       <Layer
         id="caldeira-boundary-line"
         type="line"
         paint={{
           'line-color': W.violet,
-          'line-width': 1.5,
+          'line-width': 2.5,
           'line-opacity': 1.0,
         }}
       />

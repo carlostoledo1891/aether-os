@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AlertItem, ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
+import { MapCameraProvider } from './contexts/MapCameraContext'
 import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
 import { createMockDataService } from './services/mockDataService'
 import { createLiveDataService } from './services/liveDataService'
@@ -158,7 +159,9 @@ function DashboardShell() {
     <ErrorBoundary>
       <DataServiceProvider service={service}>
         <MapProvider>
-          <AppShell />
+          <MapCameraProvider>
+            <AppShell />
+          </MapCameraProvider>
         </MapProvider>
       </DataServiceProvider>
     </ErrorBoundary>

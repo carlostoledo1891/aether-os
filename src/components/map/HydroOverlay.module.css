@@ -95,9 +95,8 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  background: rgba(5, 5, 16, 0.78);
-  backdrop-filter: blur(10px);
-  border: var(--w-map-hud-border-cyan);
+  background: rgba(18, 10, 40, 0.94);
+  border: 1px solid rgba(124, 92, 252, 0.15);
   border-radius: 8px;
   padding: 5px 10px;
   pointer-events: none;

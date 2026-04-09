@@ -80,7 +80,7 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
         <span style={{ color: W.text3, fontWeight: 400 }}>Caldeira Project</span>
       </span>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+      {statusMsg && (
         <span style={{
           fontSize: 10,
           fontWeight: 700,
@@ -89,9 +89,9 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
           color: bannerColor,
           fontFamily: 'var(--font-mono)',
         }}>
-          {statusMsg || context.bannerLabel}
+          {statusMsg}
         </span>
-      </div>
+      )}
       {showLastTick && (
         <span
           style={{

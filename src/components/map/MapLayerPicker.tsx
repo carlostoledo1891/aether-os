@@ -27,9 +27,8 @@ export const MapLayerPicker = memo(function MapLayerPicker({ layers, onToggle }:
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 4,
-          border: `1px solid ${W.glass12}`,
-          background: W.glass06,
-          backdropFilter: 'blur(12px)',
+          border: W.mapControlBorder,
+          background: W.mapControlBg,
           cursor: 'pointer',
           color: open ? W.violet : W.text2,
           transition: 'color 0.15s',
@@ -43,9 +42,8 @@ export const MapLayerPicker = memo(function MapLayerPicker({ layers, onToggle }:
         <div
           style={{
             marginTop: 4,
-            background: W.glass08,
-            backdropFilter: 'blur(16px)',
-            border: `1px solid ${W.glass12}`,
+            background: W.mapControlBg,
+            border: W.mapControlBorder,
             borderRadius: 8,
             padding: '8px 10px',
             minWidth: 170,

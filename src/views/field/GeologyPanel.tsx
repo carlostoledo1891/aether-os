@@ -212,7 +212,7 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
 /* ─── Collapsible Drill Section Card ───────────────────────────────────── */
 
 function DrillSectionCard() {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   return (
     <GlassCard animate={false} glow={expanded ? 'cyan' : 'none'} style={{ padding: '10px 12px', flexShrink: 0 }}>

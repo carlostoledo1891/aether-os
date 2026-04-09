@@ -12,6 +12,7 @@ import {
   getLatestWeather,
   getMarketData,
 } from '../store/db.js'
+import { getAuditTrail, verifyChain } from '../store/auditChain.js'
 import type { TimeRangeKey } from '../types/shared.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -70,9 +71,28 @@ function buildTools() {
       execute: async () => getDomainState('esg_frameworks') ?? [],
     }),
     queryAudit: tool({
-      description: 'Get the immutable audit trail: timestamped events with actor and action',
+      description: 'Get the SHA-256 chained audit trail: timestamped events with actor, action, payload hash, chain hash, and prev hash',
       inputSchema: z.object({}),
-      execute: async () => getDomainState('audit_trail') ?? [],
+      execute: async () => getAuditTrail().map(r => ({
+        id: r.event_id, sequence: r.sequence, timestamp: r.timestamp,
+        type: r.type, actor: r.actor, action: r.action, detail: r.detail,
+        hash: r.chain_hash, payload_hash: r.payload_hash,
+        prev_hash: r.prev_hash, chain_hash: r.chain_hash,
+        relatedEntityId: r.relatedEntityId,
+      })),
+    }),
+    verifyAuditChain: tool({
+      description: 'Verify the integrity of the append-only audit chain. Returns valid/invalid, chain length, and details on any broken link.',
+      inputSchema: z.object({}),
+      execute: async () => {
+        const result = verifyChain()
+        return {
+          ...result,
+          summary: result.valid
+            ? `Audit chain integrity verified: ${result.length} events, all chain hashes valid.`
+            : `Audit chain BROKEN at sequence ${result.brokenAt}: ${result.detail}`,
+        }
+      },
     }),
     queryTelemetry: tool({
       description: 'Get the latest plant and environment telemetry: flow, leaching, FJH, output, aquifer, water quality',
@@ -193,7 +213,7 @@ function buildTools() {
         ],
         rbac_roles: ['Admin', 'Analyst', 'Viewer', 'Auditor'],
         sbom: { dependency_count: 142, osi_approved_pct: 98, last_scan: '2026-04-09' },
-        audit_design: 'SHA-256 hash chain with immutable append-only SQLite journal',
+        audit_design: 'Real SHA-256 append-only hash chain in dedicated audit_events table. Each event stores payload_hash, prev_hash, and chain_hash. Chain integrity verifiable via GET /api/audit/verify-chain. Merkle root anchoring planned for Phase 1.',
       }),
     }),
     webSearch: tool({

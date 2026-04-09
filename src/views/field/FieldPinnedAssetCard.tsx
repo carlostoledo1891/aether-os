@@ -152,93 +152,92 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
             </div>
           )}
 
-          {geoSelection.kind === 'drill' && (
-            <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
-              <div className="font-bold text-[var(--w-text1)]">{geoSelection.detail.id}</div>
-              <div>
-                <StatusChip label={geoSelection.detail.hole_type} variant="violet" size="sm" /> ·{' '}
-                {geoSelection.detail.treo_ppm} ppm TREO · {geoSelection.detail.depth_m} m
-              </div>
-              <div style={{ color: W.text4 }}>Deposit: {geoSelection.detail.deposit}</div>
-              {geoSelection.detail.intercept && (
-                <div style={{ color: W.text4 }}>
-                  <span className="font-semibold text-[var(--w-text3)]">Intercept:</span> {geoSelection.detail.intercept}
-                </div>
-              )}
-              {geoSelection.detail.including && (
-                <div style={{ color: W.text4 }}>
-                  <span className="font-semibold text-[var(--w-text3)]">Including:</span> {geoSelection.detail.including}
-                </div>
-              )}
-              {geoSelection.detail.note && <div style={{ color: W.text4 }}>{geoSelection.detail.note}</div>}
-              {geoSelection.detail.source_ref && (
-                <div className="font-mono text-[9px]" style={{ color: W.text4 }}>
-                  {geoSelection.detail.source_ref} · {geoSelection.detail.as_of ?? '—'}
-                </div>
-              )}
+          {geoSelection.kind === 'drill' && (() => {
+            const intervals = geoSelection.detail.lithology_intervals
+            const hasLith = intervals && intervals.length > 0
+            const totalDepth = geoSelection.detail.depth_m || (intervals ? intervals[intervals.length - 1].to_m : 0)
+            return (
+              <>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  {/* Left: drill info */}
+                  <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2, flex: 1, minWidth: 0 }}>
+                    <div className="font-bold text-[var(--w-text1)]">{geoSelection.detail.id}</div>
+                    <div>
+                      <StatusChip label={geoSelection.detail.hole_type} variant="violet" size="sm" /> ·{' '}
+                      {geoSelection.detail.treo_ppm} ppm TREO · {geoSelection.detail.depth_m} m
+                    </div>
+                    <div style={{ color: W.text4 }}>Deposit: {geoSelection.detail.deposit}</div>
+                    {geoSelection.detail.intercept && (
+                      <div style={{ color: W.text4 }}>
+                        <span className="font-semibold text-[var(--w-text3)]">Intercept:</span> {geoSelection.detail.intercept}
+                      </div>
+                    )}
+                    {geoSelection.detail.including && (
+                      <div style={{ color: W.text4 }}>
+                        <span className="font-semibold text-[var(--w-text3)]">Including:</span> {geoSelection.detail.including}
+                      </div>
+                    )}
+                    {geoSelection.detail.note && <div style={{ color: W.text4 }}>{geoSelection.detail.note}</div>}
+                    {geoSelection.detail.source_ref && (
+                      <div className="font-mono text-[9px]" style={{ color: W.text4 }}>
+                        {geoSelection.detail.source_ref} · {geoSelection.detail.as_of ?? '—'}
+                      </div>
+                    )}
+                  </div>
 
-              {geoSelection.detail.lithology_intervals && geoSelection.detail.lithology_intervals.length > 0 && (
-                <div style={{ marginTop: 8 }}>
-                  <div style={{ fontSize: 9, fontWeight: 600, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
-                    Lithology profile
-                  </div>
-                  <div style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden', gap: 1 }}>
-                    {geoSelection.detail.lithology_intervals.map((interval, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          flex: interval.to_m - interval.from_m,
-                          background: LITH_COLORS[interval.lithology] ?? '#555',
-                          minWidth: 2,
-                        }}
-                        title={`${LITH_LABELS[interval.lithology] ?? interval.lithology}: ${interval.from_m}\u2013${interval.to_m}m`}
-                      />
-                    ))}
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
-                    {[...new Set(geoSelection.detail.lithology_intervals.map(i => i.lithology))].map(lith => (
-                      <div key={lith} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: 2, background: LITH_COLORS[lith] ?? '#555' }} />
+                  {/* Right: vertical lithology column with depth captions */}
+                  {hasLith && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 56 }}>
+                      <div style={{ fontSize: 8, fontWeight: 600, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 3, textAlign: 'center' }}>
+                        Depth
+                      </div>
+                      <div style={{ position: 'relative', width: 28, height: 160 }}>
+                        <div style={{ width: 28, height: 160, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                          {intervals!.map((iv, idx) => {
+                            const pct = ((iv.to_m - iv.from_m) / totalDepth) * 100
+                            return (
+                              <div
+                                key={idx}
+                                style={{
+                                  flex: `${pct} 0 0`,
+                                  background: LITH_COLORS[iv.lithology] ?? '#555',
+                                  minHeight: 1.5,
+                                }}
+                                title={`${LITH_LABELS[iv.lithology] ?? iv.lithology}: ${iv.from_m}–${iv.to_m}m`}
+                              />
+                            )
+                          })}
+                        </div>
+                        <span style={{ position: 'absolute', top: -1, left: 32, fontSize: 7, color: W.text4, fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
+                          0m
+                        </span>
+                        <span style={{ position: 'absolute', bottom: -1, left: 32, fontSize: 7, color: W.text4, fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
+                          {totalDepth}m
+                        </span>
+                        {totalDepth > 40 && (
+                          <span style={{ position: 'absolute', top: '50%', left: 32, transform: 'translateY(-50%)', fontSize: 7, color: W.text4, fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
+                            {Math.round(totalDepth / 2)}m
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Lithology legend — bottom of card */}
+                {hasLith && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8, paddingTop: 6, borderTop: `1px solid ${W.glass06}` }}>
+                    {[...new Set(intervals!.map(i => i.lithology))].map(lith => (
+                      <div key={lith} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <span style={{ width: 5, height: 5, borderRadius: 1.5, background: LITH_COLORS[lith] ?? '#555' }} />
                         <span style={{ fontSize: 8, color: W.text4 }}>{LITH_LABELS[lith] ?? lith}</span>
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {geoSelection.detail.lithology_intervals && geoSelection.detail.lithology_intervals.length > 0 && (
-                <div style={{ marginTop: 10, display: 'flex', gap: 10 }}>
-                  <div style={{ width: 32, height: 180, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5, flexShrink: 0 }}>
-                    {geoSelection.detail.lithology_intervals.map((interval, idx) => {
-                      const total = geoSelection.detail.depth_m || geoSelection.detail.lithology_intervals![geoSelection.detail.lithology_intervals!.length - 1].to_m
-                      const pct = ((interval.to_m - interval.from_m) / total) * 100
-                      return (
-                        <div
-                          key={idx}
-                          style={{
-                            flex: `${pct} 0 0`,
-                            background: LITH_COLORS[interval.lithology] ?? '#555',
-                            minHeight: 2,
-                            position: 'relative' as const,
-                          }}
-                        >
-                          {pct > 15 && (
-                            <span style={{ position: 'absolute', left: 36, top: '50%', transform: 'translateY(-50%)', fontSize: 8, color: W.text3, whiteSpace: 'nowrap' }}>
-                              {interval.from_m}\u2013{interval.to_m}m
-                            </span>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>0m</span>
-                    <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>{geoSelection.detail.depth_m}m</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </>
+            )
+          })()}
 
           {geoSelection.kind === 'deposit' && (
             <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>

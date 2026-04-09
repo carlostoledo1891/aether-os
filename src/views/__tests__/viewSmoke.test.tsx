@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render } from '@testing-library/react'
 import { DataServiceProvider } from '../../services/DataServiceProvider'
+import { MapCameraProvider } from '../../contexts/MapCameraContext'
 import { createMockDataService } from '../../services/mockDataService'
 import type { AetherDataService } from '../../services/dataService'
 import type { ReactNode } from 'react'
@@ -24,7 +25,11 @@ vi.mock('maplibre-gl', () => ({
 let service: AetherDataService
 
 function TestWrapper({ children }: { children: ReactNode }) {
-  return <DataServiceProvider service={service}>{children}</DataServiceProvider>
+  return (
+    <MapCameraProvider>
+      <DataServiceProvider service={service}>{children}</DataServiceProvider>
+    </MapCameraProvider>
+  )
 }
 
 beforeEach(() => {

@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { AlertTriangle, ChevronDown } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { LITH_COLORS, LITH_LABELS, LITH_ORDER } from './lithologyPalette'
@@ -60,12 +61,12 @@ interface TooltipData {
 }
 
 function LithTooltip({ data }: { data: TooltipData }) {
-  return (
+  return createPortal(
     <div style={{
       position: 'fixed', left: data.x + 12, top: data.y - 10,
       background: W.panel, border: `1px solid ${W.glass12}`, borderRadius: W.radius.sm,
       padding: '6px 9px', fontSize: 10, lineHeight: 1.5, pointerEvents: 'none',
-      zIndex: 50, maxWidth: 220,
+      zIndex: 9999, maxWidth: 220,
       boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
     }}>
       <div style={{ fontWeight: 700, color: W.text1, marginBottom: 2 }}>{data.holeId}</div>
@@ -84,7 +85,8 @@ function LithTooltip({ data }: { data: TooltipData }) {
       <div style={{ color: W.text4, fontStyle: 'italic' }}>
         Weathering: {data.weathering}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

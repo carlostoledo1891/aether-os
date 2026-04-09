@@ -56,6 +56,7 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
         { name: 'project', description: 'Project-level static data (deposits, resources, hydrology)' },
         { name: 'enrichers', description: 'Weather, market, seismic, and LAPOC data from external sources' },
         { name: 'ingest', description: 'Engine → API data ingestion (requires x-api-key)' },
+        { name: 'integrity', description: 'Audit chain integrity and verification' },
         { name: 'export', description: 'Regulatory and DPP export bundles' },
         { name: 'alerts', description: 'Alert management (requires x-api-key)' },
         { name: 'ai', description: 'AI analyst chat (streaming, requires GOOGLE_GENERATIVE_AI_API_KEY)' },

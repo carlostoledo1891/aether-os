@@ -3,26 +3,10 @@ import {
   getDomainState, getLatestWeather, getMarketData, getRecentSeismic,
   dismissAlert, dismissAllAlerts,
 } from '../store/db.js'
+import { getAuditTrail, getAuditEvent, verifyChain } from '../store/auditChain.js'
 
 export async function domainRoutes(app: FastifyInstance) {
-  /* ─── System health & telemetry channels ────────────────────────────── */
-  app.get('/api/health', { schema: { tags: ['system'], summary: 'System health check' } }, async () => {
-    const uptime = process.uptime()
-    return {
-      status: 'healthy',
-      uptime_s: Math.round(uptime),
-      version: '0.10.0',
-      channels: {
-        plant_telemetry: { status: 'active', last_tick_ms: Date.now() },
-        env_telemetry: { status: 'active', last_tick_ms: Date.now() },
-      },
-      integrations: {
-        open_meteo: 'connected',
-        bcb_rates: 'connected',
-      },
-    }
-  })
-
+  /* ─── Telemetry channels ─────────────────────────────────────────────── */
   app.get('/api/telemetry/channels', { schema: { tags: ['system'], summary: 'List telemetry channels with metadata' } }, async () => ({
     channels: [
       { name: 'leaching_circuit.ph_level', unit: 'pH', precision: 2, sample_rate_hz: 0.5, status: 'active' },
@@ -79,7 +63,62 @@ export async function domainRoutes(app: FastifyInstance) {
 
   /* ─── Benchmarks, Audit, ESG ────────────────────────────────────────── */
   app.get('/api/benchmarks', { schema: { tags: ['domain'], summary: 'Competitive benchmarks' } }, async () => getDomainState('benchmarks') ?? [])
-  app.get('/api/audit', { schema: { tags: ['domain'], summary: 'Audit trail events' } }, async () => getDomainState('audit_trail') ?? [])
+
+  app.get<{ Querystring: { type?: string } }>('/api/audit', {
+    schema: {
+      tags: ['integrity'],
+      summary: 'Audit trail events (SHA-256 chained)',
+      querystring: { type: 'object', properties: { type: { type: 'string' } } },
+    },
+  }, async (req) => {
+    const rows = getAuditTrail(req.query.type ? { type: req.query.type } : undefined)
+    return rows.map(r => ({
+      id: r.event_id,
+      sequence: r.sequence,
+      timestamp: r.timestamp,
+      type: r.type,
+      actor: r.actor,
+      action: r.action,
+      detail: r.detail,
+      hash: r.chain_hash,
+      payload_hash: r.payload_hash,
+      prev_hash: r.prev_hash,
+      chain_hash: r.chain_hash,
+      relatedEntityId: r.relatedEntityId,
+      anchor_batch_id: r.anchor_batch_id,
+    }))
+  })
+
+  app.get('/api/audit/verify-chain', {
+    schema: { tags: ['integrity'], summary: 'Verify integrity of the append-only audit chain' },
+  }, async () => verifyChain())
+
+  app.get<{ Params: { eventId: string } }>('/api/audit/:eventId', {
+    schema: {
+      tags: ['integrity'],
+      summary: 'Single audit event with chain position',
+      params: { type: 'object', properties: { eventId: { type: 'string' } } },
+    },
+  }, async (req, reply) => {
+    const row = getAuditEvent(req.params.eventId)
+    if (!row) return reply.code(404).send({ error: 'Audit event not found' })
+    return {
+      id: row.event_id,
+      sequence: row.sequence,
+      timestamp: row.timestamp,
+      type: row.type,
+      actor: row.actor,
+      action: row.action,
+      detail: row.detail,
+      hash: row.chain_hash,
+      payload_hash: row.payload_hash,
+      prev_hash: row.prev_hash,
+      chain_hash: row.chain_hash,
+      relatedEntityId: row.relatedEntityId,
+      anchor_batch_id: row.anchor_batch_id,
+    }
+  })
+
   app.get('/api/esg', { schema: { tags: ['domain'], summary: 'ESG framework coverage' } }, async () => getDomainState('esg_frameworks') ?? [])
 
   /* ─── Batches ───────────────────────────────────────────────────────── */

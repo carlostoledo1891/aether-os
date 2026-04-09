@@ -54,6 +54,19 @@ export interface DrillHoleDetail {
 
 export const DRILL_LAYER_ID = 'drill-hole-core'
 
+export function parseLithologyIntervals(
+  raw: unknown,
+): { from_m: number; to_m: number; lithology: string; weathering: string }[] | undefined {
+  if (Array.isArray(raw)) return raw
+  if (typeof raw === 'string') {
+    try {
+      const parsed = JSON.parse(raw)
+      if (Array.isArray(parsed)) return parsed
+    } catch { /* not valid JSON */ }
+  }
+  return undefined
+}
+
 export function toDrillHoleDetail(
   properties: Record<string, unknown>,
 ): DrillHoleDetail | null {
@@ -72,9 +85,7 @@ export function toDrillHoleDetail(
     as_of: properties.as_of ? String(properties.as_of) : undefined,
     intercept: properties.intercept ? String(properties.intercept) : undefined,
     including: properties.including ? String(properties.including) : undefined,
-    lithology_intervals: Array.isArray(properties.lithology_intervals)
-      ? (properties.lithology_intervals as { from_m: number; to_m: number; lithology: string; weathering: string }[])
-      : undefined,
+    lithology_intervals: parseLithologyIntervals(properties.lithology_intervals),
   }
 }
 

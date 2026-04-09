@@ -1,8 +1,8 @@
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
-import { MapBase } from '../components/map/MapBase'
+import { MapBase, CALDEIRA_BBOX } from '../components/map/MapBase'
 import type { MapLayerMouseEvent } from '../components/map/MapBase'
 import { PlantOverlay, PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../components/map/PlantOverlay'
 import type { PlantOverlayNodeDetail } from '../components/map/PlantOverlay'
@@ -21,7 +21,7 @@ import {
 } from '../components/map/EnvironmentalOverlay'
 import { LicenseOverlay, LICENSE_LAYER_ID, toLicenseDetail } from '../components/map/LicenseOverlay'
 import { DepositOverlay, DEPOSIT_LAYER_ID, toDepositDetail } from '../components/map/DepositOverlay'
-import { DrillHoleOverlay, DRILL_LAYER_ID, toDrillHoleDetail } from '../components/map/DrillHoleOverlay'
+import { DrillHoleOverlay, DRILL_LAYER_ID, toDrillHoleDetail, parseLithologyIntervals } from '../components/map/DrillHoleOverlay'
 import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID, toPfsEngineeringDetail } from '../components/map/PfsEngineeringOverlay'
 import { InfraOverlay, INFRA_POINT_CORE_LAYER_ID } from '../components/map/InfraOverlay'
 import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from '../components/map/OpsPlantSitesOverlay'
@@ -32,6 +32,8 @@ import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPicker } from '../components/map/MapLayerPicker'
 import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import { W } from '../app/canvas/canvasTheme'
+import { useMapCamera } from '../contexts/MapCameraContext'
+import { useMap } from 'react-map-gl/maplibre'
 import { useTelemetry } from '../services/DataServiceProvider'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { useSiteWeather } from '../hooks/useSiteWeather'
@@ -104,9 +106,47 @@ interface FieldViewProps {
 }
 
 export function FieldView({ highlightFeatureId }: FieldViewProps) {
+  const { saveCamera, getCamera, clearCamera } = useMapCamera()
+  const maps = useMap()
   const { plant, env } = useTelemetry()
   const springsRef = useRef(env.springs)
   springsRef.current = env.springs
+
+  const [initialCamera] = useState(() => {
+    const saved = getCamera()
+    if (saved) {
+      clearCamera()
+      return saved
+    }
+    return null
+  })
+
+  const didInitialFit = useRef(false)
+  useEffect(() => {
+    if (initialCamera || didInitialFit.current) return
+    const mapRef = maps['aetherField' as keyof typeof maps] ?? maps.current
+    if (!mapRef) return
+    didInitialFit.current = true
+    mapRef.fitBounds(CALDEIRA_BBOX, { padding: 60, duration: 1000, pitch: 35, bearing: 0 })
+  }, [maps, initialCamera])
+
+  useEffect(() => {
+    return () => {
+      const mapRef = maps['aetherField' as keyof typeof maps] ?? maps.current
+      if (!mapRef) return
+      const map = (mapRef as any).getMap?.()
+      if (!map) return
+      const center = map.getCenter()
+      saveCamera({
+        longitude: center.lng,
+        latitude: center.lat,
+        zoom: map.getZoom(),
+        pitch: map.getPitch(),
+        bearing: map.getBearing(),
+      })
+    }
+  }, [maps, saveCamera])
+
   const { data: PROJECT_FINANCIALS } = useServiceQuery('project-financials', s => s.getProjectFinancials())
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
@@ -155,7 +195,10 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
 
   const handleMouseEnter = useCallback(
     (e: MapLayerMouseEvent) => {
-      const feat = e.features?.[0]
+      // Prefer specific features over broad area layers (boundary fill/line)
+      const feat = e.features && e.features.length > 1
+        ? e.features.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID) ?? e.features[0]
+        : e.features?.[0]
       const layerId = feat?.layer?.id
       const props = feat?.properties as Record<string, unknown> | undefined
       const id = props?.id
@@ -179,6 +222,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
       if (layerId === DRILL_LAYER_ID && typeof id === 'string') {
         setHoveredNodeId(id)
         setMapHoverHint(null)
+        const lithIntervals = parseLithologyIntervals(props?.lithology_intervals)
         setPopupData({
           x: px.x, y: px.y,
           data: {
@@ -190,6 +234,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               { label: 'Deposit', value: String(props?.deposit ?? '—') },
               { label: 'Type', value: String(props?.hole_type ?? '—') },
             ],
+            lithologyIntervals: lithIntervals,
           },
         })
         return
@@ -296,8 +341,10 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     (e: MapLayerMouseEvent) => {
       const feats = e.features
 
+      // Check if ONLY the boundary was hit (no more specific features)
+      const nonBoundaryFeat = feats?.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID)
       const boundaryFeat = feats?.find(f => f.layer?.id === CALDEIRA_BOUNDARY_LAYER_ID)
-      if (boundaryFeat) {
+      if (boundaryFeat && !nonBoundaryFeat) {
         setSelectedPlantNode(null)
         setSelectedHydroNode(null)
         setGeoSelection((g) =>
@@ -576,6 +623,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
             }}
           >
             <MapBase
+              initialViewState={initialCamera ?? undefined}
               interactiveLayerIds={interactiveLayerIds}
               cursor={isHovering ? 'pointer' : ''}
               highlightWater={mapTab === 'environment'}
@@ -684,9 +732,8 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                 bottom: 12,
                 right: 12,
                 zIndex: 8,
-                background: W.glass06,
-                backdropFilter: 'blur(12px)',
-                border: `1px solid ${W.glass12}`,
+                background: W.mapControlBg,
+                border: W.mapControlBorder,
                 borderRadius: 8,
                 padding: '8px 10px',
                 display: 'flex',

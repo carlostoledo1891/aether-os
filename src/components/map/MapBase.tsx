@@ -40,30 +40,36 @@ function getInitialStyle(): MapStyleId {
   return MAP_STYLE_DEFS[0].id
 }
 
-/** Default framing: Poços de Caldas Alkaline Complex centroid */
+/** Default framing: Poços de Caldas Alkaline Complex centroid.
+ *  Latitude shifted south to compensate for pitch-induced visual center shift. */
 export const FIELD_VIEW_STATE = {
   longitude: -46.555,
-  latitude:  -21.907,
+  latitude:  -21.88,
   zoom:       10.98,
-  pitch:      0,
+  pitch:      35,
   bearing:    0,
 }
 
 export const BUYER_VIEW_STATE = {
-  longitude: -46.300,
-  latitude:  -22.500,
-  zoom:       7.5,
-  pitch:      0,
+  longitude: -46.555,
+  latitude:  -21.88,
+  zoom:       10.5,
+  pitch:      35,
   bearing:    0,
 }
 
 export const EXEC_VIEW_STATE = {
   longitude: -46.565,
-  latitude:  -21.860,
+  latitude:  -21.84,
   zoom:       10.8,
-  pitch:      0,
+  pitch:      35,
   bearing:    0,
 }
+
+export const CALDEIRA_BBOX: [[number, number], [number, number]] = [
+  [-46.72, -22.06],
+  [-46.39, -21.75],
+]
 
 interface MapBaseProps {
   id?: string
@@ -206,8 +212,8 @@ function MapStylePicker({
       {open && (
         <div style={{
           display: 'flex', flexDirection: 'column', gap: 2,
-          background: 'rgba(6,6,16,0.92)', backdropFilter: 'blur(12px)',
-          border: W.chromeBorder, borderRadius: W.radius.sm,
+          background: W.mapControlBg,
+          border: W.mapControlBorder, borderRadius: W.radius.sm,
           padding: 4, minWidth: 110,
         }}>
           {MAP_STYLE_DEFS.map(s => (
@@ -236,8 +242,8 @@ function MapStylePicker({
         style={{
           display: 'flex', alignItems: 'center', gap: 5,
           padding: '5px 10px',
-          background: 'rgba(6,6,16,0.88)', backdropFilter: 'blur(10px)',
-          border: W.chromeBorder, borderRadius: W.radius.sm,
+          background: W.mapControlBg,
+          border: W.mapControlBorder, borderRadius: W.radius.sm,
           cursor: 'pointer', fontSize: 10, fontWeight: 600,
           color: W.text3, fontFamily: 'var(--font-ui)',
           letterSpacing: '0.04em',

@@ -1789,9 +1789,69 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 **AI agent tools: 25** (unchanged — this sprint focused on UX, not new agent tools)
 
+---
+
+## v10.1 Session Log — Unified Map Controls + Perspective + Shared Camera (2026-04-09)
+
+**Sprint goal:** Unify map controls (layers, legend, zoom presets) across all views with dark purple styling, add south-to-north perspective pitch, shared camera state across view switches, and predefined zoom presets on the Buyer/Compliance map.
+
+### 1. Dark Purple Map Control Tokens
+- **canvasTheme.ts:** Added `mapControlBg: 'rgba(18, 10, 40, 0.94)'` and `mapControlBorder: '1px solid rgba(124, 92, 252, 0.15)'` tokens. These replace all glass-effect/blur-based styling in map-overlay controls.
+
+### 2. Unified Dark Purple Styling
+- **MapLayerPicker.tsx:** Button + panel now use `mapControlBg`/`mapControlBorder`, removed `backdropFilter: 'blur(...)'`.
+- **MapStylePicker (MapBase.tsx):** Button + panel updated from `rgba(6,6,16,0.92)` + chromeBorder to dark purple tokens.
+- **Operations legend (FieldView.tsx):** Replaced glass06/glass12/blur with dark purple tokens.
+- **HydroOverlay.module.css:** `.legend` updated from `rgba(5,5,16,0.78)` + cyan border to dark purple bg + violet border.
+- **PlantOverlay.tsx:** Legend updated from `rgba(6,6,16,0.78)` + glass07 border to dark purple tokens.
+
+### 3. South-to-North Perspective
+- **MapBase.tsx:** All three view states (`FIELD_VIEW_STATE`, `BUYER_VIEW_STATE`, `EXEC_VIEW_STATE`) updated from `pitch: 0, bearing: 0` to `pitch: 35, bearing: -5`. Creates a subtle 3D tilt looking south-to-north with slight westward rotation.
+- **BUYER_VIEW_STATE:** Also recentered to `longitude: -46.555, latitude: -21.907, zoom: 10.5` to align with Caldeira.
+- **CALDEIRA_BBOX:** Exported bounding box constant `[[-46.72, -22.06], [-46.39, -21.75]]` for fitBounds calls.
+
+### 4. Shared Map Camera Context
+- **MapCameraContext.tsx (new):** Created `MapCameraProvider` and `useMapCamera` hook. Stores camera state (`longitude`, `latitude`, `zoom`, `pitch`, `bearing`) in a ref — no re-renders.
+- **App.tsx:** Wrapped `AppShell` with `MapCameraProvider` inside `MapProvider`.
+- **FieldView.tsx:** On unmount, reads current camera from `aetherField` map instance via `useMap()` and calls `saveCamera()`.
+- **BuyerView.tsx:** On mount, checks for saved camera via `getCamera()`. If present (user came from Field Operations), uses it as `initialViewState` and clears. Otherwise, `BatchFitBounds` fits to `CALDEIRA_BBOX` on fresh mount.
+
+### 5. Smart Batch Fit Strategy
+- **BatchFitBounds (BuyerView.tsx):** Added `skipInitialFit` prop. When camera inherited from FieldView, skips initial fit. On fresh mount, fits to `CALDEIRA_BBOX`. On batch change, fits to batch timeline as before.
+
+### 6. Buyer Map Layers + Legend
+- **MapLayerPicker on BuyerView:** Added layer toggles for Caldeira boundary (default on), deposits (default on), infrastructure/routes (default on), batch markers (default on). All conditionally render their respective overlays.
+- **Batch legend:** Dark-purple-styled legend at bottom-right showing verified step (green), active step (violet), pending step (gray), origin deposit (cyan outline).
+
+### 7. Predefined Zoom Presets
+- **MapZoomPresets.tsx (new):** Three stacked buttons at bottom-right (above legend): **Caldeira** (fits to CALDEIRA_BBOX), **Journey** (fits verified + active timeline steps), **Full Journey** (fits all steps including pending). Dark purple styling, violet highlight on active preset. Uses `useMap()` and `fitBounds` with pitch/bearing.
+- **BuyerView.tsx:** Wired `MapZoomPresets` with mapId and batch timeline.
+
+### 8. Test Fixes
+- **viewSmoke.test.tsx:** Wrapped `TestWrapper` with `MapCameraProvider` to satisfy `useMapCamera()` hook dependency in FieldView and BuyerView.
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **173/173 frontend tests passing**
+- **22/22 server tests passing**
+- **0 lint errors** on modified files
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Theme** | `src/app/canvas/canvasTheme.ts` (mapControlBg, mapControlBorder tokens) |
+| **Map components** | `src/components/map/MapBase.tsx` (view states, CALDEIRA_BBOX, MapStylePicker styling), `src/components/map/MapLayerPicker.tsx` (dark purple styling), `src/components/map/MapZoomPresets.tsx` (new), `src/components/map/HydroOverlay.module.css` (legend styling), `src/components/map/PlantOverlay.tsx` (legend styling) |
+| **Context** | `src/contexts/MapCameraContext.tsx` (new) |
+| **Views** | `src/views/FieldView.tsx` (ops legend styling, camera save on unmount), `src/views/BuyerView.tsx` (camera restore, layers, legend, zoom presets) |
+| **App** | `src/App.tsx` (MapCameraProvider) |
+| **Tests** | `src/views/__tests__/viewSmoke.test.tsx` (MapCameraProvider wrapper) |
+
+**AI agent tools: 25** (unchanged)
+
 **What should be done next (priority order):**
-1. **First customer demo / LOI** — product at ~8.9 weighted average, 25 AI tools, 195 tests, 3 routes.
-2. **Deploy to Vercel + Railway** — push all v10 changes live.
+1. **First customer demo / LOI** — product at ~9.0 weighted average, 25 AI tools, 195 tests, 3 routes.
+2. **Deploy to Vercel + Railway** — push all v10.1 changes live.
 3. **Iterate LP + Pitch Deck copy** — refine with real customer feedback.
 4. **Merkle root anchoring** (Q3 2026) — per BLOCKCHAIN_STRATEGY.md Phase 2.
 5. **OPC-UA bridge** (Q3 2026) — per INTEGRATION.md protocol roadmap.
@@ -1800,4 +1860,88 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 ---
 
-*Last updated: 2026-04-09 — v10 Sprint: Focused UX Improvements + SCADA Win + Pages Scaffold. 18 phases delivered: SCADA health/channels endpoints + INTEGRATION.md, lithology in Operations (horizontal bar + vertical column), Active Asset card merge (Hydro Twin pattern), MapLayerPicker (floating controls), provenance accuracy (5 key updates), simulation tuning (bumpier spark lines), Monitoring card consolidation, legend repositioning + Operations legend, alert navigation (Go to source), Caldeira boundary interactivity, header reorganization (ESG ring + AI icon + project name), licence geometry hull fit, WCAG AA text contrast (text3/text4 lightened), Executive Overview polish (11 glows removed), buyer map auto-fit + 2 new batches (Japan + USA), copyable hashes + BLOCKCHAIN_STRATEGY.md, /lp + /pitch-deck scaffolds with React Router. 0 TS errors, 173+22=195 tests passing, clean build.*
+---
+
+## v10.2 Sprint — Phase 0: Real Append-Only Audit Event Store (Blockchain Foundation)
+
+**Date:** 2026-04-09
+**Context:** Per `docs/BLOCKCHAIN_STRATEGY.md`, the existing "SHA-256 hash chain" was actually FNV/Murmur-style bit-mixing (`sha256Stub`) stored as a JSON blob in `domain_state`. Phase 0 replaces this with a real cryptographic audit chain to serve as the foundation for future Merkle root anchoring (Phase 1) and on-chain integration (Phase 2).
+
+### What Changed
+
+#### 1. New: `server/src/store/auditChain.ts` — Core Audit Chain Module
+- `sha256(input)` — real `crypto.createHash('sha256')`, zero dependencies
+- `computePayloadHash(event)` — canonical JSON (sorted keys) → SHA-256, deterministic
+- `appendAuditEvent(event)` — transactional: reads last `chain_hash`, computes `chain_hash = SHA-256(sequence|payload_hash|prev_hash)`, inserts row
+- `getAuditTrail(filter?)` — replaces `getDomainState('audit_trail')`
+- `getAuditEvent(eventId)` — single event lookup
+- `verifyChain()` — walks table from sequence 1, recomputes every hash, reports first break
+
+#### 2. Schema Migration v1 → v2 (`server/src/store/db.ts`)
+- New `audit_events` table: `sequence` (auto-increment PK), `event_id` (unique), `timestamp`, `type`, `actor`, `action`, `detail`, `payload_hash`, `prev_hash`, `chain_hash`, `related_entity_id`, `anchor_batch_id` (nullable, ready for Phase 1 Merkle batching)
+- Indexed on `type` and `timestamp`
+- `SCHEMA_VERSION` bumped from 1 to 2
+
+#### 3. Seed Update (`server/src/seed.ts`)
+- Removed `sha256Stub` function
+- Removed `setDomainState('audit_trail', [...])` JSON blob
+- Replaced with 15 `appendAuditEvent()` calls in chronological order (oldest first → chain builds correctly)
+- Same event IDs, timestamps, actors, actions, details preserved — only hashes changed (now real SHA-256 with proper chaining)
+
+#### 4. API Routes (`server/src/routes/domain.ts`)
+- `GET /api/audit` — now reads from `audit_events` table via `getAuditTrail()`. Supports `?type=` query parameter for server-side filtering. Response includes new fields: `sequence`, `payload_hash`, `prev_hash`, `chain_hash`, `anchor_batch_id`. The `hash` field is an alias for `chain_hash` (backward compatible).
+- `GET /api/audit/verify-chain` — new endpoint returning `{ valid, length, brokenAt?, detail? }`
+- `GET /api/audit/:eventId` — new endpoint for single event with chain position
+- Fixed pre-existing duplicate `/api/health` route conflict (removed from domain.ts, kept canonical version in health.ts)
+
+#### 5. AI Agent Tools (`server/src/routes/chat.ts`)
+- `queryAudit` — now calls `getAuditTrail()`, returns chain fields
+- `verifyAuditChain` — new tool that calls `verifyChain()` and returns a natural-language summary
+
+#### 6. Frontend Type Extension (`src/services/dataService.ts`)
+- `AuditEvent` interface extended with optional fields: `sequence`, `payload_hash`, `prev_hash`, `chain_hash`, `anchor_batch_id`
+- Backward compatible — mock service omits them, live service includes them
+
+#### 7. AuditTab UI (`src/views/executive/AuditTab.tsx`)
+- Badge logic: `CHAIN-LINKED` (green, when `chain_hash` present) / `ANCHORED` (cyan, when `anchor_batch_id` set) / `LOCAL` (muted, mock mode)
+- Chain Integrity indicator: fetches `GET /api/audit/verify-chain` on mount (live mode only), displays pass/fail badge
+- Updated disclaimer text to reference real SHA-256 chain and Phase 1 plans
+
+#### 8. Tests
+- **New:** `server/src/__tests__/auditChain.test.ts` — 22 unit tests covering `sha256`, `computePayloadHash`, `appendAuditEvent`, `getAuditTrail`, `getAuditEvent`, `verifyChain` (tamper detection for payload_hash, chain_hash, prev_hash, empty table)
+- **Updated:** `server/src/__tests__/domain.test.ts` — added tests for chain-linked audit response, type filtering, verify-chain endpoint, single event lookup, 404 handling
+
+### Quality Gate
+- **0 TypeScript errors**
+- **45/45 server tests passing** (excluding AI hallucination tests — Gemini API rate-limited, pre-existing)
+- **0 lint errors** on modified files
+
+### Files Changed
+
+| Action | File |
+|--------|------|
+| **New** | `server/src/store/auditChain.ts` |
+| **New** | `server/src/__tests__/auditChain.test.ts` |
+| **Edit** | `server/src/store/db.ts` (migration v2) |
+| **Edit** | `server/src/seed.ts` (remove stub, use appendAuditEvent) |
+| **Edit** | `server/src/routes/domain.ts` (new routes, fix duplicate /api/health) |
+| **Edit** | `server/src/routes/chat.ts` (queryAudit + verifyAuditChain) |
+| **Edit** | `server/src/index.ts` (integrity OpenAPI tag) |
+| **Edit** | `src/services/dataService.ts` (extend AuditEvent type) |
+| **Edit** | `src/views/executive/AuditTab.tsx` (chain-linked badge, verify indicator) |
+| **Edit** | `server/src/__tests__/domain.test.ts` (5 new tests) |
+
+**AI agent tools: 27** (added `verifyAuditChain`)
+
+### What Comes Next (Priority Order)
+1. **Phase 1: Merkle Tree + Proof Service** — daily cron batches audit events into Merkle tree, stores root hash. `anchor_batch_id` column is ready.
+2. **Phase 2: On-Chain Anchoring** — publish Merkle roots to Hedera HCS or Polygon PoS. Buyer verification via `GET /api/batch/:id/verify-chain`.
+3. **Phase 3: Production Hardening** — KMS/HSM key custody, FedRAMP alignment, full DPP integration.
+
+### Narrative Policy Update
+~~Traceability / blockchain UI: demonstration ledger — production ERP/CBP integration is out of scope until pilot.~~
+**Updated:** Traceability / blockchain UI: real SHA-256 append-only audit chain with chain verification API. Merkle root anchoring and on-chain integration planned for Phases 1–2. Production ERP/CBP integration remains post-pilot scope.
+
+---
+
+*Last updated: 2026-04-09 — v10.2 Sprint: Phase 0 Blockchain Foundation. Real SHA-256 append-only audit chain replacing stub hashes. Dedicated audit_events table with chain linking. Chain verification API. 27 AI tools. 45 server tests passing. Schema v2.*

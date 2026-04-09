@@ -232,13 +232,18 @@ export type AuditEventType =
 
 export interface AuditEvent {
   id: string
+  sequence?: number
   timestamp: string
   type: AuditEventType
   actor: string
   action: string
   detail: string
   hash: string
+  payload_hash?: string
+  prev_hash?: string
+  chain_hash?: string
   relatedEntityId?: string
+  anchor_batch_id?: number | null
 }
 
 /* ─── ESG Framework Alignment ───────────────────────────────────────────── */

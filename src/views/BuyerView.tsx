@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useMapCamera } from '../contexts/MapCameraContext'
+import { CALDEIRA_BBOX } from '../components/map/MapBase'
 import { motion, AnimatePresence } from 'motion/react'
 import { ShieldCheck, FileText, Download, ChevronDown } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
@@ -11,6 +13,8 @@ import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
 import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverlay'
 import { InfraOverlay } from '../components/map/InfraOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
+import { MapLayerPicker } from '../components/map/MapLayerPicker'
+import { MapZoomPresets } from '../components/map/MapZoomPresets'
 import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import type { ComplianceLedger } from '../types/telemetry'
 import { useServiceQuery } from '../hooks/useServiceQuery'
@@ -26,21 +30,40 @@ const BATCH_DEPOSIT_MAP: Record<string, string> = {
   'BATCH-MREC-2A7': 'capao-do-mel',
 }
 
-function BatchFitBounds({ mapId, timeline }: { mapId: string; timeline: ComplianceLedger['molecular_timeline'] }) {
+function BatchFitBounds({ mapId, batchId, timeline, skipInitialFit }: {
+  mapId: string
+  batchId: string
+  timeline: ComplianceLedger['molecular_timeline']
+  skipInitialFit?: boolean
+}) {
   const maps = useMap()
   const mapRef = maps[mapId as keyof typeof maps] ?? maps.current
+  const hasInitialFit = useRef(false)
+  const prevBatchId = useRef(batchId)
 
   useEffect(() => {
     if (!mapRef) return
+
+    if (!hasInitialFit.current) {
+      hasInitialFit.current = true
+      prevBatchId.current = batchId
+      if (skipInitialFit) return
+      mapRef.fitBounds(CALDEIRA_BBOX, { padding: 60, duration: 1000, pitch: 35, bearing: 0 })
+      return
+    }
+
+    if (batchId === prevBatchId.current) return
+    prevBatchId.current = batchId
+
     const coords = timeline.filter(s => s.coordinates).map(s => s.coordinates!)
     if (coords.length < 2) return
     const lngs = coords.map(c => c.lng)
     const lats = coords.map(c => c.lat)
     mapRef.fitBounds(
       [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]],
-      { padding: 60, duration: 1000 },
+      { padding: 60, duration: 1000, pitch: 35, bearing: 0 },
     )
-  }, [mapRef, timeline])
+  }, [mapRef, batchId, timeline, skipInitialFit])
 
   return null
 }
@@ -64,6 +87,34 @@ const STEP_STATUS_COLORS: Record<string, string> = {
 }
 
 export function BuyerView() {
+  const { getCamera, clearCamera, saveCamera } = useMapCamera()
+  const maps = useMap()
+  const [initialCamera] = useState(() => {
+    const saved = getCamera()
+    if (saved) {
+      clearCamera()
+      return saved
+    }
+    return null
+  })
+
+  useEffect(() => {
+    return () => {
+      const mapRef = maps['buyerField' as keyof typeof maps] ?? maps.current
+      if (!mapRef) return
+      const map = (mapRef as any).getMap?.()
+      if (!map) return
+      const center = map.getCenter()
+      saveCamera({
+        longitude: center.lng,
+        latitude: center.lat,
+        zoom: map.getZoom(),
+        pitch: map.getPitch(),
+        bearing: map.getBearing(),
+      })
+    }
+  }, [maps, saveCamera])
+
   const { data: batches } = useServiceQuery('batches', s => s.getBatches())
   const [batchIndex, setBatchIndex] = useState(0)
   const [batchDropdownOpen, setBatchDropdownOpen] = useState(false)
@@ -72,6 +123,22 @@ export function BuyerView() {
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
 
   const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
+
+  const [buyerLayers, setBuyerLayers] = useState({
+    boundary: true,
+    deposits: true,
+    infrastructure: true,
+    markers: true,
+  })
+  const buyerLayerToggles = [
+    { id: 'boundary', label: 'Caldeira Boundary', checked: buyerLayers.boundary },
+    { id: 'deposits', label: 'Deposits', checked: buyerLayers.deposits },
+    { id: 'infrastructure', label: 'Infrastructure', checked: buyerLayers.infrastructure },
+    { id: 'markers', label: 'Batch Markers', checked: buyerLayers.markers },
+  ]
+  const handleBuyerLayerToggle = useCallback((id: string) => {
+    setBuyerLayers(prev => ({ ...prev, [id]: !prev[id as keyof typeof prev] }))
+  }, [])
 
   const handleStepClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
@@ -163,17 +230,17 @@ export function BuyerView() {
           >
             <MapBase
               id="buyerField"
-              initialViewState={BUYER_VIEW_STATE}
+              initialViewState={initialCamera ?? BUYER_VIEW_STATE}
               interactiveLayerIds={buyerInteractiveLayerIds}
               cursor={popupData ? 'pointer' : ''}
               onMouseEnter={handleBuyerMouseEnter}
               onMouseLeave={handleBuyerMouseLeave}
             >
-              <BatchFitBounds mapId="buyerField" timeline={batch.molecular_timeline} />
-              <CaldeiraBoundary />
-              <DepositOverlay highlightId={originDepositId} />
-              <InfraOverlay showRoute mapId="buyerField" />
-              {batch.molecular_timeline.map((step, i) => {
+              <BatchFitBounds mapId="buyerField" batchId={batchId} timeline={batch.molecular_timeline} skipInitialFit={!!initialCamera} />
+              {buyerLayers.boundary && <CaldeiraBoundary />}
+              {buyerLayers.deposits && <DepositOverlay highlightId={originDepositId} />}
+              {buyerLayers.infrastructure && <InfraOverlay showRoute mapId="buyerField" />}
+              {buyerLayers.markers && batch.molecular_timeline.map((step, i) => {
                 if (!step.coordinates) return null
                 const isSelected = selectedStepIndex === i
                 const stepColor = STEP_STATUS_COLORS[step.status] ?? W.text4
@@ -196,6 +263,35 @@ export function BuyerView() {
               })}
             </MapBase>
             <MapFeaturePopup data={popupData?.data ?? null} x={popupData?.x ?? 0} y={popupData?.y ?? 0} />
+            <MapLayerPicker layers={buyerLayerToggles} onToggle={handleBuyerLayerToggle} />
+            <MapZoomPresets mapId="buyerField" timeline={batch.molecular_timeline} />
+
+            {/* Batch legend */}
+            <div style={{
+              position: 'absolute', bottom: 12, right: 12, zIndex: 8,
+              background: W.mapControlBg, border: W.mapControlBorder,
+              borderRadius: 8, padding: '8px 10px',
+              display: 'flex', flexDirection: 'column', gap: 4,
+              fontSize: 10, color: W.text3,
+            }}>
+              <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 9 }}>Legend</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.green }} />
+                <span>Verified step</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.violet }} />
+                <span>Active step</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.text4 }} />
+                <span>Pending step</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', border: `2px solid ${W.cyan}`, background: 'transparent' }} />
+                <span>Origin deposit</span>
+              </div>
+            </div>
           </div>
         </div>
 

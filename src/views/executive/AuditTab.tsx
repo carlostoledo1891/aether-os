@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react'
-import { ScrollText } from 'lucide-react'
+import { useState, useMemo, useEffect } from 'react'
+import { ScrollText, ShieldCheck, Link2, Database } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useAetherService } from '../../services/DataServiceProvider'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
@@ -10,11 +10,70 @@ import { ExecutiveCard } from './ExecutiveCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import ty from './executiveTypography.module.css'
 
+function ChainIntegrityBadge({ isLive }: { isLive: boolean }) {
+  const [status, setStatus] = useState<'loading' | 'valid' | 'invalid' | 'unavailable'>('loading')
+  const [chainLength, setChainLength] = useState(0)
+
+  useEffect(() => {
+    if (!isLive) { setStatus('unavailable'); return }
+    fetch('/api/audit/verify-chain')
+      .then(r => r.json())
+      .then((data: { valid: boolean; length: number }) => {
+        setChainLength(data.length)
+        setStatus(data.valid ? 'valid' : 'invalid')
+      })
+      .catch(() => setStatus('unavailable'))
+  }, [isLive])
+
+  if (status === 'loading') return null
+  if (status === 'unavailable') return null
+
+  const color = status === 'valid' ? W.green : W.amber
+  const label = status === 'valid' ? `Chain verified — ${chainLength} events` : 'Chain integrity error'
+  const Icon = status === 'valid' ? ShieldCheck : ShieldCheck
+
+  return (
+    <span
+      className="flex items-center gap-1.5 rounded-md px-2 py-1 text-[9px] font-bold uppercase tracking-[0.05em]"
+      style={{ color, background: `${color}12`, border: `1px solid ${color}30` }}
+    >
+      <Icon size={10} />
+      {label}
+    </span>
+  )
+}
+
+function EventStatusBadge({ evt }: { evt: { chain_hash?: string; anchor_batch_id?: number | null } }) {
+  if (evt.anchor_batch_id != null) {
+    return (
+      <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.04em]" style={{ color: W.cyan }}>
+        <span className="h-1.5 w-1.5 rounded-full" style={{ background: W.cyan, boxShadow: `0 0 4px ${W.cyan}60` }} />
+        ANCHORED
+      </span>
+    )
+  }
+  if (evt.chain_hash) {
+    return (
+      <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.04em]" style={{ color: W.green }}>
+        <Link2 size={8} />
+        CHAIN-LINKED
+      </span>
+    )
+  }
+  return (
+    <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.04em]" style={{ color: W.text4 }}>
+      <Database size={8} />
+      LOCAL
+    </span>
+  )
+}
+
 export function AuditTab() {
   const service = useAetherService()
   const dataCtx = useMemo(() => service.getDataContext(), [service])
   const { data: auditTrail, isLoading, error } = useServiceQuery('audit-trail', s => s.getAuditTrail())
   const [auditFilter, setAuditFilter] = useState<string>('all')
+  const isLive = dataCtx?.mode === 'live'
 
   const filteredAudit = useMemo(
     () => auditTrail ? (auditFilter === 'all' ? auditTrail : auditTrail.filter((e) => e.type === auditFilter)) : [],
@@ -28,7 +87,7 @@ export function AuditTab() {
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {(
           [
             'all',
@@ -60,13 +119,14 @@ export function AuditTab() {
             {filterKey === 'all' ? 'All' : AUDIT_TYPE_LABEL[filterKey]}
           </button>
         ))}
+        <ChainIntegrityBadge isLive={isLive} />
       </div>
 
       <ExecutiveCard>
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <GlowingIcon icon={ScrollText} color="violet" size={14} />
           <span className="text-[11px] font-semibold uppercase tracking-[0.07em] text-[var(--w-text3)]">
-            {dataCtx?.telemetry === 'simulated' ? 'Demonstration event log' : 'Event log'}
+            {dataCtx?.telemetry === 'simulated' ? 'Demonstration event log' : 'SHA-256 Chained Event Log'}
           </span>
           <span className="text-[11px] text-[var(--w-text4)]">({filteredAudit.length} events)</span>
         </div>
@@ -135,13 +195,7 @@ export function AuditTab() {
                     <span className="break-all font-mono text-[10px] leading-snug text-[var(--w-text4)]">
                       {evt.hash}
                     </span>
-                    <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.04em] text-[var(--w-green)]">
-                      <span
-                        className="h-1.5 w-1.5 rounded-full"
-                        style={{ background: W.green, boxShadow: `0 0 4px ${W.green}60` }}
-                      />
-                      VERIFIED
-                    </span>
+                    <EventStatusBadge evt={evt} />
                   </div>
                 </div>
               )
@@ -154,15 +208,15 @@ export function AuditTab() {
         <p className={`${ty.body} m-0 text-[var(--w-text3)]`}>
           {dataCtx?.telemetry === 'simulated' ? (
             <>
-              Events below use <strong style={{ color: W.text2 }}>stub hashes for demonstration</strong>. They illustrate how a
-              controlled, append-only ledger could support regulatory and board review once wired to your WORM / blockchain and
-              identity systems. For official inquiries, use filed submissions and portal confirmations — not this screen alone.
+              Events use <strong style={{ color: W.text2 }}>stub hashes for demonstration</strong>. They illustrate how the
+              append-only audit chain supports regulatory and board review once backed by real operational events.
+              For official inquiries, use filed submissions and portal confirmations — not this screen alone.
             </>
           ) : (
             <>
-              Material events are cryptographically hashed and anchored to the permissioned enterprise blockchain. Entries are
-              immutable — post-creation tampering is mathematically impossible. The audit trail supports regulatory inquiries,
-              board audits, and off-taker due diligence alongside primary records.
+              Each event is SHA-256 hashed and chain-linked to its predecessor. The chain is verifiable via{' '}
+              <code style={{ fontSize: 9, color: W.violet }}>GET /api/audit/verify-chain</code>. Merkle root
+              anchoring to a public ledger is planned for Phase 1.
             </>
           )}
         </p>
