@@ -1,4 +1,4 @@
-# Aether — website & product surface copy
+# Vero — website & product surface copy
 
 **Purpose:** Single place to iterate marketing and in-product narrative. Sync changes here first, then reflect in `README.md`, `index.html`, and UI strings as needed.
 
@@ -23,7 +23,7 @@
 
 | Element | Current copy |
 |--------|----------------|
-| `<title>` | **Aether OS — Critical Mineral OS** |
+| `<title>` | **Vero — Critical Mineral OS** |
 
 ---
 
@@ -31,21 +31,21 @@
 
 | Element | Current copy |
 |--------|----------------|
-| Mark | **Æ** (monogram in violet square) |
-| Product name | **Aether Dashboard** |
+| Mark | **V** (monogram in violet square) |
+| Product name | **Vero** |
 
 ---
 
 ## Positioning (hero / landing)
 
 **Headline (short)**  
-**Critical Mineral OS**
+**Vero** / *Verified Origin. Trusted Supply.*
 
 **Subhead (one line)**  
-The **"Trust Bridge"** for rare earth supply chain compliance.
+*The trust layer for critical mineral supply chains.*
 
 **Supporting paragraph**  
-One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
+One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI). Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
 
 *Currently a production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers (weather, FX, seismic). OpenAPI spec auto-generated from Fastify routes. DPP-compliant JSON export (EU 2023/1542). Bilingual community card (EN/PT-BR) with grievance path. Interactive drill trace schematic with JORC reference badges. 186 automated tests, deployment gate, and live link verified. Production integration roadmap available on request.*
 
@@ -58,9 +58,9 @@ One platform to align field operations, compliance evidence, and board-level met
 
 | Internal ID | Tab label | Role |
 |-------------|-----------|------|
-| `operator` | **Field Operations** | Plant + hydro digital twin on the ground |
-| `buyer` | **Compliance & Traceability** | FEOC / IRA / passport-style buyer assurance |
-| `executive` | **Executive Overview** | Board-grade financials, risk, capital, agencies, ESG |
+| `operator` | **Field Operations** | Ground truth — plant + hydro digital twin on the ground |
+| `buyer` | **Compliance & Traceability** | Trade truth — FEOC / IRA / passport-style buyer assurance |
+| `executive` | **Executive Overview** | Board truth — financials, risk, capital, agencies, ESG |
 
 **Steerco alignment (internal marketing)**  
 Executive tabs map to **steerco rhythms**: Assets / Financials / Risk / Pipeline / Capital / DFS / Agencies / Audit / ESG — one place to rehearse what each workstream owns before the room diverges.
@@ -175,7 +175,7 @@ Regulatory export bundle is a **rehearsal artifact** for internal QA and annex d
 | Mock, normal | Demo data | Simulated plant/env time series; bundled GeoJSON |
 | Mock, presentation | Stakeholder session — illustrative run | Agency briefing structure; replace with instrumented feeds for production |
 | Mock, disclosure | Disclosure mode — board-approved facts only | IR-safe: simulated/illustrative layers hidden |
-| Live, connected | Live pipeline — Aether Simulation Engine | Telemetry via API + WebSocket. Weather from Open-Meteo, FX from BCB. Plant/env streams synthetic until LAPOC instruments connect |
+| Live, connected | Live pipeline — Vero Simulation Engine | Telemetry via API + WebSocket. Weather from Open-Meteo, FX from BCB. Plant/env streams synthetic until LAPOC instruments connect |
 | Live, degraded | Backend unreachable — showing cached data | Amber banner; stale data served from API-level cache |
 | Live, offline | Backend offline — reconnecting... | Red banner; no data available; exponential backoff retry |
 
@@ -226,11 +226,11 @@ Use for landing page or deck appendix:
 
 **Thiago A.** — CEO. Brazilian and international law, enterprise operations, commercial execution.
 
-Aether is built from inside the Caldeira, not about it — and validated by the scientist who has studied it for decades.
+Vero is built from inside the Caldeira, not about it — and validated by the scientist who has studied it for decades.
 
 ---
 
-## Built for
+## Flagship deployment
 
 - **Meteoric Resources — Caldeira Project** (Poços de Caldas, MG, Brazil · ASX: MEI)
 - **1.5 Bt** ionic clay REE resource across **7 deposits**

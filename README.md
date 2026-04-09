@@ -1,8 +1,8 @@
-# Aether OS — Critical Mineral OS
+# Vero — Critical Mineral OS
 
-**The "Trust Bridge" for rare earth supply chain compliance.**
+**The trust layer for critical mineral supply chains.**
 
-A pitch-ready B2B SaaS prototype providing real-time telemetry, ESG compliance, molecular traceability, and financial modeling for the Caldeira Project REE supply chain (Meteoric Resources, ASX: MEI).
+A pitch-ready B2B SaaS prototype providing real-time telemetry, ESG compliance, molecular traceability, and financial modeling for the Caldeira Project REE supply chain (Meteoric Resources, ASX: MEI). Commercial brand: **Vero** (from Latin *verus*, 'true'). Codebase retains `aether-os` as internal name.
 
 ## Quick Start
 

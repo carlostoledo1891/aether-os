@@ -193,8 +193,8 @@ export function seedIfNeeded() {
     telemetry: 'simulated',
     presentationMode: false,
     disclosureMode: false,
-    bannerLabel: 'Live pipeline — Aether Simulation Engine',
-    detail: 'Telemetry flows through the Aether API via the simulation engine. Weather data from Open-Meteo, FX from BCB. Plant/env streams are synthetic until LAPOC instruments connect.',
+    bannerLabel: 'Live pipeline — Vero Simulation Engine',
+    detail: 'Telemetry flows through the Vero API via the simulation engine. Weather data from Open-Meteo, FX from BCB. Plant/env streams are synthetic until LAPOC instruments connect.',
   })
 
   /* ─── Provenance Profile ──────────────────────────────────────────── */
@@ -204,7 +204,7 @@ export function seedIfNeeded() {
       hydro_spring_geometry: { kind: 'from_public_record', hint: 'Spring locations from FBDS/CAR-derived GeoJSON inside Caldeira boundary' },
       hydro_spring_status: { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay from simulation engine — not field-verified' },
       hydro_piezo_telemetry: { kind: 'simulated', hint: 'Aquifer/piezo metrics from simulation engine — swap for LAPOC when wired' },
-      plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels from Aether Simulation Engine' },
+      plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels from Vero Simulation Engine' },
       precip_field: { kind: 'illustrative', hint: 'Open-Meteo when engine enricher is active; otherwise synthetic' },
       regulatory_log: { kind: 'issuer_attested', hint: 'Structured engagement log — align dates/refs with counsel' },
       audit_ledger: { kind: 'illustrative', hint: 'Demonstration event log with stub hashes' },
@@ -293,13 +293,13 @@ export function seedIfNeeded() {
   }
 
   setDomainState('audit_trail', [
-    { id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event', actor: 'System', action: 'Aether OS instance started', detail: 'Production environment boot — all sensor feeds connected.', hash: sha256Stub('AUD-001-system-start') },
+    { id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event', actor: 'System', action: 'Vero instance started', detail: 'Production environment boot — all sensor feeds connected.', hash: sha256Stub('AUD-001-system-start') },
     { id: 'AUD-002', timestamp: '2026-04-06T08:02:14Z', type: 'compliance_check', actor: 'System', action: 'FEOC compliance sweep completed', detail: 'Full supply chain re-verified against FEOC database. 0 flagged entities. 47 suppliers checked.', hash: sha256Stub('AUD-002-feoc-sweep') },
     { id: 'AUD-003', timestamp: '2026-04-05T16:30:00Z', type: 'batch_created', actor: 'J. Santos (Process Eng.)', action: 'Batch BATCH-MREC-8X9 initiated', detail: 'MREC precipitation run started. Feed material from Capão do Mel pit.', hash: sha256Stub('AUD-003-batch-create'), relatedEntityId: 'BATCH-MREC-8X9' },
     { id: 'AUD-004', timestamp: '2026-04-05T14:12:00Z', type: 'alert_triggered', actor: 'Sensor Array', action: 'pH exceedance alert triggered', detail: 'Leach circuit pH rose to 5.12, exceeding 5.0 threshold.', hash: sha256Stub('AUD-004-alert-ph'), relatedEntityId: 'alert-ph-high' },
     { id: 'AUD-005', timestamp: '2026-04-05T14:58:00Z', type: 'alert_resolved', actor: 'J. Santos (Process Eng.)', action: 'pH exceedance alert resolved', detail: 'Ammonium sulfate feed rate increased 12%. pH returned to 4.4.', hash: sha256Stub('AUD-005-alert-resolve'), relatedEntityId: 'alert-ph-high' },
-    { id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued', actor: 'Aether OS', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2.', hash: sha256Stub('AUD-006-dbp-issue'), relatedEntityId: 'BATCH-MREC-7W2' },
-    { id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff', actor: 'Aether OS', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. HTTP 200.', hash: sha256Stub('AUD-007-api-push'), relatedEntityId: 'ucore' },
+    { id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued', actor: 'Vero', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2.', hash: sha256Stub('AUD-006-dbp-issue'), relatedEntityId: 'BATCH-MREC-7W2' },
+    { id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff', actor: 'Vero', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. HTTP 200.', hash: sha256Stub('AUD-007-api-push'), relatedEntityId: 'ucore' },
     { id: 'AUD-008', timestamp: '2026-04-03T09:10:00Z', type: 'alert_triggered', actor: 'Sensor Array', action: 'Sulfate containment critical alert', detail: 'Discharge sulfate reached 247 ppm, approaching 250 ppm regulatory limit.', hash: sha256Stub('AUD-008-sulfate-alert') },
     { id: 'AUD-009', timestamp: '2026-04-03T10:45:00Z', type: 'alert_resolved', actor: 'M. Costa (Env. Manager)', action: 'Sulfate containment resolved', detail: 'Discharge flow reduced 30%. Contingency filtration activated. Sulfate dropped to 218 ppm.', hash: sha256Stub('AUD-009-sulfate-resolve') },
     { id: 'AUD-010', timestamp: '2026-04-02T11:30:00Z', type: 'regulatory_submission', actor: 'VP Environment', action: 'Additional hydrological data submitted to FEAM', detail: 'Piezometer data package (Q1 2026) and updated hydrological model delivered.', hash: sha256Stub('AUD-010-feam-submit'), relatedEntityId: 'REG-03' },
@@ -421,7 +421,7 @@ export function seedIfNeeded() {
   /* ─── Regulatory Export Bundle ─────────────────────────────────────── */
   setDomainState('regulatory_export_bundle', {
     exportedAt: new Date().toISOString(),
-    bannerNote: 'Live pipeline — Aether Simulation Engine',
+    bannerNote: 'Live pipeline — Vero Simulation Engine',
     regulatoryLog: getDomainState('regulatory_log'),
     auditEvents: (getDomainState<Array<{ id: string; type: string }>>('audit_trail') ?? [])
       .filter(e => e.type === 'regulatory_submission' || e.id === 'AUD-008' || e.id === 'AUD-009' || e.id === 'AUD-010'),

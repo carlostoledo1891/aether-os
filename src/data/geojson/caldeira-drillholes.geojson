@@ -1,59 +1,2984 @@
 {
   "type": "FeatureCollection",
+  "metadata": {
+    "generated_at": "2026-04-09T06:44:42.270Z",
+    "crs_pipeline": "EPSG:31983 (SIRGAS 2000 / UTM 23S) → WGS84",
+    "sources": [
+      "02766588_table2",
+      "02909601_appendix1",
+      "02909601_appendix2",
+      "dd_intercept_highlights.json"
+    ],
+    "feature_count": 205
+  },
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "id": "CDMDD009",
-        "deposit": "capao-do-mel",
-        "treo_ppm": 3649,
-        "mreo_pct": 24,
-        "depth_m": 17,
-        "campaign": "2025-resource",
-        "hole_type": "DD",
-        "note": "16.9m @ 3649 ppm TREO · incl. 7m @ 5834 ppm TREO",
-        "intercept": "16.9m @ 3649ppm TREO",
-        "including": "7m @ 5834ppm TREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "id": "AGOAC0001",
+        "deposit": "agostinho",
+        "treo_ppm": 2612,
+        "mreo_pct": 21,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 2612ppm TREO [0m]",
+        "intercept": "22m @ 2612ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1313,
+        "easting_utm": 335776,
+        "northing_utm": 7576398,
+        "crs_epsg": 31983
       },
-      "geometry": { "type": "Point", "coordinates": [-46.542, -21.888] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58983554349137,
+          -21.908973816740193
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "CDMDD011",
-        "deposit": "capao-do-mel",
-        "treo_ppm": 6575,
+        "id": "AGOAC0002",
+        "deposit": "agostinho",
+        "treo_ppm": 3428,
+        "mreo_pct": 20,
+        "depth_m": 17.4,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "17.4m @ 3428ppm TREO [0m]",
+        "intercept": "17.4m @ 3428ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1308,
+        "easting_utm": 335778,
+        "northing_utm": 7576500,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.589805964394145,
+          -21.908052824129268
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0003",
+        "deposit": "agostinho",
+        "treo_ppm": 3622,
+        "mreo_pct": 22,
+        "depth_m": 19,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19m @ 3622ppm TREO [0m]",
+        "intercept": "19m @ 3622ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1309,
+        "easting_utm": 335759,
+        "northing_utm": 7576596,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.589980223966656,
+          -21.907184054410525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0004",
+        "deposit": "agostinho",
+        "treo_ppm": 3427,
+        "mreo_pct": 24,
+        "depth_m": 19,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19m @ 3427ppm TREO [0m]",
+        "intercept": "19m @ 3427ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1307,
+        "easting_utm": 335679,
+        "northing_utm": 7576707,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59074332780941,
+          -21.906174110099613
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0005",
+        "deposit": "agostinho",
+        "treo_ppm": 4484,
+        "mreo_pct": 27,
+        "depth_m": 22.6,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22.6m @ 4484ppm TREO [0m]",
+        "intercept": "22.6m @ 4484ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1311,
+        "easting_utm": 335677,
+        "northing_utm": 7576603,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.590773112259775,
+          -21.907113164746185
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0006",
+        "deposit": "agostinho",
+        "treo_ppm": 3078,
+        "mreo_pct": 20,
+        "depth_m": 18.3,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "18.3m @ 3078ppm TREO [0m]",
+        "intercept": "18.3m @ 3078ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1316,
+        "easting_utm": 335676,
+        "northing_utm": 7576502,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59079291868388,
+          -21.908025219335467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0007",
+        "deposit": "agostinho",
+        "treo_ppm": 3238,
+        "mreo_pct": 19,
+        "depth_m": 15,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "15m @ 3238ppm TREO [0m]",
+        "intercept": "15m @ 3238ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1320,
+        "easting_utm": 335669,
+        "northing_utm": 7576406,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.590870292567814,
+          -21.908891556435616
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0008",
+        "deposit": "agostinho",
+        "treo_ppm": 3443,
+        "mreo_pct": 26,
+        "depth_m": 19,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19m @ 3443ppm TREO [0m]",
+        "intercept": "19m @ 3443ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1315,
+        "easting_utm": 335584,
+        "northing_utm": 7576408,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59169272535185,
+          -21.90886553686221
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0009",
+        "deposit": "agostinho",
+        "treo_ppm": 5232,
+        "mreo_pct": 31,
+        "depth_m": 19,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19m @ 5232ppm TREO [0m]",
+        "intercept": "19m @ 5232ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1312,
+        "easting_utm": 335574,
+        "northing_utm": 7576503,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.591779972531604,
+          -21.908006639806203
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0010",
+        "deposit": "agostinho",
+        "treo_ppm": 2328,
+        "mreo_pct": 22,
+        "depth_m": 25,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 2328ppm TREO [0m]",
+        "intercept": "25m @ 2328ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1289,
+        "easting_utm": 335459,
+        "northing_utm": 7576523,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.592890931447656,
+          -21.907815244194484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0011",
+        "deposit": "agostinho",
+        "treo_ppm": 1896,
+        "mreo_pct": 20,
+        "depth_m": 13,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "13m @ 1896ppm TREO [0m]",
+        "intercept": "13m @ 1896ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1290,
+        "easting_utm": 335477,
+        "northing_utm": 7576595,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59270949911817,
+          -21.90716668715745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0012",
+        "deposit": "agostinho",
+        "treo_ppm": 2005,
+        "mreo_pct": 20,
+        "depth_m": 17,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "17m @ 2005ppm TREO [0m]",
+        "intercept": "17m @ 2005ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1286,
+        "easting_utm": 335476,
+        "northing_utm": 7576699,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59270873552313,
+          -21.90622735257083
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0013",
+        "deposit": "agostinho",
+        "treo_ppm": 2502,
+        "mreo_pct": 23,
+        "depth_m": 27,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "27m @ 2502ppm TREO [0m]",
+        "intercept": "27m @ 2502ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1297,
+        "easting_utm": 335575,
+        "northing_utm": 7576705,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5917500256576,
+          -21.90618243787129
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0014",
+        "deposit": "agostinho",
+        "treo_ppm": 3393,
+        "mreo_pct": 24,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 3393ppm TREO [0m]",
+        "intercept": "22m @ 3393ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1305,
+        "easting_utm": 335574,
+        "northing_utm": 7576601,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59177013878273,
+          -21.907121585574213
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0015",
+        "deposit": "agostinho",
+        "treo_ppm": 2882,
+        "mreo_pct": 19,
+        "depth_m": 36.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "36.5m @ 2882ppm TREO [0m]",
+        "intercept": "36.5m @ 2882ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1323,
+        "easting_utm": 335674,
+        "northing_utm": 7576300,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59083253349104,
+          -21.909849328170072
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0016",
+        "deposit": "agostinho",
+        "treo_ppm": 2257,
+        "mreo_pct": 22,
+        "depth_m": 37.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37.5m @ 2257ppm TREO [0m]",
+        "intercept": "37.5m @ 2257ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1290,
+        "easting_utm": 335064,
+        "northing_utm": 7576499,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59671613770706,
+          -21.90799493381295
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0017",
+        "deposit": "agostinho",
+        "treo_ppm": 2045,
+        "mreo_pct": 19,
+        "depth_m": 37,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37m @ 2045ppm TREO [0m]",
+        "intercept": "37m @ 2045ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1279,
+        "easting_utm": 334956,
+        "northing_utm": 7576401,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.597771227716855,
+          -21.908869837536287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0018",
+        "deposit": "agostinho",
+        "treo_ppm": 3336,
+        "mreo_pct": 30,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 3336ppm TREO [0m]",
+        "intercept": "28m @ 3336ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1281,
+        "easting_utm": 334976,
+        "northing_utm": 7576504,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59756729398152,
+          -21.90794151001594
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0019",
+        "deposit": "agostinho",
+        "treo_ppm": 2430,
+        "mreo_pct": 25,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 2430ppm TREO [2m]",
+        "intercept": "22m @ 2430ppm TREO [2m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1274,
+        "easting_utm": 334978,
+        "northing_utm": 7576695,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59752870340587,
+          -21.906216750092913
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0020",
+        "deposit": "agostinho",
+        "treo_ppm": 2305,
+        "mreo_pct": 19,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 2305ppm TREO [0m]",
+        "intercept": "28m @ 2305ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1289,
+        "easting_utm": 335174,
+        "northing_utm": 7576702,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59563114346597,
+          -21.906171939472095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0021",
+        "deposit": "agostinho",
+        "treo_ppm": 3200,
+        "mreo_pct": 24,
+        "depth_m": 13,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "13m @ 3200ppm TREO [0m]",
+        "intercept": "13m @ 3200ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1279,
+        "easting_utm": 335345,
+        "northing_utm": 7576691,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.593977337827475,
+          -21.906287323849394
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0022",
+        "deposit": "agostinho",
+        "treo_ppm": 3384,
+        "mreo_pct": 23,
+        "depth_m": 14,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "14m @ 3384ppm TREO [0m]",
+        "intercept": "14m @ 3384ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1286,
+        "easting_utm": 335361,
+        "northing_utm": 7576593,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59383233819171,
+          -21.90717387741426
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0023",
+        "deposit": "agostinho",
+        "treo_ppm": 2121,
+        "mreo_pct": 23,
+        "depth_m": 45.6,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "45.6m @ 2121ppm TREO [0m]",
+        "intercept": "45.6m @ 2121ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1305,
+        "easting_utm": 335193,
+        "northing_utm": 7576497,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59546788224636,
+          -21.908025108430575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0024",
+        "deposit": "agostinho",
+        "treo_ppm": 2308,
+        "mreo_pct": 17,
+        "depth_m": 25,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 2308ppm TREO [0m]",
+        "intercept": "25m @ 2308ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1315,
+        "easting_utm": 335275,
+        "northing_utm": 7576394,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59468464392736,
+          -21.908963011457566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0025",
+        "deposit": "agostinho",
+        "treo_ppm": 2703,
+        "mreo_pct": 23,
+        "depth_m": 23,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "23m @ 2703ppm TREO [0m]",
+        "intercept": "23m @ 2703ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1279,
+        "easting_utm": 334828,
+        "northing_utm": 7576306,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5990195893372,
+          -21.909715758877397
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0026",
+        "deposit": "agostinho",
+        "treo_ppm": 1864,
+        "mreo_pct": 17,
+        "depth_m": 15,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "15m @ 1864ppm TREO [0m]",
+        "intercept": "15m @ 1864ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1277,
+        "easting_utm": 334825,
+        "northing_utm": 7576497,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59902936905249,
+          -21.907990530410988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0027",
+        "deposit": "agostinho",
+        "treo_ppm": 1640,
+        "mreo_pct": 21,
+        "depth_m": 35,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "35m @ 1640ppm TREO [0m]",
+        "intercept": "35m @ 1640ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1280,
+        "easting_utm": 334966,
+        "northing_utm": 7576300,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59768462089341,
+          -21.909782922374
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0028",
+        "deposit": "agostinho",
+        "treo_ppm": 2207,
+        "mreo_pct": 20,
+        "depth_m": 34,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "34m @ 2207ppm TREO [0m]",
+        "intercept": "34m @ 2207ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1301,
+        "easting_utm": 335090,
+        "northing_utm": 7576300,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.596484539674975,
+          -21.909794573364778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0029",
+        "deposit": "agostinho",
+        "treo_ppm": 2249,
+        "mreo_pct": 19,
+        "depth_m": 37,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37m @ 2249ppm TREO [0m]",
+        "intercept": "37m @ 2249ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1317,
+        "easting_utm": 335272,
+        "northing_utm": 7576297,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59472343031803,
+          -21.909838751622726
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0030",
+        "deposit": "agostinho",
+        "treo_ppm": 3113,
+        "mreo_pct": 25,
+        "depth_m": 31.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31.2m @ 3113ppm TREO [0m]",
+        "intercept": "31.2m @ 3113ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1306,
+        "easting_utm": 335184,
+        "northing_utm": 7576290,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59557580610717,
+          -21.90989371120279
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0031",
+        "deposit": "agostinho",
+        "treo_ppm": 2314,
+        "mreo_pct": 22,
+        "depth_m": 31,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31m @ 2314ppm TREO [0m]",
+        "intercept": "31m @ 2314ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1288,
+        "easting_utm": 335077,
+        "northing_utm": 7576201,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59662032031576,
+          -21.910687435294875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0032",
+        "deposit": "agostinho",
+        "treo_ppm": 2289,
+        "mreo_pct": 20,
+        "depth_m": 16,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "16m @ 2289ppm TREO [0m]",
+        "intercept": "16m @ 2289ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1282,
+        "easting_utm": 334960,
+        "northing_utm": 7576116,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59776122484099,
+          -21.911444087405542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0033",
+        "deposit": "agostinho",
+        "treo_ppm": 1832,
+        "mreo_pct": 21,
+        "depth_m": 26,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "26m @ 1832ppm TREO [0m]",
+        "intercept": "26m @ 1832ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1281,
+        "easting_utm": 334823,
+        "northing_utm": 7576111,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59908763954086,
+          -21.911476358871788
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0034",
+        "deposit": "agostinho",
+        "treo_ppm": 1930,
+        "mreo_pct": 20,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 1930ppm TREO [0m]",
+        "intercept": "50m @ 1930ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1283,
+        "easting_utm": 335098,
+        "northing_utm": 7576123,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.596424930497356,
+          -21.911393836848752
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0035",
+        "deposit": "agostinho",
+        "treo_ppm": 2330,
+        "mreo_pct": 22,
+        "depth_m": 46,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "46m @ 2330ppm TREO [0m]",
+        "intercept": "46m @ 2330ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1291,
+        "easting_utm": 335176,
+        "northing_utm": 7576117,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.595670635496454,
+          -21.911455348315112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0036",
+        "deposit": "agostinho",
+        "treo_ppm": 2468,
+        "mreo_pct": 21,
+        "depth_m": 37,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37m @ 2468ppm TREO [0m]",
+        "intercept": "37m @ 2468ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1296,
+        "easting_utm": 335267,
+        "northing_utm": 7576102,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.594791427980255,
+          -21.911599356551545
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0037",
+        "deposit": "agostinho",
+        "treo_ppm": 2779,
+        "mreo_pct": 23,
+        "depth_m": 34,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "34m @ 2779ppm TREO [0m]",
+        "intercept": "34m @ 2779ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1309,
+        "easting_utm": 335276,
+        "northing_utm": 7576198,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.594694671605446,
+          -21.91073321073268
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0038",
+        "deposit": "agostinho",
+        "treo_ppm": 2054,
+        "mreo_pct": 17,
+        "depth_m": 31,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31m @ 2054ppm TREO [0m]",
+        "intercept": "31m @ 2054ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1306,
+        "easting_utm": 335180,
+        "northing_utm": 7576209,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.595622667082516,
+          -21.91062485851785
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0039",
+        "deposit": "agostinho",
+        "treo_ppm": 2440,
+        "mreo_pct": 17,
+        "depth_m": 34,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "34m @ 2440ppm TREO [0m]",
+        "intercept": "34m @ 2440ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1321,
+        "easting_utm": 335477,
+        "northing_utm": 7576196,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59274956336006,
+          -21.910770119953558
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0040",
+        "deposit": "agostinho",
+        "treo_ppm": 3067,
+        "mreo_pct": 20,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 3067ppm TREO [0m]",
+        "intercept": "50m @ 3067ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1319,
+        "easting_utm": 335382,
+        "northing_utm": 7576199,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59366868699235,
+          -21.91073412160713
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0041",
+        "deposit": "agostinho",
+        "treo_ppm": 2765,
+        "mreo_pct": 23,
+        "depth_m": 36,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "36m @ 2765ppm TREO [0m]",
+        "intercept": "36m @ 2765ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1305,
+        "easting_utm": 335379,
+        "northing_utm": 7576099,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59370776987462,
+          -21.91163695563411
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0042",
+        "deposit": "agostinho",
+        "treo_ppm": 2702,
+        "mreo_pct": 20,
+        "depth_m": 31,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31m @ 2702ppm TREO [0m]",
+        "intercept": "31m @ 2702ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1314,
+        "easting_utm": 335470,
+        "northing_utm": 7576102,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5928267507865,
+          -21.911618392741325
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0043",
+        "deposit": "agostinho",
+        "treo_ppm": 2741,
+        "mreo_pct": 19,
+        "depth_m": 35.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "35.2m @ 2741ppm TREO [0m]",
+        "intercept": "35.2m @ 2741ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1321,
+        "easting_utm": 335582,
+        "northing_utm": 7576106,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.591742388586574,
+          -21.911592760785812
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0044",
+        "deposit": "agostinho",
+        "treo_ppm": 2154,
+        "mreo_pct": 21,
+        "depth_m": 37.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37.8m @ 2154ppm TREO [0m]",
+        "intercept": "37.8m @ 2154ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1320,
+        "easting_utm": 335676,
+        "northing_utm": 7576003,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59084296727092,
+          -21.912531771602833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0045",
+        "deposit": "agostinho",
+        "treo_ppm": 2751,
+        "mreo_pct": 21,
+        "depth_m": 33,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "33m @ 2751ppm TREO [0m]",
+        "intercept": "33m @ 2751ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1331,
+        "easting_utm": 335776,
+        "northing_utm": 7576004,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58987503784941,
+          -21.912532097949533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0046",
+        "deposit": "agostinho",
+        "treo_ppm": 2230,
+        "mreo_pct": 24,
+        "depth_m": 38,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "38m @ 2230ppm TREO [0m]",
+        "intercept": "38m @ 2230ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1338,
+        "easting_utm": 335862,
+        "northing_utm": 7575907,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58905242377977,
+          -21.91341616451279
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0047",
+        "deposit": "agostinho",
+        "treo_ppm": 2787,
+        "mreo_pct": 28,
+        "depth_m": 44,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "44m @ 2787ppm TREO [0m]",
+        "intercept": "44m @ 2787ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1321,
+        "easting_utm": 335678,
+        "northing_utm": 7575901,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59083384253309,
+          -21.913453137521095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0048",
+        "deposit": "agostinho",
+        "treo_ppm": 1449,
+        "mreo_pct": 21,
+        "depth_m": 25,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 1449ppm TREO [0m]",
+        "intercept": "25m @ 1449ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1302,
+        "easting_utm": 335474,
+        "northing_utm": 7575900,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59280832557824,
+          -21.91344306105078
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0049",
+        "deposit": "agostinho",
+        "treo_ppm": 2218,
+        "mreo_pct": 23,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 2218ppm TREO [0m]",
+        "intercept": "22m @ 2218ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1293,
+        "easting_utm": 335277,
+        "northing_utm": 7575903,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59471465614911,
+          -21.913397493159312
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0050",
+        "deposit": "agostinho",
+        "treo_ppm": 3147,
+        "mreo_pct": 25,
+        "depth_m": 19,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19m @ 3147ppm TREO [0m]",
+        "intercept": "19m @ 3147ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1260,
+        "easting_utm": 336673,
+        "northing_utm": 7576303,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58116377869762,
+          -21.90991544920678
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0051",
+        "deposit": "agostinho",
+        "treo_ppm": 2237,
+        "mreo_pct": 22,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 2237ppm TREO [0m]",
+        "intercept": "22m @ 2237ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1256,
+        "easting_utm": 336797,
+        "northing_utm": 7576295,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.57996448361997,
+          -21.909999229490086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0052",
+        "deposit": "agostinho",
+        "treo_ppm": 1622,
+        "mreo_pct": 19,
+        "depth_m": 32,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "32m @ 1622ppm TREO [0m]",
+        "intercept": "32m @ 1622ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1258,
+        "easting_utm": 336767,
+        "northing_utm": 7576097,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58027455652966,
+          -21.911784620698654
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0053",
+        "deposit": "agostinho",
+        "treo_ppm": 1499,
+        "mreo_pct": 19,
+        "depth_m": 16,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "16m @ 1499ppm TREO [0m]",
+        "intercept": "16m @ 1499ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1256,
+        "easting_utm": 336783,
+        "northing_utm": 7575907,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.580138634732066,
+          -21.91350203840525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0054",
+        "deposit": "agostinho",
+        "treo_ppm": 1718,
+        "mreo_pct": 19,
+        "depth_m": 25.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25.5m @ 1718ppm TREO [0m]",
+        "intercept": "25.5m @ 1718ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1258,
+        "easting_utm": 336769,
+        "northing_utm": 7575697,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58029505989664,
+          -21.91539729044123
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0055",
+        "deposit": "agostinho",
+        "treo_ppm": 1405,
+        "mreo_pct": 15,
+        "depth_m": 11,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "11m @ 1405ppm TREO [0m]",
+        "intercept": "11m @ 1405ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1256,
+        "easting_utm": 336779,
+        "northing_utm": 7575517,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.580216213142414,
+          -21.917023837599196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0056",
+        "deposit": "agostinho",
+        "treo_ppm": 1605,
+        "mreo_pct": 19,
+        "depth_m": 16.1,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "16.1m @ 1605ppm TREO [0m]",
+        "intercept": "16.1m @ 1605ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1260,
+        "easting_utm": 336605,
+        "northing_utm": 7575507,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58190129386417,
+          -21.91709795956878
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0057",
+        "deposit": "agostinho",
+        "treo_ppm": 1810,
+        "mreo_pct": 21,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 1810ppm TREO [0m]",
+        "intercept": "50m @ 1810ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1270,
+        "easting_utm": 336544,
+        "northing_utm": 7575662,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.582476221293845,
+          -21.915692444160378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0058",
+        "deposit": "agostinho",
+        "treo_ppm": 2409,
+        "mreo_pct": 23,
+        "depth_m": 33,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "33m @ 2409ppm TREO [0m]",
+        "intercept": "33m @ 2409ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1300,
+        "easting_utm": 336272,
+        "northing_utm": 7575804,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58509458829332,
+          -21.914384664816957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0059",
+        "deposit": "agostinho",
+        "treo_ppm": 3324,
+        "mreo_pct": 29,
+        "depth_m": 19.4,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19.4m @ 3324ppm TREO [0m]",
+        "intercept": "19.4m @ 3324ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1291,
+        "easting_utm": 336362,
+        "northing_utm": 7575813,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58422262923854,
+          -21.914311776354253
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0060",
+        "deposit": "agostinho",
+        "treo_ppm": 2049,
+        "mreo_pct": 24,
+        "depth_m": 27,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "27m @ 2049ppm TREO [0m]",
+        "intercept": "27m @ 2049ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1297,
+        "easting_utm": 336376,
+        "northing_utm": 7575895,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58407893994754,
+          -21.913572523619056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0061",
+        "deposit": "agostinho",
+        "treo_ppm": 2039,
+        "mreo_pct": 22,
+        "depth_m": 20,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "20m @ 2039ppm TREO [0m]",
+        "intercept": "20m @ 2039ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1270,
+        "easting_utm": 336621,
+        "northing_utm": 7575888,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58170843072083,
+          -21.91365856139224
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0062",
+        "deposit": "agostinho",
+        "treo_ppm": 3351,
+        "mreo_pct": 22,
+        "depth_m": 31,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31m @ 3351ppm TREO [0m]",
+        "intercept": "31m @ 3351ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1290,
+        "easting_utm": 336576,
+        "northing_utm": 7576097,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58212310865484,
+          -21.911766851348474
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0063",
+        "deposit": "agostinho",
+        "treo_ppm": 2586,
+        "mreo_pct": 21,
+        "depth_m": 31,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31m @ 2586ppm TREO [0m]",
+        "intercept": "31m @ 2586ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1282,
+        "easting_utm": 336575,
+        "northing_utm": 7576206,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58212191363953,
+          -21.91078235703492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0064",
+        "deposit": "agostinho",
+        "treo_ppm": 3386,
+        "mreo_pct": 22,
+        "depth_m": 27.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "27.5m @ 3386ppm TREO [0m]",
+        "intercept": "27.5m @ 3386ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1270,
+        "easting_utm": 336602,
+        "northing_utm": 7576300,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5818512269693,
+          -21.90993593671027
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0065",
+        "deposit": "agostinho",
+        "treo_ppm": 2601,
+        "mreo_pct": 22,
+        "depth_m": 31.7,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "31.7m @ 2601ppm TREO [0m]",
+        "intercept": "31.7m @ 2601ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1264,
+        "easting_utm": 336679,
+        "northing_utm": 7576189,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58111707403434,
+          -21.910945565196005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0066",
+        "deposit": "agostinho",
+        "treo_ppm": 4163,
+        "mreo_pct": 30,
+        "depth_m": 18.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "18.8m @ 4163ppm TREO [0m]",
+        "intercept": "18.8m @ 4163ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1275,
+        "easting_utm": 336672,
+        "northing_utm": 7576089,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58119479127705,
+          -21.911848034793667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0067",
+        "deposit": "agostinho",
+        "treo_ppm": 2369,
         "mreo_pct": 24,
         "depth_m": 25,
-        "campaign": "2025-resource",
-        "hole_type": "DD",
-        "note": "25m @ 6575 ppm TREO · incl. 4.5m @ 15598 ppm TREO",
-        "intercept": "25m @ 6575ppm TREO",
-        "including": "4.5m @ 15598ppm TREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 2369ppm TREO [0m]",
+        "intercept": "25m @ 2369ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1286,
+        "easting_utm": 336576,
+        "northing_utm": 7575994,
+        "crs_epsg": 31983
       },
-      "geometry": { "type": "Point", "coordinates": [-46.538, -21.885] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58213338391995,
+          -21.912697065242202
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "FGDD004",
-        "deposit": "figueira",
-        "treo_ppm": 1817,
+        "id": "AGOAC0068",
+        "deposit": "agostinho",
+        "treo_ppm": 2138,
         "mreo_pct": 22,
-        "depth_m": 98,
-        "campaign": "2024-resource",
-        "hole_type": "DD",
-        "note": "97.7m @ 1817 ppm TREO · incl. 12.3m @ 3666 ppm TREO",
-        "intercept": "97.7m @ 1817ppm TREO",
-        "including": "12.3m @ 3666ppm TREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "depth_m": 32,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "32m @ 2138ppm TREO [0m]",
+        "intercept": "32m @ 2138ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1296,
+        "easting_utm": 336467,
+        "northing_utm": 7575999,
+        "crs_epsg": 31983
       },
-      "geometry": { "type": "Point", "coordinates": [-46.482, -21.812] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.583187823663714,
+          -21.912641758853226
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0069",
+        "deposit": "agostinho",
+        "treo_ppm": 2587,
+        "mreo_pct": 22,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 2587ppm TREO [0m]",
+        "intercept": "50m @ 2587ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1293,
+        "easting_utm": 336474,
+        "northing_utm": 7576099,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5831100931488,
+          -21.91173929105767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0070",
+        "deposit": "agostinho",
+        "treo_ppm": 4890,
+        "mreo_pct": 27,
+        "depth_m": 21.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "21.8m @ 4890ppm TREO [0m]",
+        "intercept": "21.8m @ 4890ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1283,
+        "easting_utm": 336476,
+        "northing_utm": 7576202,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58308045561954,
+          -21.910809263777274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0071",
+        "deposit": "agostinho",
+        "treo_ppm": 2564,
+        "mreo_pct": 24,
+        "depth_m": 25,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 2564ppm TREO [0m]",
+        "intercept": "25m @ 2564ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1265,
+        "easting_utm": 336478,
+        "northing_utm": 7576294,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58305191676085,
+          -21.90997857958221
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0072",
+        "deposit": "agostinho",
+        "treo_ppm": 3246,
+        "mreo_pct": 23,
+        "depth_m": 20.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "20.2m @ 3246ppm TREO [0m]",
+        "intercept": "20.2m @ 3246ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1268,
+        "easting_utm": 336445,
+        "northing_utm": 7576266,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58337409096391,
+          -21.91022837940995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0073",
+        "deposit": "agostinho",
+        "treo_ppm": 2430,
+        "mreo_pct": 23,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 2430ppm TREO [0m]",
+        "intercept": "50m @ 2430ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1285,
+        "easting_utm": 336397,
+        "northing_utm": 7576103,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58385492047156,
+          -21.91169599238222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0074",
+        "deposit": "agostinho",
+        "treo_ppm": 2350,
+        "mreo_pct": 23,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 2350ppm TREO [0m]",
+        "intercept": "50m @ 2350ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1299,
+        "easting_utm": 336379,
+        "northing_utm": 7576004,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58403901731725,
+          -21.912588403151254
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0075",
+        "deposit": "agostinho",
+        "treo_ppm": 3052,
+        "mreo_pct": 21,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 3052ppm TREO [0m]",
+        "intercept": "22m @ 3052ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1314,
+        "easting_utm": 336276,
+        "northing_utm": 7575906,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.585045679361535,
+          -21.91346385670806
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0076",
+        "deposit": "agostinho",
+        "treo_ppm": 2385,
+        "mreo_pct": 23,
+        "depth_m": 36.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "36.8m @ 2385ppm TREO [0m]",
+        "intercept": "36.8m @ 2385ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1302,
+        "easting_utm": 336276,
+        "northing_utm": 7575996,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58503668407412,
+          -21.912651049681003
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0077",
+        "deposit": "agostinho",
+        "treo_ppm": 2713,
+        "mreo_pct": 25,
+        "depth_m": 27.4,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "27.4m @ 2713ppm TREO [0m]",
+        "intercept": "27.4m @ 2713ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1317,
+        "easting_utm": 336179,
+        "northing_utm": 7575897,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58598538200122,
+          -21.913536087857533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0078",
+        "deposit": "agostinho",
+        "treo_ppm": 1625,
+        "mreo_pct": 18,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 1625ppm TREO [0m]",
+        "intercept": "50m @ 1625ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1317,
+        "easting_utm": 336189,
+        "northing_utm": 7575809,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.585897398706635,
+          -21.914331765283585
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0079",
+        "deposit": "agostinho",
+        "treo_ppm": 3183,
+        "mreo_pct": 27,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 3183ppm TREO [0m]",
+        "intercept": "28m @ 3183ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1300,
+        "easting_utm": 336186,
+        "northing_utm": 7575996,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58590773306977,
+          -21.912642653749014
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0080",
+        "deposit": "agostinho",
+        "treo_ppm": 1864,
+        "mreo_pct": 24,
+        "depth_m": 37.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37.8m @ 1864ppm TREO [0m]",
+        "intercept": "37.8m @ 1864ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1286,
+        "easting_utm": 336267,
+        "northing_utm": 7576083,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58511509346928,
+          -21.91186449678921
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0081",
+        "deposit": "agostinho",
+        "treo_ppm": 2878,
+        "mreo_pct": 23,
+        "depth_m": 17.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "17.8m @ 2878ppm TREO [0m]",
+        "intercept": "17.8m @ 2878ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1263,
+        "easting_utm": 336487,
+        "northing_utm": 7576391,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58295513289945,
+          -21.909103391164532
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0082",
+        "deposit": "agostinho",
+        "treo_ppm": 2952,
+        "mreo_pct": 20,
+        "depth_m": 35,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "35m @ 2952ppm TREO [0m]",
+        "intercept": "35m @ 2952ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1276,
+        "easting_utm": 336467,
+        "northing_utm": 7576491,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.583138714195904,
+          -21.90819840830153
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0083",
+        "deposit": "agostinho",
+        "treo_ppm": 3452,
+        "mreo_pct": 23,
+        "depth_m": 33.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "33.2m @ 3452ppm TREO [0m]",
+        "intercept": "33.2m @ 3452ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1280,
+        "easting_utm": 336368,
+        "northing_utm": 7576407,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58410522790049,
+          -21.908947806004676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0084",
+        "deposit": "agostinho",
+        "treo_ppm": 4095,
+        "mreo_pct": 26,
+        "depth_m": 24,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "24m @ 4095ppm TREO [0m]",
+        "intercept": "24m @ 4095ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1265,
+        "easting_utm": 336570,
+        "northing_utm": 7576503,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58214067967696,
+          -21.908099623489566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0085",
+        "deposit": "agostinho",
+        "treo_ppm": 2823,
+        "mreo_pct": 24,
+        "depth_m": 12,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "12m @ 2823ppm TREO [0m]",
+        "intercept": "12m @ 2823ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1257,
+        "easting_utm": 336674,
+        "northing_utm": 7576511,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58113336679923,
+          -21.908037050398814
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0086",
+        "deposit": "agostinho",
+        "treo_ppm": 2004,
+        "mreo_pct": 20,
+        "depth_m": 6,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "6m @ 2004ppm TREO [0m]",
+        "intercept": "6m @ 2004ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1254,
+        "easting_utm": 336762,
+        "northing_utm": 7576683,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.580264565561805,
+          -21.90649186423703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0087",
+        "deposit": "agostinho",
+        "treo_ppm": 1793,
+        "mreo_pct": 22,
+        "depth_m": 30,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "30m @ 1793ppm TREO [0m]",
+        "intercept": "30m @ 1793ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1266,
+        "easting_utm": 336571,
+        "northing_utm": 7576618,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58211953197234,
+          -21.907061127647147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0088",
+        "deposit": "agostinho",
+        "treo_ppm": 1682,
+        "mreo_pct": 21,
+        "depth_m": 40.1,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "40.1m @ 1682ppm TREO [0m]",
+        "intercept": "40.1m @ 1682ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1263,
+        "easting_utm": 336581,
+        "northing_utm": 7576718,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58201277989888,
+          -21.906158937352984
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0089",
+        "deposit": "agostinho",
+        "treo_ppm": 2612,
+        "mreo_pct": 18,
+        "depth_m": 19.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19.2m @ 2612ppm TREO [0m]",
+        "intercept": "19.2m @ 2612ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1271,
+        "easting_utm": 336476,
+        "northing_utm": 7576703,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.583030455930604,
+          -21.90628463115738
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0090",
+        "deposit": "agostinho",
+        "treo_ppm": 3435,
+        "mreo_pct": 23,
+        "depth_m": 43.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "43.5m @ 3435ppm TREO [0m]",
+        "intercept": "43.5m @ 3435ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1275,
+        "easting_utm": 336479,
+        "northing_utm": 7576602,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58301150076739,
+          -21.907197062219286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0091",
+        "deposit": "agostinho",
+        "treo_ppm": 3735,
+        "mreo_pct": 24,
+        "depth_m": 30.5,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "30.5m @ 3735ppm TREO [0m]",
+        "intercept": "30.5m @ 3735ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1289,
+        "easting_utm": 336374,
+        "northing_utm": 7576601,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58402778672611,
+          -21.907196312534797
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0092",
+        "deposit": "agostinho",
+        "treo_ppm": 4323,
+        "mreo_pct": 27,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 4323ppm TREO [0m]",
+        "intercept": "22m @ 4323ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1288,
+        "easting_utm": 336385,
+        "northing_utm": 7576697,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58391174402657,
+          -21.906330342195673
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0093",
+        "deposit": "agostinho",
+        "treo_ppm": 5271,
+        "mreo_pct": 27,
+        "depth_m": 16,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "16m @ 5271ppm TREO [0m]",
+        "intercept": "16m @ 5271ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1303,
+        "easting_utm": 336275,
+        "northing_utm": 7576597,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58498630425006,
+          -21.907223209593493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0094",
+        "deposit": "agostinho",
+        "treo_ppm": 4575,
+        "mreo_pct": 30,
+        "depth_m": 22,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22m @ 4575ppm TREO [0m]",
+        "intercept": "22m @ 4575ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1303,
+        "easting_utm": 336279,
+        "northing_utm": 7576699,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.584937401624465,
+          -21.90630240049418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0095",
+        "deposit": "agostinho",
+        "treo_ppm": 4234,
+        "mreo_pct": 27,
+        "depth_m": 13,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "13m @ 4234ppm TREO [0m]",
+        "intercept": "13m @ 4234ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1304,
+        "easting_utm": 336177,
+        "northing_utm": 7576701,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58592434682447,
+          -21.906274825580496
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0096",
+        "deposit": "agostinho",
+        "treo_ppm": 3011,
+        "mreo_pct": 27,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 3011ppm TREO [0m]",
+        "intercept": "28m @ 3011ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1307,
+        "easting_utm": 336175,
+        "northing_utm": 7576602,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58595359992408,
+          -21.90716872702494
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0097",
+        "deposit": "agostinho",
+        "treo_ppm": 3181,
+        "mreo_pct": 18,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 3181ppm TREO [0m]",
+        "intercept": "50m @ 3181ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1313,
+        "easting_utm": 336072,
+        "northing_utm": 7576399,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.586970737324236,
+          -21.90899244549691
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0098",
+        "deposit": "agostinho",
+        "treo_ppm": 5315,
+        "mreo_pct": 27,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 5315ppm TREO [0m]",
+        "intercept": "28m @ 5315ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1309,
+        "easting_utm": 336078,
+        "northing_utm": 7576494,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58690316485981,
+          -21.908135042992527
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0099",
+        "deposit": "agostinho",
+        "treo_ppm": 4248,
+        "mreo_pct": 24,
+        "depth_m": 20,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "20m @ 4248ppm TREO [0m]",
+        "intercept": "20m @ 4248ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1300,
+        "easting_utm": 336077,
+        "northing_utm": 7576602,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.586902038764116,
+          -21.907159581449054
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0100",
+        "deposit": "agostinho",
+        "treo_ppm": 2765,
+        "mreo_pct": 23,
+        "depth_m": 35.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "35.2m @ 2765ppm TREO [0m]",
+        "intercept": "35.2m @ 2765ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1288,
+        "easting_utm": 336063,
+        "northing_utm": 7576692,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58702852625821,
+          -21.90634546762928
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0101",
+        "deposit": "agostinho",
+        "treo_ppm": 3687,
+        "mreo_pct": 24,
+        "depth_m": 22.8,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "22.8m @ 3687ppm TREO [0m]",
+        "intercept": "22.8m @ 3687ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1291,
+        "easting_utm": 335990,
+        "northing_utm": 7576598,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.587744420119726,
+          -21.907187582575226
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0102",
+        "deposit": "agostinho",
+        "treo_ppm": 2916,
+        "mreo_pct": 23,
+        "depth_m": 17,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "17m @ 2916ppm TREO [0m]",
+        "intercept": "17m @ 2916ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1298,
+        "easting_utm": 335977,
+        "northing_utm": 7576505,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58787954255817,
+          -21.908026268324967
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0103",
+        "deposit": "agostinho",
+        "treo_ppm": 2715,
+        "mreo_pct": 17,
+        "depth_m": 26,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "26m @ 2715ppm TREO [0m]",
+        "intercept": "26m @ 2715ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1306,
+        "easting_utm": 335975,
+        "northing_utm": 7576402,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58790920937961,
+          -21.908956293210192
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0104",
+        "deposit": "agostinho",
+        "treo_ppm": 2965,
+        "mreo_pct": 22,
+        "depth_m": 40,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "40m @ 2965ppm TREO [0m]",
+        "intercept": "40m @ 2965ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1314,
+        "easting_utm": 336043,
+        "northing_utm": 7576303,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58726100790208,
+          -21.909856731385652
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0105",
+        "deposit": "agostinho",
+        "treo_ppm": 2107,
+        "mreo_pct": 15,
+        "depth_m": 37,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "37m @ 2107ppm TREO [0m]",
+        "intercept": "37m @ 2107ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1316,
+        "easting_utm": 335974,
+        "northing_utm": 7576202,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.587938910151664,
+          -21.910762435798667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0106",
+        "deposit": "agostinho",
+        "treo_ppm": 3761,
+        "mreo_pct": 24,
+        "depth_m": 30,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "30m @ 3761ppm TREO [0m]",
+        "intercept": "30m @ 3761ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1310,
+        "easting_utm": 336080,
+        "northing_utm": 7576203,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58691292237901,
+          -21.910763304534644
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -62,16 +2987,82 @@
         "deposit": "agostinho",
         "treo_ppm": 6918,
         "mreo_pct": 27,
-        "depth_m": 24,
+        "depth_m": 24.2,
         "campaign": "2025-discovery",
         "hole_type": "AC",
-        "note": "24m @ 6918 ppm TREO from 0m · 27% MREO · incl. 6m @ 19183 ppm TREO (34.9% MREO)",
-        "intercept": "24m @ 6,918ppm TREO [0m] with 27% MREO",
-        "including": "6m @ 19,183ppm TREO [2m] with 34.9% MREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "note": "24.2m @ 6918ppm TREO [0m]",
+        "intercept": "24.2m @ 6918ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1289,
+        "easting_utm": 336179,
+        "northing_utm": 7576207,
+        "crs_epsg": 31983
       },
-      "geometry": { "type": "Point", "coordinates": [-46.615, -21.885] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.585954381522605,
+          -21.91073642015798
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0108",
+        "deposit": "agostinho",
+        "treo_ppm": 4066,
+        "mreo_pct": 26,
+        "depth_m": 28,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "28m @ 4066ppm TREO [0m]",
+        "intercept": "28m @ 4066ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1325,
+        "easting_utm": 335966,
+        "northing_utm": 7576098,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5880267487527,
+          -21.91170093089953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0109",
+        "deposit": "agostinho",
+        "treo_ppm": 3083,
+        "mreo_pct": 26,
+        "depth_m": 19.2,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "19.2m @ 3083ppm TREO [0m]",
+        "intercept": "19.2m @ 3083ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1304,
+        "easting_utm": 336082,
+        "northing_utm": 7576096,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58690427195445,
+          -21.911729827847946
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -83,49 +3074,1409 @@
         "depth_m": 22,
         "campaign": "2025-discovery",
         "hole_type": "AC",
-        "note": "22m @ 4422 ppm TREO · 27.7% MREO · incl. 10m @ 7831 ppm TREO",
-        "intercept": "22m @ 4,422ppm TREO [0m] with 27.7% MREO",
-        "including": "10m @ 7,831ppm TREO [0m] with 35.6% MREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "note": "22m @ 4422ppm TREO [0m]",
+        "intercept": "22m @ 4422ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1310,
+        "easting_utm": 336078,
+        "northing_utm": 7575999,
+        "crs_epsg": 31983
       },
-      "geometry": { "type": "Point", "coordinates": [-46.613, -21.882] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58695269111291,
+          -21.912605479003584
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "PIADD001",
-        "deposit": "barra-do-pacu",
-        "treo_ppm": 6406,
-        "mreo_pct": 26,
-        "depth_m": 143,
+        "id": "AGOAC0111",
+        "deposit": "agostinho",
+        "treo_ppm": 3638,
+        "mreo_pct": 27,
+        "depth_m": 23.4,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "23.4m @ 3638ppm TREO [0m]",
+        "intercept": "23.4m @ 3638ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1327,
+        "easting_utm": 335978,
+        "northing_utm": 7575990,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5879214232392,
+          -21.912677419246528
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0112",
+        "deposit": "agostinho",
+        "treo_ppm": 2943,
+        "mreo_pct": 22,
+        "depth_m": 33,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "33m @ 2943ppm TREO [0m]",
+        "intercept": "33m @ 2943ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1336,
+        "easting_utm": 335871,
+        "northing_utm": 7576001,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58895590028883,
+          -21.912568075832855
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0113",
+        "deposit": "agostinho",
+        "treo_ppm": 2347,
+        "mreo_pct": 21,
+        "depth_m": 34.4,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "34.4m @ 2347ppm TREO [0m]",
+        "intercept": "34.4m @ 2347ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1330,
+        "easting_utm": 335677,
+        "northing_utm": 7576114,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.590822154878296,
+          -21.911529405901774
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0114",
+        "deposit": "agostinho",
+        "treo_ppm": 3039,
+        "mreo_pct": 22,
+        "depth_m": 50,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "50m @ 3039ppm TREO [0m]",
+        "intercept": "50m @ 3039ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1327,
+        "easting_utm": 335676,
+        "northing_utm": 7576206,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59082260526288,
+          -21.9106984450393
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0115",
+        "deposit": "agostinho",
+        "treo_ppm": 2869,
+        "mreo_pct": 23,
+        "depth_m": 40,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "40m @ 2869ppm TREO [0m]",
+        "intercept": "40m @ 2869ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1322,
+        "easting_utm": 335573,
+        "northing_utm": 7576184,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59182166401837,
+          -21.91088748730081
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGOAC0116",
+        "deposit": "agostinho",
+        "treo_ppm": 2698,
+        "mreo_pct": 21,
+        "depth_m": 25,
+        "campaign": "2025-discovery",
+        "hole_type": "AC",
+        "note": "25m @ 2698ppm TREO [0m]",
+        "intercept": "25m @ 2698ppm TREO [0m]",
+        "including": null,
+        "source_ref": "asx_02909601_appendix1",
+        "as_of": "2025-02-05",
+        "elev_m": 1311,
+        "easting_utm": 335575,
+        "northing_utm": 7576302,
+        "crs_epsg": 31983
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59179046521162,
+          -21.909821997436172
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGODD0001",
+        "deposit": "agostinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 43.17,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": "143m @ 6406 ppm TREO from 0m · incl. 8m @ 23946 ppm TREO @ 85m · 1170 ppm HMREO",
-        "intercept": "143m @ 6,406ppm TREO [0m]",
-        "including": "8m @ 23,946ppm TREO [85m] and 1,170 ppm HMREO",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1323,
+        "easting_utm": 336154,
+        "northing_utm": 7576539,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
       },
-      "geometry": { "type": "Point", "coordinates": [-46.53, -21.86] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58616313622566,
+          -21.907735732715675
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "CVSDD001",
+        "id": "AGODD0002",
+        "deposit": "agostinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 37.09,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1289,
+        "easting_utm": 336312,
+        "northing_utm": 7576339,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.584653993689855,
+          -21.909556707580972
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGODD0003",
+        "deposit": "agostinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 65.67,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1350,
+        "easting_utm": 335295,
+        "northing_utm": 7576309,
+        "crs_epsg": 31983,
+        "asx_status": "Pending"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59449962793128,
+          -21.90973253553939
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGODD0004",
+        "deposit": "agostinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 45.78,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1300,
+        "easting_utm": 336024,
+        "northing_utm": 7576672,
+        "crs_epsg": 31983,
+        "asx_status": "Pending"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.587407965166456,
+          -21.906522450103562
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGODD0005",
+        "deposit": "agostinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 33.56,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1300,
+        "easting_utm": 336445,
+        "northing_utm": 7576235,
+        "crs_epsg": 31983,
+        "asx_status": "Pending"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58337718566655,
+          -21.91050834659244
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0001",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 73.31,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1343,
+        "easting_utm": 346168,
+        "northing_utm": 7566529,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.490187481515086,
+          -21.999047418995623
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0002",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 58.61,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1317,
+        "easting_utm": 346372,
+        "northing_utm": 7566554,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48820946420059,
+          -21.99883957360963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0003",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 39.12,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1336,
+        "easting_utm": 345958,
+        "northing_utm": 7566534,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.492220775633676,
+          -21.99898376671703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0004",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 29.16,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1319,
+        "easting_utm": 346259,
+        "northing_utm": 7565955,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.489360329283755,
+          -22.004239505874484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0005",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 52.09,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1335,
+        "easting_utm": 345999,
+        "northing_utm": 7565311,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.491939290790285,
+          -22.01003288585035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BDPDD0006",
+        "deposit": "barra-do-pacu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 43.35,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1363,
+        "easting_utm": 346252,
+        "northing_utm": 7565523,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48946888846503,
+          -22.00814049508419
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0001",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.18,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1322,
+        "easting_utm": 346437,
+        "northing_utm": 7566998,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48753814091358,
+          -21.99483529441552
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0002",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 20.4,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1309,
+        "easting_utm": 345620,
+        "northing_utm": 7567610,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.49539228559383,
+          -21.98923607153091
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0003",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1355,
+        "easting_utm": 345785,
+        "northing_utm": 7565709,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.49397427930542,
+          -22.00641948145403
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0004",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 18.85,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1307,
+        "easting_utm": 347477,
+        "northing_utm": 7567044,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.47746210412779,
+          -21.994510885631858
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0005",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 9.78,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1306,
+        "easting_utm": 346611,
+        "northing_utm": 7567019,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.485851090391904,
+          -21.994660907684562
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0006",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 46.35,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1339,
+        "easting_utm": 345993,
+        "northing_utm": 7566806,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.49185611746933,
+          -21.996530284952705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0007",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 39.44,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1278,
+        "easting_utm": 346893,
+        "northing_utm": 7567309,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48309287654658,
+          -21.992066482377314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0008",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 40.58,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1264,
+        "easting_utm": 347081,
+        "northing_utm": 7567706,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.481235026606484,
+          -21.988497411430128
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0009",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 29.61,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1284,
+        "easting_utm": 346569,
+        "northing_utm": 7566704,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.486287477836505,
+          -21.997502150186513
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0010",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 57.75,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1308,
+        "easting_utm": 346632,
+        "northing_utm": 7567196,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48563107037967,
+          -21.993064170572993
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0011",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 25.95,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1291,
+        "easting_utm": 346621,
+        "northing_utm": 7566802,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.48577466222168,
+          -21.996621624883
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0012",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 41.09,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1305,
+        "easting_utm": 345109,
+        "northing_utm": 7566811,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.50041665932503,
+          -21.99640702435169
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CDMDD0013",
+        "deposit": "capao-do-mel",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 45.89,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1298,
+        "easting_utm": 344998,
+        "northing_utm": 7567684,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.50140864108642,
+          -21.988512722241538
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CERDD0001",
+        "deposit": "cercado",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 81.55,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1454,
+        "easting_utm": 343700,
+        "northing_utm": 7574295,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.513345776977886,
+          -21.928690311930918
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CERDD0002",
+        "deposit": "cercado",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 35.18,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1436,
+        "easting_utm": 344068,
+        "northing_utm": 7574647,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.509750095206414,
+          -21.925543978221707
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CERDD0003",
+        "deposit": "cercado",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 75.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1468,
+        "easting_utm": 343049,
+        "northing_utm": 7575205,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.5195600270851,
+          -21.92041355620272
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CERDD0004",
+        "deposit": "cercado",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 66.83,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1437,
+        "easting_utm": 344485,
+        "northing_utm": 7574505,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.505727213700126,
+          -21.926863468006392
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CERDD0005",
+        "deposit": "cercado",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 120.05,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1446,
+        "easting_utm": 343988,
+        "northing_utm": 7574303,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.51055724783866,
+          -21.928643699221134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CIPDD0001",
+        "deposit": "cipo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 39.46,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1305,
+        "easting_utm": 332897,
+        "northing_utm": 7571351,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.61821382950452,
+          -21.954281760683173
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "COQDD0001",
+        "deposit": "coqueirinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 82.62,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1287,
+        "easting_utm": 334117,
+        "northing_utm": 7580334,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.605493286359525,
+          -21.873271370790007
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "COQDD0002",
+        "deposit": "coqueirinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 32.64,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1342,
+        "easting_utm": 335429,
+        "northing_utm": 7577831,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59304994673997,
+          -21.8959996677522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "COQDD0003",
+        "deposit": "coqueirinho",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 17.78,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1301,
+        "easting_utm": 334919,
+        "northing_utm": 7580056,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.59776141592322,
+          -21.87585748747386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CP3DD0001",
+        "deposit": "cipo-3",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 23.79,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1300,
+        "easting_utm": 336006,
+        "northing_utm": 7575471,
+        "crs_epsg": 31983,
+        "asx_status": "Pending"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58770239465259,
+          -21.917367215198954
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVNDD0001",
+        "deposit": "cupim-vermelho-norte",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 23.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1404,
+        "easting_utm": 342883,
+        "northing_utm": 7576691,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.52102422907628,
+          -21.90697794694013
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVNDD0002",
+        "deposit": "cupim-vermelho-norte",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 28.05,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1367,
+        "easting_utm": 341677,
+        "northing_utm": 7579290,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.53244520526051,
+          -21.883396926762074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVNDD0003",
+        "deposit": "cupim-vermelho-norte",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 42.95,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1409,
+        "easting_utm": 342535,
+        "northing_utm": 7578363,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.52423165151404,
+          -21.891846165261228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVNDD0004",
+        "deposit": "cupim-vermelho-norte",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.1,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1416,
+        "easting_utm": 343854,
+        "northing_utm": 7578257,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.511477473962806,
+          -21.89292120152319
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVNDD0005",
+        "deposit": "cupim-vermelho-norte",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 22.75,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1255,
+        "easting_utm": 345059,
+        "northing_utm": 7578282,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.499813893782246,
+          -21.89280207507033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD0001",
         "deposit": "cupim-vermelho-sul",
         "treo_ppm": 8912,
-        "mreo_pct": 28,
-        "depth_m": 150,
+        "mreo_pct": 15.9,
+        "depth_m": 149.49,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": "149.5m @ 8912 ppm TREO from 0m · incl. 52m @ 12692 ppm TREO @ 61m",
+        "note": "149.5m @ 8,912 ppm TREO [0m] · incl. 52m @ 12,692ppm TREO [61m]",
         "intercept": "149.5m @ 8,912 ppm TREO [0m]",
         "including": "52m @ 12,692ppm TREO [61m]",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1376,
+        "easting_utm": 340077,
+        "northing_utm": 7575858,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
       },
-      "geometry": { "type": "Point", "coordinates": [-46.51, -21.85] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.548262474722236,
+          -21.91424775650311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD0002",
+        "deposit": "cupim-vermelho-sul",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 70.8,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1391,
+        "easting_utm": 340953,
+        "northing_utm": 7575108,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.53985683873596,
+          -21.921100881267204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD0003",
+        "deposit": "cupim-vermelho-sul",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 56.58,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1359,
+        "easting_utm": 340564,
+        "northing_utm": 7575629,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.543571280724876,
+          -21.916360240290455
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -134,16 +4485,1361 @@
         "deposit": "cupim-vermelho-sul",
         "treo_ppm": 3387,
         "mreo_pct": 25,
-        "depth_m": 200,
+        "depth_m": 200.02,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": "200m @ 3387 ppm TREO from 0m · incl. 5m @ 11888 ppm TREO @ 36m",
+        "note": "200m @ 3,387ppm TREO [0m] · incl. 5m @ 11,888ppm TREO [36m]",
         "intercept": "200m @ 3,387ppm TREO [0m]",
         "including": "5m @ 11,888ppm TREO [36m]",
-        "source_ref": "ops_reality_collars",
-        "as_of": "2026-04-07"
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1451,
+        "easting_utm": 339756,
+        "northing_utm": 7575833,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
       },
-      "geometry": { "type": "Point", "coordinates": [-46.512, -21.853] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55137174949953,
+          -21.914444265641237
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CVSDD0005",
+        "deposit": "cupim-vermelho-sul",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 200.57,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1357,
+        "easting_utm": 340326,
+        "northing_utm": 7575683,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.545869561289564,
+          -21.915850911559453
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0001",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 33.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1346,
+        "easting_utm": 337939,
+        "northing_utm": 7581336,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56841399538468,
+          -21.864578284606154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0002",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 37.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1361,
+        "easting_utm": 338448,
+        "northing_utm": 7579639,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56365630379175,
+          -21.879951248757045
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0003",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 15.05,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1362,
+        "easting_utm": 338887,
+        "northing_utm": 7579957,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.559377224673625,
+          -21.877119561341182
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0004",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 21.2,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1365,
+        "easting_utm": 339144,
+        "northing_utm": 7579358,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55694918752833,
+          -21.882552864187392
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0005",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 12.11,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1385,
+        "easting_utm": 338052,
+        "northing_utm": 7580242,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.567428589412145,
+          -21.874468944859625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0006",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 33.24,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1279,
+        "easting_utm": 337372,
+        "northing_utm": 7578861,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.574144991406754,
+          -21.88687839048267
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM1DD0007",
+        "deposit": "dona-maria-1",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 27.5,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1281,
+        "easting_utm": 336613,
+        "northing_utm": 7579372,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.581438658316145,
+          -21.882193043570776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM2DD0001",
+        "deposit": "dona-maria-2",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 22.05,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1383,
+        "easting_utm": 339844,
+        "northing_utm": 7579731,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55013927731369,
+          -21.879248065569485
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM2DD0002",
+        "deposit": "dona-maria-2",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 22.35,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1335,
+        "easting_utm": 339441,
+        "northing_utm": 7579947,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55401766548953,
+          -21.877260540884674
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM2DD0003",
+        "deposit": "dona-maria-2",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 23.2,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1369,
+        "easting_utm": 339932,
+        "northing_utm": 7580147,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.54924720166223,
+          -21.875499022754006
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DM2DD0004",
+        "deposit": "dona-maria-2",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 18.62,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1389,
+        "easting_utm": 339640,
+        "northing_utm": 7580342,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55205353926372,
+          -21.873711305422475
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DONDD0001",
+        "deposit": "donana",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 14.96,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1354,
+        "easting_utm": 332724,
+        "northing_utm": 7570003,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.62002666342104,
+          -21.966439014909273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0001",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 61.8,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1339,
+        "easting_utm": 341854,
+        "northing_utm": 7572049,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.531431644451715,
+          -21.948809357711422
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0002",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 84.45,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1340,
+        "easting_utm": 341239,
+        "northing_utm": 7572677,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.537324480675565,
+          -21.94308205260418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0003",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 45.55,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1366,
+        "easting_utm": 340849,
+        "northing_utm": 7572859,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.541082199799355,
+          -21.941402979856147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0004",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 111.87,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1338,
+        "easting_utm": 340882,
+        "northing_utm": 7571408,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.540903972261894,
+          -21.954510452808016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0005",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 20.74,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1325,
+        "easting_utm": 340893,
+        "northing_utm": 7572112,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.540728947377,
+          -21.948153389559266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0006",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 58.99,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1357,
+        "easting_utm": 341236,
+        "northing_utm": 7573390,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.537284311539494,
+          -21.936642417047285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0007",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 71.04,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1394,
+        "easting_utm": 340993,
+        "northing_utm": 7573311,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.539644269724846,
+          -21.93733387458589
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0008",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.34,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1300,
+        "easting_utm": 341530,
+        "northing_utm": 7571146,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.53465584863563,
+          -21.95693540757552
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FIGDD0009",
+        "deposit": "figueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 96.66,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1366,
+        "easting_utm": 341876,
+        "northing_utm": 7573324,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.53109537390363,
+          -21.937296322789656
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FLIDD0001",
+        "deposit": "fazenda-limoeiro",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 17.95,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1316,
+        "easting_utm": 331993,
+        "northing_utm": 7582304,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.62584260001379,
+          -21.855278595986988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FLIDD0002",
+        "deposit": "fazenda-limoeiro",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 24.82,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1287,
+        "easting_utm": 330836,
+        "northing_utm": 7583313,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.6369318606529,
+          -21.846055503739603
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD0001",
+        "deposit": "piao",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 142.96,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1415,
+        "easting_utm": 339398,
+        "northing_utm": 7576452,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55477600246882,
+          -21.90882115927526
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD0002",
+        "deposit": "piao",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 46.24,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1404,
+        "easting_utm": 339579,
+        "northing_utm": 7574617,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55320399361589,
+          -21.925410183737593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD0003",
+        "deposit": "piao",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 12.67,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1365,
+        "easting_utm": 338908,
+        "northing_utm": 7577850,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55938091957696,
+          -21.89615049772682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD0004",
+        "deposit": "piao",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 62.59,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1350,
+        "easting_utm": 339473,
+        "northing_utm": 7575793,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55411471208793,
+          -21.914779660860678
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PIADD0005",
+        "deposit": "piao",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 126.32,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1350,
+        "easting_utm": 339377,
+        "northing_utm": 7576605,
+        "crs_epsg": 31983,
+        "asx_status": "Pending"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.554964246561575,
+          -21.907437445588535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PINDD0001",
+        "deposit": "pinheiro",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 32.64,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1327,
+        "easting_utm": 338389,
+        "northing_utm": 7571708,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56500978088355,
+          -21.9515728704909
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PITDD0001",
+        "deposit": "pitangueira",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 44.75,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1295,
+        "easting_utm": 348327,
+        "northing_utm": 7567059,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.469228988538525,
+          -21.99444936121701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0001",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 18.15,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1298,
+        "easting_utm": 348798,
+        "northing_utm": 7569486,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.46444270249317,
+          -21.972570418415796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0002",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.45,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1284,
+        "easting_utm": 349085,
+        "northing_utm": 7568049,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.46179659556352,
+          -21.98557365056563
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0003",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 19.75,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1295,
+        "easting_utm": 348991,
+        "northing_utm": 7570681,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.46246338949006,
+          -21.961794264334916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0004",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 31.1,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1215,
+        "easting_utm": 350299,
+        "northing_utm": 7569907,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.44986997600319,
+          -21.9688971067588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0005",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 23.4,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1304,
+        "easting_utm": 348119,
+        "northing_utm": 7568005,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.471155238068825,
+          -21.985887423640403
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0006",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 10.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1292,
+        "easting_utm": 349844,
+        "northing_utm": 7570495,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.45422155191538,
+          -21.9635475085173
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0007",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 11.14,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1207,
+        "easting_utm": 347976,
+        "northing_utm": 7569982,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.472355866400655,
+          -21.96801953659699
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0008",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 29.25,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1275,
+        "easting_utm": 349904,
+        "northing_utm": 7570592,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.453631696608205,
+          -21.962676579244864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0009",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 29.57,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1259,
+        "easting_utm": 350004,
+        "northing_utm": 7570493,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.452672557810835,
+          -21.963579285482055
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0010",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 38.69,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1232,
+        "easting_utm": 348196,
+        "northing_utm": 7569900,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.4702333206564,
+          -21.968779220212937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SBBDD0011",
+        "deposit": "soberbo",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 28.85,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1303,
+        "easting_utm": 348804,
+        "northing_utm": 7569298,
+        "crs_epsg": 31983,
+        "asx_status": "Previously Reported"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.464402017981364,
+          -21.974268883505953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "TAMDD0001",
+        "deposit": "tamandua",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 15.71,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1347,
+        "easting_utm": 334357,
+        "northing_utm": 7569580,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.604259126788904,
+          -21.97041440679358
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "TAMDD0002",
+        "deposit": "tamandua",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 14.67,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1296,
+        "easting_utm": 334497,
+        "northing_utm": 7568580,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60300501843166,
+          -21.97945869156874
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "TAMDD0003",
+        "deposit": "tamandua",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 19.53,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1282,
+        "easting_utm": 333481,
+        "northing_utm": 7570748,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.61262157817103,
+          -21.959783073178865
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "TATDD0001",
+        "deposit": "tatu",
+        "treo_ppm": 0,
+        "mreo_pct": 0,
+        "depth_m": 6.28,
+        "campaign": "2024-resource",
+        "hole_type": "DD",
+        "note": null,
+        "intercept": null,
+        "including": null,
+        "source_ref": "asx_02766588_table2",
+        "as_of": "2024-01-30",
+        "elev_m": 1320,
+        "easting_utm": 333947,
+        "northing_utm": 7566812,
+        "crs_epsg": 31983,
+        "asx_status": "This Release"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60851051423407,
+          -21.99537339524699
+        ]
+      }
     }
   ]
 }

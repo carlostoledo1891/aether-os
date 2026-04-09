@@ -11,6 +11,9 @@ import { weatherIngestRoutes } from './ingest/weatherHook.js'
 import { marketIngestRoutes } from './ingest/marketHook.js'
 import { lapocIngestRoutes } from './ingest/lapocHook.js'
 import { telemetryWsRoutes } from './ws/telemetryChannel.js'
+import multipart from '@fastify/multipart'
+import { chatRoutes } from './routes/chat.js'
+import { chatUploadRoutes } from './routes/chatUpload.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
 
@@ -24,17 +27,18 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
 
   await app.register(cors, { origin: CORS_ORIGIN })
   await app.register(websocket)
+  await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } })
 
   await app.register(swagger, {
     openapi: {
       openapi: '3.1.0',
       info: {
-        title: 'Aether OS API',
+        title: 'Vero API',
         version: '0.1.0',
         description:
-          'REST + WebSocket API for the Aether OS critical-minerals supply-chain platform. ' +
+          'REST + WebSocket API for the Vero critical-minerals supply-chain platform. ' +
           'Serves domain data, telemetry, enricher outputs, and ingest endpoints for the simulation engine.',
-        contact: { name: 'Aether OS', url: 'https://aether-os.com' },
+        contact: { name: 'Vero', url: 'https://vero.earth' },
         license: { name: 'Proprietary' },
       },
       tags: [
@@ -46,6 +50,7 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
         { name: 'ingest', description: 'Engine → API data ingestion (requires x-api-key)' },
         { name: 'export', description: 'Regulatory and DPP export bundles' },
         { name: 'alerts', description: 'Alert management (requires x-api-key)' },
+        { name: 'ai', description: 'AI analyst chat (streaming, requires GOOGLE_GENERATIVE_AI_API_KEY)' },
       ],
       components: {
         securitySchemes: {
@@ -81,6 +86,8 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
   await app.register(marketIngestRoutes)
   await app.register(lapocIngestRoutes)
   await app.register(telemetryWsRoutes)
+  await app.register(chatRoutes)
+  await app.register(chatUploadRoutes)
 
   return app
 }
@@ -91,7 +98,7 @@ async function main() {
   try {
     await app.listen({ port: PORT, host: HOST })
     setupGracefulShutdown(app)
-    console.log(`\n  Aether API running at http://${HOST}:${PORT}`)
+    console.log(`\n  Vero API running at http://${HOST}:${PORT}`)
     console.log(`  WebSocket at ws://${HOST}:${PORT}/ws/telemetry`)
     console.log(`  Health check: http://localhost:${PORT}/api/health\n`)
   } catch (err) {

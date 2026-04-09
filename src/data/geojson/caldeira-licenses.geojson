@@ -10,22 +10,37 @@
         "status": "lp_approved",
         "area_km2": 10,
         "license_count": 1,
-        "note": "M&I 85 Mt · Measured 11 Mt @ 3888 ppm TREO · Indicated 74 Mt @ 2908 ppm · MREO 21.7–22.0% · avg depth 23.4 m.",
+        "note": "Measured 11 Mt clay @ 3888 ppm · Indicated 74 Mt @ 2908 ppm · Inferred clay 32 Mt @ 1791 ppm + transition 25 Mt @ 1752 ppm · ASX 02933327 Table 1",
         "resource_category": "Measured & Indicated",
         "total_mt": 85,
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.555, -21.875],
-            [-46.525, -21.875],
-            [-46.525, -21.905],
-            [-46.555, -21.905],
-            [-46.555, -21.875]
+            [
+              -46.555,
+              -21.875
+            ],
+            [
+              -46.525,
+              -21.875
+            ],
+            [
+              -46.525,
+              -21.905
+            ],
+            [
+              -46.555,
+              -21.905
+            ],
+            [
+              -46.555,
+              -21.875
+            ]
           ]
         ]
       }
@@ -39,22 +54,37 @@
         "status": "lp_approved",
         "area_km2": 9,
         "license_count": 1,
-        "note": "Indicated 86 Mt @ 2730 ppm TREO · avg depth 16.9 m.",
+        "note": "Indicated 86 Mt @ 2730 ppm · Inferred clay 89 Mt @ 2713 ppm + transition 54 Mt @ 2207 ppm · ASX 02933327 Table 1",
         "resource_category": "Indicated",
         "total_mt": 86,
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.52, -21.835],
-            [-46.495, -21.835],
-            [-46.495, -21.865],
-            [-46.52, -21.865],
-            [-46.52, -21.835]
+            [
+              -46.52,
+              -21.835
+            ],
+            [
+              -46.495,
+              -21.835
+            ],
+            [
+              -46.495,
+              -21.865
+            ],
+            [
+              -46.52,
+              -21.865
+            ],
+            [
+              -46.52,
+              -21.835
+            ]
           ]
         ]
       }
@@ -68,22 +98,37 @@
         "status": "lp_approved",
         "area_km2": 4,
         "license_count": 1,
-        "note": "Indicated 138 Mt @ 2844 ppm · 170 Mt total @ 2766 ppm TREO · high-grade domain 47 Mt @ 4763 ppm (3000 ppm cut-off).",
+        "note": "Indicated 138 Mt @ 2844 ppm · Inferred clay 9 Mt @ 3105 ppm + transition 24 Mt @ 2174 ppm · ASX 02933327 Table 1",
         "resource_category": "Indicated",
-        "total_mt": 170,
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "total_mt": 138,
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.49, -21.8],
-            [-46.475, -21.8],
-            [-46.475, -21.825],
-            [-46.49, -21.825],
-            [-46.49, -21.8]
+            [
+              -46.49,
+              -21.8
+            ],
+            [
+              -46.475,
+              -21.8
+            ],
+            [
+              -46.475,
+              -21.825
+            ],
+            [
+              -46.49,
+              -21.825
+            ],
+            [
+              -46.49,
+              -21.8
+            ]
           ]
         ]
       }
@@ -97,22 +142,37 @@
         "status": "exploration",
         "area_km2": 7,
         "license_count": 1,
-        "note": "Inferred 104 Mt @ 2485 ppm TREO.",
-        "resource_category": "Inferred",
-        "total_mt": 104,
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "note": "Measured 26 Mt @ 2607 ppm · Indicated 90 Mt @ 2658 ppm · Inferred clay 78 Mt + transition 67 Mt · ASX 02933327 Table 1",
+        "resource_category": "Mixed",
+        "total_mt": 261,
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.5, -21.75],
-            [-46.48, -21.75],
-            [-46.48, -21.78],
-            [-46.5, -21.78],
-            [-46.5, -21.75]
+            [
+              -46.5,
+              -21.75
+            ],
+            [
+              -46.48,
+              -21.75
+            ],
+            [
+              -46.48,
+              -21.78
+            ],
+            [
+              -46.5,
+              -21.78
+            ],
+            [
+              -46.5,
+              -21.75
+            ]
           ]
         ]
       }
@@ -126,21 +186,36 @@
         "status": "lp_approved",
         "area_km2": 7,
         "license_count": 1,
-        "note": "Exploration / Inferred · ultra-high-grade deep intercepts CVSDD001, CVSDD0004.",
+        "note": "Exploration / Inferred — ultra-high-grade intercepts CVSDD0001 CVSDD0004 (not split per licence in 02933327 Table 1)",
         "resource_category": "Exploration / Inferred",
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.525, -21.84],
-            [-46.5, -21.84],
-            [-46.5, -21.865],
-            [-46.525, -21.865],
-            [-46.525, -21.84]
+            [
+              -46.525,
+              -21.84
+            ],
+            [
+              -46.5,
+              -21.84
+            ],
+            [
+              -46.5,
+              -21.865
+            ],
+            [
+              -46.525,
+              -21.865
+            ],
+            [
+              -46.525,
+              -21.84
+            ]
           ]
         ]
       }
@@ -154,22 +229,37 @@
         "status": "li_pending",
         "area_km2": 10,
         "license_count": 1,
-        "note": "Indicated & Inferred (Apr 2025 MRE) · 389 Mt @ 2204 ppm TREO · Indicated 77 Mt @ 2917 ppm · high-grade 32 Mt @ 4130 ppm (3000 ppm cut-off).",
+        "note": "Indicated & Inferred 389 Mt @ 2204 ppm (prior ASX Barra do Pacu MRE) — verify against latest issuer table",
         "resource_category": "Indicated & Inferred",
         "total_mt": 389,
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.66, -21.82],
-            [-46.63, -21.82],
-            [-46.63, -21.85],
-            [-46.66, -21.85],
-            [-46.66, -21.82]
+            [
+              -46.66,
+              -21.82
+            ],
+            [
+              -46.63,
+              -21.82
+            ],
+            [
+              -46.63,
+              -21.85
+            ],
+            [
+              -46.66,
+              -21.85
+            ],
+            [
+              -46.66,
+              -21.82
+            ]
           ]
         ]
       }
@@ -183,24 +273,43 @@
         "status": "exploration",
         "area_km2": 5,
         "license_count": 1,
-        "note": "High-grade discovery north of Caldeira · ~1300×500 m zone · avg intercept 28.4 m @ 2771 ppm TREO.",
+        "note": "Exploration — high-grade Agostinho AC grid ASX 02909601 — no MRE row in 02933327 Table 1",
         "resource_category": "Exploration",
-        "source_ref": "ops_reality_tenements",
-        "as_of": "2026-04-07",
+        "source_ref": "asx_02933327",
+        "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [-46.62, -21.87],
-            [-46.6, -21.87],
-            [-46.6, -21.89],
-            [-46.62, -21.89],
-            [-46.62, -21.87]
+            [
+              -46.62,
+              -21.87
+            ],
+            [
+              -46.6,
+              -21.87
+            ],
+            [
+              -46.6,
+              -21.89
+            ],
+            [
+              -46.62,
+              -21.89
+            ],
+            [
+              -46.62,
+              -21.87
+            ]
           ]
         ]
       }
     }
-  ]
+  ],
+  "metadata": {
+    "licence_metrics_generated_at": "2026-04-09T06:44:42.272Z",
+    "licence_metrics_source": "data/caldeira/staging/licence_metrics.csv"
+  }
 }

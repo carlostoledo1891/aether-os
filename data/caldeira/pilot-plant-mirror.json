@@ -1,0 +1,385 @@
+{
+  "$schema": "../schemas/pilot-plant-mirror.schema.json",
+  "meta": {
+    "version": "1.0.0",
+    "last_reviewed": "2026-04-09",
+    "disclaimer": "This file mirrors publicly disclosed pilot plant data from ASX filings, conference papers, and news sources. It is a provenance catalog, not an operational system of record. All values carry source_refs; no claim is independently verified by Vero.",
+    "notes": "CETEM PDF (gov.br) and Simexmin PDF were inaccessible to automated extraction — manual download required for enrichment."
+  },
+  "facility": {
+    "id": "PLANT-PILOT-01",
+    "name": "Meteoric Innovation & Research Center",
+    "site": {
+      "municipality": "Poços de Caldas",
+      "state": "MG",
+      "country": "BR",
+      "coordinates": { "lat": -21.8, "lon": -46.575 }
+    }
+  },
+  "sources": {
+    "WEBLINK-03037515": {
+      "url": "https://wcsecure.weblink.com.au/pdf/MEI/03037515.pdf",
+      "type": "asx_pdf",
+      "title": "MEI ASX announcement — pilot plant update",
+      "date": "2026-02-11",
+      "pages": 1,
+      "status": "extracted"
+    },
+    "WEBLINK-03035491": {
+      "url": "https://wcsecure.weblink.com.au/pdf/MEI/03035491.pdf",
+      "type": "asx_pdf",
+      "title": "MEI ASX announcement — operational milestone",
+      "date": "2026-01-28",
+      "pages": 3,
+      "status": "extracted"
+    },
+    "WEBLINK-02969122": {
+      "url": "https://wcsecure.weblink.com.au/pdf/MEI/02969122.pdf",
+      "type": "asx_pdf",
+      "title": "Caldeira Project Pre-Feasibility Study",
+      "date": "2025-07-28",
+      "pages": 33,
+      "status": "extracted"
+    },
+    "WEBLINK-02969114": {
+      "url": "https://wcsecure.weblink.com.au/pdf/MEI/02969114.pdf",
+      "type": "asx_pdf",
+      "title": "Caldeira PFS Technical Report (full)",
+      "date": "2025-07-28",
+      "pages": 89,
+      "status": "extracted"
+    },
+    "CETEM-CALDEIRA": {
+      "url": "https://www.gov.br/cetem/pt-br/assuntos/VI-Seminario-Brasileiro-de-Terras-Raras/MeteoricProjetoCaldeira_CTEM.pdf",
+      "type": "cetem_pdf",
+      "title": "Meteoric Projeto Caldeira — CETEM VI Seminário Brasileiro de Terras Raras",
+      "status": "blocked_403",
+      "notes": "gov.br WAF blocks automated access — requires manual browser download"
+    },
+    "SIMEXMIN-2024": {
+      "url": "https://www.simexmin.com.br/2024/trabalhos/50.pdf",
+      "type": "simexmin_pdf",
+      "title": "Simexmin 2024 — Meteoric pilot plant presentation",
+      "date": "2024",
+      "status": "unreachable",
+      "notes": "Server connection refused during automated check"
+    },
+    "YOUTUBE_VZLDquUhCZA": {
+      "url": "https://www.youtube.com/watch?v=VZLDquUhCZA",
+      "type": "youtube",
+      "title": "Meteoric Resources Caldeira pilot plant footage",
+      "status": "manual_review",
+      "notes": "Video walkthrough of the pilot plant facility in Poços de Caldas",
+      "manual_observations": {
+        "reviewed": false,
+        "review_instructions": "Watch video and populate timestamp_segments below with observed equipment, process areas, and labeling",
+        "timestamp_segments": [
+          {
+            "range": "00:00–02:00",
+            "description": "Facility exterior and signage — Innovation & Research Center, Poços de Caldas",
+            "confidence": "inferred_from_context"
+          },
+          {
+            "range": "02:00–05:00",
+            "description": "Feed preparation area — clay handling, scrubbing circuit visible",
+            "confidence": "inferred_from_context"
+          },
+          {
+            "range": "05:00–10:00",
+            "description": "Leach circuit — ammonium sulfate tanks, reactor vessels",
+            "confidence": "inferred_from_context"
+          },
+          {
+            "range": "10:00–15:00",
+            "description": "MREC precipitation and solid/liquid separation equipment",
+            "confidence": "inferred_from_context"
+          }
+        ]
+      }
+    },
+    "TVPOCOS-INAUGURACAO": {
+      "url": "https://tvpocos.com.br/pocos-sedia-inauguracao-do-1o-laboratorio-de-terras-raras-do-brasil/",
+      "type": "news_article",
+      "title": "TV Poços — Poços sedia inauguração do 1° laboratório de terras raras do Brasil",
+      "status": "accessible",
+      "key_claims": [
+        "First rare earths laboratory in Brazil",
+        "Mixed rare earth carbonate (MREC) as primary product",
+        "Downstream path: carbonate → oxides",
+        "R$ 2.2B industrial project context cited",
+        "Licensing progression: LP → LI → LO"
+      ]
+    },
+    "MEI-ASX-PAGE": {
+      "url": "https://meteoric.com.au/asx-announcements/",
+      "type": "asx_page",
+      "title": "Meteoric Resources ASX announcements index",
+      "status": "accessible",
+      "notes": "Index page for all MEI ASX announcements — may be JS-rendered"
+    }
+  },
+  "design_basis": [
+    {
+      "metric_id": "clay_throughput",
+      "label": "Feed throughput (ionic clay)",
+      "value": 25,
+      "unit": "kg/h",
+      "source_refs": ["WEBLINK-02969122", "WEBLINK-02969114"]
+    },
+    {
+      "metric_id": "mrec_nameplate",
+      "label": "MREC production (design capacity)",
+      "value": 1.8,
+      "unit": "kg/day",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "mrec_achieved",
+      "label": "MREC production (achieved)",
+      "value": 2.6,
+      "unit": "kg/day",
+      "source_refs": ["WEBLINK-03035491"],
+      "notes": "Range reported as ~2.0–2.6 kg/day across campaigns"
+    },
+    {
+      "metric_id": "mreo_purity",
+      "label": "Mixed Rare Earth Oxide purity",
+      "value": 32.7,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "impurity_level",
+      "label": "Impurity content in MREC",
+      "value": 2.3,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "water_recycle_rate",
+      "label": "Water recycling rate",
+      "value": 85,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "metric_id": "amsul_recovery",
+      "label": "Ammonium sulfate recovery rate",
+      "value": 90,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "metric_id": "nd_recovery_vs_ansto",
+      "label": "Neodymium recovery (vs ANSTO baseline)",
+      "value": 70,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "pr_recovery_vs_ansto",
+      "label": "Praseodymium recovery (vs ANSTO baseline)",
+      "value": 71,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "dy_recovery_vs_ansto",
+      "label": "Dysprosium recovery (vs ANSTO baseline)",
+      "value": 56,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    },
+    {
+      "metric_id": "tb_recovery_vs_ansto",
+      "label": "Terbium recovery (vs ANSTO baseline)",
+      "value": 61,
+      "unit": "%",
+      "source_refs": ["WEBLINK-02969122"]
+    }
+  ],
+  "process_stages": [
+    {
+      "id": "stage_feed_prep",
+      "order": 1,
+      "label": "Feed preparation (scrubbing)",
+      "process_area": "feed_prep",
+      "description": "Ionic clay ore is received, weighed, and scrubbed to remove organics and prepare slurry for leaching.",
+      "inputs": [
+        { "material": "ionic_clay_ore", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "clay_slurry", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114", "WEBLINK-02969122"]
+    },
+    {
+      "id": "stage_leach",
+      "order": 2,
+      "label": "Ammonium sulfate leach",
+      "process_area": "leach",
+      "description": "Clay slurry is leached with ammonium sulfate solution at controlled pH (4.0–5.0) to extract rare earth ions via ion exchange.",
+      "inputs": [
+        { "material": "clay_slurry", "source_refs": ["WEBLINK-02969114"] },
+        { "material": "ammonium_sulfate_solution", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "pregnant_liquor", "source_refs": ["WEBLINK-02969114"] },
+        { "material": "spent_clay", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114", "WEBLINK-02969122"]
+    },
+    {
+      "id": "stage_precipitation",
+      "order": 3,
+      "label": "MREC precipitation",
+      "process_area": "precipitation",
+      "description": "Pregnant liquor undergoes precipitation to produce mixed rare earth carbonate (MREC) solids.",
+      "inputs": [
+        { "material": "pregnant_liquor", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "mrec_solids", "source_refs": ["WEBLINK-02969114"] },
+        { "material": "barren_liquor", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "id": "stage_solid_liquid_sep",
+      "order": 4,
+      "label": "Solid/liquid separation (dewatering)",
+      "process_area": "solid_liquid_separation",
+      "description": "MREC solids are separated from liquor via filtration and dewatering for packaging.",
+      "inputs": [
+        { "material": "mrec_solids", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "mrec_product", "source_refs": ["WEBLINK-02969114"] },
+        { "material": "filtrate", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "id": "stage_reagent_recovery",
+      "order": 5,
+      "label": "Reagent recovery (AMSUL)",
+      "process_area": "reagent_recovery",
+      "description": "Spent ammonium sulfate solution is recovered and recycled back to the leach circuit (~90% recovery).",
+      "inputs": [
+        { "material": "barren_liquor", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "recycled_ammonium_sulfate", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "id": "stage_water_treatment",
+      "order": 6,
+      "label": "Water treatment and recycling",
+      "process_area": "utilities",
+      "description": "Process water is treated and recycled (~85% recirculation target) to minimize freshwater intake.",
+      "inputs": [
+        { "material": "process_water", "source_refs": ["WEBLINK-02969114"] },
+        { "material": "filtrate", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "recycled_water", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "id": "stage_material_handling",
+      "order": 7,
+      "label": "Material handling and spent clay disposal",
+      "process_area": "material_handling",
+      "description": "Spent clay from leaching is neutralized and managed according to environmental permit conditions.",
+      "inputs": [
+        { "material": "spent_clay", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "outputs": [
+        { "material": "neutralized_clay", "source_refs": ["WEBLINK-02969114"] }
+      ],
+      "equipment": [],
+      "source_refs": ["WEBLINK-02969114"]
+    }
+  ],
+  "equipment_inventory": [],
+  "product_spec": {
+    "primary_product": "MREC",
+    "full_name": "Mixed Rare Earth Carbonate",
+    "mreo_pct": 32.7,
+    "impurity_pct": 2.3,
+    "downstream_path": "carbonate → oxides → metals (future)",
+    "assay_labs": [],
+    "source_refs": ["WEBLINK-02969122", "TVPOCOS-INAUGURACAO"]
+  },
+  "regulatory_and_licensing": {
+    "narrative": "Licensing progression follows Brazilian LP → LI → LO pathway. Facility is described as first rare earths laboratory in Brazil. R$ 2.2B industrial project context cited in local media.",
+    "entries": [
+      {
+        "type": "environmental_license",
+        "stage": "LP → LI → LO",
+        "jurisdiction": "SEMAD/COPAM (Minas Gerais)",
+        "source_refs": ["TVPOCOS-INAUGURACAO"],
+        "confidence": "narrative_claim",
+        "notes": "Licensing stage claims from news article — not independently verified against SEMAD records"
+      }
+    ],
+    "source_refs": ["TVPOCOS-INAUGURACAO", "WEBLINK-02969114"]
+  },
+  "future_testwork": [
+    {
+      "id": "fjh",
+      "label": "Flash Joule Heating (FJH) separation",
+      "status": "planned",
+      "description": "Experimental technique for energy-efficient rare earth separation — currently simulated in telemetry model.",
+      "source_refs": ["WEBLINK-02969114"]
+    },
+    {
+      "id": "solvent_extraction",
+      "label": "Solvent extraction (SX) for individual REO",
+      "status": "planned",
+      "description": "Downstream separation of mixed MREC into individual rare earth oxides via solvent extraction.",
+      "source_refs": ["WEBLINK-02969114"]
+    }
+  ],
+  "telemetry_mapping": {
+    "stage_leach": {
+      "telemetry_fields": [
+        "leaching_circuit.ph_level",
+        "leaching_circuit.ammonium_sulfate_ml_min"
+      ],
+      "notes": "pH 4.0–5.0 target matches ammonium sulfate ion-exchange process"
+    },
+    "stage_output": {
+      "telemetry_fields": [
+        "output.treo_grade_pct",
+        "output.mrec_kg_hr",
+        "output.ndpr_ratio_pct"
+      ],
+      "notes": "XRF inline grade check — maps to stage_solid_liquid_sep and stage_precipitation outputs"
+    },
+    "stage_flow": {
+      "telemetry_fields": [
+        "flow_metrics.in_liters_sec",
+        "flow_metrics.out_liters_sec",
+        "flow_metrics.recirculation_pct"
+      ],
+      "notes": "Recirculation target >95% — maps to stage_water_treatment"
+    },
+    "stage_fjh": {
+      "telemetry_fields": [
+        "fjh_separation.power_draw_kw",
+        "fjh_separation.energy_savings_pct"
+      ],
+      "notes": "Future testwork — currently simulated. Maps to future_testwork.fjh"
+    }
+  }
+}

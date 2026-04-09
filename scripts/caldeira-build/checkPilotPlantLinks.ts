@@ -1,0 +1,178 @@
+import { writeFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const OUT = resolve(__dirname, '../../data/caldeira/pilot-plant-sources.linkcheck.json')
+
+interface LinkManifestEntry {
+  id: string
+  url: string
+  type: 'asx_pdf' | 'cetem_pdf' | 'simexmin_pdf' | 'youtube' | 'news_article' | 'asx_page'
+  title: string
+  date?: string
+  notes?: string
+}
+
+const MANIFEST: LinkManifestEntry[] = [
+  {
+    id: 'WEBLINK-03037515',
+    url: 'https://wcsecure.weblink.com.au/pdf/MEI/03037515.pdf',
+    type: 'asx_pdf',
+    title: 'MEI ASX announcement 03037515',
+    date: '2026-02-11',
+  },
+  {
+    id: 'WEBLINK-03035491',
+    url: 'https://wcsecure.weblink.com.au/pdf/MEI/03035491.pdf',
+    type: 'asx_pdf',
+    title: 'MEI ASX announcement 03035491',
+    date: '2026-01-28',
+  },
+  {
+    id: 'WEBLINK-02969122',
+    url: 'https://wcsecure.weblink.com.au/pdf/MEI/02969122.pdf',
+    type: 'asx_pdf',
+    title: 'MEI ASX announcement 02969122',
+    date: '2025-07-28',
+  },
+  {
+    id: 'WEBLINK-02969114',
+    url: 'https://wcsecure.weblink.com.au/pdf/MEI/02969114.pdf',
+    type: 'asx_pdf',
+    title: 'MEI ASX announcement 02969114',
+    date: '2025-07-28',
+  },
+  {
+    id: 'CETEM-CALDEIRA',
+    url: 'https://www.gov.br/cetem/pt-br/assuntos/VI-Seminario-Brasileiro-de-Terras-Raras/MeteoricProjetoCaldeira_CTEM.pdf',
+    type: 'cetem_pdf',
+    title: 'Meteoric Projeto Caldeira — CETEM VI Seminário Brasileiro de Terras Raras',
+    notes: 'gov.br WAF may block automated HEAD/GET — manual download may be required',
+  },
+  {
+    id: 'SIMEXMIN-PRESENTATION',
+    url: 'https://www.simexmin.com.br/2024/trabalhos/50.pdf',
+    type: 'simexmin_pdf',
+    title: 'Simexmin 2024 — Meteoric pilot plant presentation',
+    date: '2024',
+  },
+  {
+    id: 'YOUTUBE-VZLDquUhCZA',
+    url: 'https://www.youtube.com/watch?v=VZLDquUhCZA',
+    type: 'youtube',
+    title: 'Meteoric Resources pilot plant footage',
+    notes: 'No automated text extraction — manual watch notes required',
+  },
+  {
+    id: 'TVPOCOS-INAUGURACAO',
+    url: 'https://tvpocos.com.br/pocos-sedia-inauguracao-do-1o-laboratorio-de-terras-raras-do-brasil/',
+    type: 'news_article',
+    title: 'TV Poços — Poços sedia inauguração do 1° laboratório de terras raras do Brasil',
+  },
+  {
+    id: 'MEI-ASX-PAGE',
+    url: 'https://meteoric.com.au/asx-announcements/',
+    type: 'asx_page',
+    title: 'Meteoric Resources ASX announcements index page',
+    notes: 'May be JS-rendered — check for direct PDF links from AFR as fallback',
+  },
+]
+
+interface LinkCheckResult {
+  id: string
+  url: string
+  type: string
+  title: string
+  date?: string
+  notes?: string
+  checked_at: string
+  http_status: number | null
+  final_url: string | null
+  content_type: string | null
+  content_length: number | null
+  error?: string
+}
+
+const BROWSER_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+
+async function checkLink(entry: LinkManifestEntry): Promise<LinkCheckResult> {
+  const result: LinkCheckResult = {
+    id: entry.id,
+    url: entry.url,
+    type: entry.type,
+    title: entry.title,
+    date: entry.date,
+    notes: entry.notes,
+    checked_at: new Date().toISOString(),
+    http_status: null,
+    final_url: null,
+    content_type: null,
+    content_length: null,
+  }
+
+  if (entry.type === 'youtube') {
+    result.final_url = entry.url
+    result.notes = 'YouTube — skipped HTTP check; manual review required'
+    return result
+  }
+
+  const methods = ['HEAD', 'GET'] as const
+  for (const method of methods) {
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 15_000)
+      const res = await fetch(entry.url, {
+        method,
+        redirect: 'follow',
+        signal: controller.signal,
+        headers: { 'User-Agent': BROWSER_UA, Accept: '*/*' },
+      })
+      clearTimeout(timeout)
+      result.http_status = res.status
+      result.final_url = res.url
+      result.content_type = res.headers.get('content-type')
+      const cl = res.headers.get('content-length')
+      result.content_length = cl ? Number(cl) : null
+      if (method === 'GET') {
+        await res.body?.cancel()
+      }
+      break
+    } catch (err) {
+      if (method === 'HEAD') continue
+      result.error = err instanceof Error ? err.message : String(err)
+    }
+  }
+
+  return result
+}
+
+async function main() {
+  console.log(`Checking ${MANIFEST.length} pilot-plant source URLs…`)
+  const results: LinkCheckResult[] = []
+  for (const entry of MANIFEST) {
+    process.stdout.write(`  ${entry.id} … `)
+    const r = await checkLink(entry)
+    console.log(r.http_status ?? r.error ?? 'skipped')
+    results.push(r)
+  }
+  const output = {
+    _comment: 'Auto-generated by scripts/caldeira-build/checkPilotPlantLinks.ts — do not edit by hand',
+    checked_at: new Date().toISOString(),
+    results,
+  }
+  writeFileSync(OUT, `${JSON.stringify(output, null, 2)}\n`, 'utf8')
+  console.log(`\nWrote ${results.length} results → ${OUT}`)
+  const failures = results.filter((r) => r.http_status && r.http_status >= 400)
+  if (failures.length) {
+    console.warn(`⚠  ${failures.length} URL(s) returned HTTP 4xx/5xx:`)
+    for (const f of failures) console.warn(`   ${f.id}: ${f.http_status} ${f.url}`)
+  }
+}
+
+main().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})

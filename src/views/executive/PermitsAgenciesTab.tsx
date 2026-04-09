@@ -39,7 +39,7 @@ export function PermitsAgenciesTab() {
     const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `aether-regulatory-bundle-${new Date().toISOString().slice(0, 10)}.json`
+    a.download = `vero-regulatory-bundle-${new Date().toISOString().slice(0, 10)}.json`
     a.click()
     URL.revokeObjectURL(a.href)
   }, [service])
@@ -49,7 +49,7 @@ export function PermitsAgenciesTab() {
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `aether-regulatory-log-${new Date().toISOString().slice(0, 10)}.csv`
+    a.download = `vero-regulatory-log-${new Date().toISOString().slice(0, 10)}.csv`
     a.click()
     URL.revokeObjectURL(a.href)
   }, [regulatory])

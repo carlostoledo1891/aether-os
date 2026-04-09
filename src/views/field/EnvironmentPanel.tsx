@@ -20,6 +20,7 @@ import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
 import { COMMUNITY_STRINGS, type CommunityLang } from '../../data/communityTranslations'
 import type { FieldEnvMapLayers } from './fieldMapLayers'
+import css from './EnvironmentPanel.module.css'
 
 export const EnvironmentPanel = memo(function EnvironmentPanel({
   envMapLayers,
@@ -92,7 +93,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       key="env-panel"
       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.2 }}
-      style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+      className={css.root}
     >
       <div className="flex flex-wrap items-center gap-1.5">
         <ProvenanceBadge kind={prov.sections.hydro_spring_geometry.kind} title={prov.sections.hydro_spring_geometry.hint} />
@@ -135,7 +136,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       </GlassCard>
 
       {/* Time range selector */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
+      <div className={css.timeRangeRow}>
         <TimeRangeSelector value={range} onChange={setRange} accentColor={W.cyan} />
       </div>
 
@@ -148,21 +149,21 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       />
 
       {/* Predictive Cumulative Modeling (6.0 Mtpa → 2030-2050) */}
-      <GlassCard animate={false} glow="cyan" style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+      <GlassCard animate={false} glow="cyan" className={css.cardBody}>
+        <div className={css.sectionHead} style={{ marginBottom: 4 }}>
           <GlowingIcon icon={Layers} color="cyan" size={11}/>
           <SectionLabel>Predictive Cumulative Modeling</SectionLabel>
         </div>
-        <div style={{ fontSize: 10, color: W.cyan, fontFamily: 'var(--font-mono)', marginBottom: 8 }}>
+        <div className={css.mono10} style={{ color: W.cyan, marginBottom: 8 }}>
           6.0 Mtpa commercial scale-up · 2030–2050 drought forecast · {SPRING_COUNT} local springs
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7, marginBottom: 8 }}>
+        <div className={css.grid3} style={{ gap: 7, marginBottom: 8 }}>
           {PREDICTIVE_HYDROLOGY_SCENARIOS.map((scenario) => {
             const statusColor = scenario.status === 'stable' ? W.green : scenario.status === 'watch' ? W.amber : W.red
             return (
-              <div key={scenario.horizon} style={{ padding: '7px 8px', borderRadius: W.radius.sm, background: `${statusColor}0F`, border: `1px solid ${statusColor}25` }}>
-                <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Modeled · {scenario.horizon}</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: statusColor, fontFamily: 'var(--font-mono)' }}>
+              <div key={scenario.horizon} className={css.scenarioCell} style={{ borderRadius: W.radius.sm, background: `${statusColor}0F`, border: `1px solid ${statusColor}25` }}>
+                <div className={css.labelUpper} style={{ color: W.text4, letterSpacing: '0.04em' }}>Modeled · {scenario.horizon}</div>
+                <div className={css.monoValueLg} style={{ color: statusColor }}>
                   {scenario.spring_preservation_pct}%
                 </div>
                 <div style={{ fontSize: 10, color: W.text4 }}>spring preservation</div>
@@ -173,24 +174,24 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
             )
           })}
         </div>
-        <div style={{ marginBottom: 6, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-          <div style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
-            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Data Ingestion</div>
+        <div className={css.grid2} style={{ marginBottom: 6, gap: 6 }}>
+          <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
+            <div className={css.labelUpper} style={{ color: W.text4 }}>Data Ingestion</div>
             <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Target: piezometers + Open-Meteo/INMET class precip (demo: optional API + mock)</div>
           </div>
-          <div style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
-            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Output</div>
+          <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
+            <div className={css.labelUpper} style={{ color: W.text4 }}>Output</div>
             <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Simulated hydrological digital twin (commercial-case model)</div>
           </div>
         </div>
-        <p style={{ margin: '0 0 6px', fontSize: 11, color: W.text3, lineHeight: 1.45 }}>
+        <p className={css.bodyText} style={{ color: W.text3, marginBottom: 6 }}>
           Modeled case: <span style={{ color: W.text1, fontWeight: 700 }}>{currentScenario.horizon}</span> with
           {' '}<span style={{ color: W.text2 }}>{currentScenario.active_springs} active springs</span>,
           {' '}<span style={{ color: W.text2 }}>{currentScenario.recirculation_pct.toFixed(1)}% recirculation</span>, and
           {' '}<span style={{ color: W.text2 }}>{currentScenario.sulfate_guardband_ppm} ppm guardband</span>.
           Dry-stacking + 95% recirculation mathematically proves zero suppression of {SPRING_COUNT} local springs.
         </p>
-        <div style={{ height: 5, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden' }}>
+        <div className={css.barTrack} style={{ height: 5, background: W.glass05, borderRadius: W.radius.xs }}>
           <div style={{
             width: `${currentScenario.spring_preservation_pct}%`,
             height: '100%',
@@ -202,9 +203,9 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       </GlassCard>
 
       {/* LI hearing readiness */}
-      <GlassCard animate={false} glow={currentScenarioStatus === 'action' ? 'red' : 'amber'} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <GlassCard animate={false} glow={currentScenarioStatus === 'action' ? 'red' : 'amber'} className={css.cardBody}>
+        <div className={css.sectionHeadBetween} style={{ marginBottom: 7 }}>
+          <div className={css.sectionHead}>
             <GlowingIcon icon={AlertTriangle} color="amber" size={11}/>
             <SectionLabel>LI Hearing Readiness</SectionLabel>
           </div>
@@ -214,19 +215,19 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
             size="sm"
           />
         </div>
-        <p style={{ fontSize: 11, color: W.text3, margin: '0 0 6px', lineHeight: 1.45 }}>
+        <p className={css.bodyText} style={{ color: W.text3, marginBottom: 6 }}>
           {currentScenario.recommendation}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
-          <div style={{ padding: '6px 7px', borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
-            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Digital coverage</div>
-            <div style={{ fontSize: 12, color: W.text1, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+        <div className={css.grid2} style={{ gap: 7 }}>
+          <div className={css.statCell} style={{ borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
+            <div className={css.labelUpper} style={{ color: W.text4 }}>Digital coverage</div>
+            <div className={css.monoValue} style={{ color: W.text1 }}>
               {SCALE_UP_PATHWAY.current_digital_coverage_pct}%
             </div>
           </div>
-          <div style={{ padding: '6px 7px', borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
-            <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase' }}>Springs monitored</div>
-            <div style={{ fontSize: 12, color: W.text1, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+          <div className={css.statCell} style={{ borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
+            <div className={css.labelUpper} style={{ color: W.text4 }}>Springs monitored</div>
+            <div className={css.monoValue} style={{ color: W.text1 }}>
               {SCALE_UP_PATHWAY.springs_monitored}
             </div>
           </div>
@@ -234,32 +235,31 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       </GlassCard>
 
       {/* Aquifer depths */}
-      <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+      <GlassCard animate={false} className={css.cardBody}>
+        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color="cyan" size={11}/>
           <SectionLabel>Aquifer Depths</SectionLabel>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+        <div className={css.flexCol} style={{ gap: 5 }}>
           {env.aquifer.sensors.map(s => {
             const c = s.status === 'Normal' ? W.cyan : s.status === 'Warning' ? W.amber : W.red
             const delta = s.depth_meters - s.baseline_meters
             const pct = Math.min(100, (s.depth_meters / 35) * 100)
             return (
-              <div key={s.sensor_id} style={{
-                display: 'flex', alignItems: 'center', gap: 7, padding: '5px 7px',
+              <div key={s.sensor_id} className={css.sensorRow} style={{
                 background: W.glass02, borderRadius: W.radius.sm, border: `1px solid ${c}18`,
               }}>
-                <span style={{ fontSize: 10, color: c, fontFamily: 'var(--font-mono)', fontWeight: 700, minWidth: 52, flexShrink: 0 }}>
+                <span className={css.sensorId} style={{ color: c }}>
                   {s.sensor_id}
                 </span>
-                <div style={{ flex: 1, height: 3.5, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden' }}>
+                <div className={css.sensorBar} style={{ background: W.glass05, borderRadius: W.radius.xs }}>
                   <motion.div animate={{ width: `${pct}%` }} transition={{ duration: 0.5 }}
                     style={{ height: '100%', background: c, borderRadius: W.radius.xs, boxShadow: `0 0 4px ${c}60` }}/>
                 </div>
-                <span style={{ fontSize: 11, color: c, fontFamily: 'var(--font-mono)', minWidth: 40, textAlign: 'right', flexShrink: 0 }}>
+                <span className={css.sensorDepth} style={{ color: c }}>
                   {s.depth_meters.toFixed(1)} m
                 </span>
-                <span style={{ fontSize: 10, color: delta > 0.5 ? W.amber : W.text4, fontFamily: 'var(--font-mono)', minWidth: 30, textAlign: 'right', flexShrink: 0 }}>
+                <span className={css.sensorDelta} style={{ color: delta > 0.5 ? W.amber : W.text4 }}>
                   {delta >= 0 ? '+' : ''}{delta.toFixed(1)}
                 </span>
               </div>
@@ -269,14 +269,14 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       </GlassCard>
 
       {/* Water quality */}
-      <GlassCard animate={false} glow={(!sulfateOk || !nitrateOk) ? 'amber' : 'none'} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+      <GlassCard animate={false} glow={(!sulfateOk || !nitrateOk) ? 'amber' : 'none'} className={css.cardBody}>
+        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color={(!sulfateOk || !nitrateOk) ? 'amber' : 'green'} size={11}/>
             <SectionLabel>Water Quality</SectionLabel>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        <div className={css.grid2} style={{ gap: 8 }}>
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 3 }}>
+            <div className={css.sectionHeadBetween} style={{ marginBottom: 3 }}>
               <span style={{ fontSize: 10, color: W.text3 }}>Sulfate</span>
               {!sulfateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
             </div>
@@ -292,10 +292,10 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
               secondaryColor={W.cyan}
               secondaryUnit=" mm"
             />
-            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 250 ppm · dashed: demo precip (mm)</p>
+            <p className={css.mono10} style={{ color: W.text4, margin: '2px 0 0' }}>limit: 250 ppm · dashed: demo precip (mm)</p>
           </div>
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 3 }}>
+            <div className={css.sectionHeadBetween} style={{ marginBottom: 3 }}>
               <span style={{ fontSize: 10, color: W.text3 }}>Nitrate</span>
               {!nitrateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
             </div>
@@ -311,15 +311,15 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
               secondaryColor={W.cyan}
               secondaryUnit=" mm"
             />
-            <p style={{ fontSize: 10, color: W.text4, margin: '2px 0 0', fontFamily: 'var(--font-mono)' }}>limit: 50 ppm · dashed: demo precip (mm)</p>
+            <p className={css.mono10} style={{ color: W.text4, margin: '2px 0 0' }}>limit: 50 ppm · dashed: demo precip (mm)</p>
           </div>
         </div>
       </GlassCard>
 
       {/* Radiation */}
-      <GlassCard animate={false} glow={radOk ? 'none' : 'red'} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <GlassCard animate={false} glow={radOk ? 'none' : 'red'} className={css.cardBody}>
+        <div className={css.sectionHeadBetween} style={{ marginBottom: 7 }}>
+          <div className={css.sectionHead}>
             <GlowingIcon icon={RadioTower} color={radOk ? 'text2' : 'red'} size={11}/>
             <SectionLabel>UDC Radiation</SectionLabel>
           </div>
@@ -327,51 +327,51 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
         </div>
         <MetricDisplay value={env.legacy_infrastructure.radiation_usv_h} unit="μSv/h" decimals={3} size="md" color={radOk ? 'green' : 'red'}/>
         <SparkLine data={radData} color={radOk ? W.green : W.red} thresholdHigh={0.18} height={28} unit=" μSv/h" rangeLabel={range}/>
-        <p style={{ fontSize: 10, color: W.text4, margin: '3px 0 0', fontFamily: 'var(--font-mono)' }}>normal background ~0.14 μSv/h</p>
+        <p className={css.mono10} style={{ color: W.text4, margin: '3px 0 0' }}>normal background ~0.14 μSv/h</p>
       </GlassCard>
 
       {/* Springs */}
-      <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+      <GlassCard animate={false} className={css.cardBody}>
+        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
           <GlowingIcon icon={Droplets} color="cyan" size={11}/>
           <SectionLabel>Water Springs</SectionLabel>
           <span style={{ fontSize: 10, color: W.text4 }}>{SPRING_COUNT} monitored</span>
         </div>
-        <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
+        <div className={css.springCounters} style={{ marginBottom: 8 }}>
           {[
             { count: counts.active,     label: 'Active',     color: W.green },
             { count: counts.reduced,    label: 'Reduced',    color: W.amber },
             { count: counts.suppressed, label: 'Suppressed', color: W.red   },
           ].map(({ count, label, color }) => (
-            <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-              <span style={{ fontSize: 18, fontWeight: 700, color, fontFamily: 'var(--font-mono)' }}>{count}</span>
-              <span style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</span>
+            <div key={label} className={css.springCounter}>
+              <span className={css.monoCounterLg} style={{ color }}>{count}</span>
+              <span className={css.labelUpper} style={{ color: W.text4, letterSpacing: '0.04em' }}>{label}</span>
             </div>
           ))}
         </div>
-        <div style={{ height: 6, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden', display: 'flex' }}>
+        <div className={css.barTrack} style={{ height: 6, background: W.glass05, borderRadius: W.radius.xs, display: 'flex' }}>
           {SPRING_COUNT > 0 && <>
             <div style={{ width: `${(counts.active / SPRING_COUNT) * 100}%`, background: W.green, opacity: 0.75 }} />
             <div style={{ width: `${(counts.reduced / SPRING_COUNT) * 100}%`, background: W.amber, opacity: 0.85 }} />
             <div style={{ width: `${(counts.suppressed / SPRING_COUNT) * 100}%`, background: W.red, opacity: 0.9 }} />
           </>}
         </div>
-        <div style={{ fontSize: 9, color: W.text4, fontFamily: 'var(--font-mono)', marginTop: 4 }}>
+        <div className={css.preservationRate} style={{ color: W.text4 }}>
           {((counts.active / SPRING_COUNT) * 100).toFixed(1)}% preservation rate · FBDS/IDE-SISEMA verified
         </div>
       </GlassCard>
 
       {/* License timeline */}
-      <GlassCard animate={false} style={{ padding: '11px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+      <GlassCard animate={false} className={css.cardBody}>
+        <div className={css.sectionHead} style={{ marginBottom: 10 }}>
           <GlowingIcon icon={FileCheck} color="green" size={11}/>
           <SectionLabel>License Timeline</SectionLabel>
         </div>
         <LicenseTimeline />
         <div style={{ marginTop: 9, padding: '5px 8px', background: `${W.amber}0F`, border: `1px solid ${W.amber}2E`, borderRadius: W.radius.sm }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 5 }}>
+          <div className={css.flexStart} style={{ gap: 5 }}>
             <AlertTriangle size={9} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }}/>
-            <p style={{ fontSize: 11, color: W.text3, margin: 0, lineHeight: 1.45 }}>
+            <p className={css.bodyText} style={{ color: W.text3 }}>
               MPF cumulative EIA demand remains the core LI bottleneck. Telemetry on this tab is illustrative until instrumented feeds are wired — use Executive → Agencies for the administrative record map and exports.
             </p>
           </div>
@@ -387,23 +387,22 @@ function CommunityNoticeCard({ lang, onToggleLang }: { lang: CommunityLang; onTo
   const t = COMMUNITY_STRINGS[lang]
 
   return (
-    <GlassCard animate={false} glow="amber" style={{ padding: '10px 13px', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+    <GlassCard animate={false} glow="amber" className={css.cardBodySm}>
+      <div className={css.flexStart} style={{ gap: 6 }}>
         <AlertTriangle size={12} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }} />
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <div className={css.flex1}>
+          <div className={css.sectionHeadBetween} style={{ marginBottom: 4 }}>
+            <div className={css.labelUpperBold} style={{ color: W.amber, letterSpacing: '0.06em' }}>
               {t.title}
             </div>
             <button
               type="button"
               onClick={onToggleLang}
               aria-label={`Switch language to ${t.toggle_label}`}
+              className={css.langToggle}
               style={{
-                display: 'flex', alignItems: 'center', gap: 3, padding: '2px 7px',
-                fontSize: 9, fontWeight: 700, color: W.violet, background: `${W.violet}14`,
-                border: `1px solid ${W.violet}30`, borderRadius: W.radius.xs, cursor: 'pointer',
-                letterSpacing: '0.04em', textTransform: 'uppercase',
+                color: W.violet, background: `${W.violet}14`,
+                border: `1px solid ${W.violet}30`, borderRadius: W.radius.xs,
               }}
             >
               <Globe size={9} />
@@ -417,30 +416,30 @@ function CommunityNoticeCard({ lang, onToggleLang }: { lang: CommunityLang; onTo
           </p>
 
           {/* Grievance path */}
-          <div style={{ padding: '8px 10px', background: `${W.amber}08`, border: `1px solid ${W.amber}1A`, borderRadius: W.radius.sm, marginBottom: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
+          <div className={css.grievanceBox} style={{ background: `${W.amber}08`, border: `1px solid ${W.amber}1A`, borderRadius: W.radius.sm, marginBottom: 8 }}>
+            <div className={css.sectionHead} style={{ gap: 5, marginBottom: 5 }}>
               <Phone size={10} style={{ color: W.amber, flexShrink: 0 }} />
-              <span style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span className={css.labelUpperBold} style={{ color: W.amber }}>
                 {t.grievance_title}
               </span>
             </div>
             <p style={{ margin: '0 0 5px', fontSize: 10, color: W.text3, lineHeight: 1.45 }}>
               {t.grievance_intro}
             </p>
-            <ol style={{ margin: 0, paddingLeft: 16, fontSize: 10, color: W.text3, lineHeight: 1.55 }}>
+            <ol className={css.grievanceList} style={{ color: W.text3 }}>
               {t.grievance_steps.map((step, i) => (
-                <li key={i} style={{ marginBottom: 3 }}>{step}</li>
+                <li key={i} className={css.grievanceStep}>{step}</li>
               ))}
             </ol>
           </div>
 
           {/* Contact directory */}
-          <div style={{ fontSize: 10, fontWeight: 700, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>
+          <div className={css.labelUpperBold} style={{ color: W.text3, marginBottom: 5 }}>
             {t.contacts_title}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className={css.flexCol} style={{ gap: 4 }}>
             {t.contacts.map(c => (
-              <div key={c.label} style={{ padding: '5px 7px', background: W.glass03, borderRadius: W.radius.sm, border: W.hairlineBorder }}>
+              <div key={c.label} className={css.infoCell} style={{ background: W.glass03, borderRadius: W.radius.sm, border: W.hairlineBorder }}>
                 <div style={{ fontSize: 10, color: W.text2, fontWeight: 600 }}>{c.label}</div>
                 <div style={{ fontSize: 11, color: W.cyan, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{c.value}</div>
                 {c.note && <div style={{ fontSize: 9, color: W.text4, marginTop: 1 }}>{c.note}</div>}

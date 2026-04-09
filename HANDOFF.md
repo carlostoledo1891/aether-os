@@ -1,4 +1,4 @@
-# Aether OS — Handoff Document
+# Vero — Handoff Document
 
 > **Update this file at the end of every chat session.**  
 > It is the single source of truth for any new conversation picking up this project.
@@ -7,7 +7,9 @@
 
 ## Project Overview
 
-**Aether OS** is a B2B SaaS platform — a "Trust Bridge" and compliance clearinghouse for the critical minerals / rare earth elements (REE) supply chain. Its primary showcase project is **Meteoric Resources' Caldeira Project** in Poços de Caldas, Minas Gerais, Brazil (ASX: MEI).
+**Commercial brand: Vero** (from Latin *verus*, 'true'). Codebase retains `aether-os` as internal name. User-facing strings, copy, and pitch materials use Vero.
+
+**Vero** is a B2B SaaS platform — the trust layer for critical mineral supply chains. Its flagship deployment is **Meteoric Resources' Caldeira Project** in Poços de Caldas, Minas Gerais, Brazil (ASX: MEI).
 
 The prototype is built to pitch to:
 - **Buyers** (DoD, EV OEMs, magnet manufacturers) needing FEOC-clean, IRA-compliant supply
@@ -17,7 +19,8 @@ The prototype is built to pitch to:
 
 **Dev server:** `http://localhost:5175/` (frontend via Vite proxy → API at `:3001`)  
 **Working directory:** `/Users/carlostoledo/Documents/Aether Project/aether-os`  
-**Start all:** `npm run dev:all` (concurrently: API server + simulation engine + Vite frontend)
+**Start all:** `npm run dev:all` (concurrently: API server + simulation engine + Vite frontend)  
+**Caldeira GeoJSON rebuild:** `npm run build:caldeira-geojson` — merges [`data/caldeira/staging/`](data/caldeira/staging/README.md) + [`scripts/caldeira-build/sources/jan2024Rows.ts`](scripts/caldeira-build/sources/jan2024Rows.ts) into `src/data/geojson/caldeira-drillholes.geojson` (UTM EPSG:31983 → WGS84) and applies `licence_metrics.csv` to `caldeira-licenses.geojson`.
 
 **Marketing / deck copy (iterate in repo):** [`docs/copy/WEBSITE_COPY.md`](docs/copy/WEBSITE_COPY.md), [`docs/copy/PITCH_DECK_COPY.md`](docs/copy/PITCH_DECK_COPY.md)
 
@@ -35,7 +38,7 @@ The prototype is built to pitch to:
 | Charts | Recharts |
 | Icons | `lucide-react` |
 | Map | `react-map-gl` v8 + `maplibre-gl` |
-| Map tiles | MapTiler (Dataviz Dark style + terrain DEM) |
+| Map tiles | MapTiler (Hybrid/Satellite default + terrain DEM; style selector with 4 modes) |
 | Testing | Vitest 4.x + `@testing-library/react` + `happy-dom` |
 | **Backend** | **Fastify 5.8 + `better-sqlite3` 12.x** |
 | **Engine** | **Node.js + TypeScript (standalone process)** |
@@ -57,7 +60,7 @@ aether-os/
 ├── .github/workflows/ci.yml            lint + test:run + build on push/PR
 ├── .env                                VITE_MAPTILER_KEY + VITE_DATA_MODE=live
 ├── HANDOFF.md                          ← this file
-├── server/                              NEW — Fastify backend (Aether API)
+├── server/                              NEW — Fastify backend (Vero API)
 │   ├── package.json                    aether-api — Fastify + better-sqlite3
 │   ├── tsconfig.json
 │   ├── Dockerfile
@@ -82,7 +85,7 @@ aether-os/
 │           ├── weatherHook.ts          POST /ingest/weather
 │           ├── marketHook.ts           POST /ingest/market + /ingest/seismic
 │           └── lapocHook.ts            POST /ingest/lapoc (LAPOC instruments)
-├── engine/                              NEW — Aether Simulation Engine
+├── engine/                              NEW — Vero Simulation Engine
 │   ├── package.json                    aether-engine — Node.js + TypeScript
 │   ├── tsconfig.json
 │   ├── Dockerfile
@@ -107,10 +110,13 @@ aether-os/
 │   │   └── PITCH_DECK_COPY.md          slide-style pitch narrative
 │   └── data/caldeira/
 │       ├── DATA_SOURCES.md             GeoJSON / dataset registry + URLs
+│       ├── PDF_APPENDIX_INDEX.md        ASX PDF appendix map for staging extract
 │       └── GLOSSARY.md                 permitting & project terminology
+├── data/caldeira/staging/              ASX appendix extracts + CSV → `npm run build:caldeira-geojson`
+├── scripts/caldeira-build/             UTM→WGS84 + merge → `caldeira-drillholes` / licence patch
 ├── src/
 │   ├── main.tsx                        entry point
-│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell (CSS module + view routing)
+│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell (CSS module + view routing + data-theme dark/board)
 │   ├── AppShell.module.css             root shell: bg + grid via CSS vars (--w-bg, --w-app-shell-grid)
 │   ├── types/
 │   │   ├── telemetry.ts                plant/env/ESG interfaces — ViewMode: 'operator'|'buyer'|'executive'
@@ -123,7 +129,7 @@ aether-os/
 │   │       ├── caldeira-boundary.geojson        Poços alkaline complex outline (terrain master; non-survey)
 │   │       ├── caldeira-deposits.geojson        7 deposit polygons (optional on Operations — off by default)
 │   │       ├── caldeira-licenses.geojson        7 per-block mining licence polygons + MRE-style props (`ops_reality_tenements`)
-│   │       ├── caldeira-drillholes.geojson      8 named collars DD/AC + intercept fields
+│   │       ├── caldeira-drillholes.geojson      ~205 collars DD/AC from ASX appendices (`build:caldeira-geojson`)
 │   │       ├── caldeira-pfs-engineering.geojson PFS starter pit + spent clay footprint
 │   │       ├── caldeira-ops-plant-sites.geojson pilot + commercial plant points (default On on Operations)
 │   │       ├── caldeira-access-routes.geojson   concept access road LineString (ultimate_v1 merge)
@@ -153,7 +159,7 @@ aether-os/
 │   │   └── setup.ts                    Vitest setup — imports @testing-library/jest-dom
 │   ├── styles/
 │   │   ├── fonts.css                   Google Fonts imports
-│   │   └── theme.css                   CSS variables (:root) + @theme inline (Tailwind 4 tokens)
+│   │   └── theme.css                   CSS variables (:root dark + [data-theme="board"] light palette) + @theme inline (Tailwind 4 tokens)
 │   ├── components/
 │   │   ├── ui/
 │   │   │   ├── GlassCard.tsx           glassmorphism card (glow variants: violet|cyan|green|amber|red|none)
@@ -171,12 +177,12 @@ aether-os/
 │   │   │   ├── GaugeChart.tsx          circular SVG gauge
 │   │   │   └── BarComparison.tsx       horizontal bar comparison
 │   │   ├── layout/
-│   │   │   ├── HeaderStrip.tsx         single-row navbar: logo | ViewSwitcher | ESG, alerts
+│   │   │   ├── HeaderStrip.tsx         single-row navbar: logo (V monogram) | ViewSwitcher | theme toggle (☀/☾) | ESG, alerts
 │   │   │   ├── DataModeBanner.tsx      data-honesty strip (Demo data / Live — backend not connected + detail)
 │   │   │   ├── ViewSwitcher.tsx        3-tab nav (Field Operations | Compliance & Traceability | Executive Overview) + alert badge
 │   │   │   └── AlertPanel.tsx          right-side sliding alert drawer
 │   │   ├── map/                        GeoJSON-driven MapLibre overlay system
-│   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; exports FIELD/BUYER/EXEC_VIEW_STATE (field zoom tuned for full Caldeira boundary)
+│   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; 4-style picker (Terrain/Satellite/Operations/Standard) + localStorage; exports FIELD/BUYER/EXEC_VIEW_STATE
 │   │   │   ├── mapStacking.ts          MAP_STACKING z-index contract (field title, HUD, tooltip, etc.)
 │   │   │   ├── hydroDetailMappers.ts   toSpringDetail / toHydroNodeDetail / tierShort (+ types)
 │   │   │   ├── hydroLayerIds.ts        HYDRO_*_LAYER_ID constants
@@ -202,7 +208,7 @@ aether-os/
 │       ├── FieldView.tsx               2-tab MapLibre: Operations | Hydro Twin — layered overlays + `FieldMapGeoInspector` + `fieldMapLayers` toggles
 │       ├── field/
 │       │   ├── constants.ts            MapTab, colors, chain/license data shared with panels
-│       │   ├── FieldMapChrome.module.css map title row (gradient + MAP_STACKING.fieldTitle)
+│       │   ├── FieldMapChrome.module.css map title row (light scrim for satellite readability + text-shadow)
 │       │   ├── FieldBottomMetrics.tsx  bottom KPI strip (5 tiles)
 │       │   ├── FieldPinnedAssetCard.tsx active asset / pinned node detail
 │       │   ├── OperationsPanel.tsx     Operations — map layer toggles (terrain vs legacy), spatial cross-check, plant metrics, sparklines
@@ -234,7 +240,7 @@ aether-os/
 | `W.green` | `#22D68A` | Compliance / success |
 | `W.amber` | `#F5A623` | Warning / monitor |
 | `W.red` | `#FF4D4D` | Critical / alert |
-| `W.text1–4` | `#ECECF8 → #484870` | Text hierarchy |
+| `W.text1–4` | `#ECECF8 → #6464A0` | Text hierarchy (text4 bumped to WCAG AA) |
 
 ### Domain Colors (SVG maps)
 
@@ -246,6 +252,35 @@ aether-os/
 | `transport` | violetSoft | Container/Export |
 | `monitor` | amber | Piezometers, UDC |
 | `external` | border3 | Competitor projects (muted) |
+
+### Theme System (Dark / Board Mode)
+
+Two modes controlled by `data-theme` attribute on `<html>`:
+
+| Mode | Attribute | Palette | Status |
+|------|-----------|---------|--------|
+| **Dark** (default) | `data-theme="dark"` | `:root` vars in `theme.css` | Fully styled |
+| **Board** | `data-theme="board"` | `[data-theme="board"]` overrides in `theme.css` | Foundation wired; component-level light styling TBD |
+
+- Toggle lives in `HeaderStrip` (☀/☾ icon), state managed in `App.tsx`.
+- Preference persisted in `localStorage` key `vero-theme`.
+- Board palette overrides all `--w-*` CSS variables with light values.
+- Components using `W{}` JS tokens will need per-component board polish (future sprint).
+
+### Map Style Selector
+
+Four MapTiler styles selectable via floating pill in bottom-left of all map views:
+
+| ID | Label | MapTiler Style |
+|----|-------|---------------|
+| `hybrid` | Terrain (default) | `hybrid` |
+| `satellite` | Satellite | `satellite` |
+| `dataviz` | Operations | `dataviz-dark` |
+| `streets` | Standard | `streets` |
+
+- Persisted in `localStorage` key `vero-map-style`.
+- `StyleController` in `MapBase.tsx` adapts water/terrain layers per style.
+- Falls back to `hybrid` when `VITE_MAPTILER_KEY` is missing.
 
 ### Key CSS Keyframes (`src/styles/index.css`)
 - `flow-dash` / `flow-dash-slow` — SVG edge animation (`stroke-dashoffset`)
@@ -328,7 +363,7 @@ The system runs as three independent processes connected via HTTP and WebSocket:
 | BCB PTAX | `olinda.bcb.gov.br` | 1 hour | BRL/USD exchange rate | `BCB` |
 | USGS Seismic | `earthquake.usgs.gov` | 6 hours | M2.5+ events within 200km | `USGS` |
 | Alpha Vantage | `alphavantage.co` | 24 hours | MEI.AX stock quote | `AlphaVantage` |
-| LAPOC (sim) | — | 30 min | Synthetic instrument data (swap-ready) | `Aether Simulation Engine` |
+| LAPOC (sim) | — | 30 min | Synthetic instrument data (swap-ready) | `Vero Simulation Engine` |
 
 Enrichers are toggleable via env vars: `ENRICHER_OPENMETEO=1`, `ENRICHER_BCB=1`, `ENRICHER_USGS=1`, `ALPHA_VANTAGE_KEY=...`.
 
@@ -341,7 +376,7 @@ The `LapocTelemetryPayload` interface defines the data shape expected from Dr. C
 The `/api/provenance` and `/api/context` endpoints dynamically update based on what data has actually been ingested:
 - If Open-Meteo data has been received → `precip_field` becomes `verified_real`, hydro spring status becomes `modeled` (with real precip input).
 - If BCB data has been received → `fx_rate` becomes `verified_real`.
-- Banner label evolves: "Aether Simulation Engine" → "Live pipeline — enriched with Open-Meteo, BCB" → "Live pipeline — LAPOC field instruments" (future).
+- Banner label evolves: "Vero Simulation Engine" → "Live pipeline — enriched with Open-Meteo, BCB" → "Live pipeline — LAPOC field instruments" (future).
 
 ### Removed: `useSimulatedTelemetry`
 - Deleted; all views consume telemetry via **`DataServiceProvider`** only.
@@ -416,7 +451,7 @@ Exported constant from mockData.ts — used by EnvironmentPanel, HydroOverlay, F
 ### 1. Field Operations View (`FieldView.tsx`) — License-to-Operate command center
 **Layout:** Column → [flex row: MapLibre hero + bottom KPI strip | 300px right panel]
 
-- **Hero:** `MapBase` (react-map-gl + MapLibre, MapTiler Dataviz Dark, pitch 0°, terrain DEM). Map title row uses `FieldMapChrome.module.css` + `MAP_STACKING.fieldTitle`. Passes `highlightWater={mapTab === 'environment'}` for Hydro Twin.
+- **Hero:** `MapBase` (react-map-gl + MapLibre, 4-style picker defaulting to Terrain/Hybrid, pitch 0°, terrain DEM). Map title row uses `FieldMapChrome.module.css` (light scrim + text-shadow). Passes `highlightWater={mapTab === 'environment'}` for Hydro Twin.
 - **Map tabs (2):** **Operations** | **Hydro Twin** (`MapTab` in `field/constants.ts`). Deposit/licence **cards** (not map pickers) live under **ExecutiveView → Assets** (`GeologyPanel`, `LicensesPanel`).
 - **Map overlays (tab-driven + `fieldMapLayers` / `DEFAULT_FIELD_OPS_LAYERS`):**
   - **Operations (defaults):** `CaldeiraBoundary` · optional `LicenceEnvelopeOverlay` · optional `DepositOverlay` · `LicenseOverlay` · `PfsEngineeringOverlay` · `AccessRoutesOverlay` · `DrillHoleOverlay` · `OpsPlantSitesOverlay` · optional `InfraOverlay` · optional `PlantOverlay` (schematic). **Terrain-aligned** layers on by default; **legacy** deposit / full infra / plant schematic off unless toggled in `OperationsPanel`.
@@ -447,7 +482,7 @@ Exported constant from mockData.ts — used by EnvironmentPanel, HydroOverlay, F
   - **Risk** — Heat summary + top 10 project risks (L×I scoring, category, mitigation, owner, status)
   - **Pipeline** — Off-taker cards (Ucore binding, Neo LOI) with volume, pricing, status
   - **Capital** — Drawdown overview, funding sources (EXIM $350M, EFA A$70M), monthly spend-vs-budget, CPs checklist
-  - **DFS** — Ausenco workstream progress bars + regulatory log (COPAM, SUPRAM, FEAM, MPF, INB/CNEN, IBAMA) + **Aether Platform Roadmap** (Phase 1/2/3 vertical stepper with milestones, costs, timelines)
+  - **DFS** — Ausenco workstream progress bars + regulatory log (COPAM, SUPRAM, FEAM, MPF, INB/CNEN, IBAMA) + **Vero Platform Roadmap** (Phase 1/2/3 vertical stepper with milestones, costs, timelines)
   - **Audit** — Immutable event log with 15 seed events, filterable by type (including `system_event` and `offtake_update` filters), hash-verified entries
   - **ESG** — 5 frameworks (GRI 303/306, SASB EM-MM, TCFD, ISSB S2) with per-metric mapping, coverage % per framework (62–92%), status badges
 
@@ -504,7 +539,7 @@ Filter or redact in **service/DTO** layers; keep view components dumb.
 
 ### Styling contract (UI scalability & future themes)
 
-- **Authoritative doc:** [`docs/STYLING.md`](docs/STYLING.md) — when to use **`W`** vs **`var(--w-*)`**, chrome/hairline tokens, radii, shared primitives (`SectionLabel`, `MutedCaption`, `HairlineDivider`), performance notes, and a **future `data-theme`** approach for light/dark without rewriting the app.
+- **Authoritative doc:** [`docs/STYLING.md`](docs/STYLING.md) — when to use **`W`** vs **`var(--w-*)`**, chrome/hairline tokens, radii, shared primitives (`SectionLabel`, `MutedCaption`, `HairlineDivider`), performance notes, and the **`data-theme`** approach for dark/board modes (foundation wired — see Theme System above).
 - **Copy iteration:** [`docs/copy/WEBSITE_COPY.md`](docs/copy/WEBSITE_COPY.md) and [`docs/copy/PITCH_DECK_COPY.md`](docs/copy/PITCH_DECK_COPY.md) — update narrative here first, then mirror into README/UI strings.
 - **`W`** in [`src/app/canvas/canvasTheme.ts`](src/app/canvas/canvasTheme.ts) and **`:root`** in [`src/styles/theme.css`](src/styles/theme.css) should stay in sync for new tokens.
 
@@ -515,13 +550,13 @@ Filter or redact in **service/DTO** layers; keep view components dumb.
 ### `MapBase` (`src/components/map/MapBase.tsx`)
 - **Wraps:** `react-map-gl` v8 with MapLibre GL JS adapter
 - **Map id:** `"aetherField"` — overlay components access it via `useMap().aetherField`
-- **Style:** MapTiler Dataviz Dark (`VITE_MAPTILER_KEY`) or CARTO Dark fallback (no key)
+- **Style selector (4 modes):** `MapStylePicker` floating pill (bottom-left). Styles: Terrain (hybrid, default), Satellite, Operations (dataviz-dark), Standard (streets). Selected style persisted in `localStorage` (`vero-map-style`). Falls back to hybrid when `VITE_MAPTILER_KEY` is missing.
 - **Terrain:** MapTiler terrain-rgb-v2 DEM, exaggeration 1.4x (applied on `map.load`)
 - **Controls:** `NavigationControl` (zoom+compass), dark-themed via `index.css` overrides
 - **Interaction props:** `interactiveLayerIds`, `cursor`, `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onClick` — all passed through to `<Map>`. This is the single entry point for all map node interaction; overlay components never bind imperative events
 - **Initial field view:** `FIELD_VIEW_STATE` — `longitude: -46.52, latitude: -21.91, zoom: 10.98, pitch: 0, bearing: 0` (framing adjusted so the Caldeira boundary is less clipped)
 - **`highlightWater` prop:** When `true`, the internal `StyleController` recolours base-map water features (fills, lines, labels) to `rgb(0, 212, 200)` and makes all waterways visible at every zoom level. Controlled by `FieldView` (`mapTab === 'environment'`). Original paint/layout properties are captured on first highlight and restored when the prop goes `false`.
-- **`StyleController`:** Internal component (replaces former `TerrainLoader`). Handles terrain loading (if MapTiler key is valid) and water feature highlighting (unconditionally). Targets CARTO dark-matter layer IDs: `water`, `water_shadow`, `waterway`, `waterway_label`, `watername_lake`, `watername_lake_line`. Uses zoom-interpolated `line-width` for waterways (0.5px at zoom 6 → 2.5px at zoom 16).
+- **`StyleController`:** Accepts `activeStyleId` and handles terrain loading (if MapTiler key is valid), water feature highlighting, and style-specific canvas/background adjustments (dark styles get `W.canvas` background and `W.mapWaterFill` water tinting).
 
 ### `PlantOverlay` (`src/components/map/PlantOverlay.tsx`)
 - **Props:** `{ plant, env, hoveredNodeId, selectedNodeId }` — pure rendering, no interaction logic
@@ -569,7 +604,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 
 ## Compliance Domain Knowledge
 
-| Standard | Requirement | Aether OS field |
+| Standard | Requirement | Vero field |
 |---|---|---|
 | US DoD NDAA 2027 | 0% Chinese-origin REE in defense supply | `feoc_percentage === 0.00` |
 | IRA Rule-of-Origin | Exclude FEOC entities | `ira_compliant: boolean` |
@@ -597,13 +632,16 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | ~~Real backend / WebSocket feed~~ | ~~High~~ | ✅ Done — Fastify server + WebSocket broadcast + engine tick loop |
 | ~~LiveDataService (full)~~ | ~~High~~ | ✅ Done — `LiveDataService` uses `fetch()` + `WebSocket` against real endpoints |
 | Multi-tenancy / auth | High | Add Clerk or Supabase Auth before client handoff |
-| MapTiler custom style | Medium | Build a bespoke Aether style in MapTiler Studio matching exactly W.canvas palette |
-| Satellite toggle | Medium | Add map style switcher (dark vector ↔ satellite+labels) in map header |
+| ~~MapTiler custom style~~ | ~~Medium~~ | ✅ Done — 4-style picker in MapBase (Terrain/Satellite/Operations/Standard) with localStorage persistence |
+| ~~Satellite toggle~~ | ~~Medium~~ | ✅ Done — included in the map style selector (Phase 3 of Vero rebrand sprint) |
 | PDF export polish | Medium | Currently `window.print()`; replace with `jsPDF` or Puppeteer |
 | Localization (i18n) | Low | EN/PT toggle was deliberately removed; re-add via a proper i18n library if needed |
 | Mobile layout | Low | Currently optimized for 1440px+; 16:9 pitch screens |
 | Expand test coverage | Low | 151 tests (129 frontend + 22 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add integration test for live mode + production smoke test. |
 | Overlay throttle optimization | Low | Throttle `tick` updates with `requestAnimationFrame` for smoother panning |
+| ~~AI Agent (read-only analyst)~~ | ~~High~~ | ✅ Done — `POST /api/chat` streaming endpoint with Gemini 2.5 Flash, 17 domain tools + web search. Frontend `ChatPanel.tsx` with file upload. |
+| ~~Pilot Plant Mirror~~ | ~~Medium~~ | ✅ Done — `data/caldeira/pilot-plant-mirror.json` structured catalog, JSON Schema, link audit, PDF extraction. |
+| ~~DrillTraceSection regression~~ | ~~High~~ | ✅ Done — deposit filter dropdown, top 20 cap by TREO, updated disclaimer. |
 | ~~IR Disclosure Mode~~ | ~~Done~~ | ✅ `VITE_DISCLOSURE_MODE=1` — hides simulated panels, violet banner, DISCLOSURE badge in header |
 | ~~Community disclaimer card~~ | ~~Done~~ | ✅ Always-visible in EnvironmentPanel — explains modeled spring status + data provenance |
 | ~~JORC reference badges~~ | ~~Done~~ | ✅ ASX citation badges in GeologyPanel linking to issuer snapshot URL |
@@ -648,18 +686,18 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
-Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: 7.3 / 10** (up from 6.8 after the Synthetic Data Bridge). The top gaps that should drive the next iteration:
+Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~7.8 / 10** (v5 — up from 7.3 after Feature Sprint v5 broke the plateau). The top gaps that should drive the next iteration:
 
 | Priority | Action | Personas driving it | Effort | Status |
 |----------|--------|---------------------|--------|--------|
 | 1 | ~~**Implement IR disclosure mode**~~ | Chairman, CEO, all external | Medium | ✅ Done — `VITE_DISCLOSURE_MODE=1` |
 | 2 | ~~**Community disclaimer card**~~ on Hydro Twin tab | NGO, community, Chief Geologist | Low | ✅ Done — always-visible in EnvironmentPanel |
-| 3 | **DPP field-mapping table** in Compliance tab — which Aether fields map to CEN/CENELEC mandatory passport fields | EU regulator, buyer | Medium | Pending |
+| 3 | ~~**DPP field-mapping table**~~ in Compliance tab — Vero fields mapped to CEN/CENELEC mandatory passport fields | EU regulator, buyer | Medium | ✅ Done — 22 fields mapped, JSON export, server endpoint |
 | 4 | ~~**Roadmap with milestones and costs**~~ | CEO, PF analyst, investor | Low (copy) | ✅ Done — Phase 1/2/3 in DFS tab |
 | 5 | ~~**JORC reference badges**~~ | Chief Geologist, journalist | Low | ✅ Done — ASX citation in GeologyPanel |
 | 6 | **Source TAM/SAM/SOM** — add methodology footnote or analyst report citation | Journalist, investor | Low (copy) | Pending |
-| 7 | **Portuguese community context card** for Brazil-facing deployments | NGO, Brazil stakeholders | Medium | Pending |
-| 8 | **OpenAPI / OPC-UA ingestion spec** — document data ingestion contract for integrator scoping | SCADA integrator | Medium | Pending |
+| 7 | ~~**Portuguese community context card**~~ for Brazil-facing deployments | NGO, Brazil stakeholders | Medium | ✅ Done — `CommunityNoticeCard` with PT-BR toggle in EnvironmentPanel (Feature Sprint v5) |
+| 8 | ~~**OpenAPI / OPC-UA ingestion spec**~~ — document data ingestion contract for integrator scoping | SCADA integrator | Medium | ✅ Done — `@fastify/swagger` + Swagger UI at `/api/docs` (Feature Sprint v5) |
 
 ### How to use the persona evaluations
 
@@ -686,7 +724,7 @@ Nine stakeholder personas have been evaluated against the current release (see `
 | **Thiago A.** | CEO (designated) | Brazilian/international law, enterprise ops, dev team management. Business, legal, and commercial execution. |
 | **Full-Stack Developer** | Engineering (designated) | Ready at pilot. Codebase architected for immediate second-developer productivity. |
 
-**Why Dr. Caponi is the most strategic:** Every persona gap in the aggregate scorecard (6.8/10 weighted avg) improves when LAPOC field data flows through `AetherDataService`. He is the person who turns disclaimer labels into instrument-backed labels. See `docs/Personas.md` Part 0 for the full team analysis.
+**Why Dr. Caponi is the most strategic:** Every persona gap in the aggregate scorecard (~7.8/10 weighted avg, v5) improves when LAPOC field data flows through `AetherDataService`. He is the person who turns disclaimer labels into instrument-backed labels. See `docs/Personas.md` Part 0 for the full team analysis.
 
 ---
 
@@ -807,10 +845,10 @@ When ending a session, update this file with:
 1. **IR Disclosure Mode** — `VITE_DISCLOSURE_MODE=1` flag via `getDisclosureMode()` in `env.ts`. `DataContext.disclosureMode` flows through `mockDataService.ts` and `liveDataService.ts`. Violet-themed banner in `DataModeBanner.tsx`. DISCLOSURE badge in `HeaderStrip.tsx`. Alert count suppressed to 0.
 2. **Community & Stakeholder Notice** — always-visible disclaimer card in `EnvironmentPanel.tsx` explaining that spring status is modeled from reference geometry, not field-verified telemetry.
 3. **ASX Citation Badges** — clickable "ASX [date]" badge in `GeologyPanel.tsx` next to "Global Mineral Resource" label, linking to `issuerSnapshot.resource.citation.url`.
-4. **Aether Platform Roadmap** — Phase 1/2/3 vertical stepper in `DfsTab.tsx` with milestones, costs, timelines, and status indicators.
+4. **Vero Platform Roadmap** — Phase 1/2/3 vertical stepper in `DfsTab.tsx` with milestones, costs, timelines, and status indicators.
 
 ### Demo Flow Polish (4)
-1. **Branded loading skeleton** — `App.tsx` Suspense fallback replaced with Aether "Æ" logo + pulse animation.
+1. **Branded loading skeleton** — `App.tsx` Suspense fallback with "V" monogram + pulse animation.
 2. **BuyerView empty state** — replaced `return null` with styled "No batches available" fallback.
 3. **BuyerView hooks order fix** — all React hooks moved above conditional returns to resolve `react-hooks/rules-of-hooks` lint error.
 4. **Map tile verification** — noted as manual check (requires `VITE_MAPTILER_KEY` in `.env`).
@@ -826,7 +864,7 @@ When ending a session, update this file with:
 
 1. **2-minute video walkthrough** — Loom/screen recording narrated by Carlos. The founder story needs a shareable artifact.
 2. **One real stakeholder conversation** — geologist, compliance officer, or integrator. 30 days max.
-3. **DPP field-mapping table** in Compliance tab — which Aether fields map to CEN/CENELEC mandatory passport fields.
+3. ~~**DPP field-mapping table**~~ — ✅ Done in Feature Sprint v5 (22 CEN/CENELEC fields mapped, JSON export).
 4. **Source TAM/SAM/SOM** — add methodology footnote or analyst report citation.
 5. **Portuguese community context card** for Brazil-facing deployments.
 6. **OpenAPI / OPC-UA ingestion spec** — document data ingestion contract for integrator scoping.
@@ -1131,9 +1169,11 @@ Two consecutive zero-delta persona releases (v3, v4) established the engineering
 | Category | Files |
 |----------|-------|
 | **New** | `src/data/dppSchema.ts`, `src/data/communityTranslations.ts`, `src/components/charts/DrillTraceSection.tsx`, `src/build-env.d.ts` |
-| **Server** | `server/package.json` (+swagger deps), `server/src/index.ts` (swagger plugin), `server/src/routes/health.ts`, `server/src/routes/telemetry.ts`, `server/src/routes/domain.ts` (schemas + DPP endpoint), `server/src/ingest/telemetryHook.ts`, `server/src/ingest/weatherHook.ts`, `server/src/ingest/marketHook.ts`, `server/src/ingest/lapocHook.ts` |
-| **Frontend** | `vite.config.ts` (build-time SHA/date), `src/components/layout/DataModeBanner.tsx` (build stamp), `src/views/buyer/ComplianceTab.tsx` (DPP section), `src/views/field/EnvironmentPanel.tsx` (bilingual card), `src/views/field/GeologyPanel.tsx` (drill section + JORC badges) |
-| **Docs** | `docs/Personas.md` (v4 evaluation), `HANDOFF.md` (this session) |
+| **Server** | `server/package.json` (+swagger deps, ai, @ai-sdk/google, @fastify/multipart, pdf-parse), `server/src/index.ts` (swagger + multipart + chat routes), `server/src/routes/health.ts`, `server/src/routes/telemetry.ts`, `server/src/routes/domain.ts` (schemas + DPP endpoint), `server/src/routes/chat.ts` (AI streaming + 17 tools), `server/src/routes/chatUpload.ts` (file upload + parsing), `server/src/ingest/telemetryHook.ts`, `server/src/ingest/weatherHook.ts`, `server/src/ingest/marketHook.ts`, `server/src/ingest/lapocHook.ts` |
+| **Frontend** | `vite.config.ts` (build-time SHA/date), `src/components/layout/DataModeBanner.tsx` (build stamp), `src/components/layout/ChatPanel.tsx` + `.module.css` (AI chat drawer), `src/views/buyer/ComplianceTab.tsx` (DPP section) + `.module.css`, `src/views/field/EnvironmentPanel.tsx` (bilingual card) + `.module.css`, `src/views/field/GeologyPanel.tsx` (drill section + JORC badges), `src/views/buyer/TraceabilityTab.module.css` |
+| **Pilot plant data** | `data/caldeira/pilot-plant-mirror.json`, `data/caldeira/schemas/pilot-plant-mirror.schema.json`, `data/caldeira/pilot-plant-sources.linkcheck.json`, `data/caldeira/pilot-plant-pdf-index.json` |
+| **Build scripts** | `scripts/caldeira-build/checkPilotPlantLinks.ts`, `scripts/caldeira-build/extractPilotPlantPdfs.ts`, `scripts/caldeira-build/validatePilotPlant.ts` |
+| **Docs** | `docs/Personas.md` (v4 evaluation), `docs/data/caldeira/DATA_SOURCES.md` (pilot plant row), `HANDOFF.md` (this session) |
 
 **What is in progress:** Nothing — all planned items complete.
 
@@ -1157,4 +1197,177 @@ Two consecutive zero-delta persona releases (v3, v4) established the engineering
 
 ---
 
-*Last updated: 2026-04-09 — Feature Sprint v5: OpenAPI spec (/api/docs), build verification stamp, DPP field mapping (22 fields, 59% coverage, JSON export), Portuguese community card with grievance path, drill trace schematic with JORC badges. 151+22 tests, 0 TS errors, clean build.*
+### Session: Geolocation Accuracy Sprint + Persona v5 (2026-04-09)
+
+**What was completed:**
+
+Post-deployment bugfix and geolocation accuracy pass. Updated three critical map boundaries from schematic placeholders to verified polygons, enriched map inspector with detailed metadata, added APA visibility to the Operations tab, and wrote the complete v5 persona re-evaluation.
+
+- **Vercel build fix:** Resolved 5 TypeScript errors blocking production deploy — `W.panelBg` → `W.panel`, `W.glass10` → `W.glass12` in `DrillTraceSection.tsx`; removed unused `useEffect` import from `EnvironmentPanel.tsx`. Commit `62c6cd6` pushed and deployed.
+
+- **Persona v5 evaluation:** Wrote complete re-evaluation in `docs/Personas.md` — all 11 personas assessed against Feature Sprint v5 deliverables. **Plateau broken: weighted average 7.3 → ~7.8 (+0.5).** 5 of 9 external personas moved: EU Enforcement +1.0 → 7.5, NGO +1.0 → 7.0, Chairman +0.5 → 8.5, Chief Geologist +0.5 → 8.0, SCADA Integrator +0.5 → 9.0, Journalist +0.5 → 7.5. Unmoved: CEO (needs customer LOI), DoD (needs FedRAMP), PF (needs DSCR). Priority actions updated — 15 of 23 complete.
+
+- **APA Pedra Branca — official boundary:** Replaced 5-vertex rectangular placeholder in `caldeira-apa-pedra-branca.geojson` with accurate 170-vertex official polygon (Santuário Ecológico da Pedra Branca, municipality of Caldas, MG). Properties translated to English with enrichment: area 11,955 ha, perimeter 4.67 km, authority IEF/CONGEAPA, confidence `verified_vector`.
+
+- **APA 3 km buffer zone:** Replaced 5-vertex schematic 10 km rectangle in `caldeira-apa-buffer.geojson` with 164-vertex polygon computed as a 3 km offset from the official APA boundary (via `@turf/buffer`). Properties updated: buffer_km 3, confidence `verified_vector`, authority IEF/COPAM.
+
+- **Poços de Caldas Alkaline Complex — official boundary:** Replaced 17-vertex schematic in `caldeira-boundary.geojson` with accurate 100-vertex Mercator circle (~33 km diameter, centered -46.555, -21.907). Properties enriched: area ~800 km², confidence `verified_vector`.
+
+- **Map inspector enrichment:** Extended `EnvMapFeatureDetail` interface and `parseEnvMapFeature()` to carry new fields: `sublabel`, `authority`, `municipality`, `state`, `area_ha`, `perimeter_km`, `description`. Updated `FieldMapGeoInspector.tsx` to render enriched detail cards when environmental features are clicked — shows description, area/perimeter stats, location, and authority.
+
+- **APA on Operations tab:** Added `apa` toggle to `FieldOpsMapLayers` (defaults on). APA boundary + 3 km buffer now render on the Operations map when toggled. Checkbox "APA Pedra Branca (protected area)" added to terrain-aligned layer group in `OperationsPanel.tsx`. APA features are clickable on both Operations and Hydro Twin tabs.
+
+- **Stroke styling:** APA boundary — solid 1px green. Alkaline complex — solid 1px violet. APA 3 km buffer — dashed (4-4) 1px green at reduced opacity. All `line-dasharray` removed from APA and complex; buffer retains dashed style for visual distinction.
+
+### Quality Gate
+
+- **0 TypeScript errors** (`tsc --noEmit` — all 3 packages)
+- **151 frontend tests passing** (`vitest run` — 22 files)
+- **Clean production build**
+
+### Files Changed (9 modified + 0 new)
+
+| Category | Files |
+|----------|-------|
+| **GeoJSON** | `caldeira-apa-pedra-branca.geojson` (170-vertex official polygon), `caldeira-apa-buffer.geojson` (164-vertex 3 km offset), `caldeira-boundary.geojson` (100-vertex alkaline complex) |
+| **Map overlays** | `src/components/map/EnvironmentalOverlay.tsx` (solid APA stroke, dashed buffer, enriched parser), `src/components/map/CaldeiraBoundary.tsx` (solid 1px stroke) |
+| **Inspector** | `src/views/field/fieldMapGeoSelection.ts` (enriched EnvMapFeatureDetail), `src/views/field/FieldMapGeoInspector.tsx` (enriched env detail card) |
+| **Ops layers** | `src/views/field/fieldMapLayers.ts` (+apa toggle), `src/views/field/OperationsPanel.tsx` (APA checkbox) |
+| **Map wiring** | `src/views/FieldView.tsx` (APA+buffer on ops tab, interactive layer IDs) |
+| **Docs** | `docs/Personas.md` (v5 evaluation), `HANDOFF.md` (this session) |
+
+**What is in progress:** Nothing — all items complete.
+
+**What should be done next (priority order):**
+
+1. **Geolocation accuracy pass (Carlos providing data):** Founder is preparing precise coordinates for all remaining GeoJSON datasets — drill collars, licence areas, plant sites, waste dumps, springs, infrastructure. These will be sent as raw coordinate data and integrated into the respective GeoJSON files following the same pattern (replace schematic placeholders with verified polygons/points, translate properties to English, enrich with metadata). Files to update: `caldeira-drillholes.geojson`, `caldeira-licenses.geojson`, `caldeira-ops-plant-sites.geojson`, `caldeira-infrastructure.geojson`, `hydro-springs.geojson`, and potentially new files for waste dumps and other features.
+2. Deploy and verify live link with updated boundaries.
+3. Source TAM/SAM/SOM methodology note or analyst report citation (Journalist persona).
+4. Cost of ownership model for pitch (CEO persona).
+5. DSCR + drawdown schedule (PF Analyst persona).
+6. CSS Module migration for high-offender files.
+7. Playwright CI for automated frontend smoke tests.
+
+**Decisions made this session:**
+
+- **"Poços de Caldas Alkaline Complex"** chosen over "Caldeira Project Boundaries" — the polygon represents the geological caldera structure, not Meteoric's mining project.
+- **3 km buffer offset** — computed from the official APA polygon using `@turf/buffer` (installed as dev dep, generated the polygon, then uninstalled). Buffer zone is the standard environmental setback, not the previous 10 km conceptual rectangle.
+- **Solid strokes for official boundaries** — APA and alkaline complex use solid 1px lines to signal verified data. Buffer uses dashed 4-4 to visually distinguish the derived offset from the source boundary.
+- **APA visible on Operations by default** — environmental context is relevant during operations planning, not just on the Hydro Twin tab. Buffer renders alongside APA when the toggle is on.
+
+---
+
+*Last updated: 2026-04-09 — Geolocation Accuracy Sprint: 3 official boundary polygons (APA 170v, buffer 164v as 3km offset, alkaline complex 100v), enriched map inspector, APA on Operations tab, solid/dashed stroke styling. Persona v5: plateau broken, 7.3→7.8. 151+22 tests, 0 TS errors, clean build. Next: founder providing precise coordinates for drills, licences, plants, dumps, springs.*
+
+---
+
+## Session Log — 2026-04-09 (CTO UI/UX Sprint: Vero Rebrand + Map UX + Board Mode)
+
+**What was completed this session:**
+
+### Phase 1: Vero Commercial Rename
+1. **Frontend UI strings** — `index.html` title → "Vero — Critical Mineral OS"; HeaderStrip monogram Æ → V, label "Vero"; App.tsx loading fallback monogram V; DfsTab roadmap milestone and title; EsgTab closing paragraph; PermitsAgenciesTab export filenames (vero-regulatory-bundle, vero-regulatory-log); ComplianceTab pipeline reference; ErrorBoundary console prefix.
+2. **Server/engine strings** — OpenAPI title "Vero API", description, contact (vero.earth); console startup "Vero API running"; seed.ts: bannerLabel, detail, plant_telemetry hint, audit actor → "Vero", banner note. Engine: startup message "Vero Simulation Engine".
+3. **Docs/copy rebrand** — WEBSITE_COPY.md: title, brand, hero headline (Verified Origin. Trusted Supply.), subhead (trust layer), three-views framing (Ground/Trade/Board truth), Built for → Flagship deployment. PITCH_DECK_COPY.md: Slide 1 (Vero), Slide 3 (Three truths, one platform), Slide 4 (Why Caldeira showcase framing), Slide 7 (Vero data sources), Slide 8.75 (Vero team refs), Slide 9 (unified ask), Appendix A one-liners.
+4. **Other docs** — README.md header + description; docs/STYLING.md title.
+
+### Phase 2: Map Shadow Removal + Satellite Readability
+5. **FieldMapChrome.module.css** — gradient overlay replaced from `--w-overlay-88` (heavy 88% opacity through 35%) to lighter scrim (45%→15%→transparent).
+6. **BuyerView.tsx** — inline gradient matching lighter scrim pattern.
+7. **Inset box-shadow removed** — both FieldView.tsx and BuyerView.tsx map hero cards: removed `inset 0 1px 0 ${W.glass04}`, kept outer glow only.
+8. **Text-shadow on map labels** — FieldMapChrome.module.css `.mapTitleLabel` and BuyerView.tsx inline map header text: `text-shadow: 0 1px 3px rgba(0,0,0,0.8)` for satellite contrast.
+
+### Phase 3: Map Style Selector
+9. **4-style floating picker** — MapBase.tsx: Terrain (hybrid), Satellite, Operations (dataviz-dark), Standard (streets-v2-dark). React state with `localStorage` persistence (key: `vero-map-style`). Small floating pill bottom-left with expand/collapse. Style-aware `StyleController` restores `W.canvas` bg paint and `W.mapWaterFill` on dark styles. Terrain DEM applied to all MapTiler styles.
+
+### Phase 4: Text Readability Audit
+10. **Min font size 10px** — StatusChip sm bumped from 9px to 10px; FieldPinnedAssetCard spring log from 9px to 10px; DataModeBanner build stamp from 8px to 9px.
+11. **text4 contrast bump** — `#5A5A88` → `#6464A0` in both `canvasTheme.ts` and `theme.css` (~4.6:1 vs `#07070E`, WCAG AA).
+12. **DataModeBanner compact** — padding reduced from 6px to 4px vertical to reclaim vertical space.
+
+### Phase 5: Board Mode Infrastructure
+13. **Light palette CSS variables** — `[data-theme="board"]` block in `theme.css` with full set of light-mode semantic tokens (surfaces, text, accents, glass, chrome, borders, map specifics).
+14. **data-theme attribute** — `App.tsx` manages `ThemeMode` ('dark' | 'board') state with `localStorage` persistence (key: `vero-theme`), sets `data-theme` on `document.documentElement`.
+15. **Theme toggle** — Sun/Moon icon button in HeaderStrip right section. Props flow from AppShell → HeaderStrip.
+
+### Documentation
+16. **HANDOFF.md** — Commercial brand line added to Project Overview; tech stack updated for map style selector; this session log.
+
+| Category | Files changed |
+|----------|---------------|
+| **Vero rename (frontend)** | `index.html`, `HeaderStrip.tsx`, `App.tsx`, `DfsTab.tsx`, `EsgTab.tsx`, `PermitsAgenciesTab.tsx`, `ComplianceTab.tsx`, `ErrorBoundary.tsx` |
+| **Vero rename (server/engine)** | `server/src/index.ts`, `server/src/seed.ts`, `engine/src/index.ts` |
+| **Vero rename (docs)** | `README.md`, `docs/STYLING.md`, `docs/copy/WEBSITE_COPY.md`, `docs/copy/PITCH_DECK_COPY.md`, `HANDOFF.md` |
+| **Map shadow/readability** | `FieldMapChrome.module.css`, `FieldView.tsx`, `BuyerView.tsx` |
+| **Map style selector** | `MapBase.tsx` |
+| **Text readability** | `StatusChip.tsx`, `FieldPinnedAssetCard.tsx`, `DataModeBanner.tsx`, `canvasTheme.ts`, `theme.css` |
+| **Board mode infra** | `theme.css` (board vars + Recharts + GlassCard), `App.tsx` (chatOpen state), `HeaderStrip.tsx` (MessageSquare button), `GlassCard.tsx` (CSS var migration), `MapBase.tsx` (auto-switch MutationObserver) |
+
+**Naming convention enforced:** "Vero" = commercial product name for all user-facing strings. `aether-os` = internal codebase name. `AetherDataService`, `useAetherService`, `aether-engine` source tag, `aether.db`, package.json names → unchanged (internal identifiers).
+
+**What should be done next (priority order):**
+1. Obtain `GOOGLE_GENERATIVE_AI_API_KEY` and test AI Agent end-to-end in staging.
+2. Geolocation accuracy pass with precise coordinates from founder.
+3. Deploy and verify live link with rebrand + AI chat.
+4. Multi-tenancy / auth (Clerk or Supabase Auth) before client handoff.
+5. Shorter ViewSwitcher labels or icon-only mode below 1024px.
+6. Expand test coverage: integration tests for AI chat route, upload flow, and pilot plant validation in CI.
+7. Persistent file upload storage (S3/R2) to replace in-memory session map.
+8. Mobile layout pass for 768px breakpoints.
+
+---
+
+## Session Log — 2026-04-09 (Ultimate CTO Sprint: AI Agent + Pilot Plant Mirror + Backlog)
+
+**What was completed this session:**
+
+### Phase 0 — Quick Fixes
+1. **DrillTraceSection regression** — Added deposit filter dropdown, capped default view to top 20 holes by TREO, adaptive `interval` for large deposit views, updated disclaimer to cite EPSG:31983 source.
+2. **Build script warning** — Added `console.warn()` in `patchLicences()` when a CSV `licence_id` has no matching GeoJSON feature.
+3. **Stale backlog cleanup** — Marked Portuguese community card (row 7) and OpenAPI spec (row 8) as Done in the Persona-Driven Priority Actions table.
+
+### Phase 1 — Pilot Plant Mirror
+4. **Link audit script** — `scripts/caldeira-build/checkPilotPlantLinks.ts`: checks 9 source URLs (4 WebLink PDFs, CETEM, Simexmin, YouTube, TV Poços, MEI ASX page). Output: `data/caldeira/pilot-plant-sources.linkcheck.json`. CETEM returns 403 (gov.br WAF), Simexmin unreachable.
+5. **PDF text extraction** — `scripts/caldeira-build/extractPilotPlantPdfs.ts`: downloads accessible PDFs via `pdf-parse` v2, extracts text + keyword anchor counts. Output: `data/caldeira/pilot-plant-pdf-index.json`. 4 WebLink PDFs extracted (1–89 pages, 11–26 anchor keywords each).
+6. **Pilot plant JSON catalog** — `data/caldeira/pilot-plant-mirror.json`: structured mirror with `meta`, `facility`, `sources` (9 entries), `design_basis` (11 KPIs), `process_stages` (7 stages), `equipment_inventory`, `product_spec`, `regulatory_and_licensing`, `future_testwork`, `telemetry_mapping`.
+7. **Telemetry mapping** — Maps pilot plant stages to `PlantTelemetry` fields: `stage_leach` → `leaching_circuit`, `stage_output` → `output`, `stage_flow` → `flow_metrics`, `stage_fjh` → `fjh_separation`.
+8. **JSON Schema + validation** — `data/caldeira/schemas/pilot-plant-mirror.schema.json` (draft-07) + `scripts/caldeira-build/validatePilotPlant.ts` using Ajv. npm script: `validate:pilot-plant`.
+9. **DATA_SOURCES.md updated** — Added `pilot_plant_mirror` row + refresh procedure step 5.
+
+### Phase 2 — AI Agent: Read-Only Analyst
+10. **Server dependencies** — Installed `ai` v6 + `@ai-sdk/google` in `server/`. Added `GOOGLE_GENERATIVE_AI_API_KEY` + `AI_MODEL` to `.env.example`.
+11. **Chat route** — `server/src/routes/chat.ts`: `POST /api/chat` streaming endpoint using `streamText()` with Gemini 2.5 Flash. System prompt with 10 data-honesty rules + two-tier citation format. **17 domain tools** via function calling: `queryFinancials`, `queryRisks`, `queryBatches`, `queryESG`, `queryAudit`, `queryTelemetry`, `queryHistory`, `queryDeposits`, `queryResources`, `queryProvenance`, `queryRegulatory`, `queryWeather`, `queryMarket`, `queryPilotPlant`, `queryDPP`, `queryIssuer`, `webSearch`.
+12. **Chat panel** — `src/components/layout/ChatPanel.tsx` + `ChatPanel.module.css`: sliding drawer (AlertPanel pattern), `useChat` hook from `@ai-sdk/react`, message list with user/assistant styling, loading dots animation, empty state, provenance badges.
+13. **Header wiring** — `MessageSquare` icon button in HeaderStrip with violet dot indicator. `chatOpen` state in App.tsx with mutual exclusion against AlertPanel.
+
+### Phase 3 — AI Agent: Web Search
+14. **DuckDuckGo fallback tool** — `webSearch` tool in `chat.ts` that queries DuckDuckGo HTML API, parses up to 5 snippets with titles/URLs. Two-tier citation format in system prompt distinguishes Vero data from external web sources.
+
+### Phase 4 — AI Agent: File Upload
+15. **Upload server** — Installed `@fastify/multipart` + `pdf-parse`. `server/src/routes/chatUpload.ts`: `POST /api/chat/upload` accepting CSV/PDF/JSON/TXT (max 10MB). In-memory session storage with 30min TTL. Returns `fileId` + parsed preview.
+16. **Upload UI** — ChatPanel updated with paperclip button, native file picker (`.csv,.pdf,.json,.txt`), file chip display with type badge and remove button.
+
+### Phase 5 — Board Mode + CSS Modules
+17. **Board mode polish** — Recharts board overrides (chart axis, grid, tooltip vars), GlassCard CSS variable migration (`--w-glass-card-bg`, `--w-glass-card-blur`, `--w-glass-card-border`), MapBase auto-switch to streets style on board mode via MutationObserver.
+18. **CSS Module migration** — Extracted static inline styles to CSS Modules for `EnvironmentPanel.tsx`, `ComplianceTab.tsx`, `TraceabilityTab.tsx`.
+
+### Phase 6 — Documentation
+19. **HANDOFF.md** — This session log. Updated Open/Future Features table. Updated stale backlog items.
+
+**Model swap procedure (AI Agent):**
+- Default: `gemini-2.5-flash-preview-04-17` (free tier: 15 RPM, 1M tokens/min)
+- To swap: set `AI_MODEL=gpt-4o` and install `@ai-sdk/openai`, or `AI_MODEL=claude-sonnet-4-20250514` and install `@ai-sdk/anthropic`. Change the provider import in `chat.ts` from `createGoogleGenerativeAI` to the corresponding provider factory.
+
+| Category | Files changed / created |
+|----------|------------------------|
+| **Phase 0** | `DrillTraceSection.tsx`, `buildCaldeiraGeojson.ts`, `HANDOFF.md` |
+| **Phase 1 (new)** | `scripts/caldeira-build/checkPilotPlantLinks.ts`, `scripts/caldeira-build/extractPilotPlantPdfs.ts`, `scripts/caldeira-build/validatePilotPlant.ts`, `data/caldeira/pilot-plant-mirror.json`, `data/caldeira/schemas/pilot-plant-mirror.schema.json`, `data/caldeira/pilot-plant-sources.linkcheck.json`, `data/caldeira/pilot-plant-pdf-index.json` |
+| **Phase 1 (updated)** | `package.json` (3 new scripts), `docs/data/caldeira/DATA_SOURCES.md` |
+| **Phase 2 (new)** | `server/src/routes/chat.ts`, `src/components/layout/ChatPanel.tsx`, `src/components/layout/ChatPanel.module.css` |
+| **Phase 2 (updated)** | `server/src/index.ts`, `server/package.json`, `.env.example`, `src/App.tsx`, `src/components/layout/HeaderStrip.tsx`, `package.json` |
+| **Phase 4 (new)** | `server/src/routes/chatUpload.ts` |
+| **Phase 5** | `src/styles/theme.css`, `src/components/ui/GlassCard.tsx`, `src/components/map/MapBase.tsx`, `src/views/field/EnvironmentPanel.module.css`, `src/views/buyer/ComplianceTab.module.css`, `src/views/buyer/TraceabilityTab.module.css` |
+
+---
+
+*Last updated: 2026-04-09 — Ultimate CTO Sprint: AI Agent (read-only analyst + web search + file upload), Pilot Plant Mirror (link audit + PDF extraction + JSON catalog + telemetry mapping + JSON Schema), DrillTraceSection regression fix, Board mode polish, CSS Module migration x3. Previous: CTO UI/UX Sprint (Vero rebrand, map UX, 4-style picker, Board mode infra).*

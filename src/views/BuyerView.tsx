@@ -109,7 +109,7 @@ export function BuyerView() {
             className={styles.mapHero}
             style={{
               border: `1px solid ${TAB_COLOR[activeTab]}30`,
-              boxShadow: `0 0 22px ${TAB_COLOR[activeTab]}14, inset 0 1px 0 ${W.glass04}`,
+              boxShadow: `0 0 22px ${TAB_COLOR[activeTab]}14`,
               transition: 'border-color 0.4s, box-shadow 0.4s',
             }}
           >
@@ -118,7 +118,7 @@ export function BuyerView() {
               position: 'absolute', top: 0, left: 0, right: 0,
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               padding: '8px 12px',
-              background: `linear-gradient(to bottom, ${W.overlay88}, transparent)`,
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.15) 60%, transparent)',
               zIndex: 10, pointerEvents: 'none',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -130,6 +130,7 @@ export function BuyerView() {
                 <span style={{
                   fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
                   textTransform: 'uppercase', color: W.text3, transition: 'color 0.3s',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                 }}>
                   {MAP_HEADER_TEXT[activeTab]}
                 </span>

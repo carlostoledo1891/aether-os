@@ -9,8 +9,14 @@ import {
   type PointGeometry,
 } from './geojson'
 import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
+import { HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX } from './springPinStyle'
 
-type Campaign = '2022-infill' | '2023-infill' | '2024-resource' | '2025-pfs'
+export type DrillCampaign =
+  | '2022-infill'
+  | '2023-infill'
+  | '2024-resource'
+  | '2025-pfs'
+  | '2025-discovery'
 
 export type DrillHoleType = 'DD' | 'AC' | 'AUGER'
 
@@ -20,7 +26,7 @@ interface DrillHoleProperties extends FeatureProperties {
   treo_ppm: number
   mreo_pct: number
   depth_m: number
-  campaign: Campaign
+  campaign: DrillCampaign
   hole_type: DrillHoleType
   note: string | null
   source_ref?: string
@@ -35,7 +41,7 @@ export interface DrillHoleDetail {
   treo_ppm: number
   mreo_pct: number
   depth_m: number
-  campaign: Campaign
+  campaign: DrillCampaign
   hole_type: DrillHoleType
   note: string | null
   source_ref?: string
@@ -57,7 +63,7 @@ export function toDrillHoleDetail(
     treo_ppm: Number(properties.treo_ppm ?? 0),
     mreo_pct: Number(properties.mreo_pct ?? 0),
     depth_m: Number(properties.depth_m ?? 0),
-    campaign: (properties.campaign ?? '2022-infill') as Campaign,
+    campaign: (properties.campaign ?? '2022-infill') as DrillCampaign,
     hole_type: (properties.hole_type ?? 'AC') as DrillHoleType,
     note: properties.note ? String(properties.note) : null,
     source_ref: properties.source_ref ? String(properties.source_ref) : undefined,
@@ -74,11 +80,6 @@ function holeColor(treo: number): string {
   if (treo >= 3000)  return W.violetSoft   // violet-soft — high
   if (treo >= 2200)  return W.violet   // violet — resource grade
   return W.cyan                       // cyan — lower grade
-}
-
-/** Radius scaled by depth (5–14px) */
-function holeRadius(depth: number): number {
-  return Math.min(14, Math.max(5, 5 + (depth / 45) * 9))
 }
 
 interface DrillHoleOverlayProps {
@@ -103,14 +104,13 @@ export function DrillHoleOverlay({
       .filter(f => holeTypeFilter === 'all' || f.properties.hole_type === holeTypeFilter)
       .map(f => {
         const treo = f.properties.treo_ppm
-        const depth = f.properties.depth_m
         const isHovered = f.properties.id === hoveredHoleId
         return {
           ...f,
           properties: {
             ...f.properties,
             circleColor: holeColor(treo),
-            circleRadius: holeRadius(depth) * (isHovered ? 1.5 : 1),
+            circleRadius: HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX,
             circleOpacity: isHovered ? 1 : 0.78,
           },
         }

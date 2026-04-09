@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useState, useMemo } from 'react'
+import { lazy, Suspense, useCallback, useState, useMemo, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
@@ -11,6 +11,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { HeaderStrip } from './components/layout/HeaderStrip'
 import { DataModeBanner } from './components/layout/DataModeBanner'
 import { AlertPanel } from './components/layout/AlertPanel'
+import { ChatPanel } from './components/layout/ChatPanel'
 import shell from './AppShell.module.css'
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
@@ -23,12 +24,36 @@ function createDataService() {
   return getDataMode() === 'live' ? createLiveDataService() : createMockDataService()
 }
 
+type ThemeMode = 'dark' | 'board'
+
+function getInitialTheme(): ThemeMode {
+  try {
+    const saved = localStorage.getItem('vero-theme') as ThemeMode | null
+    if (saved === 'dark' || saved === 'board') return saved
+  } catch { /* SSR / private browsing */ }
+  return 'dark'
+}
+
 function AppShell() {
   const [view, setView] = useState<ViewMode>('operator')
   const [alertOpen, setAlertOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    try { localStorage.setItem('vero-theme', theme) } catch { /* noop */ }
+  }, [theme])
+
+  const toggleTheme = useCallback(() => {
+    setTheme(t => t === 'dark' ? 'board' : 'dark')
+  }, [])
 
   const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
   const closeAlertPanel = useCallback(() => setAlertOpen(false), [])
+  const openAlertPanel = useCallback(() => { setChatOpen(false); setAlertOpen(true) }, [])
+  const openChatPanel = useCallback(() => { setAlertOpen(false); setChatOpen(true) }, [])
+  const closeChatPanel = useCallback(() => setChatOpen(false), [])
   const dataContext = useMemo(() => service.getDataContext(), [service])
   const { esg, activeAlerts } = telemetry
   const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
@@ -39,10 +64,13 @@ function AppShell() {
         esg={esg}
         alertCount={dataContext.disclosureMode ? 0 : activeAlerts.length}
         fieldAlertCount={fieldAlertCount}
-        onAlertOpen={() => setAlertOpen(true)}
+        onAlertOpen={openAlertPanel}
+        onChatOpen={openChatPanel}
         view={view}
         onViewChange={setView}
         disclosureMode={dataContext.disclosureMode}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
       <DataModeBanner context={dataContext} />
 
@@ -69,7 +97,7 @@ function AppShell() {
                 fontSize: 16, fontWeight: 800, color: W.textInverse, letterSpacing: '-0.03em',
                 animation: 'pulse 1.5s ease-in-out infinite',
               }}>
-                Æ
+                V
               </div>
               <span style={{
                 color: W.text4,
@@ -112,6 +140,7 @@ function AppShell() {
         onDismiss={dismissAlert}
         onDismissAll={dismissAllAlerts}
       />
+      <ChatPanel isOpen={chatOpen} onClose={closeChatPanel} />
     </div>
   )
 }

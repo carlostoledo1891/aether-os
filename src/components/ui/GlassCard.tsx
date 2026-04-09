@@ -25,10 +25,10 @@ export function GlassCard({
   children, className = '', style, glow = 'none', onClick, animate = true
 }: GlassCardProps) {
   const baseStyle: CSSProperties = {
-    background: W.glass,
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    border: W.chromeBorder,
+    background: 'var(--w-glass-card-bg, var(--w-glass))',
+    backdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
+    WebkitBackdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
+    border: 'var(--w-glass-card-border, var(--w-border-chrome))',
     borderRadius: W.radius.lg,
     boxShadow: glowMap[glow],
     ...style,

@@ -1,4 +1,4 @@
-# Aether — pitch deck copy (outline + talk track)
+# Vero — pitch deck copy (outline + talk track)
 
 **Purpose:** Slide-ready narrative blocks for investor, buyer, and regulator-facing decks. Iterate here; export to Keynote/PDF separately.
 
@@ -19,8 +19,8 @@ This demo mixes three kinds of information: **(1)** public-reference geometry an
 
 ## Slide 1 — Title
 
-**Aether OS**  
-Critical Mineral OS — the trust layer for REE supply chains
+**Vero**  
+*The trust layer for critical mineral supply chains*
 
 **Subtitle**  
 Telemetry · compliance · traceability · capital — one stack, production-hardened
@@ -37,13 +37,13 @@ Telemetry · compliance · traceability · capital — one stack, production-har
 
 ---
 
-## Slide 3 — What Aether is
+## Slide 3 — What Vero is
 
-**Aether** is a B2B **"Trust Bridge"** and compliance clearinghouse for the rare earth supply chain:
+**Three truths, one platform:**
 
-- **Field narrative** — operations and hydrology on a map with **explicit provenance** (public geometry vs modeled vs simulated telemetry).  
-- **Trade narrative** — FEOC / IRA / passport-style **evidence metaphors** and batch ledger — scoped as **repository design**, not certification, until attestation chains and document types are wired.  
-- **Board narrative** — scenarios, risk, capital, DFS rhythm, agency matrix, audit trail, ESG coverage — **aligned to steerco and disclosure rhythm**, not a replacement for formal reporting.
+- **Ground truth** (Field) — operations and hydrology on a map with **explicit provenance** (public geometry vs modeled vs simulated telemetry).  
+- **Trade truth** (Compliance) — FEOC / IRA / passport-style **evidence metaphors** and batch ledger — scoped as **repository design**, not certification, until attestation chains and document types are wired.  
+- **Board truth** (Executive) — scenarios, risk, capital, DFS rhythm, agency matrix, audit trail, ESG coverage — **aligned to steerco and disclosure rhythm**, not a replacement for formal reporting.
 
 **Single source of narrative (internal alignment)**  
 One canvas helps **synchronize** DFS, regulatory log, and field story — so engineering, permitting, IR, and community don't each tell a **slightly different** tale in the same week.
@@ -52,16 +52,16 @@ One canvas helps **synchronize** DFS, regulatory log, and field story — so eng
 Geological and financial data **never shows stale numbers** — zero-cache policy enforced at the architecture level. Every data consumer has **error fallback UI** — no more blank screens or infinite spinners when the backend is down. **Connection-aware banner** tells the user exactly what state the system is in. **186 automated tests** across 3 packages, including integration tests that simulate live async data flow and verify the app stays stable.
 
 **Non–system-of-record boundary (say this out loud)**  
-Aether is **not** IMS, not the permit-conditions register, and not agency submission software. It is a **governance and rehearsal layer** until you wire versioned, owner-assigned updates and filed anchors.
+Vero is **not** IMS, not the permit-conditions register, and not agency submission software. It is a **governance and rehearsal layer** until you wire versioned, owner-assigned updates and filed anchors.
 
 **Geology / hydro firewall**  
 **Resource, reserve, and exploration** live in **Executive → Assets** (classification, disclosure discipline). **Hydro Twin** is **monitoring + scenario communication** — not ore proof. Never imply the digital twin **proves** the deposit.
 
-**Flagship showcase:** **Meteoric Resources — Caldeira Project** (Poços de Caldas, MG, Brazil · ASX: MEI).
+**Why Caldeira:** **Meteoric Resources — Caldeira Project** (Poços de Caldas, MG, Brazil · ASX: MEI) is the flagship deployment — not the only one we can serve, but the one that proves the platform where it matters most.
 
 ---
 
-## Slide 4 — Who we built the prototype to convince
+## Slide 4 — Why Caldeira (showcase framing)
 
 | Audience | What they need |
 |----------|----------------|
@@ -134,7 +134,7 @@ flowchart LR
 - **Data honesty banner:** mock / presentation / disclosure / live modes with **explicit** copy about what is still simulated, plus **connection-aware** degradation states. **Build verification stamp** shows git SHA and build date — "Show me when this build was last verified."
 - **Accessibility hardened** — focus trap on dialogs, ARIA labels on icon buttons, explicit button types, WCAG-aligned design tokens.
 - **OpenAPI spec** auto-generated from Fastify route schemas — Swagger UI at `/api/docs`, raw spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and response schemas. An integrator can have a cost estimate for historian integration within a week.
-- **Digital Product Passport** (EU 2023/1542 Annex VI) — 22 CEN/CENELEC mandatory fields mapped to Aether data sources. **59% coverage (13/22 mapped)**. Schema-compliant JSON export from any batch. Field-mapping table visible in the Buyer → Compliance tab.
+- **Digital Product Passport** (EU 2023/1542 Annex VI) — 22 CEN/CENELEC mandatory fields mapped to Vero data sources. **59% coverage (13/22 mapped)**. Schema-compliant JSON export from any batch. Field-mapping table visible in the Buyer → Compliance tab.
 - **Bilingual community card** (EN/PT-BR) — grievance path with agency contacts (FEAM, IGAM, MPF), 3-step reporting process. Language toggle persists via localStorage. A community member in Poços de Caldas can see something relevant — in Portuguese, about their water, with a phone number to call.
 - **Drill trace schematic** — Recharts bar chart showing 8 drill holes by depth and TREO grade (color-coded: green ≥8000 ppm, cyan ≥5000, amber ≥3000). Click-to-detail with intercept information. **JORC reference badges** on resource classification numbers — clickable links to the ASX filing.
 
@@ -189,7 +189,7 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 
 **Dr. Heber Caponi** — Chief Scientific Advisor (LAPOC)
 - **Decades of active field research** on the Caldeira alkaline complex. Still conducting fieldwork today.
-- The scientific authority who converts Aether's "simulated" labels into **"field-verified"** labels.
+- The scientific authority who converts Vero's "simulated" labels into **"field-verified"** labels.
 - LAPOC instrument data is the **first live data channel** — the bridge from demo to product.
 
 **Thiago A.** — CEO (designated)
@@ -200,21 +200,23 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 - Ready to ship at pilot approval. Codebase is architected for immediate second-developer productivity.
 
 **Why this team wins:**  
-Aether is not built by consultants studying Caldeira from Perth or New York. It is built **inside the Caldeira** — by a founder who grew up on the geology, validated by a scientist who has studied it for decades, with a CEO who knows Brazilian law, and an engineer ready to scale. No competitor can assemble this combination.
+Vero is not built by consultants studying Caldeira from Perth or New York. It is built **inside the Caldeira** — by a founder who grew up on the geology, validated by a scientist who has studied it for decades, with a CEO who knows Brazilian law, and an engineer ready to scale. No competitor can assemble this combination.
 
 ---
 
 ## Slide 9 — Ask
 
+We're looking for our first deployment partner.
+
 **For investors:** Capital to harden ingestion, security, and first production integration (one operator + one off-taker).  
 **For buyers:** Design partnership on **passport schema** and **batch attestation** API.  
-**For Meteoric / operators:** Pilot deployment on **hydro + discharge** KPIs tied to LI conditions.
+**For operators:** Pilot deployment on **hydro + discharge** KPIs tied to LI conditions.
 
 ---
 
 ## Appendix A — One-liners (speaker notes)
 
-- "We're not selling magic AI — we're selling **aligned truth** across the plant, the map, and the filing."  
+- "We're not selling magic AI — Vero is **aligned truth** across the plant, the map, and the filing."  
 - "The Hydro Twin tab exists because **water is the permit**, not the pit shell."  
 - "Everything flashy is labeled **demo**; everything cited links to **your** disclosure rule."
 

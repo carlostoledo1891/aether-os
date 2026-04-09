@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react'
+import { Bell, Moon, Sun, MessageSquare } from 'lucide-react'
 import type { EsgScore, ViewMode } from '../../types/telemetry'
 import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
@@ -12,6 +12,9 @@ interface HeaderStripProps {
   view: ViewMode
   onViewChange: (v: ViewMode) => void
   disclosureMode?: boolean
+  theme?: 'dark' | 'board'
+  onToggleTheme?: () => void
+  onChatOpen?: () => void
 }
 
 export function HeaderStrip({
@@ -19,6 +22,9 @@ export function HeaderStrip({
   alertCount, fieldAlertCount, onAlertOpen,
   view, onViewChange,
   disclosureMode,
+  theme = 'dark',
+  onToggleTheme,
+  onChatOpen,
 }: HeaderStripProps) {
   return (
     <header style={{
@@ -43,11 +49,11 @@ export function HeaderStrip({
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 12, fontWeight: 800, color: W.textInverse, letterSpacing: '-0.03em',
         }}>
-          Æ
+          V
         </div>
         <div>
           <div style={{ fontSize: 12, fontWeight: 700, color: W.text1, letterSpacing: '0.04em' }}>
-            Aether Dashboard
+            Vero
           </div>
         </div>
         {disclosureMode && (
@@ -72,8 +78,48 @@ export function HeaderStrip({
         <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} />
       </div>
 
-      {/* Right: ESG + alerts */}
+      {/* Right: theme toggle + ESG + alerts */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        {onToggleTheme && (
+          <button
+            type="button"
+            aria-label={theme === 'dark' ? 'Switch to board mode' : 'Switch to dark mode'}
+            onClick={onToggleTheme}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 32, height: 32,
+              background: W.glass04,
+              border: W.chromeBorder,
+              borderRadius: W.radius.sm, cursor: 'pointer', outline: 'none',
+            }}
+          >
+            {theme === 'dark'
+              ? <Sun size={13} style={{ color: W.text3 }} />
+              : <Moon size={13} style={{ color: W.text3 }} />}
+          </button>
+        )}
+        {onChatOpen && (
+          <button
+            type="button"
+            aria-label="Open AI chat"
+            onClick={onChatOpen}
+            style={{
+              position: 'relative',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 32, height: 32,
+              background: W.glass04,
+              border: W.chromeBorder,
+              borderRadius: W.radius.sm, cursor: 'pointer', outline: 'none',
+            }}
+          >
+            <MessageSquare size={13} style={{ color: W.violet }} />
+            <span style={{
+              position: 'absolute', top: -2, right: -2,
+              width: 6, height: 6, background: W.violet,
+              borderRadius: '50%',
+            }} />
+          </button>
+        )}
         <EsgScoreRing esg={esg} compact />
 
         <button

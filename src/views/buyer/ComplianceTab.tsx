@@ -12,6 +12,7 @@ import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { DPP_FIELD_MAPPINGS, DPP_CATEGORIES, getDppCoverage, buildDppExport } from '../../data/dppSchema'
 import type { ComplianceLedger } from '../../types/telemetry'
+import css from './ComplianceTab.module.css'
 
 interface ComplianceTabProps {
   batch: ComplianceLedger
@@ -30,16 +31,16 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div className={css.root}>
       {/* FEOC Badge */}
-      <GlassCard glow="green" animate={false} style={{ padding: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+      <GlassCard glow="green" animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
           <GlowingIcon icon={ShieldCheck} color="green" size={13} />
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
             FEOC Compliance
           </span>
         </div>
-        <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+        <div className={css.feocRow}>
           <div>
             <svg width={72} height={72}>
               <circle cx={36} cy={36} r={30} fill="none" stroke="rgba(34,214,138,0.1)" strokeWidth={4.5} />
@@ -61,37 +62,37 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
               </text>
             </svg>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+          <div className={css.chipCol}>
             <StatusChip label="0% FEOC" variant="green" dot size="md" />
             <StatusChip label={batch.ira_compliant ? 'IRA COMPLIANT' : 'NON-COMPLIANT'} variant={batch.ira_compliant ? 'green' : 'red'} size="md" />
             <StatusChip label={batch.eu_dbp_ready ? 'EU DBP READY' : 'DBP PENDING'} variant={batch.eu_dbp_ready ? 'violet' : 'amber'} size="md" />
           </div>
         </div>
-        <div style={{ marginTop: 10, padding: '7px 9px', background: 'rgba(34,214,138,0.07)', border: '1px solid rgba(34,214,138,0.2)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 11, color: W.text2, lineHeight: 1.5 }}>
+        <div className={css.infoBox} style={{ borderRadius: W.radius.sm }}>
+          <p className={css.infoParagraph} style={{ color: W.text2 }}>
             US DoD Mandate (Jan 1, 2027): Zero tolerance for Chinese-origin REEs across the full multi-tier chain.
           </p>
         </div>
       </GlassCard>
 
       {/* Carbon Intensity */}
-      <GlassCard glow="green" animate={false} style={{ padding: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+      <GlassCard glow="green" animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
           <GlowingIcon icon={Leaf} color="green" size={13} />
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
             Carbon Intensity
           </span>
           <StatusChip label={batch.carbon_intensity.tier} variant="green" />
         </div>
         <MetricDisplay value={batch.carbon_intensity.value} unit="kg CO₂e/kg TREO" label="Carbon Intensity" decimals={2} size="lg" color="green" />
-        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className={css.carbonMetrics}>
+          <div className={css.spaceBetween}>
             <span style={{ fontSize: 10, color: W.text3 }}>vs. Chinese hard-rock baseline</span>
-            <span style={{ fontSize: 14, fontWeight: 700, color: W.green, fontFamily: 'var(--font-mono)' }}>
+            <span className={css.monoLg} style={{ color: W.green }}>
               -{batch.carbon_intensity.vs_chinese_baseline}%
             </span>
           </div>
-          <div style={{ height: 5, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden' }}>
+          <div className={css.progressTrack} style={{ background: W.glass05, borderRadius: W.radius.xs }}>
             <motion.div
               animate={{ width: `${100 - batch.carbon_intensity.vs_chinese_baseline}%` }}
               transition={{ duration: 0.8 }}
@@ -102,77 +103,76 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
       </GlassCard>
 
       {/* Defense-Grade Cybersecurity */}
-      <GlassCard animate={false} style={{ padding: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+      <GlassCard animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
           <GlowingIcon icon={Server} color="green" size={13} />
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
             Defense-Grade Cybersecurity
           </span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+        <div className={css.colStack7}>
           {(CYBER_TRUST_PILLARS ?? []).map((pillar) => (
-            <div key={pillar.title} style={{ padding: '7px 9px', borderRadius: W.radius.sm, background: 'rgba(34,214,138,0.05)', border: '1px solid rgba(34,214,138,0.14)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 3 }}>
-                <span style={{ fontSize: 11, color: W.text1, fontWeight: 700 }}>{pillar.title}</span>
+            <div key={pillar.title} className={css.pillarCard} style={{ borderRadius: W.radius.sm }}>
+              <div className={css.pillarHeader}>
+                <span className={css.pillarTitle} style={{ color: W.text1 }}>{pillar.title}</span>
                 <StatusChip label={pillar.status} variant="green" size="sm" />
               </div>
-              <div style={{ fontSize: 11, color: W.text2, lineHeight: 1.45, marginBottom: 3 }}>{pillar.detail}</div>
-              <span style={{ fontSize: 10, color: W.green, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{pillar.protocol}</span>
+              <div className={css.pillarDetail} style={{ color: W.text2 }}>{pillar.detail}</div>
+              <span className={css.protocolText} style={{ color: W.green }}>{pillar.protocol}</span>
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 8, padding: '6px 8px', background: 'rgba(34,214,138,0.07)', border: '1px solid rgba(34,214,138,0.18)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>
+        <div className={`${css.footnoteBox} ${css.footnoteGreen}`} style={{ borderRadius: W.radius.sm }}>
+          <p className={css.footnoteP} style={{ color: W.text3 }}>
             Houses critical U.S. Defense supply chain data (GPS, extraction yields, molecular DNA). All data encrypted in TEEs before leaving sensor array.
           </p>
         </div>
       </GlassCard>
 
       {/* U/Th Safety */}
-      <GlassCard glow="green" animate={false} style={{ padding: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+      <GlassCard glow="green" animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
           <GlowingIcon icon={ShieldCheck} color="green" size={13} />
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
             Radioactivity Profile
           </span>
           <StatusChip label="SAFE" variant="green" />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div className={css.colStack6}>
           {[
             ['Primary Mineral', U_TH_SAFETY?.primary_mineral ?? '—'],
             ['U/Th Profile', U_TH_SAFETY?.u_th_profile ?? '—'],
             ['Process Safety', U_TH_SAFETY?.solubilization ?? '—'],
             ['MREC Transport', U_TH_SAFETY?.mrec_classification ?? '—'],
           ].map(([label, value]) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-              <span style={{ fontSize: 10, color: W.text3, flexShrink: 0 }}>{label}</span>
-              <span style={{ fontSize: 10, color: W.text1, fontWeight: 600, textAlign: 'right' }}>{value}</span>
+            <div key={label} className={css.rowSpaced}>
+              <span className={css.labelSm} style={{ color: W.text3 }}>{label}</span>
+              <span className={css.valueSm} style={{ color: W.text1 }}>{value}</span>
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 8, padding: '6px 8px', background: 'rgba(34,214,138,0.07)', border: '1px solid rgba(34,214,138,0.18)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>{U_TH_SAFETY?.advantage_vs_hardrock ?? '—'}</p>
+        <div className={`${css.footnoteBox} ${css.footnoteGreen}`} style={{ borderRadius: W.radius.sm }}>
+          <p className={css.footnoteP} style={{ color: W.text3 }}>{U_TH_SAFETY?.advantage_vs_hardrock ?? '—'}</p>
         </div>
       </GlassCard>
 
       {/* Comparative Benchmarks */}
-      <GlassCard animate={false} style={{ padding: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+      <GlassCard animate={false} className={css.cardPad}>
+        <div className={css.sectionHeader}>
           <GlowingIcon icon={BarChart3} color="green" size={13} />
-          <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          <span className={css.sectionTitle} style={{ color: W.text3 }}>
             Competitive Benchmarks
           </span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 55px 55px 45px 55px', gap: 4, padding: '4px 0', borderBottom: `1px solid ${W.text4}30` }}>
+        <div className={`${css.benchGrid} ${css.benchGridHeader}`} style={{ borderBottom: `1px solid ${W.text4}30` }}>
           {['Operator', 'CO₂/t', 'H₂O L/t', 'FEOC', '$/kg'].map(h => (
-            <span key={h} style={{ fontSize: 9, fontWeight: 700, color: W.text4, textTransform: 'uppercase' }}>{h}</span>
+            <span key={h} className={css.gridLabel} style={{ color: W.text4 }}>{h}</span>
           ))}
         </div>
         {(benchmarks ?? []).map((b, i) => {
           const isCaldeira = i === 0
           return (
-            <div key={b.name} style={{
-              display: 'grid', gridTemplateColumns: '1fr 55px 55px 45px 55px', gap: 4, padding: '5px 0',
+            <div key={b.name} className={`${css.benchGrid} ${css.benchGridRow}`} style={{
               borderBottom: `1px solid ${W.glass04}`,
               background: isCaldeira ? `${W.green}08` : 'transparent',
               borderRadius: isCaldeira ? 5 : 0,
@@ -181,15 +181,15 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
                 <span style={{ fontSize: 10, fontWeight: isCaldeira ? 800 : 600, color: isCaldeira ? W.green : W.text2 }}>{b.name}</span>
                 <div style={{ fontSize: 9, color: W.text4 }}>{b.location}</div>
               </div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: isCaldeira ? W.green : W.text2, fontFamily: 'var(--font-mono)' }}>{b.carbon_intensity}</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: isCaldeira ? W.green : W.text2, fontFamily: 'var(--font-mono)' }}>{b.water_l_per_t}</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: b.feoc_pct === 0 ? W.green : W.red, fontFamily: 'var(--font-mono)' }}>{b.feoc_pct}%</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: isCaldeira ? W.green : W.text2, fontFamily: 'var(--font-mono)' }}>${b.cost_per_kg}</span>
+              <span className={css.monoCell} style={{ color: isCaldeira ? W.green : W.text2 }}>{b.carbon_intensity}</span>
+              <span className={css.monoCell} style={{ color: isCaldeira ? W.green : W.text2 }}>{b.water_l_per_t}</span>
+              <span className={css.monoCell} style={{ color: b.feoc_pct === 0 ? W.green : W.red }}>{b.feoc_pct}%</span>
+              <span className={css.monoCell} style={{ color: isCaldeira ? W.green : W.text2 }}>${b.cost_per_kg}</span>
             </div>
           )
         })}
-        <div style={{ marginTop: 8, padding: '6px 8px', background: 'rgba(34,214,138,0.06)', border: '1px solid rgba(34,214,138,0.15)', borderRadius: W.radius.sm }}>
-          <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>
+        <div className={`${css.footnoteBox} ${css.footnoteGreenAlt}`} style={{ borderRadius: W.radius.sm }}>
+          <p className={css.footnoteP} style={{ color: W.text3 }}>
             Caldeira's ionic clay deposit enables 75% lower carbon intensity and 94% less water consumption versus conventional hard-rock operations.
           </p>
         </div>
@@ -224,29 +224,29 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
   }, [batch, uThSafety])
 
   return (
-    <GlassCard glow="violet" animate={false} style={{ padding: 14 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+    <GlassCard glow="violet" animate={false} className={css.cardPad}>
+      <div className={css.sectionHeader}>
         <GlowingIcon icon={ClipboardList} color="violet" size={13} />
-        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+        <span className={css.sectionTitle} style={{ color: W.text3 }}>
           Digital Product Passport
         </span>
         <StatusChip label="EU 2023/1542" variant="violet" size="sm" />
       </div>
 
       {/* Coverage bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-        <div style={{ flex: 1, height: 6, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden', display: 'flex' }}>
-          <div style={{ width: `${(coverage.mapped / coverage.total) * 100}%`, background: W.green, transition: 'width 0.5s' }} />
-          <div style={{ width: `${(coverage.stub / coverage.total) * 100}%`, background: W.amber, transition: 'width 0.5s' }} />
+      <div className={css.coverageRow}>
+        <div className={css.coverageBar} style={{ background: W.glass05, borderRadius: W.radius.xs }}>
+          <div className={css.coverageSegment} style={{ width: `${(coverage.mapped / coverage.total) * 100}%`, background: W.green }} />
+          <div className={css.coverageSegment} style={{ width: `${(coverage.stub / coverage.total) * 100}%`, background: W.amber }} />
         </div>
-        <span style={{ fontSize: 11, fontWeight: 700, color: W.violet, fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
+        <span className={css.coverageLabel} style={{ color: W.violet }}>
           {coverage.mapped}/{coverage.total}
         </span>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 10 }}>
+      <div className={css.statusRow}>
         {(['mapped', 'stub', 'pending'] as const).map(s => (
-          <span key={s} style={{ fontSize: 9, color: STATUS_COLORS[s], fontWeight: 600, textTransform: 'uppercase' }}>
+          <span key={s} className={css.statusDot} style={{ color: STATUS_COLORS[s] }}>
             ● {s} ({coverage[s]})
           </span>
         ))}
@@ -254,28 +254,22 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
 
       {/* Field mapping table by category */}
       {DPP_CATEGORIES.map(cat => (
-        <div key={cat} style={{ marginBottom: 8 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4, paddingLeft: 2 }}>
+        <div key={cat} className={css.categoryBlock}>
+          <div className={css.categoryTitle} style={{ color: W.text4 }}>
             {cat}
           </div>
           {DPP_FIELD_MAPPINGS.filter(f => f.category === cat).map(f => (
-            <div key={f.id} style={{
-              display: 'grid', gridTemplateColumns: '1fr 100px 50px', gap: 4, padding: '4px 4px',
-              borderBottom: `1px solid ${W.glass04}`, alignItems: 'center',
-            }}>
+            <div key={f.id} className={css.dppFieldGrid} style={{ borderBottom: `1px solid ${W.glass04}` }}>
               <div>
                 <span style={{ fontSize: 10, color: W.text2 }}>{f.field}</span>
-                <span style={{ fontSize: 8, color: W.text4, marginLeft: 6, fontFamily: 'var(--font-mono)' }}>{f.cenRef}</span>
+                <span className={css.dppCenRef} style={{ color: W.text4 }}>{f.cenRef}</span>
               </div>
-              <span style={{ fontSize: 9, color: W.text3, fontFamily: 'var(--font-mono)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+              <span className={css.dppSource} style={{ color: W.text3 }}
                 title={f.aetherSource}
               >
                 {f.aetherSource}
               </span>
-              <span style={{
-                fontSize: 8, fontWeight: 700, textTransform: 'uppercase', textAlign: 'right',
-                color: STATUS_COLORS[f.status],
-              }}>
+              <span className={css.dppStatus} style={{ color: STATUS_COLORS[f.status] }}>
                 {f.status}
               </span>
             </div>
@@ -287,11 +281,10 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
       <button
         type="button"
         onClick={handleExport}
+        className={css.exportBtn}
         style={{
-          marginTop: 8, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          padding: '8px 14px', borderRadius: W.radius.sm, border: `1px solid ${W.violet}40`,
-          background: `${W.violet}14`, color: W.violet, fontSize: 11, fontWeight: 700,
-          cursor: 'pointer', letterSpacing: '0.04em',
+          borderRadius: W.radius.sm, border: `1px solid ${W.violet}40`,
+          background: `${W.violet}14`, color: W.violet,
         }}
         aria-label={`Export DPP JSON for batch ${batch.batch_id}`}
       >
@@ -299,10 +292,10 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
         Export DPP JSON — {batch.batch_id}
       </button>
 
-      <div style={{ marginTop: 8, padding: '6px 8px', background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
-        <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>
+      <div className={css.footnoteBox} style={{ background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
+        <p className={css.footnoteP} style={{ color: W.text3 }}>
           Schema aligned to EU Battery Regulation 2023/1542 Annex VI. Fields marked "stub" contain placeholder values;
-          "pending" fields require downstream data not yet in the Aether pipeline. Enforcement begins Feb 2027.
+          "pending" fields require downstream data not yet in the Vero pipeline. Enforcement begins Feb 2027.
         </p>
       </div>
     </GlassCard>

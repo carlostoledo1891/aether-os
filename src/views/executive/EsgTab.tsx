@@ -145,7 +145,7 @@ export function EsgTab() {
 
       <div className="rounded-lg border border-[rgba(0,212,200,0.15)] bg-[rgba(0,212,200,0.05)] px-4 py-3">
         <p className={`${ty.body} m-0 text-[var(--w-text3)]`}>
-          Aether OS captures operational data that directly maps to 5 major ESG reporting frameworks. This
+          Vero captures operational data that directly maps to 5 major ESG reporting frameworks. This
           dashboard-to-disclosure pipeline reduces manual reporting effort by 80% and ensures continuous audit readiness for GRI,
           SASB, TCFD, and ISSB submissions.
         </p>

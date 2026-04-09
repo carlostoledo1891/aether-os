@@ -152,9 +152,31 @@ export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
       {selection.kind === 'env' && (
         <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
           <div className="font-bold text-[var(--w-text1)]">{selection.detail.label}</div>
+          {selection.detail.sublabel && (
+            <div style={{ fontSize: 10, color: W.text3, fontStyle: 'italic' }}>{selection.detail.sublabel}</div>
+          )}
+          {selection.detail.description && (
+            <div style={{ color: W.text2, lineHeight: 1.4 }}>{selection.detail.description}</div>
+          )}
+          {(selection.detail.area_ha || selection.detail.municipality) && (
+            <div className="flex flex-wrap gap-x-3 gap-y-0.5" style={{ fontSize: 10, color: W.text3 }}>
+              {selection.detail.area_ha != null && (
+                <span>{selection.detail.area_ha.toLocaleString()} ha</span>
+              )}
+              {selection.detail.perimeter_km != null && (
+                <span>{selection.detail.perimeter_km} km perimeter</span>
+              )}
+              {selection.detail.municipality && selection.detail.state && (
+                <span>{selection.detail.municipality}, {selection.detail.state}</span>
+              )}
+            </div>
+          )}
+          {selection.detail.authority && (
+            <div style={{ fontSize: 10, color: W.text3 }}>Authority: {selection.detail.authority}</div>
+          )}
           <div style={{ color: W.text4 }}>{selection.detail.note}</div>
           <div className="font-mono text-[9px]" style={{ color: W.text4 }}>
-            {selection.detail.source_ref} · {selection.detail.confidence ?? selection.detail.kind}
+            {selection.detail.source_ref} · {selection.detail.as_of} · {selection.detail.confidence ?? selection.detail.kind}
           </div>
         </div>
       )}

@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "pilot-plant-mirror.schema.json",
+  "title": "Pilot Plant Mirror",
+  "description": "Schema for the Caldeira pilot plant structured data catalog",
+  "type": "object",
+  "required": ["meta", "facility", "sources", "design_basis", "process_stages", "product_spec"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "required": ["version", "last_reviewed", "disclaimer"],
+      "properties": {
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "last_reviewed": { "type": "string" },
+        "disclaimer": { "type": "string", "minLength": 10 },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "facility": {
+      "type": "object",
+      "required": ["id", "name", "site"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^PLANT-" },
+        "name": { "type": "string" },
+        "site": {
+          "type": "object",
+          "required": ["municipality", "state", "country"],
+          "properties": {
+            "municipality": { "type": "string" },
+            "state": { "type": "string", "minLength": 2, "maxLength": 2 },
+            "country": { "type": "string", "minLength": 2, "maxLength": 2 },
+            "coordinates": {
+              "type": "object",
+              "required": ["lat", "lon"],
+              "properties": {
+                "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+                "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "required": ["url", "type", "title"],
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "type": { "type": "string", "enum": ["asx_pdf", "cetem_pdf", "simexmin_pdf", "youtube", "news_article", "asx_page"] },
+            "title": { "type": "string" },
+            "date": { "type": "string" },
+            "pages": { "type": "integer", "minimum": 1 },
+            "status": { "type": "string" },
+            "notes": { "type": "string" },
+            "key_claims": { "type": "array", "items": { "type": "string" } },
+            "manual_observations": { "type": "object" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "design_basis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["metric_id", "label", "value", "unit", "source_refs"],
+        "properties": {
+          "metric_id": { "type": "string" },
+          "label": { "type": "string" },
+          "value": { "type": "number" },
+          "unit": { "type": "string" },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "process_stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "order", "label", "process_area", "source_refs"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^stage_" },
+          "order": { "type": "integer", "minimum": 1 },
+          "label": { "type": "string" },
+          "process_area": { "type": "string" },
+          "description": { "type": "string" },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["material", "source_refs"],
+              "properties": {
+                "material": { "type": "string" },
+                "source_refs": { "type": "array", "items": { "type": "string" } }
+              },
+              "additionalProperties": false
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["material", "source_refs"],
+              "properties": {
+                "material": { "type": "string" },
+                "source_refs": { "type": "array", "items": { "type": "string" } }
+              },
+              "additionalProperties": false
+            }
+          },
+          "equipment": { "type": "array" },
+          "figures": { "type": "array" },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "equipment_inventory": { "type": "array" },
+    "product_spec": {
+      "type": "object",
+      "required": ["primary_product", "source_refs"],
+      "properties": {
+        "primary_product": { "type": "string" },
+        "full_name": { "type": "string" },
+        "mreo_pct": { "type": "number" },
+        "impurity_pct": { "type": "number" },
+        "downstream_path": { "type": "string" },
+        "assay_labs": { "type": "array", "items": { "type": "string" } },
+        "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      },
+      "additionalProperties": false
+    },
+    "regulatory_and_licensing": {
+      "type": "object",
+      "properties": {
+        "narrative": { "type": "string" },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "source_refs"],
+            "properties": {
+              "type": { "type": "string" },
+              "stage": { "type": "string" },
+              "jurisdiction": { "type": "string" },
+              "source_refs": { "type": "array", "items": { "type": "string" } },
+              "confidence": { "type": "string" },
+              "notes": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "source_refs": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "future_testwork": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "status": { "type": "string", "enum": ["planned", "in_progress", "complete", "planned_or_optimisation"] },
+          "description": { "type": "string" },
+          "source_refs": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "telemetry_mapping": {
+      "type": "object",
+      "patternProperties": {
+        "^stage_": {
+          "type": "object",
+          "required": ["telemetry_fields"],
+          "properties": {
+            "telemetry_fields": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

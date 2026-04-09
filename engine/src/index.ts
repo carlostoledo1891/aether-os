@@ -66,7 +66,7 @@ async function waitForServer(maxRetries = 30, delayMs = 2000): Promise<boolean> 
 }
 
 async function main() {
-  console.log(`\n  Aether Simulation Engine`)
+  console.log(`\n  Vero Simulation Engine`)
   console.log(`  Target API: ${API}`)
   console.log(`  Tick interval: ${TICK_MS}ms\n`)
 

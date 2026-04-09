@@ -1,8 +1,10 @@
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, ChevronDown } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
+
+const DEFAULT_VISIBLE = 20
 
 interface DrillHoleEntry {
   id: string
@@ -50,15 +52,21 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   )
 }
 
+function depositLabel(slug: string): string {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+}
+
 export function DrillTraceSection() {
   const [selectedHole, setSelectedHole] = useState<string | null>(null)
-  const [holes, setHoles] = useState<DrillHoleEntry[]>([])
+  const [allHoles, setAllHoles] = useState<DrillHoleEntry[]>([])
+  const [depositFilter, setDepositFilter] = useState<string>('all')
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   useEffect(() => {
     fetch(drillholesUrl)
       .then(r => r.json())
       .then((geojson: { features: Array<{ properties: DrillHoleEntry }> }) => {
-        setHoles(
+        setAllHoles(
           geojson.features
             .map(f => f.properties)
             .sort((a, b) => b.treo_ppm - a.treo_ppm),
@@ -67,24 +75,100 @@ export function DrillTraceSection() {
       .catch(() => { /* graceful: chart will be empty */ })
   }, [])
 
+  const deposits = useMemo(() => {
+    const set = new Set(allHoles.map(h => h.deposit))
+    return Array.from(set).sort()
+  }, [allHoles])
+
+  const visibleHoles = useMemo(() => {
+    if (depositFilter !== 'all') return allHoles.filter(h => h.deposit === depositFilter)
+    return allHoles.slice(0, DEFAULT_VISIBLE)
+  }, [allHoles, depositFilter])
+
   const handleBarClick = useCallback((_: unknown, idx: number) => {
-    const h = holes[idx]
+    const h = visibleHoles[idx]
     setSelectedHole(prev => prev === h.id ? null : h.id)
-  }, [holes])
+  }, [visibleHoles])
 
-  const maxDepth = useMemo(() => holes.length > 0 ? Math.max(...holes.map(h => h.depth_m)) : 200, [holes])
+  const maxDepth = useMemo(
+    () => visibleHoles.length > 0 ? Math.max(...visibleHoles.map(h => h.depth_m)) : 200,
+    [visibleHoles],
+  )
 
-  if (holes.length === 0) {
+  const countLabel = depositFilter !== 'all'
+    ? `${depositLabel(depositFilter)}: ${visibleHoles.length} hole${visibleHoles.length !== 1 ? 's' : ''}`
+    : `Top ${Math.min(DEFAULT_VISIBLE, allHoles.length)} of ${allHoles.length} by TREO`
+
+  if (allHoles.length === 0) {
     return <div style={{ fontSize: 10, color: W.text4, padding: 8 }}>Loading drill data...</div>
   }
 
   return (
     <div>
+      {/* Filter row */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+        <div style={{ position: 'relative' }}>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen(o => !o)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              background: W.glass04, border: `1px solid ${W.glass12}`, borderRadius: W.radius.xs,
+              padding: '3px 8px', fontSize: 10, color: W.text2, cursor: 'pointer', outline: 'none',
+            }}
+          >
+            {depositFilter === 'all' ? 'All deposits' : depositLabel(depositFilter)}
+            <ChevronDown size={10} style={{ color: W.text4 }} />
+          </button>
+          {dropdownOpen && (
+            <div style={{
+              position: 'absolute', top: '100%', left: 0, marginTop: 2, zIndex: 20,
+              background: W.panel, border: `1px solid ${W.glass12}`, borderRadius: W.radius.sm,
+              padding: 4, maxHeight: 200, overflowY: 'auto', minWidth: 160,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+            }}>
+              <button
+                type="button"
+                onClick={() => { setDepositFilter('all'); setDropdownOpen(false); setSelectedHole(null) }}
+                style={{
+                  display: 'block', width: '100%', textAlign: 'left',
+                  padding: '4px 8px', fontSize: 10, borderRadius: W.radius.xs,
+                  background: depositFilter === 'all' ? `${W.violet}20` : 'transparent',
+                  color: depositFilter === 'all' ? W.violet : W.text2,
+                  border: 'none', cursor: 'pointer', outline: 'none',
+                }}
+              >
+                All deposits (top {DEFAULT_VISIBLE})
+              </button>
+              {deposits.map(d => (
+                <button
+                  type="button"
+                  key={d}
+                  onClick={() => { setDepositFilter(d); setDropdownOpen(false); setSelectedHole(null) }}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    padding: '4px 8px', fontSize: 10, borderRadius: W.radius.xs,
+                    background: depositFilter === d ? `${W.violet}20` : 'transparent',
+                    color: depositFilter === d ? W.violet : W.text2,
+                    border: 'none', cursor: 'pointer', outline: 'none',
+                  }}
+                >
+                  {depositLabel(d)} ({allHoles.filter(h => h.deposit === d).length})
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <span style={{ fontSize: 9, color: W.text4, fontFamily: 'var(--font-mono)' }}>
+          {countLabel}
+        </span>
+      </div>
+
       {/* Disclaimer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }}>
         <AlertTriangle size={9} style={{ color: W.amber, flexShrink: 0 }} />
         <span style={{ fontSize: 9, color: W.text4 }}>
-          Schematic only — not to scale. Collar positions are non-survey reference geometry.
+          Collar positions sourced from ASX appendix UTM data (EPSG:31983). Not independently field-verified.
         </span>
       </div>
 
@@ -106,7 +190,7 @@ export function DrillTraceSection() {
       {/* Chart */}
       <ResponsiveContainer width="100%" height={200}>
         <BarChart
-          data={holes}
+          data={visibleHoles}
           margin={{ top: 4, right: 4, bottom: 4, left: 4 }}
         >
           <XAxis
@@ -114,7 +198,7 @@ export function DrillTraceSection() {
             tick={{ fontSize: 8, fill: W.text4, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
             axisLine={{ stroke: W.glass12 }}
-            interval={0}
+            interval={visibleHoles.length > 30 ? Math.floor(visibleHoles.length / 20) : 0}
             angle={-35}
             textAnchor="end"
             height={40}
@@ -135,7 +219,7 @@ export function DrillTraceSection() {
             onClick={handleBarClick}
             style={{ cursor: 'pointer' }}
           >
-            {holes.map((h) => (
+            {visibleHoles.map((h) => (
               <Cell
                 key={h.id}
                 fill={gradeColor(h.treo_ppm)}
@@ -150,7 +234,7 @@ export function DrillTraceSection() {
 
       {/* Selected hole detail */}
       {selectedHole && (() => {
-        const h = holes.find(x => x.id === selectedHole)
+        const h = visibleHoles.find(x => x.id === selectedHole)
         if (!h) return null
         return (
           <div style={{

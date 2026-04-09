@@ -14,7 +14,7 @@ export const W = {
   text1:        '#ECECF8',
   text2:        '#A0A0C8',
   text3:        '#6B6B98',
-  text4:        '#5A5A88',
+  text4:        '#6464A0',
   violet:       '#7C5CFC',
   violetSoft:   '#9D80FF',
   violetGlow:   'rgba(124,92,252,0.25)',

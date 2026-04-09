@@ -1,4 +1,4 @@
-# Aether Dashboard — styling contract
+# Vero Dashboard — styling contract
 
 This document defines how UI styling is organized so the codebase stays consistent, documented, and ready for future **theme switching** (light/dark or alternate palettes) without a full rewrite.
 

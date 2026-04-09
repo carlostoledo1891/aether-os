@@ -132,6 +132,7 @@ export function FieldView() {
       if (opsMapLayers.plantSchematic) ids.push(PLANT_NODE_LAYER_ID)
       if (opsMapLayers.accessRoutes) ids.push(ACCESS_ROUTE_LINE_LAYER_ID)
       if (opsMapLayers.licenceEnvelope) ids.push(LICENCE_ENVELOPE_FILL_LAYER_ID)
+      if (opsMapLayers.apa) ids.push(ENV_APA_FILL_LAYER_ID, 'env-apa-label')
       return ids
     }
     const e: string[] = [HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID]
@@ -404,7 +405,7 @@ export function FieldView() {
             style={{
               borderRadius: W.radius.lg,
               border: `1px solid ${TAB_COLOR[mapTab]}30`,
-              boxShadow: `0 0 22px ${TAB_COLOR[mapTab]}14, inset 0 1px 0 ${W.glass04}`,
+              boxShadow: `0 0 22px ${TAB_COLOR[mapTab]}14`,
               transition: 'border-color 0.4s, box-shadow 0.4s',
             }}
           >
@@ -460,6 +461,9 @@ export function FieldView() {
                     />
                   )}
                   {opsMapLayers.infra && <InfraOverlay showRoute={false} mapId="aetherField" />}
+                  {opsMapLayers.apa && (
+                    <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} showUdc={false} />
+                  )}
                   {opsMapLayers.plantSchematic && (
                     <PlantOverlay
                       plant={plant}

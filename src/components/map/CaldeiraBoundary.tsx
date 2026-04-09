@@ -40,15 +40,14 @@ export function CaldeiraBoundary() {
         }}
       />
 
-      {/* Crisp dashed border */}
+      {/* Solid border */}
       <Layer
         id="caldeira-boundary-line"
         type="line"
         paint={{
           'line-color': W.violetSoft,
-          'line-width': 1.5,
+          'line-width': 1,
           'line-opacity': 0.55,
-          'line-dasharray': [6, 4],
         }}
       />
     </Source>

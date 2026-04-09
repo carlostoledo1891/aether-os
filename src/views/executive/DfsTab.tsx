@@ -15,7 +15,7 @@ const PLATFORM_ROADMAP = [
     cost: '$10K setup + $5K/mo',
     status: 'active' as const,
     milestones: [
-      'Wire pilot plant historian to Aether ingest API',
+      'Wire pilot plant historian to Vero ingest API',
       'Piezometer & ISE sensor feeds → live hydro twin',
       'Automated FEAM/COPAM reporting proof-of-concept',
     ],
@@ -160,7 +160,7 @@ export function DfsTab() {
         </div>
       </ExecutiveCard>
 
-      <ExecutiveCard title="Aether Platform Roadmap" icon={Rocket} iconColor="violet" glow="violet" className="col-span-full">
+      <ExecutiveCard title="Vero Platform Roadmap" icon={Rocket} iconColor="violet" glow="violet" className="col-span-full">
         <div className="flex flex-col gap-5">
           {PLATFORM_ROADMAP.map((p, i) => {
             const color = p.status === 'active' ? W.violet : W.text4

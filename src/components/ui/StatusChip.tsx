@@ -20,7 +20,7 @@ const variantMap = {
 export const StatusChip = memo(function StatusChip({ label, variant = 'muted', dot = false, size = 'sm' }: StatusChipProps) {
   const v = variantMap[variant]
   const padding = size === 'sm' ? '1px 6px' : '3px 10px'
-  const fontSize = size === 'sm' ? 9 : 10
+  const fontSize = size === 'sm' ? 10 : 10
 
   return (
     <span style={{

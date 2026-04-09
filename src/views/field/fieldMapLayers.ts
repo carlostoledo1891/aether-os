@@ -18,6 +18,8 @@ export interface FieldOpsMapLayers {
   licenceEnvelope: boolean
   /** Adjacent tenement (Axel REE Caldas) — district geology context */
   neighbors: boolean
+  /** APA Pedra Branca protected area boundary */
+  apa: boolean
 }
 
 export const DEFAULT_FIELD_OPS_LAYERS: FieldOpsMapLayers = {
@@ -32,6 +34,7 @@ export const DEFAULT_FIELD_OPS_LAYERS: FieldOpsMapLayers = {
   accessRoutes: true,
   licenceEnvelope: false,
   neighbors: false,
+  apa: true,
 }
 
 export interface FieldEnvMapLayers {

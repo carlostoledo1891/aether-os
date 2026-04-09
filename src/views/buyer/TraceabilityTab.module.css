@@ -1,0 +1,238 @@
+/* TraceabilityTab – extracted static layout styles */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  padding: 14px;
+}
+
+/* Repeated flex header row above each section */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--w-text3);
+}
+
+/* "Molecular-to-Magnet Ledger" batch-id mono line */
+.batchInfo {
+  margin-bottom: 8px;
+}
+
+.monoLabel {
+  font-size: 10px;
+  color: var(--w-violet-soft);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+/* Key-value pair list (Scope 3, Handoff list) */
+.kvList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.kvRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kvLabel {
+  font-size: 10px;
+  color: var(--w-text3);
+  flex-shrink: 0;
+}
+
+.kvValue {
+  font-size: 10px;
+  color: var(--w-text1);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Inbound Supply Chain sub-section */
+.supplyChainSection {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.subsectionTitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--w-text4);
+  margin-bottom: 6px;
+}
+
+.chainStep {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.chainDotCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.chainDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chainLine {
+  width: 1px;
+  flex: 1;
+  min-height: 10px;
+}
+
+.chainStepContent {
+  padding-bottom: 6px;
+}
+
+.chainStepName {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--w-text1);
+}
+
+.chainStepEntity {
+  font-size: 10px;
+  color: var(--w-text3);
+  margin-left: 6px;
+}
+
+/* Amber risk-note box */
+.riskNote {
+  margin-top: 8px;
+  padding: 7px 9px;
+  background: rgba(245, 166, 35, 0.06);
+  border: 1px solid rgba(245, 166, 35, 0.18);
+  border-radius: var(--w-radius-sm);
+}
+
+.riskNoteText {
+  margin: 0;
+  font-size: 10px;
+  color: var(--w-text2);
+  line-height: 1.45;
+}
+
+/* Digital Passport section */
+.passportRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.qrGrid {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border: 2px solid rgba(124, 92, 252, 0.4);
+  border-radius: var(--w-radius-sm);
+  padding: 3px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: rgba(124, 92, 252, 0.06);
+}
+
+.qrCell {
+  border-radius: var(--w-radius-xs);
+}
+
+.passportInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fieldLabel {
+  font-size: 10px;
+  color: var(--w-text3);
+}
+
+.batchIdValue {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--w-violet-soft);
+  font-family: var(--font-mono);
+}
+
+.fieldValue {
+  font-size: 10px;
+  color: var(--w-text2);
+}
+
+/* Certificate chip list */
+.certList {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.certChip {
+  font-size: 10px;
+  color: var(--w-text3);
+  padding: 2px 6px;
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
+  border-radius: var(--w-radius-xs);
+}
+
+/* API Handoff cards */
+.handoffCard {
+  padding: 7px 9px;
+  border-radius: var(--w-radius-sm);
+  background: var(--w-glass-03);
+  border: 1px solid var(--w-glass-07);
+}
+
+.handoffHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.handoffSystem {
+  font-size: 9.5px;
+  color: var(--w-text1);
+  font-weight: 700;
+}
+
+.handoffEndpoint {
+  font-size: 10px;
+  color: var(--w-violet-soft);
+  font-family: var(--font-mono);
+  margin-bottom: 2px;
+}
+
+.handoffMeta {
+  font-size: 10px;
+  color: var(--w-text3);
+  line-height: 1.4;
+}

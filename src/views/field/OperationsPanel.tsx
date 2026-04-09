@@ -70,6 +70,7 @@ export const OperationsPanel = memo(function OperationsPanel({
               ['drillHoles', 'Named drill collars'] as const,
               ['accessRoutes', 'Access road (concept)'] as const,
               ['licenceEnvelope', 'Caldeira 193 km² envelope'] as const,
+              ['apa', 'APA Pedra Branca (protected area)'] as const,
             ] as const
           ).map(([key, label]) => (
             <label key={key} className="flex cursor-pointer items-center gap-2 text-[10px]" style={{ color: W.text3 }}>

@@ -11,8 +11,8 @@
   min-height: 44px;
   background: linear-gradient(
     to bottom,
-    var(--w-overlay-88) 0%,
-    var(--w-overlay-88) 35%,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.15) 60%,
     transparent 100%
   );
   pointer-events: none;
@@ -24,6 +24,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--w-text3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .mapHero {

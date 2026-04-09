@@ -69,7 +69,7 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 12,
-        padding: '6px 16px',
+        padding: '4px 16px',
         background: bannerBg,
         borderBottom: `1px solid ${bannerBorder}`,
       }}
@@ -117,7 +117,7 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
         <span
           style={{
             flexShrink: 0,
-            fontSize: 8,
+            fontSize: 9,
             color: W.text4,
             fontFamily: 'var(--font-mono)',
             opacity: 0.55,

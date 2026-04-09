@@ -1,0 +1,62 @@
+[
+  {
+    "holeId": "CDMDD009",
+    "deposit": "capao-do-mel",
+    "treo_ppm": 3649,
+    "mreo_pct": 22.4,
+    "depth_m": 16.9,
+    "intercept": "16.9m @ 3649ppm TREO",
+    "including": "7m @ 5834ppm TREO",
+    "campaign": "2024-resource"
+  },
+  {
+    "holeId": "CDMDD011",
+    "deposit": "capao-do-mel",
+    "treo_ppm": 6575,
+    "mreo_pct": 31.7,
+    "depth_m": 25,
+    "intercept": "25m @ 6575ppm TREO",
+    "including": "4.5m @ 15598ppm TREO",
+    "campaign": "2024-resource"
+  },
+  {
+    "holeId": "FGDD004",
+    "deposit": "figueira",
+    "treo_ppm": 1817,
+    "mreo_pct": 18.4,
+    "depth_m": 97.7,
+    "intercept": "97.7m @ 1817ppm TREO",
+    "including": "12.3m @ 3666ppm TREO",
+    "campaign": "2024-resource"
+  },
+  {
+    "holeId": "PIADD001",
+    "deposit": "barra-do-pacu",
+    "treo_ppm": 6406,
+    "mreo_pct": 26,
+    "depth_m": 143,
+    "intercept": "143m @ 6,406ppm TREO [0m]",
+    "including": "8m @ 23,946ppm TREO [85m] and 1,170 ppm HMREO",
+    "campaign": "2024-resource"
+  },
+  {
+    "holeId": "CVSDD0001",
+    "deposit": "cupim-vermelho-sul",
+    "treo_ppm": 8912,
+    "mreo_pct": 15.9,
+    "depth_m": 149.5,
+    "intercept": "149.5m @ 8,912 ppm TREO [0m]",
+    "including": "52m @ 12,692ppm TREO [61m]",
+    "campaign": "2024-resource"
+  },
+  {
+    "holeId": "CVSDD0004",
+    "deposit": "cupim-vermelho-sul",
+    "treo_ppm": 3387,
+    "mreo_pct": 25,
+    "depth_m": 200,
+    "intercept": "200m @ 3,387ppm TREO [0m]",
+    "including": "5m @ 11,888ppm TREO [36m]",
+    "campaign": "2024-resource"
+  }
+]

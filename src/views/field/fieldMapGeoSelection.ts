@@ -11,6 +11,13 @@ export interface EnvMapFeatureDetail {
   source_ref: string
   as_of: string
   confidence?: string
+  sublabel?: string
+  authority?: string
+  municipality?: string
+  state?: string
+  area_ha?: number
+  perimeter_km?: number
+  description?: string
 }
 
 export interface AccessRouteMapDetail {

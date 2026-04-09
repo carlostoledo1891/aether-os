@@ -193,7 +193,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
                   ))}
                   {springHistory[0] && (
                     <div
-                      className="rounded-md px-1.5 py-1 text-[9px]"
+                      className="rounded-md px-1.5 py-1 text-[10px]"
                       style={{ color: W.text4, background: W.glass03 }}
                     >
                       Latest log ({springHistory[springHistory.length - 1]!.type}): {springHistory[springHistory.length - 1]!.note}

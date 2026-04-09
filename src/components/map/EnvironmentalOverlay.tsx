@@ -52,9 +52,8 @@ export function EnvironmentalOverlay({
             filter={['==', ['get', 'kind'], 'protected-area']}
             paint={{
               'line-color': W.green,
-              'line-width': 1.8,
+              'line-width': 1,
               'line-opacity': 0.55,
-              'line-dasharray': [4, 3],
             }}
           />
           <Layer
@@ -82,17 +81,17 @@ export function EnvironmentalOverlay({
             id={ENV_BUFFER_FILL_LAYER_ID}
             type="fill"
             filter={['==', ['get', 'kind'], 'buffer-zone']}
-            paint={{ 'fill-color': W.amber, 'fill-opacity': 0.04 }}
+            paint={{ 'fill-color': W.green, 'fill-opacity': 0.03 }}
           />
           <Layer
             id="env-buffer-line"
             type="line"
             filter={['==', ['get', 'kind'], 'buffer-zone']}
             paint={{
-              'line-color': W.amber,
-              'line-width': 1.4,
-              'line-opacity': 0.45,
-              'line-dasharray': [6, 4],
+              'line-color': W.green,
+              'line-width': 1,
+              'line-opacity': 0.35,
+              'line-dasharray': [4, 4],
             }}
           />
         </Source>
@@ -238,6 +237,13 @@ export function parseEnvMapFeature(properties: Record<string, unknown>): {
   source_ref: string
   as_of: string
   confidence?: string
+  sublabel?: string
+  authority?: string
+  municipality?: string
+  state?: string
+  area_ha?: number
+  perimeter_km?: number
+  description?: string
 } | null {
   const id = properties.id
   if (typeof id !== 'string') return null
@@ -254,5 +260,12 @@ export function parseEnvMapFeature(properties: Record<string, unknown>): {
     source_ref: String(properties.source_ref ?? ''),
     as_of: String(properties.as_of ?? ''),
     confidence: properties.confidence ? String(properties.confidence) : undefined,
+    sublabel: properties.sublabel ? String(properties.sublabel) : undefined,
+    authority: properties.authority ? String(properties.authority) : undefined,
+    municipality: properties.municipality ? String(properties.municipality) : undefined,
+    state: properties.state ? String(properties.state) : undefined,
+    area_ha: typeof properties.area_ha === 'number' ? properties.area_ha : undefined,
+    perimeter_km: typeof properties.perimeter_km === 'number' ? properties.perimeter_km : undefined,
+    description: properties.description ? String(properties.description) : undefined,
   }
 }

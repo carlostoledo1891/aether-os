@@ -19,6 +19,7 @@ import styles from './HydroOverlay.module.css'
 import { MAP_STACKING } from './mapStacking'
 import { tierShort, type HydroNodeType, type HydroWeatherStripModel } from './hydroDetailMappers'
 import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from './hydroLayerIds'
+import { springPinRadiusPx, tierCircleOpacity } from './springPinStyle'
 
 const HYDRO_SPRINGS_CIRCLE_PAINT = {
   'circle-radius': ['get', 'radius'],
@@ -153,12 +154,6 @@ type HydroNodeRenderFeature = Feature<HydroNodeRenderProperties, PointGeometry>
 type HydroSpringFeature = Feature<HydroSpringProperties, PointGeometry>
 type HydroSpringRenderFeature = Feature<HydroSpringRenderProperties, PointGeometry>
 
-function tierVisual(tier: SpringTelemetry['monitoring_tier']): { opacity: number; radiusMul: number } {
-  if (tier === 'direct') return { opacity: 0.94, radiusMul: 1.14 }
-  if (tier === 'sentinel_proxy') return { opacity: 0.82, radiusMul: 1.02 }
-  return { opacity: 0.62, radiusMul: 0.9 }
-}
-
 interface HydroOverlayProps {
   env: EnvTelemetry
   hoveredNodeId: string | null
@@ -251,10 +246,9 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         const telem = springById.get(sid)
         const status = telem?.status ?? 'Active'
         const tier = telem?.monitoring_tier ?? 'modeled_inferred'
-        const { opacity: circleOpacity, radiusMul } = tierVisual(tier)
+        const circleOpacity = tierCircleOpacity(tier)
         const color = status === 'Active' ? W.green : status === 'Reduced' ? W.amber : W.red
-        const baseR = status === 'Suppressed' ? 4.3 : status === 'Reduced' ? 3.9 : 3.5
-        const radius = baseR * radiusMul
+        const radius = springPinRadiusPx(status, tier)
         const lastVisit = telem?.last_field_visit
         const lastFieldVisitDisplay = lastVisit
           ? new Date(lastVisit).toISOString().slice(0, 10)

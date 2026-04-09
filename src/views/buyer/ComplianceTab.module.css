@@ -1,0 +1,287 @@
+/* ─── Root / Shared Layout ───────────────────────────────────────────── */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardPad {
+  padding: 14px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* ─── FEOC Section ───────────────────────────────────────────────────── */
+
+.feocRow {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.chipCol {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.infoBox {
+  margin-top: 10px;
+  padding: 7px 9px;
+  background: rgba(34, 214, 138, 0.07);
+  border: 1px solid rgba(34, 214, 138, 0.2);
+}
+
+.infoParagraph {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ─── Carbon Intensity ───────────────────────────────────────────────── */
+
+.carbonMetrics {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monoLg {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.progressTrack {
+  height: 5px;
+  overflow: hidden;
+}
+
+/* ─── Cybersecurity Pillars ──────────────────────────────────────────── */
+
+.colStack7 {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pillarCard {
+  padding: 7px 9px;
+  background: rgba(34, 214, 138, 0.05);
+  border: 1px solid rgba(34, 214, 138, 0.14);
+}
+
+.pillarHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.pillarTitle {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pillarDetail {
+  font-size: 11px;
+  line-height: 1.45;
+  margin-bottom: 3px;
+}
+
+.protocolText {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+/* ─── Footnote Boxes ─────────────────────────────────────────────────── */
+
+.footnoteBox {
+  margin-top: 8px;
+  padding: 6px 8px;
+}
+
+.footnoteGreen {
+  background: rgba(34, 214, 138, 0.07);
+  border: 1px solid rgba(34, 214, 138, 0.18);
+}
+
+.footnoteGreenAlt {
+  background: rgba(34, 214, 138, 0.06);
+  border: 1px solid rgba(34, 214, 138, 0.15);
+}
+
+.footnoteP {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* ─── U/Th Safety ────────────────────────────────────────────────────── */
+
+.colStack6 {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rowSpaced {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.labelSm {
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.valueSm {
+  font-size: 10px;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ─── Benchmark Grid ─────────────────────────────────────────────────── */
+
+.benchGrid {
+  display: grid;
+  grid-template-columns: 1fr 55px 55px 45px 55px;
+  gap: 4px;
+}
+
+.benchGridHeader {
+  padding: 4px 0;
+}
+
+.benchGridRow {
+  padding: 5px 0;
+}
+
+.gridLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.monoCell {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* ─── DPP Passport ───────────────────────────────────────────────────── */
+
+.coverageRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.coverageBar {
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  display: flex;
+}
+
+.coverageSegment {
+  transition: width 0.5s;
+}
+
+.coverageLabel {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.statusRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.statusDot {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.categoryBlock {
+  margin-bottom: 8px;
+}
+
+.categoryTitle {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  padding-left: 2px;
+}
+
+.dppFieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 100px 50px;
+  gap: 4px;
+  padding: 4px;
+  align-items: center;
+}
+
+.dppCenRef {
+  font-size: 8px;
+  margin-left: 6px;
+  font-family: var(--font-mono);
+}
+
+.dppSource {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dppStatus {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.exportBtn {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
