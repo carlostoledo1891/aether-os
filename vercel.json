@@ -4,6 +4,7 @@
     {
       "source": "/api/:path*",
       "destination": "https://aether-api-production-295d.up.railway.app/api/:path*"
-    }
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
