@@ -1,8 +1,18 @@
-import { type ReactNode, useCallback } from 'react'
+import { type ReactNode, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
 
 const ease = [0.16, 1, 0.3, 1] as const
+
+/** Global index.css sets overflow:hidden on html/body/#root for the dashboard.
+ *  The LP is a scrollable page, so we unlock overflow while mounted. */
+function useUnlockScroll() {
+  useEffect(() => {
+    const targets = [document.documentElement, document.body, document.getElementById('root')].filter(Boolean) as HTMLElement[]
+    targets.forEach(el => { el.style.overflow = 'auto' })
+    return () => { targets.forEach(el => { el.style.overflow = '' }) }
+  }, [])
+}
 
 /* ── Scroll-reveal section wrapper ──────────────────────────────── */
 
@@ -138,6 +148,8 @@ const card: React.CSSProperties = {
 /* ── Component ───────────────────────────────────────────────────── */
 
 export default function LandingPage() {
+  useUnlockScroll()
+
   const scrollTo = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }, [])
