@@ -73,13 +73,13 @@ export function toDrillHoleDetail(
   }
 }
 
-/** Circle color ramp: cyan → violet → amber for TREO grade */
+/** Circle color ramp: light purple → deep purple for TREO grade */
 function holeColor(treo: number): string {
-  if (treo >= 10000) return W.red   // red — exceptional
-  if (treo >= 5000)  return W.amber   // amber — very high
-  if (treo >= 3000)  return W.violetSoft   // violet-soft — high
-  if (treo >= 2200)  return W.violet   // violet — resource grade
-  return W.cyan                       // cyan — lower grade
+  if (treo >= 10000) return '#7E22CE'       // purple-700 — exceptional
+  if (treo >= 5000)  return '#A855F7'       // purple-500 — very high
+  if (treo >= 3000)  return W.violetSoft    // #9D80FF — high
+  if (treo >= 2200)  return W.violet        // #7C5CFC — resource grade
+  return '#C4B5FD'                          // violet-200 — lower grade
 }
 
 interface DrillHoleOverlayProps {

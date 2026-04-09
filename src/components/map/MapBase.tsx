@@ -10,14 +10,14 @@ export type { MapLayerMouseEvent }
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY as string
 const HAS_TILER = !!(MAPTILER_KEY && MAPTILER_KEY !== 'your_maptiler_key_here')
 
-type MapStyleId = 'hybrid' | 'satellite' | 'dataviz' | 'streets'
+type MapStyleId = 'satellite' | 'topo' | 'dataviz' | 'streets'
 
 const MAP_STYLE_DEFS: { id: MapStyleId; label: string; url: string }[] = HAS_TILER
   ? [
-      { id: 'hybrid',    label: 'Terrain',    url: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}` },
       { id: 'satellite', label: 'Satellite',  url: `https://api.maptiler.com/maps/satellite/style.json?key=${MAPTILER_KEY}` },
-      { id: 'dataviz',   label: 'Operations', url: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}` },
-      { id: 'streets',   label: 'Standard',   url: `https://api.maptiler.com/maps/streets-v2-dark/style.json?key=${MAPTILER_KEY}` },
+      { id: 'topo',      label: 'Topo',       url: `https://api.maptiler.com/maps/topo-v2/style.json?key=${MAPTILER_KEY}` },
+      { id: 'dataviz',   label: 'Dataviz',    url: `https://api.maptiler.com/maps/dataviz-v4-dark/style.json?key=${MAPTILER_KEY}` },
+      { id: 'streets',   label: 'Operations', url: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}` },
     ]
   : [
       { id: 'dataviz', label: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
@@ -94,6 +94,8 @@ function StyleController({
     const map = (mapRef as { getMap: () => maplibregl.Map }).getMap()
 
     const run = () => {
+      const has = (layerId: string) => !!map.getLayer(layerId)
+
       const hasTiler = maptilerKey && maptilerKey !== 'your_maptiler_key_here'
       if (hasTiler) {
         if (!map.getSource('terrain-dem')) {
@@ -109,33 +111,36 @@ function StyleController({
       const isDark = activeStyleId === 'dataviz' || activeStyleId === 'streets'
 
       if (isDark) {
-        try {
-          map.setPaintProperty('background', 'background-color', W.canvas)
-        } catch { /* layer may not exist */ }
+        if (has('background')) {
+          try { map.setPaintProperty('background', 'background-color', W.canvas) } catch { /* noop */ }
+        }
         for (const id of WATER_LAYER_IDS) {
-          try { map.setPaintProperty(id, 'fill-color', W.mapWaterFill) } catch { /* noop */ }
+          if (has(id)) {
+            try { map.setPaintProperty(id, 'fill-color', W.mapWaterFill) } catch { /* noop */ }
+          }
         }
       }
-
       const capture = (layerId: string, prop: string) => {
+        if (!has(layerId)) return
         const k = `${layerId}::${prop}`
         if (!originals.current.has(k)) {
           try { originals.current.set(k, map.getPaintProperty(layerId, prop)) } catch { /* noop */ }
         }
       }
       const captureZoom = (layerId: string) => {
+        if (!has(layerId)) return
         const k = `z::${layerId}`
         if (!originals.current.has(k)) {
-          try {
-            const l = map.getLayer(layerId) as { minzoom?: number; maxzoom?: number } | undefined
-            if (l) originals.current.set(k, { min: l.minzoom ?? 0, max: l.maxzoom ?? 24 })
-          } catch { /* noop */ }
+          const l = map.getLayer(layerId) as { minzoom?: number; maxzoom?: number } | undefined
+          if (l) originals.current.set(k, { min: l.minzoom ?? 0, max: l.maxzoom ?? 24 })
         }
       }
       const set = (layerId: string, prop: string, val: unknown) => {
+        if (!has(layerId)) return
         try { map.setPaintProperty(layerId, prop, val) } catch { /* noop */ }
       }
       const setZoom = (layerId: string, min: number, max: number) => {
+        if (!has(layerId)) return
         try { map.setLayerZoomRange(layerId, min, max) } catch { /* noop */ }
       }
 
@@ -156,9 +161,11 @@ function StyleController({
         for (const [k, val] of originals.current.entries()) {
           try {
             if (k.startsWith('z::')) {
-              const id = k.slice(3); const { min, max } = val as { min: number; max: number }; map.setLayerZoomRange(id, min, max)
+              const id = k.slice(3); if (!has(id)) continue
+              const { min, max } = val as { min: number; max: number }; map.setLayerZoomRange(id, min, max)
             } else {
-              const sep = k.indexOf('::'); const id = k.slice(0, sep); const prop = k.slice(sep + 2); map.setPaintProperty(id, prop, val)
+              const sep = k.indexOf('::'); const id = k.slice(0, sep); if (!has(id)) continue
+              const prop = k.slice(sep + 2); map.setPaintProperty(id, prop, val)
             }
           } catch { /* noop */ }
         }
