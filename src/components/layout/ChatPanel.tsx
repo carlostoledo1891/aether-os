@@ -4,10 +4,7 @@ import { X, Send, Sparkles, Paperclip, FileText } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { W } from '../../app/canvas/canvasTheme'
-import { getApiBaseUrl } from '../../config/env'
 import styles from './ChatPanel.module.css'
-
-const API_BASE = getApiBaseUrl() ?? ''
 
 interface ChatPanelProps {
   isOpen: boolean
@@ -30,7 +27,7 @@ function getMessageText(parts: Array<{ type: string; text?: string }>): string {
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: `${API_BASE}/api/chat` }),
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
   })
   const [input, setInput] = useState('')
   const isLoading = status === 'streaming' || status === 'submitted'
@@ -101,7 +98,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const res = await fetch(`${API_BASE}/api/chat/upload`, { method: 'POST', body: formData })
+      const res = await fetch('/api/chat/upload', { method: 'POST', body: formData })
       if (!res.ok) throw new Error(`Upload failed: ${res.status}`)
       const data = await res.json() as AttachedFile
       setAttachedFile(data)
@@ -242,6 +239,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             {/* Input */}
             <form onSubmit={(e) => { e.preventDefault(); doSend() }} className={styles.inputRow}>
               <input
+                id="vero-file-upload"
                 ref={fileInputRef}
                 type="file"
                 accept=".csv,.pdf,.json,.txt"
@@ -264,6 +262,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 <Paperclip size={13} style={{ color: W.text3 }} />
               </button>
               <textarea
+                id="vero-chat-input"
+                name="vero-chat-input"
                 ref={inputRef}
                 className={styles.inputField}
                 value={input}

@@ -1,4 +1,4 @@
-import { getPresentationMode, getDisclosureMode, getApiBaseUrl, getWsUrl } from '../config/env'
+import { getPresentationMode, getDisclosureMode, getWsUrl } from '../config/env'
 import type {
   AetherDataService, DataContext, ConnectionStatus, ProvenanceProfile, RegulatoryExportBundle,
   TelemetryCallback, Unsubscribe, TimeRangeKey, HistoricalTelemetry,
@@ -15,7 +15,7 @@ import type { DepositRecord } from '../data/mockData'
 import type { ComplianceLedger, SpringEvent } from '../types/telemetry'
 import type { IssuerSnapshot } from '../data/caldeira/issuerSnapshot'
 
-const BASE = getApiBaseUrl() ?? ''
+const BASE = ''
 
 /* ─── Connection status tracking ───────────────────────────────────────── */
 let _connectionStatus: ConnectionStatus = 'connected'
