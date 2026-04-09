@@ -3,7 +3,7 @@ import type {
   AetherDataService, DataContext, ConnectionStatus, ProvenanceProfile, RegulatoryExportBundle,
   TelemetryCallback, Unsubscribe, TimeRangeKey, HistoricalTelemetry,
   ScenarioKey, FinancialScenario, SensitivityPoint,
-  RiskItem, IncidentRecord, OfftakerRecord, CapitalSnapshot,
+  RiskItem, IncidentRecord, OfftakerRecord, CapitalSnapshot, DSCRProjection, DrawdownMilestone, PricingModel, MarketSizing,
   DFSWorkstream, RegulatoryEntry, BenchmarkOperator, AuditEvent, ESGFramework,
   ProjectFinancials, MarketPrices, ProjectMilestone, HydrologyScenario,
   ScaleUpPathway, PilotPlantPerformance, HardwareSensorCategory,
@@ -167,6 +167,10 @@ export function createLiveDataService(): AetherDataService {
 
     getOfftakerPipeline() { return api<OfftakerRecord[]>('/api/offtakers') },
     getCapitalSnapshot() { return api<CapitalSnapshot>('/api/capital') },
+    getDSCRProjections() { return api<DSCRProjection[]>('/api/capital/dscr') },
+    getDrawdownSchedule() { return api<DrawdownMilestone[]>('/api/capital/drawdown') },
+    getPricingModel() { return api<PricingModel>('/api/pricing') },
+    getMarketSizing() { return api<MarketSizing>('/api/market-sizing') },
     getDFSWorkstreams() { return api<DFSWorkstream[]>('/api/dfs/workstreams') },
     getRegulatoryLog() { return api<RegulatoryEntry[]>('/api/regulatory') },
 

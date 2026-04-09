@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { getDataMode, getApiBaseUrl, getWsUrl, getPresentationMode, validateEnv } from './env'
+import { getDataMode, getWsUrl, getPresentationMode, validateEnv } from './env'
 
 describe('env', () => {
   afterEach(() => {
@@ -14,13 +14,6 @@ describe('env', () => {
   it('getDataMode accepts live (case-insensitive)', () => {
     vi.stubEnv('VITE_DATA_MODE', 'LIVE')
     expect(getDataMode()).toBe('live')
-  })
-
-  it('getApiBaseUrl trims and drops empty', () => {
-    vi.stubEnv('VITE_API_BASE_URL', '')
-    expect(getApiBaseUrl()).toBeUndefined()
-    vi.stubEnv('VITE_API_BASE_URL', '  https://x.test ')
-    expect(getApiBaseUrl()).toBe('https://x.test')
   })
 
   it('getWsUrl trims and drops empty', () => {

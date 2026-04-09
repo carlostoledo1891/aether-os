@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent, type ChangeEvent } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { X, Send, Sparkles, Paperclip, FileText } from 'lucide-react'
+import { X, Send, Sparkles, Paperclip, FileText, ChevronDown, ChevronRight, Database } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { W } from '../../app/canvas/canvasTheme'
@@ -16,6 +16,102 @@ interface AttachedFile {
   filename: string
   type: string
   preview: string
+}
+
+interface ToolPart {
+  toolName: string
+  toolCallId: string
+  state: string
+  input?: unknown
+  output?: unknown
+}
+
+const TOOL_LABELS: Record<string, string> = {
+  queryFinancials: 'Financials',
+  queryResourceClassification: 'Resource Classification',
+  queryPlantPerformance: 'Plant Performance',
+  queryBatches: 'Compliance Batches',
+  queryRisks: 'Risk Register',
+  queryTimeline: 'Project Timeline',
+  queryOfftakers: 'Offtakers',
+  queryCapital: 'Capital Structure',
+  queryDfsWorkstreams: 'DFS Workstreams',
+  queryBenchmarks: 'Benchmarks',
+  queryIssuerSnapshot: 'Issuer Snapshot',
+  queryTelemetry: 'Telemetry',
+  queryWeather: 'Weather',
+  queryMarketData: 'Market Data',
+  queryRegulatory: 'Regulatory',
+  queryUThSafety: 'U/Th Safety',
+  webSearch: 'Web Search',
+  queryDSCR: 'DSCR Projections',
+  queryDrawdown: 'Drawdown Schedule',
+  queryPricing: 'Pricing Model',
+  queryMarketSizing: 'Market Sizing',
+}
+
+function getToolLabel(toolName: string): string {
+  return TOOL_LABELS[toolName] ?? toolName.replace(/^query/, '').replace(/([A-Z])/g, ' $1').trim()
+}
+
+function summarizeOutput(output: unknown): string {
+  if (output == null) return 'No data'
+  const str = typeof output === 'string' ? output : JSON.stringify(output)
+  return str.length > 120 ? str.slice(0, 117) + '...' : str
+}
+
+function extractToolParts(parts: Array<{ type: string; [k: string]: unknown }>): ToolPart[] {
+  return parts
+    .filter(p => p.type === 'dynamic-tool' || (typeof p.type === 'string' && p.type.startsWith('tool-')))
+    .map(p => ({
+      toolName: (p.toolName as string) ?? p.type.replace(/^tool-/, ''),
+      toolCallId: p.toolCallId as string,
+      state: (p.state as string) ?? 'unknown',
+      input: p.input,
+      output: p.output,
+    }))
+}
+
+function ToolProvenance({ tools }: { tools: ToolPart[] }) {
+  const [expanded, setExpanded] = useState(false)
+  if (tools.length === 0) return null
+
+  const completed = tools.filter(t => t.state === 'output-available')
+  const label = completed.length > 0
+    ? completed.map(t => getToolLabel(t.toolName)).join(', ')
+    : tools.map(t => getToolLabel(t.toolName)).join(', ')
+
+  return (
+    <div className={styles.provenanceSection}>
+      <button
+        type="button"
+        className={styles.provenanceToggle}
+        onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+      >
+        <Database size={10} style={{ color: W.violet, flexShrink: 0 }} />
+        <span className={styles.provenanceLabel}>Sources: {label}</span>
+        {expanded
+          ? <ChevronDown size={10} style={{ color: W.text4 }} />
+          : <ChevronRight size={10} style={{ color: W.text4 }} />}
+      </button>
+      {expanded && (
+        <div className={styles.provenanceDetail}>
+          {tools.map(t => (
+            <div key={t.toolCallId} className={styles.provenanceItem}>
+              <span className={styles.provenanceToolName}>{getToolLabel(t.toolName)}</span>
+              {t.state === 'output-available' && t.output != null && (
+                <span className={styles.provenanceOutput}>{summarizeOutput(t.output)}</span>
+              )}
+              {t.state === 'output-error' && (
+                <span className={styles.provenanceError}>Error</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 function getMessageText(parts: Array<{ type: string; text?: string }>): string {
@@ -180,6 +276,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
 
               {messages.map((m) => {
                 const text = getMessageText(m.parts)
+                const toolParts = m.role === 'assistant' ? extractToolParts(m.parts as Array<{ type: string; [k: string]: unknown }>) : []
                 return (
                   <div
                     key={m.id}
@@ -191,6 +288,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                         {i < text.split('\n').length - 1 && <br />}
                       </span>
                     ))}
+                    {toolParts.length > 0 && <ToolProvenance tools={toolParts} />}
                   </div>
                 )
               })}

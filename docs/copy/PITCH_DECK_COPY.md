@@ -172,11 +172,14 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 
 ## Slide 8.5 — Market opportunity
 
-- **TAM:** Critical minerals compliance and traceability SaaS — estimated **$2.4B by 2030** (aligned to rare earth supply chain digitization).  
-- **SAM:** REE project operators, off-takers, and defense procurement requiring FEOC / IRA / EU DBP tooling — **~$400M**.  
-- **SOM:** First **5 operators** with active REE projects in allied jurisdictions (Brazil, Australia, USA, Canada) — **$15–25M ARR** at scale.
+- **TAM: $18.8B (2026) → $31.9B (2031)** — Global digital mining & smart mining technology.  
+  *Sources: Mordor Intelligence "Smart Mining Market" (2026 $18.77B → 2031 $31.86B, CAGR 11.16%); Grand View Research "Digital Mining Market" (2024 $9.39B → 2030 $18.11B, CAGR 9.8%). Covers automation, real-time analytics, digital twins, cybersecurity, and AI across all mining verticals.*
 
-*Note: Market sizing is directional. Methodology: top-down from critical minerals supply chain digitization estimates (Allied Market Research, Grand View Research); bottom-up from identified REE projects with active permitting/DFS in allied jurisdictions. Refine with sector-specific analyst reports before investor-grade decks.*
+- **SAM: $1.6B (2025) → $5.2B (2033)** — Critical minerals compliance & traceability SaaS.  
+  *Sources: Dataintelo "Critical Mineral Traceability Market" ($3.8B total in 2025, software component = 42.5% ≈ $1.6B, CAGR 14.2%); Growth Market Reports "Conflict Minerals Compliance Software Market" ($1.21B in 2024 → $2.51B by 2033, CAGR 8.7%). EU Battery Regulation + IRA FEOC requirements drive adoption.*
+
+- **SOM: $15M (2026) → $45M (2030)** — REE projects in allied jurisdictions with active compliance requirements.  
+  *Methodology: Bottom-up from public project databases (ASX, TSX, SEC filings). 15 identified REE projects in development (Brazil, Australia, USA, Canada, Greenland) with active DFS/permitting × Vero Growth tier pricing ($102k/yr). Conservative 5-operator near-term target.*
 
 ---
 

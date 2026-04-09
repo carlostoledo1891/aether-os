@@ -161,6 +161,105 @@ export function seedIfNeeded() {
     ],
   })
 
+  /* ─── Market Sizing ─────────────────────────────────────────────── */
+  setDomainState('market_sizing', {
+    tam: {
+      label: 'Global Digital Mining & Smart Mining Technology',
+      value_usd_b: 18.8,
+      year: 2026,
+      forecast_usd_b: 31.9,
+      forecast_year: 2031,
+      cagr_pct: 11.2,
+      source: 'Mordor Intelligence, "Smart Mining Market Size & Share Analysis" (2026 est. $18.77B → 2031 $31.86B, CAGR 11.16%); Grand View Research, "Digital Mining Market" (2024 $9.39B → 2030 $18.11B, CAGR 9.8%)',
+      report_date: '2025',
+      methodology: 'Composite of Mordor Intelligence smart mining and Grand View Research digital mining forecasts. Covers automation, real-time analytics, digital twins, cybersecurity, and AI across all mining verticals.',
+    },
+    sam: {
+      label: 'Critical Minerals Compliance & Traceability SaaS',
+      value_usd_b: 1.6,
+      year: 2025,
+      forecast_usd_b: 5.2,
+      forecast_year: 2033,
+      cagr_pct: 14.2,
+      source: 'Dataintelo, "Critical Mineral Traceability Market" ($3.8B total in 2025, software = 42.5% = ~$1.6B); Growth Market Reports, "Conflict Minerals Compliance Software Market" ($1.21B in 2024 → $2.51B by 2033, CAGR 8.7%)',
+      report_date: '2025',
+      methodology: 'Software component of critical mineral traceability market (42.5% of $3.8B TAM per Dataintelo). Cross-referenced with conflict minerals compliance software market sizing from Growth Market Reports.',
+    },
+    som: {
+      label: 'REE Projects in Allied Jurisdictions with Active Compliance Requirements',
+      value_usd_m: 15,
+      year: 2026,
+      forecast_usd_m: 45,
+      forecast_year: 2030,
+      source: 'Bottom-up: 15 identified REE projects in development (Brazil, Australia, USA, Canada, Greenland) with active DFS/permitting, multiplied by Vero Growth tier pricing ($102k/yr). Conservative 5-operator near-term target.',
+      report_date: '2026-Q2',
+      methodology: 'Bottom-up from public project databases (ASX, TSX, SEC filings). Targets operators with active FEOC/IRA/EU DBP compliance requirements and funded DFS or construction-stage projects.',
+    },
+  })
+
+  /* ─── Pricing Model ─────────────────────────────────────────────── */
+  setDomainState('pricing_model', {
+    model_type: 'Per-project SaaS + metered AI',
+    tiers: [
+      {
+        name: 'Pilot',
+        price_usd_mo: 2500,
+        includes: '1 project, 5 users, 10k AI queries/mo, standard map tiles, email support',
+        target: 'PFS-stage explorers, junior miners evaluating digital twin',
+      },
+      {
+        name: 'Growth',
+        price_usd_mo: 8500,
+        includes: '3 projects, 25 users, 50k AI queries/mo, premium map tiles, priority support, API access',
+        target: 'DFS-through-construction operators with multiple stakeholders',
+      },
+      {
+        name: 'Enterprise',
+        price_usd_mo: null,
+        includes: 'Unlimited projects/users, custom AI model tuning, SSO/RBAC, dedicated CSM, SLA 99.9%',
+        target: 'Multi-asset operators, ECA/DFI compliance mandates',
+      },
+    ],
+    cost_components: [
+      { component: 'Hosting (Vercel + Railway)', est_mo: 340, notes: 'Pro tiers, scales with traffic' },
+      { component: 'AI tokens (Google Gemini)', est_mo: 280, notes: '~40k queries × $7/M tokens' },
+      { component: 'Map tiles (MapTiler)', est_mo: 120, notes: 'Satellite + topo layers, usage-based' },
+      { component: 'Data integration (API + enrichers)', est_mo: 0, notes: 'Included in platform; LAPOC/OPC-UA custom' },
+      { component: 'Support & maintenance', est_mo: 500, notes: 'Prorated across customer base' },
+    ],
+    tco_year1: {
+      pilot_usd: 30000,
+      growth_usd: 102000,
+      enterprise_usd: 'Custom — typically $180k-$350k based on scope',
+      note: 'Excludes one-time onboarding ($5k-$15k) and custom integration work',
+    },
+  })
+
+  /* ─── DSCR Projections ───────────────────────────────────────────── */
+  setDomainState('dscr_projections', [
+    { year: 1, bear: 0.8, consensus: 1.2, bull: 1.8 },
+    { year: 2, bear: 1.0, consensus: 1.5, bull: 2.3 },
+    { year: 3, bear: 1.2, consensus: 1.9, bull: 2.8 },
+    { year: 4, bear: 1.3, consensus: 2.1, bull: 3.1 },
+    { year: 5, bear: 1.4, consensus: 2.3, bull: 3.4 },
+    { year: 6, bear: 1.5, consensus: 2.4, bull: 3.5 },
+    { year: 7, bear: 1.5, consensus: 2.5, bull: 3.6 },
+    { year: 8, bear: 1.6, consensus: 2.5, bull: 3.7 },
+    { year: 9, bear: 1.6, consensus: 2.6, bull: 3.7 },
+    { year: 10, bear: 1.7, consensus: 2.6, bull: 3.8 },
+  ])
+
+  /* ─── Drawdown Schedule ─────────────────────────────────────────── */
+  setDomainState('drawdown_schedule', [
+    { milestone: 'DFS Completion', target_date: '2026-06-30', amount_m: 15, cumulative_m: 28, status: 'in_progress', cp_ref: 'CP-01' },
+    { milestone: 'FID Approved', target_date: '2026-09-30', amount_m: 50, cumulative_m: 78, status: 'pending', cp_ref: 'CP-03' },
+    { milestone: 'Construction Start', target_date: '2027-01-01', amount_m: 120, cumulative_m: 198, status: 'pending', cp_ref: null },
+    { milestone: 'Equipment Procurement', target_date: '2027-06-01', amount_m: 95, cumulative_m: 293, status: 'pending', cp_ref: null },
+    { milestone: 'Commissioning', target_date: '2027-10-01', amount_m: 80, cumulative_m: 373, status: 'pending', cp_ref: null },
+    { milestone: 'First Ore', target_date: '2028-01-01', amount_m: 50, cumulative_m: 423, status: 'pending', cp_ref: null },
+    { milestone: 'Ramp-up Reserve', target_date: '2028-06-01', amount_m: 20, cumulative_m: 443, status: 'pending', cp_ref: null },
+  ])
+
   /* ─── DFS & Regulatory ────────────────────────────────────────────── */
   setDomainState('dfs_workstreams', [
     { id: 'DFS-01', name: 'Mining & Reserves', lead: 'Ausenco', progress_pct: 85, status: 'on_track', target_date: '2026-05-15' },

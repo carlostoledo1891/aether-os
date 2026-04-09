@@ -140,6 +140,26 @@ function buildTools() {
         }
       },
     }),
+    queryDSCR: tool({
+      description: 'Get DSCR (Debt Service Coverage Ratio) projections across bear/consensus/bull for 10 years of LOM',
+      inputSchema: z.object({}),
+      execute: async () => getDomainState('dscr_projections') ?? [],
+    }),
+    queryDrawdown: tool({
+      description: 'Get the drawdown schedule: milestone-based capital drawdowns with cumulative totals and CP references',
+      inputSchema: z.object({}),
+      execute: async () => getDomainState('drawdown_schedule') ?? [],
+    }),
+    queryPricing: tool({
+      description: 'Get the Vero platform pricing model: deployment tiers (Pilot/Growth/Enterprise), cost components, and total cost of ownership',
+      inputSchema: z.object({}),
+      execute: async () => getDomainState('pricing_model') ?? {},
+    }),
+    queryMarketSizing: tool({
+      description: 'Get TAM/SAM/SOM market sizing with analyst report citations (Mordor Intelligence, Grand View Research, Dataintelo)',
+      inputSchema: z.object({}),
+      execute: async () => getDomainState('market_sizing') ?? {},
+    }),
     queryIssuer: tool({
       description: 'Get issuer snapshot: company info, market cap, shares, project ownership, and ASX citation',
       inputSchema: z.object({}),

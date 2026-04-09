@@ -1,4 +1,5 @@
-import { Landmark } from 'lucide-react'
+import { Landmark, TrendingUp, Calendar } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, ReferenceLine, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ErrorFallback } from '../../components/ui/ErrorFallback'
@@ -8,8 +9,16 @@ import { CP_STATUS_COLOR, CP_STATUS_LABEL } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
+const DRAWDOWN_STATUS_STYLE: Record<string, { bg: string; text: string }> = {
+  completed: { bg: `${W.green}20`, text: W.green },
+  in_progress: { bg: `${W.violet}20`, text: W.violet },
+  pending: { bg: `${W.text4}15`, text: W.text4 },
+}
+
 export function CapitalTab() {
   const { data: capital, isLoading, error } = useServiceQuery('capital', s => s.getCapitalSnapshot())
+  const { data: dscr } = useServiceQuery('dscr', s => s.getDSCRProjections())
+  const { data: drawdown } = useServiceQuery('drawdown', s => s.getDrawdownSchedule())
 
   if (error) return <ErrorFallback error={error} label="Capital snapshot" />
   if (isLoading || !capital) {
@@ -115,7 +124,7 @@ export function CapitalTab() {
         </ExecutiveCard>
       </div>
 
-      <div className="min-w-0">
+      <div className="flex min-w-0 flex-col gap-4">
         <ExecutiveCard>
           <span className={`${ty.labelStrong} mb-3 block`}>Conditions Precedent</span>
           <div className="flex flex-col gap-2">
@@ -149,6 +158,95 @@ export function CapitalTab() {
             ))}
           </div>
         </ExecutiveCard>
+
+        {dscr && dscr.length > 0 && (
+          <ExecutiveCard title="DSCR Projections (10yr LOM)" icon={TrendingUp} iconColor="cyan" glow="cyan">
+            <div style={{ width: '100%', height: 220 }}>
+              <ResponsiveContainer>
+                <LineChart data={dscr} margin={{ top: 8, right: 12, bottom: 4, left: 0 }}>
+                  <XAxis
+                    dataKey="year"
+                    tick={{ fill: W.text4, fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={{ stroke: W.glass06 }}
+                    tickFormatter={(y: number) => `Y${y}`}
+                  />
+                  <YAxis
+                    tick={{ fill: W.text4, fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(v: number) => `${v}x`}
+                    domain={[0, 4]}
+                  />
+                  <ReferenceLine y={1.3} stroke={W.amber} strokeDasharray="6 3" label={{ value: '1.3x covenant', fill: W.text4, fontSize: 9, position: 'right' }} />
+                  <Tooltip
+                    contentStyle={{ background: W.panel, border: W.chromeBorder, borderRadius: 8, fontSize: 10, color: W.text2 }}
+                    formatter={(v: number, name: string) => [`${v}x`, name.charAt(0).toUpperCase() + name.slice(1)]}
+                    labelFormatter={(y: number) => `Year ${y}`}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 10, color: W.text3 }} />
+                  <Line type="monotone" dataKey="bear" stroke={W.red} strokeWidth={1.5} dot={false} name="Bear" />
+                  <Line type="monotone" dataKey="consensus" stroke={W.violet} strokeWidth={2} dot={false} name="Consensus" />
+                  <Line type="monotone" dataKey="bull" stroke={W.green} strokeWidth={1.5} dot={false} name="Bull" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </ExecutiveCard>
+        )}
+
+        {drawdown && drawdown.length > 0 && (
+          <ExecutiveCard title="Drawdown Schedule" icon={Calendar} iconColor="violet" glow="violet">
+            <div className="flex flex-col gap-0">
+              {drawdown.map((d, i) => {
+                const pct = (d.cumulative_m / 443) * 100
+                const sty = DRAWDOWN_STATUS_STYLE[d.status] ?? DRAWDOWN_STATUS_STYLE.pending
+                return (
+                  <div
+                    key={d.milestone}
+                    className={`flex items-center gap-3 py-2.5 ${i > 0 ? 'border-t' : ''}`}
+                    style={i > 0 ? { borderTopColor: W.glass06 } : undefined}
+                  >
+                    <div className="relative flex h-6 w-6 shrink-0 items-center justify-center">
+                      <span
+                        className="absolute h-full w-full rounded-full"
+                        style={{ background: sty.bg }}
+                      />
+                      <span
+                        className="relative h-2 w-2 rounded-full"
+                        style={{ background: sty.text }}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-[11px] font-semibold text-[var(--w-text2)]">{d.milestone}</span>
+                        <span className={`${ty.mono} shrink-0 text-[10px] text-[var(--w-text4)]`}>
+                          ${d.amount_m}M
+                        </span>
+                      </div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <div className="h-1 flex-1 overflow-hidden rounded-full" style={{ background: W.glass06 }}>
+                          <div
+                            className="h-full rounded-full"
+                            style={{
+                              width: `${pct}%`,
+                              background: `linear-gradient(90deg, ${W.violet}80, ${W.violet})`,
+                            }}
+                          />
+                        </div>
+                        <span className="shrink-0 text-[9px] text-[var(--w-text4)]">
+                          ${d.cumulative_m}M / $443M
+                        </span>
+                      </div>
+                    </div>
+                    <span className={`${ty.mono} shrink-0 text-[10px] text-[var(--w-text4)]`}>
+                      {d.target_date.replace(/-/g, '.')}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </ExecutiveCard>
+        )}
       </div>
     </div>
   )

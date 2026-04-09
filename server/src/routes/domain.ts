@@ -29,6 +29,12 @@ export async function domainRoutes(app: FastifyInstance) {
   /* ─── Pipeline & Capital ────────────────────────────────────────────── */
   app.get('/api/offtakers', { schema: { tags: ['domain'], summary: 'Off-taker pipeline' } }, async () => getDomainState('offtakers') ?? [])
   app.get('/api/capital', { schema: { tags: ['domain'], summary: 'Capital tracker' } }, async () => getDomainState('capital') ?? {})
+  app.get('/api/capital/dscr', { schema: { tags: ['domain'], summary: 'DSCR projections (bear/consensus/bull × 10yr LOM)' } }, async () => getDomainState('dscr_projections') ?? [])
+  app.get('/api/capital/drawdown', { schema: { tags: ['domain'], summary: 'Drawdown schedule milestones' } }, async () => getDomainState('drawdown_schedule') ?? [])
+
+  /* ─── Pricing & Market Sizing ─────────────────────────────────────────── */
+  app.get('/api/pricing', { schema: { tags: ['domain'], summary: 'Pricing model: tiers, cost components, TCO' } }, async () => getDomainState('pricing_model') ?? {})
+  app.get('/api/market-sizing', { schema: { tags: ['domain'], summary: 'TAM/SAM/SOM with analyst report citations' } }, async () => getDomainState('market_sizing') ?? {})
 
   /* ─── DFS & Regulatory ──────────────────────────────────────────────── */
   app.get('/api/dfs/workstreams', { schema: { tags: ['domain'], summary: 'DFS workstreams progress' } }, async () => getDomainState('dfs_workstreams') ?? [])

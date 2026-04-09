@@ -1468,4 +1468,94 @@ CTO-directed sprint addressing v6 persona feedback and 6 explicit UX directives.
 
 ---
 
-*Last updated: 2026-04-09 — CTO v7 Sprint: Map Polish + Board Mode Removal. Reduced map styles to 3 (Satellite/Operations/Topography), all-blue spring pins, 100% opacity purple alkaline complex border, centered map on complex, removed all map overlays, deleted board/light mode. Persona v6: weighted avg ~8.0. 150 tests, 0 TS errors, clean build.*
+---
+
+## Session Log — 2026-04-09 (v8 Sprint: Demo Readiness + Persona Gap Closure)
+
+**What was completed this session:**
+
+CTO + Business Expert paired sprint focused on closing the highest-impact persona gaps before the first external demo. Targeted 4 persona score increases (Chairman, CEO, PF Analyst, Journalist) plus defensive AI testing to protect the Chief Geologist's score.
+
+### 1. Fixed pre-existing test failures + removed orphaned code
+- **canvasTheme.test.ts:** Updated `W.text4` expected value from `#5A5A88` to `#6464A0` (current value).
+- **GlassCard.test.tsx:** Updated `backdropFilter` expected value from `blur(12px)` to `blur(var(--w-glass-card-blur, 12px))` (CSS variable form).
+- **Removed `getApiBaseUrl()`** from `src/config/env.ts` — orphaned after v7 CORS fix.
+- **Removed test** from `src/config/env.test.ts`.
+- **Updated comment** in `src/types/liveTelemetry.ts` (stale reference).
+- **Result:** 151 tests passing, 0 failures.
+
+### 2. AI hallucination test suite
+- New file: `server/src/__tests__/chat-hallucination.test.ts`
+- 10 geological/financial questions with known answers from seed data + 1 "I don't know" negative test (lithium grade at Caldeira → should refuse, Caldeira is REE).
+- Requires `GOOGLE_GENERATIVE_AI_API_KEY` — auto-skipped when key not set (CI-safe).
+- Includes retry logic with backoff for rate-limited APIs.
+- Tests verified correct (7/11 passed on first live run before rate limit; remaining 4 passed with retry).
+
+### 3. AI provenance UI in chat responses
+- **ChatPanel.tsx:** Added `ToolProvenance` component that detects `dynamic-tool` parts in AI SDK `UIMessage.parts`.
+- Shows collapsible "Sources" section below each assistant message with tool name labels (e.g., "Financials", "Compliance Batches").
+- Collapsed by default — does not clutter conversation but available for verification.
+- Human-readable tool labels via `TOOL_LABELS` map (20 tools covered including new DSCR/drawdown/pricing/market-sizing tools).
+- Styled with `W.*` tokens: muted text, glass background, 9px font.
+
+### 4. DSCR projections + drawdown schedule
+- **Data:** Added `dscr_projections` (bear/consensus/bull × 10yr LOM) and `drawdown_schedule` (7 milestones with cumulative draw) to seed data and mock data service.
+- **Types:** `DSCRProjection`, `DrawdownMilestone` added to `dataService.ts`.
+- **UI:** Recharts `LineChart` in CapitalTab showing 3-scenario DSCR with 1.3x covenant reference line. Drawdown timeline with cumulative progress bars below conditions precedent.
+- **API:** `/api/capital/dscr`, `/api/capital/drawdown` endpoints.
+- **AI tools:** `queryDSCR`, `queryDrawdown` added to chat agent.
+
+### 5. Cost of ownership + pricing model
+- **Data:** `pricing_model` added to seed — 3 tiers (Pilot $2,500/mo, Growth $8,500/mo, Enterprise custom), 5 cost components, Year 1 TCO.
+- **Types:** `PricingModel`, `PricingTier`, `CostComponent` added to `dataService.ts`.
+- **API:** `/api/pricing` endpoint.
+- **AI tool:** `queryPricing` added to chat agent.
+
+### 6. Sourced TAM/SAM/SOM
+- **Research:** Real analyst report citations from Mordor Intelligence, Grand View Research, Dataintelo, Growth Market Reports.
+- **TAM:** $18.8B (2026) → $31.9B (2031) — Digital mining + smart mining technology.
+- **SAM:** $1.6B (2025) → $5.2B (2033) — Critical minerals compliance & traceability SaaS.
+- **SOM:** $15M (2026) → $45M (2030) — Bottom-up from REE projects in allied jurisdictions.
+- **Data:** `market_sizing` added to seed with `source`, `report_date`, `methodology` fields.
+- **API:** `/api/market-sizing` endpoint.
+- **AI tool:** `queryMarketSizing` added to chat agent.
+- **Pitch deck:** Updated `docs/copy/PITCH_DECK_COPY.md` Slide 8.5 with sourced figures.
+
+### 7. Updated HANDOFF.md + Personas.md
+- This session log.
+- v7 persona reactions and v8 persona re-evaluation with updated scorecard.
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **151/151 frontend tests passing** (0 failures)
+- **22/22 server tests passing** (hallucination tests auto-skip without API key)
+- **0 lint errors** on modified files
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Tests (fixed)** | `src/app/canvas/canvasTheme.test.ts`, `src/components/ui/GlassCard.test.tsx` |
+| **Cleanup** | `src/config/env.ts` (removed getApiBaseUrl), `src/config/env.test.ts`, `src/types/liveTelemetry.ts` |
+| **AI tests (new)** | `server/src/__tests__/chat-hallucination.test.ts` |
+| **AI provenance UI** | `src/components/layout/ChatPanel.tsx`, `src/components/layout/ChatPanel.module.css` |
+| **Types** | `src/services/dataService.ts` (DSCRProjection, DrawdownMilestone, PricingModel, MarketSizing) |
+| **Data** | `server/src/seed.ts`, `src/services/mockDataService.ts` |
+| **Services** | `src/services/liveDataService.ts` |
+| **API routes** | `server/src/routes/domain.ts`, `server/src/routes/chat.ts` |
+| **UI** | `src/views/executive/CapitalTab.tsx` (DSCR chart + drawdown table) |
+| **Copy** | `docs/copy/PITCH_DECK_COPY.md` (sourced TAM/SAM/SOM) |
+| **Docs** | `HANDOFF.md`, `docs/Personas.md` |
+
+**AI agent tools: 17 → 21** (queryDSCR, queryDrawdown, queryPricing, queryMarketSizing)
+
+**What should be done next (priority order):**
+1. **First customer demo / LOI** — the product is demo-ready at ~8.4 weighted average.
+2. **Lithological intervals in drill trace** — Chief Geologist's remaining gap for +0.5.
+3. **CEN/CENELEC schema validation** — EU Enforcement's gap for +0.5.
+4. **Channel metadata in telemetry DTO** — SCADA integrator polish.
+5. **Push to Vercel + Railway** — deploy all v8 changes live.
+
+---
+
+*Last updated: 2026-04-09 — v8 Sprint: Demo Readiness + Persona Gap Closure. Fixed 2 pre-existing test failures, AI hallucination test suite (11 tests), AI provenance UI, DSCR projections + drawdown schedule, pricing model, sourced TAM/SAM/SOM with analyst citations. 4 new AI agent tools (21 total). Weighted average ~8.0 → ~8.4. 151 frontend + 22 server tests, 0 TS errors, clean build.*

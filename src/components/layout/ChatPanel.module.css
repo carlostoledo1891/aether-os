@@ -166,6 +166,74 @@
   border: 1px solid rgba(64, 209, 169, 0.25);
 }
 
+/* Provenance (tool-call sources) */
+.provenanceSection {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--w-glass08, rgba(255 255 255 / 0.04));
+}
+
+.provenanceToggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 2px 0;
+  cursor: pointer;
+  color: var(--w-text4);
+  font-size: 9px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  text-align: left;
+}
+
+.provenanceToggle:hover { color: var(--w-text3); }
+
+.provenanceLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.provenanceDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 4px;
+  padding: 4px 6px;
+  background: var(--w-glass04);
+  border-radius: var(--w-radius-xs, 4px);
+}
+
+.provenanceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.provenanceToolName {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--w-text3);
+}
+
+.provenanceOutput {
+  font-size: 8px;
+  color: var(--w-text4);
+  line-height: 1.4;
+  word-break: break-all;
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.provenanceError {
+  font-size: 8px;
+  color: var(--w-red, #FF4D4D);
+}
+
 .emptyState {
   display: flex;
   flex-direction: column;

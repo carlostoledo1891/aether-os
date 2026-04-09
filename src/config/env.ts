@@ -10,11 +10,6 @@ export function getDataMode(): DataMode {
   return m === 'live' ? 'live' : 'mock'
 }
 
-export function getApiBaseUrl(): string | undefined {
-  const u = import.meta.env.VITE_API_BASE_URL as string | undefined
-  return u && u.trim() !== '' ? u.trim() : undefined
-}
-
 export function getWsUrl(): string | undefined {
   const u = import.meta.env.VITE_WS_URL as string | undefined
   return u && u.trim() !== '' ? u.trim() : undefined

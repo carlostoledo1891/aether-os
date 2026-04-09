@@ -100,6 +100,70 @@ export interface CapitalSnapshot {
   monthly_spend: { month: string; budget_m: number; actual_m: number }[]
 }
 
+/* ─── Market Sizing ────────────────────────────────────────────────────── */
+export interface MarketSizingTier {
+  label: string
+  value_usd_b?: number
+  value_usd_m?: number
+  year: number
+  forecast_usd_b?: number
+  forecast_usd_m?: number
+  forecast_year: number
+  cagr_pct?: number
+  source: string
+  report_date: string
+  methodology: string
+}
+
+export interface MarketSizing {
+  tam: MarketSizingTier
+  sam: MarketSizingTier
+  som: MarketSizingTier
+}
+
+/* ─── Pricing Model ────────────────────────────────────────────────────── */
+export interface PricingTier {
+  name: string
+  price_usd_mo: number | null
+  includes: string
+  target: string
+}
+
+export interface CostComponent {
+  component: string
+  est_mo: number
+  notes: string
+}
+
+export interface PricingModel {
+  model_type: string
+  tiers: PricingTier[]
+  cost_components: CostComponent[]
+  tco_year1: {
+    pilot_usd: number
+    growth_usd: number
+    enterprise_usd: string
+    note: string
+  }
+}
+
+/* ─── DSCR & Drawdown ──────────────────────────────────────────────────── */
+export interface DSCRProjection {
+  year: number
+  bear: number
+  consensus: number
+  bull: number
+}
+
+export interface DrawdownMilestone {
+  milestone: string
+  target_date: string
+  amount_m: number
+  cumulative_m: number
+  status: 'completed' | 'in_progress' | 'pending'
+  cp_ref: string | null
+}
+
 /* ─── DFS & Regulatory ──────────────────────────────────────────────────── */
 export interface DFSWorkstream {
   id: string
@@ -354,6 +418,10 @@ export interface AetherDataService {
 
   getOfftakerPipeline(): MaybeAsync<OfftakerRecord[]>
   getCapitalSnapshot(): MaybeAsync<CapitalSnapshot>
+  getDSCRProjections(): MaybeAsync<DSCRProjection[]>
+  getDrawdownSchedule(): MaybeAsync<DrawdownMilestone[]>
+  getPricingModel(): MaybeAsync<PricingModel>
+  getMarketSizing(): MaybeAsync<MarketSizing>
   getDFSWorkstreams(): MaybeAsync<DFSWorkstream[]>
   getRegulatoryLog(): MaybeAsync<RegulatoryEntry[]>
 
