@@ -10,33 +10,40 @@ export type { MapLayerMouseEvent }
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY as string
 const HAS_TILER = !!(MAPTILER_KEY && MAPTILER_KEY !== 'your_maptiler_key_here')
 
-type MapStyleId = 'satellite' | 'topo' | 'dataviz' | 'streets'
+type MapStyleId = 'satellite' | 'operations' | 'topo'
 
 const MAP_STYLE_DEFS: { id: MapStyleId; label: string; url: string }[] = HAS_TILER
   ? [
-      { id: 'satellite', label: 'Satellite',  url: `https://api.maptiler.com/maps/satellite/style.json?key=${MAPTILER_KEY}` },
-      { id: 'topo',      label: 'Topo',       url: `https://api.maptiler.com/maps/topo-v2/style.json?key=${MAPTILER_KEY}` },
-      { id: 'dataviz',   label: 'Dataviz',    url: `https://api.maptiler.com/maps/dataviz-v4-dark/style.json?key=${MAPTILER_KEY}` },
-      { id: 'streets',   label: 'Operations', url: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}` },
+      { id: 'satellite',  label: 'Satellite',   url: `https://api.maptiler.com/maps/satellite/style.json?key=${MAPTILER_KEY}` },
+      { id: 'operations', label: 'Operations',  url: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}` },
+      { id: 'topo',       label: 'Topography',  url: `https://api.maptiler.com/maps/topo-v2/style.json?key=${MAPTILER_KEY}` },
     ]
   : [
-      { id: 'dataviz', label: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
+      { id: 'operations', label: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
     ]
 
 const STORAGE_KEY = 'vero-map-style'
 
+const LEGACY_STYLE_MAP: Record<string, MapStyleId> = {
+  dataviz: 'operations', streets: 'operations', hybrid: 'satellite',
+}
+
 function getInitialStyle(): MapStyleId {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY) as MapStyleId | null
-    if (saved && MAP_STYLE_DEFS.some(d => d.id === saved)) return saved
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      if (MAP_STYLE_DEFS.some(d => d.id === saved)) return saved as MapStyleId
+      const mapped = LEGACY_STYLE_MAP[saved]
+      if (mapped) return mapped
+    }
   } catch { /* SSR / private browsing */ }
   return MAP_STYLE_DEFS[0].id
 }
 
-/** Default framing: Caldeira project polygon centroid — regional context (Andradas / Caldas / S.J. Boa Vista margins) */
+/** Default framing: Poços de Caldas Alkaline Complex centroid */
 export const FIELD_VIEW_STATE = {
-  longitude: -46.52,
-  latitude:  -21.91,
+  longitude: -46.555,
+  latitude:  -21.907,
   zoom:       10.98,
   pitch:      0,
   bearing:    0,
@@ -108,7 +115,7 @@ function StyleController({
         map.setTerrain({ source: 'terrain-dem', exaggeration: 1.4 } as never)
       }
 
-      const isDark = activeStyleId === 'dataviz' || activeStyleId === 'streets'
+      const isDark = activeStyleId === 'operations'
 
       if (isDark) {
         if (has('background')) {
@@ -259,24 +266,6 @@ export function MapBase({
   onClick,
 }: MapBaseProps) {
   const [styleId, setStyleId] = useState<MapStyleId>(getInitialStyle)
-
-  useEffect(() => {
-    const theme = document.documentElement.getAttribute('data-theme')
-    if (theme === 'board' && MAP_STYLE_DEFS.some(d => d.id === 'streets')) {
-      setStyleId('streets')
-    }
-  }, [])
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const theme = document.documentElement.getAttribute('data-theme')
-      if (theme === 'board' && MAP_STYLE_DEFS.some(d => d.id === 'streets')) {
-        setStyleId('streets')
-      }
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
 
   const styleUrl = MAP_STYLE_DEFS.find(d => d.id === styleId)?.url ?? MAP_STYLE_DEFS[0].url
 

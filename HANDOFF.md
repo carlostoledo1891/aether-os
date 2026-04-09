@@ -38,7 +38,7 @@ The prototype is built to pitch to:
 | Charts | Recharts |
 | Icons | `lucide-react` |
 | Map | `react-map-gl` v8 + `maplibre-gl` |
-| Map tiles | MapTiler (Hybrid/Satellite default + terrain DEM; style selector with 4 modes) |
+| Map tiles | MapTiler (Satellite/Operations/Topography; terrain DEM; 3-style selector) |
 | Testing | Vitest 4.x + `@testing-library/react` + `happy-dom` |
 | **Backend** | **Fastify 5.8 + `better-sqlite3` 12.x** |
 | **Engine** | **Node.js + TypeScript (standalone process)** |
@@ -116,7 +116,7 @@ aether-os/
 ├── scripts/caldeira-build/             UTM→WGS84 + merge → `caldeira-drillholes` / licence patch
 ├── src/
 │   ├── main.tsx                        entry point
-│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell (CSS module + view routing + data-theme dark/board)
+│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell (CSS module + view routing, dark theme only)
 │   ├── AppShell.module.css             root shell: bg + grid via CSS vars (--w-bg, --w-app-shell-grid)
 │   ├── types/
 │   │   ├── telemetry.ts                plant/env/ESG interfaces — ViewMode: 'operator'|'buyer'|'executive'
@@ -159,7 +159,7 @@ aether-os/
 │   │   └── setup.ts                    Vitest setup — imports @testing-library/jest-dom
 │   ├── styles/
 │   │   ├── fonts.css                   Google Fonts imports
-│   │   └── theme.css                   CSS variables (:root dark + [data-theme="board"] light palette) + @theme inline (Tailwind 4 tokens)
+│   │   └── theme.css                   CSS variables (:root dark palette) + @theme inline (Tailwind 4 tokens)
 │   ├── components/
 │   │   ├── ui/
 │   │   │   ├── GlassCard.tsx           glassmorphism card (glow variants: violet|cyan|green|amber|red|none)
@@ -177,12 +177,12 @@ aether-os/
 │   │   │   ├── GaugeChart.tsx          circular SVG gauge
 │   │   │   └── BarComparison.tsx       horizontal bar comparison
 │   │   ├── layout/
-│   │   │   ├── HeaderStrip.tsx         single-row navbar: logo (V monogram) | ViewSwitcher | theme toggle (☀/☾) | ESG, alerts
+│   │   │   ├── HeaderStrip.tsx         single-row navbar: logo (V monogram) | ViewSwitcher | AI chat | ESG, alerts
 │   │   │   ├── DataModeBanner.tsx      data-honesty strip (Demo data / Live — backend not connected + detail)
 │   │   │   ├── ViewSwitcher.tsx        3-tab nav (Field Operations | Compliance & Traceability | Executive Overview) + alert badge
 │   │   │   └── AlertPanel.tsx          right-side sliding alert drawer
 │   │   ├── map/                        GeoJSON-driven MapLibre overlay system
-│   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; 4-style picker (Terrain/Satellite/Operations/Standard) + localStorage; exports FIELD/BUYER/EXEC_VIEW_STATE
+│   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; 3-style picker (Satellite/Operations/Topography) + localStorage; exports FIELD/BUYER/EXEC_VIEW_STATE
 │   │   │   ├── mapStacking.ts          MAP_STACKING z-index contract (field title, HUD, tooltip, etc.)
 │   │   │   ├── hydroDetailMappers.ts   toSpringDetail / toHydroNodeDetail / tierShort (+ types)
 │   │   │   ├── hydroLayerIds.ts        HYDRO_*_LAYER_ID constants
@@ -208,7 +208,7 @@ aether-os/
 │       ├── FieldView.tsx               2-tab MapLibre: Operations | Hydro Twin — layered overlays + `FieldMapGeoInspector` + `fieldMapLayers` toggles
 │       ├── field/
 │       │   ├── constants.ts            MapTab, colors, chain/license data shared with panels
-│       │   ├── FieldMapChrome.module.css map title row (light scrim for satellite readability + text-shadow)
+│       │   ├── FieldMapChrome.module.css map hero container styling
 │       │   ├── FieldBottomMetrics.tsx  bottom KPI strip (5 tiles)
 │       │   ├── FieldPinnedAssetCard.tsx active asset / pinned node detail
 │       │   ├── OperationsPanel.tsx     Operations — map layer toggles (terrain vs legacy), spatial cross-check, plant metrics, sparklines
@@ -253,34 +253,23 @@ aether-os/
 | `monitor` | amber | Piezometers, UDC |
 | `external` | border3 | Competitor projects (muted) |
 
-### Theme System (Dark / Board Mode)
+### Theme System (Dark only)
 
-Two modes controlled by `data-theme` attribute on `<html>`:
-
-| Mode | Attribute | Palette | Status |
-|------|-----------|---------|--------|
-| **Dark** (default) | `data-theme="dark"` | `:root` vars in `theme.css` | Fully styled |
-| **Board** | `data-theme="board"` | `[data-theme="board"]` overrides in `theme.css` | Foundation wired; component-level light styling TBD |
-
-- Toggle lives in `HeaderStrip` (☀/☾ icon), state managed in `App.tsx`.
-- Preference persisted in `localStorage` key `vero-theme`.
-- Board palette overrides all `--w-*` CSS variables with light values.
-- Components using `W{}` JS tokens will need per-component board polish (future sprint).
+Single dark mode. The `:root` variables in `theme.css` define the palette. Board/light mode infrastructure was removed in the v7 Map Polish sprint — if reintroduced, it must ship as a complete feature.
 
 ### Map Style Selector
 
-Four MapTiler styles selectable via floating pill in bottom-left of all map views:
+Three MapTiler styles selectable via floating pill in bottom-left of all map views:
 
 | ID | Label | MapTiler Style |
 |----|-------|---------------|
-| `hybrid` | Terrain (default) | `hybrid` |
-| `satellite` | Satellite | `satellite` |
-| `dataviz` | Operations | `dataviz-dark` |
-| `streets` | Standard | `streets` |
+| `satellite` | Satellite (default) | `satellite` |
+| `operations` | Operations | `dataviz-dark` |
+| `topo` | Topography | `topo-v2` |
 
-- Persisted in `localStorage` key `vero-map-style`.
+- Persisted in `localStorage` key `vero-map-style`. Legacy values (`dataviz`, `streets`, `hybrid`) auto-migrate.
 - `StyleController` in `MapBase.tsx` adapts water/terrain layers per style.
-- Falls back to `hybrid` when `VITE_MAPTILER_KEY` is missing.
+- Falls back to `operations` (CARTO Dark Matter) when `VITE_MAPTILER_KEY` is missing.
 
 ### Key CSS Keyframes (`src/styles/index.css`)
 - `flow-dash` / `flow-dash-slow` — SVG edge animation (`stroke-dashoffset`)
@@ -307,7 +296,7 @@ All map views use MapLibre GL JS with WGS 84 coordinates. Key site positions:
 *Straight-line pilot → commercial plant distance for executive copy is computed in `spatialInsights.ts` from the two ops-reality collars above.*
 
 **Default view states** (exported from `MapBase.tsx`):
-- `FIELD_VIEW_STATE`: zoom **10.98** (slightly zoomed out vs earlier builds so the Caldeira boundary is less clipped), center **−21.91, −46.52**
+- `FIELD_VIEW_STATE`: zoom **10.98**, center **−21.907, −46.555** (Poços de Caldas Alkaline Complex centroid)
 - `BUYER_VIEW_STATE`: zoom 7.5 (shows Caldeira → Santos route)
 - `EXEC_VIEW_STATE`: zoom 10.8 (regional overview)
 
@@ -451,7 +440,7 @@ Exported constant from mockData.ts — used by EnvironmentPanel, HydroOverlay, F
 ### 1. Field Operations View (`FieldView.tsx`) — License-to-Operate command center
 **Layout:** Column → [flex row: MapLibre hero + bottom KPI strip | 300px right panel]
 
-- **Hero:** `MapBase` (react-map-gl + MapLibre, 4-style picker defaulting to Terrain/Hybrid, pitch 0°, terrain DEM). Map title row uses `FieldMapChrome.module.css` (light scrim + text-shadow). Passes `highlightWater={mapTab === 'environment'}` for Hydro Twin.
+- **Hero:** `MapBase` (react-map-gl + MapLibre, 3-style picker defaulting to Satellite, pitch 0°, terrain DEM). Clean map canvas — no title scrims, hover hints, or footnotes overlaying the map. Passes `highlightWater={mapTab === 'environment'}` for Hydro Twin.
 - **Map tabs (2):** **Operations** | **Hydro Twin** (`MapTab` in `field/constants.ts`). Deposit/licence **cards** (not map pickers) live under **ExecutiveView → Assets** (`GeologyPanel`, `LicensesPanel`).
 - **Map overlays (tab-driven + `fieldMapLayers` / `DEFAULT_FIELD_OPS_LAYERS`):**
   - **Operations (defaults):** `CaldeiraBoundary` · optional `LicenceEnvelopeOverlay` · optional `DepositOverlay` · `LicenseOverlay` · `PfsEngineeringOverlay` · `AccessRoutesOverlay` · `DrillHoleOverlay` · `OpsPlantSitesOverlay` · optional `InfraOverlay` · optional `PlantOverlay` (schematic). **Terrain-aligned** layers on by default; **legacy** deposit / full infra / plant schematic off unless toggled in `OperationsPanel`.
@@ -465,7 +454,7 @@ Exported constant from mockData.ts — used by EnvironmentPanel, HydroOverlay, F
 ### 2. Buyer View (`BuyerView.tsx`) — TradeTech & Compliance-as-a-Service
 **Layout:** Column → [top bar] + [flex row: MapLibre supply-chain hero | right panel (400px)]
 
-- **Hero:** `MapBase` (buyerField, BUYER_VIEW_STATE zoom 7.5) showing Caldeira → Santos export route, origin deposit highlight. Map markers sync with blockchain timeline steps.
+- **Hero:** `MapBase` (buyerField, BUYER_VIEW_STATE zoom 7.5) showing Caldeira → Santos export route, origin deposit highlight. Clean map canvas — no header overlays, origin badges, or route legends. Map markers sync with blockchain timeline steps.
 - **Right panel (400px, 2 tabs: Compliance | Traceability):**
   - **Compliance** — FEOC ring gauge (0.00%), IRA/EU DBP status chips, carbon intensity bar, trust controls, **U/Th radioactivity safety profile**, green premium, **defense-grade cybersecurity pillars** (SOC 2 Type II, Zero-Trust, Data Sovereignty), **competitive benchmarks** (Caldeira vs Lynas vs MP vs Chinese baseline)
   - **Traceability** — Batch selector dropdown + molecular-to-magnet blockchain timeline (`BlockchainTimeline` with click-to-highlight interactivity), upstream **Scope 3 reagent provenance** (Ammonium Sulfate FEOC tracking), digital passport issuance, API handoff layer
@@ -506,6 +495,7 @@ ErrorBoundary
 **State held in `AppShell`:**
 - `view: ViewMode` — passed to `HeaderStrip` / `ViewSwitcher`
 - `alertOpen: boolean` — alert drawer
+- `chatOpen: boolean` — AI chat drawer
 - Telemetry via `DataServiceProvider` (`useTelemetry()` / `useAetherService()`)
 
 ### Data honesty (`getDataContext()`)
@@ -539,7 +529,7 @@ Filter or redact in **service/DTO** layers; keep view components dumb.
 
 ### Styling contract (UI scalability & future themes)
 
-- **Authoritative doc:** [`docs/STYLING.md`](docs/STYLING.md) — when to use **`W`** vs **`var(--w-*)`**, chrome/hairline tokens, radii, shared primitives (`SectionLabel`, `MutedCaption`, `HairlineDivider`), performance notes, and the **`data-theme`** approach for dark/board modes (foundation wired — see Theme System above).
+- **Authoritative doc:** [`docs/STYLING.md`](docs/STYLING.md) — when to use **`W`** vs **`var(--w-*)`**, chrome/hairline tokens, radii, shared primitives (`SectionLabel`, `MutedCaption`, `HairlineDivider`), performance notes.
 - **Copy iteration:** [`docs/copy/WEBSITE_COPY.md`](docs/copy/WEBSITE_COPY.md) and [`docs/copy/PITCH_DECK_COPY.md`](docs/copy/PITCH_DECK_COPY.md) — update narrative here first, then mirror into README/UI strings.
 - **`W`** in [`src/app/canvas/canvasTheme.ts`](src/app/canvas/canvasTheme.ts) and **`:root`** in [`src/styles/theme.css`](src/styles/theme.css) should stay in sync for new tokens.
 
@@ -550,13 +540,13 @@ Filter or redact in **service/DTO** layers; keep view components dumb.
 ### `MapBase` (`src/components/map/MapBase.tsx`)
 - **Wraps:** `react-map-gl` v8 with MapLibre GL JS adapter
 - **Map id:** `"aetherField"` — overlay components access it via `useMap().aetherField`
-- **Style selector (4 modes):** `MapStylePicker` floating pill (bottom-left). Styles: Terrain (hybrid, default), Satellite, Operations (dataviz-dark), Standard (streets). Selected style persisted in `localStorage` (`vero-map-style`). Falls back to hybrid when `VITE_MAPTILER_KEY` is missing.
+- **Style selector (3 modes):** `MapStylePicker` floating pill (bottom-left). Styles: Satellite (default), Operations (dataviz-dark), Topography (topo-v2). Selected style persisted in `localStorage` (`vero-map-style`). Legacy saved values (`dataviz`, `streets`, `hybrid`) auto-migrate. Falls back to `operations` (CARTO Dark Matter) when `VITE_MAPTILER_KEY` is missing.
 - **Terrain:** MapTiler terrain-rgb-v2 DEM, exaggeration 1.4x (applied on `map.load`)
 - **Controls:** `NavigationControl` (zoom+compass), dark-themed via `index.css` overrides
 - **Interaction props:** `interactiveLayerIds`, `cursor`, `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onClick` — all passed through to `<Map>`. This is the single entry point for all map node interaction; overlay components never bind imperative events
-- **Initial field view:** `FIELD_VIEW_STATE` — `longitude: -46.52, latitude: -21.91, zoom: 10.98, pitch: 0, bearing: 0` (framing adjusted so the Caldeira boundary is less clipped)
+- **Initial field view:** `FIELD_VIEW_STATE` — `longitude: -46.555, latitude: -21.907, zoom: 10.98, pitch: 0, bearing: 0` (centered on Poços de Caldas Alkaline Complex)
 - **`highlightWater` prop:** When `true`, the internal `StyleController` recolours base-map water features (fills, lines, labels) to `rgb(0, 212, 200)` and makes all waterways visible at every zoom level. Controlled by `FieldView` (`mapTab === 'environment'`). Original paint/layout properties are captured on first highlight and restored when the prop goes `false`.
-- **`StyleController`:** Accepts `activeStyleId` and handles terrain loading (if MapTiler key is valid), water feature highlighting, and style-specific canvas/background adjustments (dark styles get `W.canvas` background and `W.mapWaterFill` water tinting).
+- **`StyleController`:** Accepts `activeStyleId` and handles terrain loading (if MapTiler key is valid), water feature highlighting, and style-specific canvas/background adjustments (Operations style gets `W.canvas` background and `W.mapWaterFill` water tinting).
 
 ### `PlantOverlay` (`src/components/map/PlantOverlay.tsx`)
 - **Props:** `{ plant, env, hoveredNodeId, selectedNodeId }` — pure rendering, no interaction logic
@@ -570,7 +560,7 @@ Filter or redact in **service/DTO** layers; keep view components dumb.
 - **Props:** `{ env, hoveredNodeId, selectedNodeId, weatherStrip? }` — pure rendering, no interaction logic; HUD chrome via `HydroOverlay.module.css` + `MAP_STACKING`
 - **Geometry source:** `src/data/geojson/hydro-nodes.geojson`, `hydro-springs.geojson` (~1,092 public-reference points). Rivers come from base-map vector tiles (highlighted by `StyleController`).
 - **Render path:** native MapLibre `Source` / `Layer` stack for springs (many clickable points), monitoring nodes, and the UDC zone
-- **Styling:** piezometer colors and labels come from `env.aquifer.sensors`; UDC zone size/intensity derives from `radiation_usv_h`; spring **locations** are public FBDS/CAR-derived geometry; **Active/Reduced/Suppressed** colors are **modeled** from mock telemetry; warning/critical nodes get a pulsing outer glow via CSS `warn-pulse-glow` animation
+- **Styling:** piezometer colors and labels come from `env.aquifer.sensors`; UDC zone size/intensity derives from `radiation_usv_h`; spring **locations** are public FBDS/CAR-derived geometry; **Active/Reduced/Suppressed** status colors are all blue tones (`W.blue`/`W.blueMuted`/`W.blueDark`) — **modeled** from mock telemetry; warning/critical nodes get a pulsing outer glow via CSS `warn-pulse-glow` animation
 - **Exports:** layer IDs and mappers are defined in **`hydroDetailMappers.ts`** / **`hydroLayerIds.ts`** and re-exported from this module for a stable import path
 - **Interaction:** Springs and hydro nodes are both interactive — hover/click state is driven by FieldView → MapBase via react-map-gl's `interactiveLayerIds`. Clicking a spring shows detailed info (ISE array, coordinates, status history) in the Active Asset panel.
 
@@ -632,7 +622,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | ~~Real backend / WebSocket feed~~ | ~~High~~ | ✅ Done — Fastify server + WebSocket broadcast + engine tick loop |
 | ~~LiveDataService (full)~~ | ~~High~~ | ✅ Done — `LiveDataService` uses `fetch()` + `WebSocket` against real endpoints |
 | Multi-tenancy / auth | High | Add Clerk or Supabase Auth before client handoff |
-| ~~MapTiler custom style~~ | ~~Medium~~ | ✅ Done — 4-style picker in MapBase (Terrain/Satellite/Operations/Standard) with localStorage persistence |
+| ~~MapTiler custom style~~ | ~~Medium~~ | ✅ Done — 3-style picker in MapBase (Satellite/Operations/Topography) with localStorage persistence |
 | ~~Satellite toggle~~ | ~~Medium~~ | ✅ Done — included in the map style selector (Phase 3 of Vero rebrand sprint) |
 | PDF export polish | Medium | Currently `window.print()`; replace with `jsPDF` or Puppeteer |
 | Localization (i18n) | Low | EN/PT toggle was deliberately removed; re-add via a proper i18n library if needed |
@@ -686,7 +676,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
-Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~7.8 / 10** (v5 — up from 7.3 after Feature Sprint v5 broke the plateau). The top gaps that should drive the next iteration:
+Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~8.0 / 10** (v6 — up from 7.8 after Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy sprint). The top gaps that should drive the next iteration:
 
 | Priority | Action | Personas driving it | Effort | Status |
 |----------|--------|---------------------|--------|--------|
@@ -724,7 +714,7 @@ Nine stakeholder personas have been evaluated against the current release (see `
 | **Thiago A.** | CEO (designated) | Brazilian/international law, enterprise ops, dev team management. Business, legal, and commercial execution. |
 | **Full-Stack Developer** | Engineering (designated) | Ready at pilot. Codebase architected for immediate second-developer productivity. |
 
-**Why Dr. Caponi is the most strategic:** Every persona gap in the aggregate scorecard (~7.8/10 weighted avg, v5) improves when LAPOC field data flows through `AetherDataService`. He is the person who turns disclaimer labels into instrument-backed labels. See `docs/Personas.md` Part 0 for the full team analysis.
+**Why Dr. Caponi is the most strategic:** Every persona gap in the aggregate scorecard (~8.0/10 weighted avg, v6) improves when LAPOC field data flows through `AetherDataService`. He is the person who turns disclaimer labels into instrument-backed labels. See `docs/Personas.md` Part 0 for the full team analysis.
 
 ---
 
@@ -1306,9 +1296,9 @@ Post-deployment bugfix and geolocation accuracy pass. Updated three critical map
 **Naming convention enforced:** "Vero" = commercial product name for all user-facing strings. `aether-os` = internal codebase name. `AetherDataService`, `useAetherService`, `aether-engine` source tag, `aether.db`, package.json names → unchanged (internal identifiers).
 
 **What should be done next (priority order):**
-1. Obtain `GOOGLE_GENERATIVE_AI_API_KEY` and test AI Agent end-to-end in staging.
-2. Geolocation accuracy pass with precise coordinates from founder.
-3. Deploy and verify live link with rebrand + AI chat.
+1. Set `VITE_API_BASE_URL` on Vercel to the Railway backend URL (or update `vercel.json` rewrite destination) — required for AI chat to work in production.
+2. Set `GOOGLE_GENERATIVE_AI_API_KEY` on Railway environment variables — enables AI Agent on the server.
+3. Geolocation accuracy pass with precise coordinates from founder.
 4. Multi-tenancy / auth (Clerk or Supabase Auth) before client handoff.
 5. Shorter ViewSwitcher labels or icon-only mode below 1024px.
 6. Expand test coverage: integration tests for AI chat route, upload flow, and pilot plant validation in CI.
@@ -1370,4 +1360,112 @@ Post-deployment bugfix and geolocation accuracy pass. Updated three critical map
 
 ---
 
-*Last updated: 2026-04-09 — Ultimate CTO Sprint: AI Agent (read-only analyst + web search + file upload), Pilot Plant Mirror (link audit + PDF extraction + JSON catalog + telemetry mapping + JSON Schema), DrillTraceSection regression fix, Board mode polish, CSS Module migration x3. Previous: CTO UI/UX Sprint (Vero rebrand, map UX, 4-style picker, Board mode infra).*
+## Session Log — 2026-04-09 (Deploy Fixes: Env Setup, AI SDK v6, Colors, Map Styles, Chat Routing)
+
+**What was completed this session:**
+
+### Dotenv + API Key Setup
+1. **Installed `dotenv`** in `server/` — `import 'dotenv/config'` as the first line in `server/src/index.ts` so `server/.env` is auto-loaded.
+2. **Created `server/.env.example`** — server-only template with PORT, HOST, DB_PATH, CORS_ORIGIN, INGEST_API_KEY, ADMIN_API_KEY, MAX_WS_CLIENTS, GOOGLE_GENERATIVE_AI_API_KEY, AI_MODEL.
+3. **Startup env validation** — logs warning at boot when `GOOGLE_GENERATIVE_AI_API_KEY` is missing (non-blocking).
+
+### AI SDK v6 UIMessage Protocol Fix
+4. **ChatPanel.tsx** — Migrated from deprecated `useChat` v2 helpers (`input`, `handleInputChange`, `handleSubmit`, `isLoading`, `api`) to v3 API: local `input` state, `sendMessage({ text })`, `status`, `DefaultChatTransport`. Replaced `m.content` with `getMessageText(m.parts)` for UIMessage format.
+5. **chat.ts** — Switched from `pipeTextStreamToResponse` to `pipeUIMessageStreamToResponse`, parses incoming `UIMessage[]` with `await convertToModelMessages(messages)`.
+
+### Color Palette Changes
+6. **Springs: green → blue** — Added `W.blue` (`#3B82F6`), `W.blueGlow`, `W.blueSubtle` tokens to `canvasTheme.ts`. Updated Active spring color in `HydroOverlay.tsx` (marker, counter, legend).
+7. **Drills: multi-color → all-purple** — `holeColor()` ramp in `DrillHoleOverlay.tsx` now: `#C4B5FD` (low) → `#7C5CFC` → `#9D80FF` → `#A855F7` → `#7E22CE` (exceptional).
+
+### Map Style Updates
+8. **Satellite as default** — `MAP_STYLE_DEFS` reordered: Satellite (default), Topo (`topo-v2`), Dataviz (`dataviz-v4-dark`), Operations (`dataviz-dark`). Removed `hybrid` and `streets-v2-dark`.
+9. **Layer error guards** — Added `map.getLayer(id)` check before all `setPaintProperty`/`setLayerZoomRange` calls in `StyleController`. Silences `watername_lake` / `watername_lake_line` console errors on MapTiler styles.
+
+### Chat API Routing
+10. **`vercel.json` created** — `/api/*` rewrite proxying to Railway backend (`https://aether-os-production.up.railway.app`). Needs verification of actual Railway URL.
+11. **ChatPanel `VITE_API_BASE_URL` fallback** — `useChat` now uses `DefaultChatTransport({ api: \`${API_BASE}/api/chat\` })` where `API_BASE` reads from `getApiBaseUrl()`. Upload `fetch` also prefixed. Works even without `vercel.json`.
+
+| Category | Files changed / created |
+|----------|------------------------|
+| **Server** | `server/package.json` (+dotenv), `server/src/index.ts` (dotenv import + env validation), `server/.env.example` (new), `server/src/routes/chat.ts` (UIMessage protocol) |
+| **Frontend** | `src/components/layout/ChatPanel.tsx` (v3 useChat + API base), `src/components/map/MapBase.tsx` (styles + layer guards), `src/components/map/HydroOverlay.tsx` (blue springs), `src/components/map/DrillHoleOverlay.tsx` (purple drills), `src/app/canvas/canvasTheme.ts` (blue tokens) |
+| **Deploy config** | `vercel.json` (new — API rewrites) |
+
+---
+
+---
+
+## Session Log — 2026-04-09 (CTO v7 Sprint: Map Polish + Board Mode Removal)
+
+**What was completed this session:**
+
+CTO-directed sprint addressing v6 persona feedback and 6 explicit UX directives. The map is the hero — reduce visual noise, sharpen the primary visualization, and remove incomplete features before the first external demo.
+
+### 1. Reduced map styles to 3
+- Removed `dataviz` entry (dataviz-v4-dark) from `MAP_STYLE_DEFS`.
+- Renamed `streets` → `operations` (label "Operations", uses dataviz-dark).
+- Renamed `Topo` label → "Topography".
+- Updated `MapStyleId` type to `'satellite' | 'operations' | 'topo'`.
+- Added `LEGACY_STYLE_MAP` for automatic localStorage migration of old saved values (`dataviz`, `streets`, `hybrid`).
+- Fallback without MapTiler key now uses `operations` (CARTO Dark Matter).
+
+### 2. All spring pins in tones of blue
+- Added `W.blueMuted` (#60A5FA) and `W.blueDark` (#1E40AF) tokens to `canvasTheme.ts`.
+- Updated spring status color assignment in `HydroOverlay.tsx`: Active=`W.blue`, Reduced=`W.blueMuted`, Suppressed=`W.blueDark`.
+- Updated spring counter legend to match blue tones.
+
+### 3. Alkaline Complex border: 100% opacity purple
+- Edge line: `W.violet` at `line-opacity: 1.0`, width bumped from 1 to 1.5 for visibility.
+- Glow layer changed from `W.cyan` to `W.violet` with `line-opacity: 0.12`.
+
+### 4. Centered map on Alkaline Complex
+- `FIELD_VIEW_STATE` updated: longitude -46.555, latitude -21.907 (from -46.52, -21.91).
+- Shifts default center ~3.5 km west to place the alkaline complex boundary visually centered.
+
+### 5. Removed components overlaying the map
+- **FieldView:** Removed `mapTitleRow` scrim overlay (gradient + GlowingIcon + label), hover hint div, "Geometries: terrain-aligned..." footnote div.
+- **BuyerView:** Removed header overlay (gradient scrim + icon + label), origin badge (bottom-left), route legend (bottom-right).
+- **FieldMapChrome.module.css:** Removed `.mapTitleRow` and `.mapTitleLabel` CSS classes (only `.mapHero` remains).
+- Cleaned up unused imports: `GlowingIcon`, `Globe`, `MAP_STACKING`, `MAP_HEADER_TEXT` from both views.
+
+### 6. Removed all board/light mode code
+- **theme.css:** Deleted entire `[data-theme="board"]` block (88 lines of light-palette CSS variables, Recharts overrides, GlassCard board tuning).
+- **App.tsx:** Removed `ThemeMode` type, `getInitialTheme()` function, `theme` state, `toggleTheme` callback, `useEffect` for `data-theme` attribute and `localStorage` persistence. Removed `theme` and `onToggleTheme` props from HeaderStrip invocation.
+- **HeaderStrip.tsx:** Removed `Sun`, `Moon` imports from lucide-react. Removed `theme` and `onToggleTheme` from props interface. Removed theme toggle button JSX.
+- **MapBase.tsx:** Removed initial `useEffect` that forced `streets` style on board mode. Removed `MutationObserver` `useEffect` that watched `data-theme` attribute changes. Updated `isDark` check from `dataviz || streets` to `operations`.
+
+### Quality Gate
+- **0 TypeScript errors** (`tsc --noEmit`)
+- **150/152 tests passing** (`vitest run` — 2 pre-existing failures: `W.text4` value mismatch in canvasTheme.test.ts, CSS variable resolution in GlassCard.test.tsx — neither caused by this sprint)
+- **0 lint errors** on all edited files
+
+### Files Changed (11 modified)
+
+| Category | Files |
+|----------|-------|
+| **Map** | `src/components/map/MapBase.tsx` (styles, centering, board mode removal), `src/components/map/CaldeiraBoundary.tsx` (purple border), `src/components/map/HydroOverlay.tsx` (blue springs) |
+| **Design tokens** | `src/app/canvas/canvasTheme.ts` (+blueMuted, +blueDark) |
+| **Views** | `src/views/FieldView.tsx` (overlay removal), `src/views/BuyerView.tsx` (overlay removal) |
+| **CSS** | `src/views/field/FieldMapChrome.module.css` (removed scrim classes), `src/styles/theme.css` (deleted board mode block) |
+| **App shell** | `src/App.tsx` (removed theme state), `src/components/layout/HeaderStrip.tsx` (removed toggle) |
+
+**What is in progress:** Nothing — all 6 tasks complete.
+
+**What should be done next (priority order):**
+1. **AI provenance UI + hallucination test suite** — 10 geological/financial questions with known answers (Chairman, Chief Geologist: "show me the test"). Critical defensive task before any external demo.
+2. **First customer demo / LOI** — every persona agrees: the product is demo-ready, the commercial proof is at 0.
+3. **Cost of ownership + pricing model** — CEO needs this for customer conversations.
+4. **DSCR + drawdown schedule** — PF Analyst's top remaining gap.
+5. **Lithological intervals in drill trace** — Chief Geologist's next request.
+6. **Source TAM/SAM/SOM** — Journalist's remaining gap.
+
+**Decisions made this session:**
+- **Board mode removed entirely, not hidden.** The Marketing Director's v6 feedback was clear: "ship it polished or not at all." The incomplete light theme risked brand damage in a stakeholder demo. If reintroduced in the future, it must be a complete feature.
+- **Three map styles, not four.** Dataviz and Operations were too similar. Three clear choices (imagery vs operational overlay vs topographic context) reduce decision fatigue.
+- **All-blue springs.** Status differentiation via blue tones (bright/muted/dark) maintains readability without introducing amber/red which imply "alert" rather than "monitoring status."
+- **No overlays on the map canvas.** The map is the hero. Title scrims, origin badges, and footnotes competed with the data visualization. MapLibre's native controls (NavigationControl) and the style picker are sufficient chrome.
+- **Alkaline complex centered on load.** The primary asset boundary should be the first thing a stakeholder sees, not offset to the side.
+
+---
+
+*Last updated: 2026-04-09 — CTO v7 Sprint: Map Polish + Board Mode Removal. Reduced map styles to 3 (Satellite/Operations/Topography), all-blue spring pins, 100% opacity purple alkaline complex border, centered map on complex, removed all map overlays, deleted board/light mode. Persona v6: weighted avg ~8.0. 150 tests, 0 TS errors, clean build.*

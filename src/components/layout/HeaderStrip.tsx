@@ -1,4 +1,4 @@
-import { Bell, Moon, Sun, MessageSquare } from 'lucide-react'
+import { Bell, MessageSquare } from 'lucide-react'
 import type { EsgScore, ViewMode } from '../../types/telemetry'
 import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
@@ -12,8 +12,6 @@ interface HeaderStripProps {
   view: ViewMode
   onViewChange: (v: ViewMode) => void
   disclosureMode?: boolean
-  theme?: 'dark' | 'board'
-  onToggleTheme?: () => void
   onChatOpen?: () => void
 }
 
@@ -22,8 +20,6 @@ export function HeaderStrip({
   alertCount, fieldAlertCount, onAlertOpen,
   view, onViewChange,
   disclosureMode,
-  theme = 'dark',
-  onToggleTheme,
   onChatOpen,
 }: HeaderStripProps) {
   return (
@@ -78,26 +74,8 @@ export function HeaderStrip({
         <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} />
       </div>
 
-      {/* Right: theme toggle + ESG + alerts */}
+      {/* Right: ESG + chat + alerts */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-        {onToggleTheme && (
-          <button
-            type="button"
-            aria-label={theme === 'dark' ? 'Switch to board mode' : 'Switch to dark mode'}
-            onClick={onToggleTheme}
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: 32, height: 32,
-              background: W.glass04,
-              border: W.chromeBorder,
-              borderRadius: W.radius.sm, cursor: 'pointer', outline: 'none',
-            }}
-          >
-            {theme === 'dark'
-              ? <Sun size={13} style={{ color: W.text3 }} />
-              : <Moon size={13} style={{ color: W.text3 }} />}
-          </button>
-        )}
         {onChatOpen && (
           <button
             type="button"

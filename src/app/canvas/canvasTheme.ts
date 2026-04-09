@@ -25,6 +25,8 @@ export const W = {
   blue:         '#3B82F6',
   blueGlow:     'rgba(59,130,246,0.22)',
   blueSubtle:   'rgba(59,130,246,0.10)',
+  blueMuted:    '#60A5FA',
+  blueDark:     '#1E40AF',
   green:        '#22D68A',
   greenGlow:    'rgba(34,214,138,0.22)',
   greenSubtle:  'rgba(34,214,138,0.10)',

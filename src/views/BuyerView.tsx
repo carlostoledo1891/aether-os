@@ -4,7 +4,6 @@ import { ShieldCheck, FileText, Download, ChevronDown } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
 import { Marker } from 'react-map-gl/maplibre'
 import { GlassCard } from '../components/ui/GlassCard'
-import { GlowingIcon } from '../components/ui/GlowingIcon'
 import { CountdownTimer } from '../components/ui/CountdownTimer'
 import { MapBase, BUYER_VIEW_STATE } from '../components/map/MapBase'
 import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
@@ -31,11 +30,6 @@ const TAB_ITEMS: { id: BuyerTab; label: string; icon: typeof ShieldCheck; color:
 const TAB_COLOR: Record<BuyerTab, string> = {
   compliance:   W.green,
   traceability: W.cyan,
-}
-
-const MAP_HEADER_TEXT: Record<BuyerTab, string> = {
-  compliance:   'FEOC-clean chain · IRA-ready · EU Digital Battery Passport',
-  traceability: 'Molecular-to-magnet ledger · provenance · partner APIs',
 }
 
 const STEP_STATUS_COLORS: Record<string, string> = {
@@ -69,7 +63,6 @@ export function BuyerView() {
   const batch = (batches ?? [])[safeBatchIndex]
   const batchId = batch?.batch_id ?? ''
   const originDepositId = BATCH_DEPOSIT_MAP[batchId] ?? 'capao-do-mel'
-  const originDeposit = (deposits ?? []).find(d => d.id === originDepositId)
 
   function handleExport() {
     setExporting(true)
@@ -113,30 +106,6 @@ export function BuyerView() {
               transition: 'border-color 0.4s, box-shadow 0.4s',
             }}
           >
-            {/* Map header overlay */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0,
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '8px 12px',
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.15) 60%, transparent)',
-              zIndex: 10, pointerEvents: 'none',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <GlowingIcon
-                  icon={activeTab === 'compliance' ? ShieldCheck : FileText}
-                  color={activeTab === 'compliance' ? 'green' : 'cyan'}
-                  size={11}
-                />
-                <span style={{
-                  fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
-                  textTransform: 'uppercase', color: W.text3, transition: 'color 0.3s',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.8)',
-                }}>
-                  {MAP_HEADER_TEXT[activeTab]}
-                </span>
-              </div>
-            </div>
-
             <MapBase id="buyerField" initialViewState={BUYER_VIEW_STATE}>
               <CaldeiraBoundary />
               <DepositOverlay highlightId={originDepositId} />
@@ -164,47 +133,6 @@ export function BuyerView() {
               })}
             </MapBase>
 
-            {/* Origin badge */}
-            <div style={{
-              position: 'absolute', bottom: 10, left: 12, zIndex: 10,
-              display: 'flex', gap: 8, alignItems: 'center', pointerEvents: 'none',
-            }}>
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: 7,
-                padding: '5px 10px', background: W.overlay88,
-                backdropFilter: 'blur(8px)', borderRadius: W.radius.sm,
-                border: `1px solid ${W.cyan}40`,
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.cyan, boxShadow: `0 0 6px ${W.cyan}` }}/>
-                <span style={{ fontSize: 10, fontWeight: 700, color: W.cyan, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Origin</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{originDeposit?.name ?? 'Caldeira'}</span>
-                {originDeposit && (
-                  <span style={{ fontSize: 10, color: W.text3, borderLeft: `1px solid ${W.glass12}`, paddingLeft: 7 }}>
-                    {originDeposit.treo_ppm.toLocaleString()} ppm · {originDeposit.tonnage_mt} Mt
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Route legend */}
-            <div style={{
-              position: 'absolute', bottom: 10, right: 10, zIndex: 10,
-              display: 'flex', gap: 10, pointerEvents: 'none',
-              padding: '4px 10px', background: `${W.bg}CC`,
-              backdropFilter: 'blur(8px)', borderRadius: W.radius.sm,
-              border: `1px solid ${W.glass07}`,
-            }}>
-              {[
-                { color: W.amber, label: 'Deposit' },
-                { color: W.green, label: 'Plant' },
-                { color: W.cyan, label: 'Route → Santos' },
-              ].map(({ color, label }) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: color }}/>
-                  <span style={{ fontSize: 10, color: W.text3 }}>{label}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 

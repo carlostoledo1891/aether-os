@@ -28,26 +28,26 @@ export function CaldeiraBoundary() {
         }}
       />
 
-      {/* Outer glow halo — wide, soft, low opacity */}
+      {/* Outer glow halo — wide, soft violet */}
       <Layer
         id="caldeira-boundary-glow"
         type="line"
         paint={{
-          'line-color': W.cyan,
+          'line-color': W.violet,
           'line-width': 6,
-          'line-opacity': 0.10,
+          'line-opacity': 0.12,
           'line-blur': 4,
         }}
       />
 
-      {/* Solid border */}
+      {/* Solid border — full opacity purple */}
       <Layer
         id="caldeira-boundary-line"
         type="line"
         paint={{
-          'line-color': W.violetSoft,
-          'line-width': 1,
-          'line-opacity': 0.55,
+          'line-color': W.violet,
+          'line-width': 1.5,
+          'line-opacity': 1.0,
         }}
       />
     </Source>

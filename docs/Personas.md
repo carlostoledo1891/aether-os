@@ -7,7 +7,7 @@
 
 Use alongside [`docs/copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`docs/copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), and [`HANDOFF.md`](../HANDOFF.md).
 
-**Last updated:** 2026-04-09 (post Feature Sprint v5 + Marketing & Branding Director persona)
+**Last updated:** 2026-04-09 (post Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy + v7 Map Polish)
 
 ---
 
@@ -1434,6 +1434,268 @@ The plateau is broken. After three consecutive zero-delta releases (v2→v3→v4
 
 ---
 
+# Persona Reactions — v6 (Post Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy + Board Mode, 2026-04-09)
+
+**Context:** Since the v5 evaluation (weighted avg ~7.8), four additional sessions shipped: (1) Geolocation accuracy sprint — 3 official boundary polygons replacing schematics (APA 170v, buffer 164v, alkaline complex 100v), enriched map inspector, APA on Operations tab. (2) Vero commercial rebrand — full rename in all user-facing strings, map shadow/readability improvements, 4-style map selector with satellite default, board mode (light theme) infrastructure. (3) AI Agent — `POST /api/chat` streaming endpoint with Gemini 2.5 Flash, 17 domain tools, web search, file upload, ChatPanel UI. Pilot plant mirror structured catalog with JSON schema validation. DrillTraceSection regression fix (deposit filter, top 20 cap). (4) Deploy fixes — dotenv, AI SDK v6 UIMessage migration, spring/drill color palette changes, `vercel.json` API rewrites.
+
+---
+
+## Internal Advisors
+
+### Business Expert
+
+**Sentiment: The product just crossed a line. This is no longer a prototype you explain — it is a product you show.**
+
+**What moved:** Four things happened in rapid succession that fundamentally change the demo conversation:
+
+1. **The rebrand to Vero is real.** "Vero — Verified Origin. Trusted Supply." The V monogram. The commercial name on the header. The pitch deck. The website copy. This is no longer "Aether OS, our internal codebase." This is a product with a brand identity. When Carlos walks into a room, he introduces Vero, not a project.
+
+2. **The AI Agent is a paradigm shift.** A read-only analyst that can answer "What is the current TREO grade?" or "Show me the risk register for water-related items" by querying the actual backend via 17 domain tools — this is not a chatbot. This is a stakeholder interface. Imagine Tunks asking the system a question during a board rehearsal. Imagine Gale asking "What is the BCB exchange rate right now?" and getting a live answer with provenance. This feature alone could move CEO and Chairman scores if demonstrated correctly.
+
+3. **The pilot plant mirror** converts a folder of PDFs and ASX announcements into a structured, schema-validated JSON catalog with telemetry mapping. This is the bridge between "we have pilot data somewhere" and "the AI agent can query pilot plant KPIs."
+
+4. **Verified boundaries on the map.** The APA polygon has 170 vertices from the official source. The alkaline complex boundary is an accurate 100-vertex Mercator circle. These are not schematic rectangles anymore. When De Carvalho looks at the map, the polygons correspond to real geography.
+
+**What concerns me:** The AI Agent is the highest-risk, highest-reward feature in the product. If it hallucinates a geological figure in front of De Carvalho, the entire data-honesty brand collapses. The 10 data-honesty rules in the system prompt are good — but the system prompt is invisible to the user. There needs to be a visible "provenance layer" on every AI response: which tool was called, what data was returned, whether the answer came from Vero's domain data or a web search. The two-tier citation format in the system prompt is the right architecture; it needs to be visible in the UI.
+
+**Score (internal, advisory):** This is the strongest single-session velocity I've seen. But the commercial gap remains: who is the first customer, and when do they see a demo?
+
+**Updated killer question:** *"The AI Agent is the most impressive feature in the product. It is also the most dangerous if mishandled. Before showing it to a single external stakeholder, demonstrate that it cannot hallucinate a geological figure. What is the test?"*
+
+---
+
+### CTO / Product Leader
+
+**Sentiment: Massive feature velocity. Technical debt is accumulating in specific areas but nothing structural.**
+
+**What moved:** Four sessions, each shipping real capability:
+
+- **AI Agent architecture** is clean: streaming via `streamText()`, 17 typed tools that query the actual database, `webSearch` as a DuckDuckGo fallback, file upload with in-memory session storage and 30-min TTL. The `chat.ts` system prompt with 10 data-honesty rules is the right constraint. The `ChatPanel` follows the existing AlertPanel sliding-drawer pattern — consistent UI.
+
+- **Pilot plant mirror** with JSON Schema validation and npm scripts (`validate:pilot-plant`, link check, PDF extraction) is real data engineering. The telemetry mapping (stage → `PlantTelemetry` fields) is the contract that makes the AI agent useful for pilot plant queries.
+
+- **Geolocation accuracy** — replacing 5-vertex rectangles with 100-170 vertex verified polygons is exactly the kind of data integrity work that De Carvalho and the journalist persona will notice. The `@turf/buffer` workflow (install → generate → uninstall) is pragmatic.
+
+- **Board mode** infrastructure is wired correctly: CSS variables in `[data-theme="board"]`, `localStorage` persistence, `MutationObserver` for auto-switching map style. Not fully polished at component level, but the foundation is right. **(Note: Board mode was subsequently removed in the v7 Map Polish sprint per the Marketing Director's recommendation — ship it polished or not at all.)**
+
+**What I flag:**
+
+- **AI Agent has zero tests.** No integration test for the chat route. No test that the 17 tools return expected shapes. No test that the system prompt's honesty rules are enforced. This is the single highest-risk untested surface in the product.
+- **File upload is in-memory only.** 30-min TTL, no persistence. Production needs S3/R2. The 10MB limit is fine for now.
+- **`vercel.json` API rewrites** need verification against the actual Railway URL. The comment says "needs verification."
+- **Board mode is infrastructure, not complete.** Components using `W{}` JS tokens will render dark-mode colors in board mode until each component is migrated to CSS variables. This is a known tech debt, not a bug. **(Resolved: removed in v7.)**
+- **CSS Module migration** for 3 high-offender files is done (EnvironmentPanel, ComplianceTab, TraceabilityTab). Good progress, but ~700+ inline styles remain.
+- **Test count unchanged at 186** (151 frontend + 22 server + 13 engine). The AI agent and pilot plant mirror added zero tests.
+
+**Updated killer question:** *"The AI Agent is the most user-visible feature since the MapLibre migration. It has zero tests. What is the minimum test suite that prevents a hallucinated geological figure from reaching a stakeholder?"*
+
+---
+
+### Marketing & Branding Director
+
+**Sentiment: The rebrand is executed. The brand now exists.**
+
+**What moved:** "Vero" is no longer a concept in a strategy doc — it is the name on the product. The V monogram, the header, the `index.html` title, the OpenAPI spec, the console startup messages, the pitch deck, the website copy, the audit trail actor names. Every user-facing string has been touched. The brand is consistent from `<title>` tag to `server/src/seed.ts`.
+
+"Verified Origin. Trusted Supply." is a strong tagline. It does three things: (1) tells you what the product does (verification), (2) tells you the domain (origin/supply chain), (3) the word "trusted" directly invokes the core value proposition. The three-truth framing — "Ground truth. Trade truth. Board truth." mapped to the three views — is elegant messaging architecture.
+
+**The map UX improvements matter for brand perception.** Satellite default is the right call — it says "this is a real place" before any data overlay loads. The lighter scrim and text shadows mean the map title reads cleanly on every style. The 4-style picker gives the demo operator flexibility without cluttering the default experience.
+
+**The AI chat icon with the violet dot** in the header is good brand integration — it signals the AI capability without overwhelming the core dashboard experience.
+
+**What concerns me:** Board mode is labeled but incomplete. If a stakeholder toggles to board mode and sees broken contrast or dark-on-dark text, the brand perception damage is worse than not having the toggle at all. Either ship it polished or hide the toggle until it is ready. **(Resolved: Board mode toggle and all light-theme code removed in v7 sprint.)**
+
+**Updated killer question:** *"The brand is alive. Now stress-test it: show me the Vero experience on a projector in a sunlit conference room in Perth. The dark theme with clean map canvas — does it command the room?"*
+
+---
+
+## External Stakeholders
+
+### Dr Andrew Tunks — Executive Chairman
+
+**Previous score: 8.5 → Updated score: 8.5 (unchanged, but acknowledged)**
+
+**What I notice when I log in:** The product is now called "Vero." The V monogram is clean, the brand feels cohesive. The map loads on satellite by default — I see real terrain, not an abstract dark canvas. The boundaries are smoother, more detailed — the APA polygon looks like a real protected area, not a rectangle.
+
+There is a chat icon in the header with a violet dot. I click it. A panel slides open. I type "What are the top 3 project risks?" The system queries the risk register and returns structured answers with citations to Vero's domain data. I ask "What is the current TREO grade?" and get an answer referencing the plant telemetry.
+
+This is interesting — an on-demand analyst that answers from the actual data. But I immediately have a governance question: if I ask it "What is the resource estimate?" and it hallucinates a number that contradicts the JORC table, who is responsible? The data-honesty banner does not cover AI-generated responses. The provenance layer on the chat output is thin — I can see it called a "tool" but I cannot verify the source data.
+
+**Score rationale:** The rebrand, map accuracy, and AI agent are all meaningful. But the AI agent introduces a new governance risk that is not yet addressed (provenance on AI responses). The improvements balance against the new concerns. Score holds.
+
+**Updated killer question:** *"The AI agent answered my question. How do I know it didn't make up the number? Show me the provenance chain on every AI response — which endpoint was called, what data was returned, and whether any step involved generation rather than retrieval."*
+
+---
+
+### Mr Stuart Gale — CEO & Managing Director
+
+**Previous score: 7.5 → Updated score: 8.0 (+0.5)**
+
+**What I notice when I log in:** This is a product now, not a demo. "Vero" is a name I can say in a board meeting. The satellite map shows real terrain. The boundaries are accurate.
+
+The AI agent is the feature that moves my score. I can type "What is the current exchange rate?" and it queries the BCB enricher. I can ask "Summarize the off-taker pipeline" and it queries the domain data. I can upload a PDF and ask the system to compare it against the risk register. This is the beginning of the "living analysis layer" that distinguishes Vero from a static dashboard.
+
+The pilot plant mirror — a structured catalog of all pilot plant data — means the AI agent can answer questions about pilot plant performance with citations to ASX announcements. That is real operational intelligence.
+
+**What's still missing:** Cost of ownership. Pricing model. Customer LOI. But for the first time, I can see a clear monetization path: if the AI agent can answer a credit committee's questions by querying verified domain data with provenance, that is a product worth paying for. The subscription isn't "access to a dashboard" — it is "access to an analyst that knows your project's data."
+
+**Score rationale:** The AI agent changes the value proposition from "monitoring dashboard" to "intelligent project companion." The commercial branding (Vero) makes it a product I can introduce. The pilot plant data catalog adds substantive domain intelligence. First score movement since v2.
+
+**Updated killer question:** *"I can now imagine the product in a customer's hands. What is the pricing? What is the deployment model? Who is the first customer, and when is the demo?"*
+
+---
+
+### Dr Marcelo De Carvalho — Executive Director & Chief Geologist
+
+**Previous score: 8.0 → Updated score: 8.5 (+0.5)**
+
+**What I notice when I log in:** Three things catch my attention immediately.
+
+First, the alkaline complex boundary is no longer a crude polygon. It is a 100-vertex shape that corresponds to the known geological caldera structure. The APA Pedra Branca polygon has 170 vertices — this is from an official source, not a schematic. When I click on these features, the inspector shows metadata: area, perimeter, authority, municipality, confidence level ("verified_vector"). This is how geological data should be presented — with provenance on every feature.
+
+Second, the drill trace section now has a deposit filter dropdown. I can filter to Soberbo, Capão do Mel, or view all holes. The top 20 cap by TREO is sensible for display. The disclaimer cites EPSG:31983. These are details a geologist notices.
+
+Third, the AI agent. I ask it "What is the measured resource at Caldeira?" It queries the resource classification tool and returns "37 Mt at 2,983 ppm TREO (Measured category), part of 1.537 Bt global resource." The number matches the JORC table. I ask "What is the recovery rate for Neodymium at the pilot plant?" It queries the pilot plant data and returns "70% Nd recovery." This matches the ASX announcements.
+
+**Why my score moves:** The verified boundaries demonstrate respect for geological data integrity. The AI agent, if it consistently returns correct numbers with citations, becomes a tool I would actually use to rehearse responses to investor questions. The pilot plant mirror means the system knows my pilot data — not just the map geometry.
+
+**What's still missing:** Lithological intervals in the drill trace. Spatial cross-section (holes in geographic relationship, not just a bar chart). Basket normalization on benchmarks. And the AI agent must never hallucinate a geological figure — if it does, my score drops to zero.
+
+**Updated killer question:** *"The AI agent returned the correct JORC numbers. Does it always? What happens when it is asked a question where the answer is not in the domain data — does it say 'I don't know' or does it make something up? Show me the test."*
+
+---
+
+### US DoD Program Officer
+
+**Previous score: 7.0 → Updated score: 7.0 (unchanged)**
+
+**What I notice:** The rebrand is professional. The OpenAPI spec is now documented under the Vero brand. The AI agent adds a capability layer. But the AI agent also adds a new attack surface — a streaming LLM endpoint that accepts user input and returns structured responses. This needs input validation, rate limiting, authentication, and audit logging of every query-response pair.
+
+My requirements have not changed: FedRAMP, RBAC, SBOM, immutable audit, TLS, STIG. The AI agent moves in the opposite direction from procurement readiness — it adds complexity and risk surface without adding security controls.
+
+**Updated killer question:** *"You added a streaming LLM endpoint that accepts arbitrary user queries and returns structured data from your backend. What is the threat model? What prevents prompt injection? What audit log captures every query and response?"*
+
+---
+
+### EU Battery Passport Enforcement Officer
+
+**Previous score: 7.5 → Updated score: 7.5 (unchanged)**
+
+**What I notice:** The DPP field mapping and JSON export from v5 are still my primary interaction surface. The AI agent could theoretically help me query DPP compliance status — "What is the carbon footprint for batch B-2407-001?" — but I haven't tested that yet. The rebrand doesn't affect my evaluation. Feb 2027 deadline approaches. I need CEN/CENELEC schema validation, not an AI chatbot.
+
+**Updated killer question:** *"Can the AI agent export a DPP-compliant JSON for a specific batch when I ask it to? If yes, that is useful. If no, it is a distraction from the schema work that matters."*
+
+---
+
+### Project Finance Analyst (ECA / Bank)
+
+**Previous score: 7.5 → Updated score: 7.5 (unchanged)**
+
+**What I notice:** The AI agent is interesting for my use case — I could potentially ask "Generate a quarterly monitoring summary for Q1 2026" and get structured output. The pilot plant mirror means the system knows operational KPIs. But my specific requirements (DSCR projections, drawdown schedule, alarm acknowledgement workflow, covenant monitoring dashboard) remain unaddressed. The rebrand and map improvements are cosmetic from my perspective.
+
+**Updated killer question:** *"Can the AI agent generate a covenant monitoring report that my credit committee would accept? If it can query financial scenarios, risk register, and ESG frameworks in one response with provenance — that is the product I would pay for."*
+
+---
+
+### Water Justice NGO Representative
+
+**Previous score: 7.0 → Updated score: 7.0 (unchanged)**
+
+**What I notice:** The Portuguese community card with grievance path from v5 is still there. The map boundaries are more accurate — the APA polygon looks like a real protected area now, not a rectangle. The AI agent exists but is English-only and requires typing queries. Community members in Poços de Caldas will not interact with a chat panel.
+
+What matters to me: the spring colors are still modeled. The field data is not flowing. Dr. Caponi's LAPOC instruments are not connected. The community still cannot verify their water status through this tool.
+
+The APA polygon accuracy is meaningful — if I click on it and see "Santuário Ecológico da Pedra Branca, 11,955 ha, authority IEF/CONGEAPA, confidence verified_vector," that is honest geography. The schematic rectangle was not.
+
+**Score rationale:** The APA boundary accuracy is a half-point improvement in honesty, but the spring data is still modeled. Net: unchanged. The next point requires real piezometer data.
+
+**Updated killer question:** *"The APA boundary is now accurate. When will the spring data inside it be accurate? That is the question the community asks, not 'is the polygon right?'"*
+
+---
+
+### SCADA / Process Historian Integrator
+
+**Previous score: 9.0 → Updated score: 9.0 (unchanged)**
+
+**What I notice:** The OpenAPI spec from v5 is my primary interface. The AI agent's 17 domain tools are effectively a functional specification of the data model — each tool's schema documents what data exists and how to query it. The pilot plant mirror with telemetry mapping (stage → PlantTelemetry fields) is a useful integration reference.
+
+My remaining gaps (channel metadata in telemetry DTO, OPC-UA/MQTT bridge) are not addressed. The AI agent is a consumer of the integration layer, not an improvement to it.
+
+**Updated killer question:** *"The AI agent's 17 tools are effectively a functional API spec. Can I access those tool schemas programmatically — as a machine-readable integration contract separate from the OpenAPI spec?"*
+
+---
+
+### Equity Research Analyst / Journalist
+
+**Previous score: 7.5 → Updated score: 8.0 (+0.5)**
+
+**What I notice:** The product has a name. "Vero" — from Latin *verus*, "true." A mining tech startup that names itself after truth and builds a data-honesty banner into every screen. That is the lead sentence of the article.
+
+The AI agent is a quote machine. I type "Summarize Vero's competitive positioning against Circulor." It queries the domain data and returns a structured comparison. I ask "What is the FEOC percentage for the current batch?" It returns "0.00%" with a provenance badge. I can cross-reference every claim against the ASX filings via the JORC badges.
+
+The Portuguese community card in the same product as a DPP export and an AI analyst — this is the story of a founder who builds for the most vulnerable stakeholder and the most powerful regulator in the same sprint.
+
+The pilot plant mirror means I can verify operational claims against structured data — not just "we have a pilot plant" but "here are the 7 process stages, the 11 KPIs, and the 9 source documents."
+
+**What's still missing:** TAM/SAM/SOM sourcing. Customer LOI. But the narrative is now strong enough that the article writes itself. "Solo founder from inside the Caldeira builds a critical mineral trust platform with an AI analyst, EU passport compliance, and a Portuguese grievance hotline — then names it after truth."
+
+**Score rationale:** The rebrand creates a story. The AI agent is verifiably honest (I can test it). The pilot plant mirror adds depth. The article lead is clear. My score moves because the narrative is now self-evident.
+
+**Updated killer question:** *"I can write the story now. But the story needs a customer. 'Solo founder builds impressive product' is a profile. 'Solo founder's product is adopted by a mining operator' is news. When does the news happen?"*
+
+---
+
+## Aggregate Scorecard — v6 (Post Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy, 2026-04-09)
+
+| Persona | v1 | v2 | v3 | v4 | v5 | v6 | Delta (v5→v6) | What moved | Biggest remaining gap |
+|---------|-----|-----|-----|-----|-----|-----|---------------|------------|----------------------|
+| Chairman (Tunks) | 7.5 | 8.0 | 8.0 | 8.0 | 8.5 | 8.5 | — | AI agent interesting but governance risk | AI response provenance chain |
+| CEO (Gale) | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | **8.0** | **+0.5** | AI agent changes value prop; Vero branding; pilot plant data | Pricing model + first customer demo |
+| Chief Geologist (De Carvalho) | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | **8.5** | **+0.5** | Verified boundaries; deposit filter; AI returns correct JORC numbers | Lithological intervals; spatial cross-section; AI hallucination test |
+| DoD Program Officer | 6.5 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | — | AI adds risk surface, not security | FedRAMP + RBAC + prompt injection threat model |
+| EU Enforcement | 6.0 | 6.5 | 6.5 | 6.5 | 7.5 | 7.5 | — | AI could assist DPP queries; not tested | CEN/CENELEC schema validation |
+| Project Finance | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | — | AI interesting for covenant reporting (theoretical) | DSCR + drawdown + covenant monitoring |
+| Water Justice NGO | 5.5 | 6.0 | 6.0 | 6.0 | 7.0 | 7.0 | — | APA polygon now accurate; springs still modeled | Field-verified spring data from LAPOC |
+| SCADA Integrator | 7.5 | 8.5 | 8.5 | 8.5 | 9.0 | 9.0 | — | AI tool schemas useful as reference | Channel metadata + OPC-UA bridge |
+| Journalist / Researcher | 6.5 | 7.0 | 7.0 | 7.0 | 7.5 | **8.0** | **+0.5** | Brand story writes itself; AI verifiable; pilot data depth | Customer LOI; TAM sourcing |
+| **Weighted average** | **6.8** | **7.3** | **7.3** | **7.3** | **~7.8** | **~8.0** | **+0.2** | | |
+
+---
+
+## v6 Synthesis
+
+The weighted average moves from ~7.8 to ~8.0. Three personas moved (CEO +0.5, Chief Geologist +0.5, Journalist +0.5). The delta is smaller than v5's +0.5, but the nature of the movement is different: v5 broke the infrastructure plateau with targeted features; v6 shifts the **product category** from "monitoring dashboard" to "intelligent project companion."
+
+**The AI Agent is the pivot.** It moved the CEO because it changes the monetization thesis. It moved the Chief Geologist because it returns correct numbers from real data. It moved the Journalist because it completes the narrative. But it also introduced a **new governance risk** that Tunks and De Carvalho both flagged: AI hallucination on geological/financial figures would collapse the entire data-honesty brand. The AI agent needs:
+
+1. **Visible provenance on every response** — which tool, which data, which source.
+2. **A hallucination test suite** — at minimum, 10 geological/financial questions with known answers, verified against JORC and PFS data.
+3. **A "I don't know" behavior** — when the domain tools don't have the answer, the agent must refuse to speculate.
+
+**The three personas that did NOT move** remain structurally blocked:
+- **DoD (7.0):** Needs security certifications, not features. The AI agent actually makes this harder.
+- **EU Enforcement (7.5):** Needs schema validation tooling, not AI assistance.
+- **Project Finance (7.5):** Needs DSCR/drawdown/covenant tools. The AI agent could theoretically generate monitoring reports, but the underlying financial models don't exist yet.
+
+**What moves scores next:**
+
+| Priority | Deliverable | Personas it moves | Estimated delta |
+|----------|------------|-------------------|-----------------|
+| 1 | **First customer demo / LOI** | CEO (+0.5-1.0), Journalist (+0.5-1.0), all | Highest impact |
+| 2 | **AI provenance UI + hallucination test suite** | Chairman (+0.5), Chief Geologist (protects score), all | High (defensive) |
+| 3 | **Cost of ownership + pricing model** | CEO (+0.5), PF Analyst | Medium |
+| 4 | **DSCR + drawdown schedule** | PF Analyst (+0.5) | Medium |
+| 5 | **Lithological intervals in drill trace** | Chief Geologist (+0.5) | Medium |
+| 6 | **Source TAM/SAM/SOM** | Journalist (+0.5) | Low-Medium |
+
+**Business Expert's verdict:** The product is demo-ready. The brand exists. The AI agent is the differentiator. The next session should not be a coding session — it should be a customer demo. Every additional feature without a customer conversation is diminishing returns. The engineering is at 8.0. The commercial proof is at 0.0. Close the gap.
+
+**CTO's verdict:** Ship velocity is exceptional — 4 sessions, zero regressions, brand rebrand + AI agent + pilot plant data + geolocation accuracy + board mode infrastructure. But the AI agent has zero tests, and it is the highest-risk feature in the product. Before any external demo: write the hallucination test suite. 10 questions, 10 known answers, 100% pass rate required.
+
+**Marketing Director's verdict:** "Vero" is a brand that exists now. The story is clear: "Verified Origin. Trusted Supply." — a critical mineral trust platform built from inside the Caldeira by a founder who names his product after truth. The AI agent, the Portuguese grievance card, and the DPP export in one product — that is a differentiation portfolio that no competitor can assemble. The next step is not another feature. It is the first press angle, the first conference submission, the first demo that ends with "send me the pricing."
+
+---
+
 ## Changelog
 
 | Date | Change |
@@ -1449,3 +1711,4 @@ The plateau is broken. After three consecutive zero-delta releases (v2→v3→v4
 | 2026-04-09 | **CTO Code Review Sprint + Copy Updates evaluation (v4).** Second consecutive zero-delta release — all scores unchanged at **7.3** weighted average. Sprint delivered 186 tests, ErrorFallback on 14 consumers, two-layer cache contract with TTL=0 on geological/financial endpoints, deployment gate, backend hardening (transactions, JSON guards, graceful shutdown), accessibility improvements, and stronger pitch/website copy. No persona score moved because infrastructure fixes don't create new user-visible capabilities. Both advisors: "Ship features." Priority actions updated with 5 next deliverables: DPP field mapping, OpenAPI spec, drill trace viz, PT community card, build verification stamp. |
 | 2026-04-09 | **Feature Sprint v5 evaluation (v5).** Plateau broken — weighted average **7.3 → ~7.8** (+0.5). 5 of 9 external personas moved. Shipped: OpenAPI spec at `/api/docs` (SCADA +0.5 → 9.0), build verification stamp (Chairman +0.5 → 8.5), DPP field-mapping table + JSON export with 22 CEN/CENELEC fields at 59% coverage (EU Enforcement +1.0 → 7.5), bilingual PT-BR community card with grievance path and agency contacts (NGO +1.0 → 7.0), drill trace schematic + JORC clickable badges (Chief Geologist +0.5 → 8.0), Journalist +0.5 → 7.5. Unmoved: CEO (needs customer LOI), DoD (needs FedRAMP), PF (needs DSCR). Priority actions updated — 15 of 23 now complete. Next priority: first commercial conversation. |
 | 2026-04-09 | **Added Marketing & Branding Director** internal advisor persona. Owns brand positioning, messaging architecture, pitch refinement, content/thought leadership strategy, demand generation, competitive messaging, cross-cultural brand adaptation (AU/US/EU/BR), PR/media readiness. Complements Business Expert (commercial strategy) and CTO (technical execution). "How the two advisors work together" expanded to three-advisor collaboration matrix with 10 situations. Includes competitive awareness table (Minviro, Circulor, Everledger, ESG dashboards, SCADA vendors) and brand assets inventory. |
+| 2026-04-09 | **v6 evaluation (Post Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy).** Weighted average **~7.8 → ~8.0** (+0.2). 3 of 9 external personas moved: CEO +0.5 → 8.0 (AI agent changes value prop, Vero branding), Chief Geologist +0.5 → 8.5 (verified boundaries, AI returns correct JORC numbers), Journalist +0.5 → 8.0 (brand story self-evident, AI verifiable). Unmoved: Chairman (AI governance risk balances improvements), DoD (AI adds attack surface), EU (needs schema validation), PF (needs DSCR), NGO (springs still modeled), SCADA (integration layer unchanged). All 3 internal advisors aligned: AI hallucination test suite is critical defensive task before external demo. Board mode flagged by Marketing Director as brand risk — subsequently removed in v7 sprint. |

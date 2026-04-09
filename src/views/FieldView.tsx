@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Globe, Layers, Settings } from 'lucide-react'
-import { GlowingIcon } from '../components/ui/GlowingIcon'
+import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
 import { MapBase } from '../components/map/MapBase'
 import type { MapLayerMouseEvent } from '../components/map/MapBase'
@@ -53,17 +52,10 @@ import {
   toLicenceEnvelopeDetail,
 } from './field/fieldMapGeoSelection'
 import fieldChrome from './field/FieldMapChrome.module.css'
-import { MAP_STACKING } from '../components/map/mapStacking'
-
 const TAB_ITEMS: { id: MapTab; label: string; icon: typeof Settings; color: string }[] = [
   { id: 'operations',  label: 'Operations', icon: Settings,    color: W.violet },
   { id: 'environment', label: 'Hydro Twin', icon: Layers,      color: W.cyan   },
 ]
-
-const MAP_HEADER_TEXT: Record<MapTab, string> = {
-  operations:  'Pilot telemetry → board-grade trust layer',
-  environment: 'Hydro Digital Twin → cumulative aquifer + spring model → LI defense',
-}
 
 const OPS_LAYER_PRIORITY = [
   OPS_PLANT_SITE_CORE_LAYER_ID,
@@ -409,17 +401,6 @@ export function FieldView() {
               transition: 'border-color 0.4s, box-shadow 0.4s',
             }}
           >
-            <div className={fieldChrome.mapTitleRow} style={{ zIndex: MAP_STACKING.fieldTitle }}>
-              <div className="flex items-center gap-1.5">
-                <GlowingIcon
-                  icon={mapTab === 'operations' ? Globe : Layers}
-                  color={mapTab === 'operations' ? 'violet' : 'cyan'}
-                  size={11}
-                />
-                <span className={fieldChrome.mapTitleLabel}>{MAP_HEADER_TEXT[mapTab]}</span>
-              </div>
-            </div>
-
             <MapBase
               interactiveLayerIds={interactiveLayerIds}
               cursor={isHovering ? 'pointer' : ''}
@@ -493,24 +474,6 @@ export function FieldView() {
               )}
             </MapBase>
 
-            {mapHoverHint && (
-              <div
-                className="pointer-events-none absolute bottom-7 left-2 z-[2] max-w-[min(280px,90%)] rounded-md px-2 py-1 font-mono text-[9px]"
-                style={{
-                  background: 'rgba(6,6,16,0.88)',
-                  border: W.chromeBorder,
-                  color: W.text3,
-                }}
-              >
-                {mapHoverHint}
-              </div>
-            )}
-            <div
-              className="pointer-events-none absolute bottom-1 left-2 z-[2] max-w-[90%] text-[8px]"
-              style={{ color: 'rgba(255,255,255,0.22)', fontFamily: 'var(--font-mono)' }}
-            >
-              Geometries: terrain-aligned ops master — see docs/data/caldeira/DATA_SOURCES.md (non-survey)
-            </div>
           </div>
 
           <FieldBottomMetrics tabKey={mapTab} items={bottomMetrics} />

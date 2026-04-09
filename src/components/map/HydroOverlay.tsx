@@ -247,7 +247,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         const status = telem?.status ?? 'Active'
         const tier = telem?.monitoring_tier ?? 'modeled_inferred'
         const circleOpacity = tierCircleOpacity(tier)
-        const color = status === 'Active' ? W.blue : status === 'Reduced' ? W.amber : W.red
+        const color = status === 'Active' ? W.blue : status === 'Reduced' ? W.blueMuted : W.blueDark
         const radius = springPinRadiusPx(status, tier)
         const lastVisit = telem?.last_field_visit
         const lastFieldVisitDisplay = lastVisit
@@ -418,8 +418,8 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
             </span>
             <div style={{ display: 'flex', gap: 6, fontSize: 9, fontFamily: 'var(--font-mono)' }}>
               <span style={{ color: W.blue }}>{springCounts.active} Active</span>
-              {springCounts.reduced > 0 && <span style={{ color: W.amber }}>{springCounts.reduced} Reduced</span>}
-              {springCounts.suppressed > 0 && <span style={{ color: W.red }}>{springCounts.suppressed} Suppressed</span>}
+              {springCounts.reduced > 0 && <span style={{ color: W.blueMuted }}>{springCounts.reduced} Reduced</span>}
+              {springCounts.suppressed > 0 && <span style={{ color: W.blueDark }}>{springCounts.suppressed} Suppressed</span>}
             </div>
           </div>
         </div>

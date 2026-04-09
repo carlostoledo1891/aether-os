@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useState, useMemo, useEffect } from 'react'
+import { lazy, Suspense, useCallback, useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
@@ -24,30 +24,10 @@ function createDataService() {
   return getDataMode() === 'live' ? createLiveDataService() : createMockDataService()
 }
 
-type ThemeMode = 'dark' | 'board'
-
-function getInitialTheme(): ThemeMode {
-  try {
-    const saved = localStorage.getItem('vero-theme') as ThemeMode | null
-    if (saved === 'dark' || saved === 'board') return saved
-  } catch { /* SSR / private browsing */ }
-  return 'dark'
-}
-
 function AppShell() {
   const [view, setView] = useState<ViewMode>('operator')
   const [alertOpen, setAlertOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
-  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme)
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    try { localStorage.setItem('vero-theme', theme) } catch { /* noop */ }
-  }, [theme])
-
-  const toggleTheme = useCallback(() => {
-    setTheme(t => t === 'dark' ? 'board' : 'dark')
-  }, [])
 
   const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
   const closeAlertPanel = useCallback(() => setAlertOpen(false), [])
@@ -69,8 +49,6 @@ function AppShell() {
         view={view}
         onViewChange={setView}
         disclosureMode={dataContext.disclosureMode}
-        theme={theme}
-        onToggleTheme={toggleTheme}
       />
       <DataModeBanner context={dataContext} />
 
