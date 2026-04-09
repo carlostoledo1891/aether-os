@@ -40,7 +40,6 @@ const STEP_STATUS_COLORS: Record<string, string> = {
 
 export function BuyerView() {
   const { data: batches } = useServiceQuery('batches', s => s.getBatches())
-  const { data: deposits } = useServiceQuery('deposit-data', s => s.getDepositData())
   const [batchIndex, setBatchIndex] = useState(0)
   const [batchDropdownOpen, setBatchDropdownOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
