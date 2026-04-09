@@ -1,3 +1,18 @@
+/**
+ * Two-layer cache architecture:
+ * - Layer 1 (authoritative): `liveDataService` — TTL per endpoint.
+ *   This is the staleness boundary. When TTL expires, the next call hits
+ *   the network. Most endpoints use 30s; geological, financial, and
+ *   resource-classification endpoints use TTL=0 (always fresh) per
+ *   De Carvalho's principle: "Never show a stale number for geology."
+ * - Layer 2 (dedup only): `useServiceQuery` — 200ms window to coalesce
+ *   identical hook mounts. NOT a freshness cache. If the dedup window
+ *   expires, a re-fetch hits Layer 1 (which may still be within its TTL).
+ *
+ * SCADA integrator contract: Layer 1 is authoritative for staleness.
+ * Layer 2 is a mount-coalescing optimization only — it never extends the
+ * freshness window beyond what Layer 1 allows.
+ */
 import { useState, useEffect, useRef } from 'react'
 import { useAetherService } from '../services/DataServiceProvider'
 import type { AetherDataService } from '../services/dataService'
@@ -15,6 +30,19 @@ const dataCache = new Map<string, { data: unknown; at: number }>()
 
 const DEDUP_WINDOW_MS = 200
 
+/** @internal Test-only — clears both dedup and inflight caches between tests. */
+export function __clearCacheForTesting(): void {
+  inflightCache.clear()
+  dataCache.clear()
+}
+
+/**
+ * Duck-type check for promise-like values.
+ * Uses `.then` property detection (not `instanceof Promise`) for cross-realm
+ * compatibility. Any object with a `.then` method will be treated as async.
+ * This is intentional -- service methods should never return plain objects
+ * with a `.then` property.
+ */
 function isThenable(val: unknown): val is Promise<unknown> {
   return val != null && typeof (val as Promise<unknown>).then === 'function'
 }
@@ -23,10 +51,29 @@ function isThenable(val: unknown): val is Promise<unknown> {
  * Hook that bridges sync (mock) and async (live) service methods.
  * Returns { data, isLoading, error } — components render safely
  * regardless of whether the service returns data immediately or via fetch.
+ *
+ * INVARIANT: `selector` is stored in a `useRef` and excluded from effect deps
+ * to prevent infinite re-renders from inline arrow functions. This means
+ * `selector` must ONLY reference stable service methods, not local variables
+ * or props that change. For selectors that depend on dynamic arguments, use
+ * `useServiceQueryWithArg` instead.
+ *
+ * @example
+ * // CORRECT — selector references only the service parameter:
+ * useServiceQuery('risks', s => s.getRiskRegister())
+ *
+ * // WRONG — selector captures `range` from component scope.
+ * // The ref pattern means the hook will silently use the INITIAL value
+ * // of `range` forever. Use useServiceQueryWithArg instead:
+ * // BAD:  useServiceQuery('history', s => s.getHistory(range))
+ * // GOOD: useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
  */
 export function useServiceQuery<T>(key: string, selector: Selector<T>): QueryState<T> {
   const service = useAetherService()
+  // INVARIANT: selector must be a stable reference to a service method.
+  // Do NOT capture local variables in the selector closure.
   const selectorRef = useRef(selector)
+  // eslint-disable-next-line react-hooks/refs -- intentional "latest ref" pattern to prevent infinite re-render loops
   selectorRef.current = selector
 
   const [state, setState] = useState<QueryState<T>>(() => {
@@ -98,10 +145,12 @@ export function useServiceQueryWithArg<T, A>(
   selector: (service: AetherDataService, arg: A) => T | Promise<T>,
 ): QueryState<T> {
   const service = useAetherService()
-  const compositeKey = `${key}:${String(arg)}`
+  const compositeKey = `${key}:${typeof arg === 'object' ? JSON.stringify(arg) : String(arg)}`
   const selectorRef = useRef(selector)
+  // eslint-disable-next-line react-hooks/refs -- intentional "latest ref" pattern (see useServiceQuery JSDoc)
   selectorRef.current = selector
   const argRef = useRef(arg)
+  // eslint-disable-next-line react-hooks/refs -- keep arg in sync for use inside effect
   argRef.current = arg
 
   const [state, setState] = useState<QueryState<T>>(() => {

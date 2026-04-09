@@ -29,6 +29,12 @@ export default defineConfig([
       ...jsxA11y.configs.recommended.rules,
       'unused-imports/no-unused-imports': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-restricted-syntax': ['warn',
+        {
+          selector: 'CallExpression[callee.name="useServiceQuery"][arguments.length>2]',
+          message: 'useServiceQuery takes (key, selector). For dynamic arguments, use useServiceQueryWithArg(key, arg, selector).',
+        },
+      ],
     },
   },
   /* Map modules export layer IDs + mappers alongside components; provider exports hooks */

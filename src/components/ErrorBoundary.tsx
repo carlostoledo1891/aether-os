@@ -58,7 +58,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 {this.state.error.message}
               </pre>
             )}
-            <button onClick={this.handleReload} style={{
+            <button type="button" onClick={this.handleReload} style={{
               padding: '8px 20px', borderRadius: W.radius.sm,
               background: W.violet, border: 'none', cursor: 'pointer',
               color: W.textInverse, fontSize: 12, fontWeight: 700,

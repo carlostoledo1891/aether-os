@@ -1,6 +1,7 @@
 import { Landmark } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { CP_STATUS_COLOR, CP_STATUS_LABEL } from './constants'
@@ -8,8 +9,9 @@ import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function CapitalTab() {
-  const { data: capital, isLoading } = useServiceQuery('capital', s => s.getCapitalSnapshot())
+  const { data: capital, isLoading, error } = useServiceQuery('capital', s => s.getCapitalSnapshot())
 
+  if (error) return <ErrorFallback error={error} label="Capital snapshot" />
   if (isLoading || !capital) {
     return <LoadingSkeleton variant="card" label="Loading capital..." />
   }

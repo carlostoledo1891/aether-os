@@ -4,6 +4,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useAetherService } from '../../services/DataServiceProvider'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { AUDIT_TYPE_COLOR, AUDIT_TYPE_LABEL } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
@@ -12,7 +13,7 @@ import ty from './executiveTypography.module.css'
 export function AuditTab() {
   const service = useAetherService()
   const dataCtx = useMemo(() => service.getDataContext(), [service])
-  const { data: auditTrail, isLoading } = useServiceQuery('audit-trail', s => s.getAuditTrail())
+  const { data: auditTrail, isLoading, error } = useServiceQuery('audit-trail', s => s.getAuditTrail())
   const [auditFilter, setAuditFilter] = useState<string>('all')
 
   const filteredAudit = useMemo(
@@ -20,6 +21,7 @@ export function AuditTab() {
     [auditTrail, auditFilter],
   )
 
+  if (error) return <ErrorFallback error={error} label="Audit trail" />
   if (isLoading || !auditTrail) {
     return <LoadingSkeleton variant="card" label="Loading audit..." />
   }

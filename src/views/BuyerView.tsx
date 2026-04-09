@@ -172,7 +172,7 @@ export function BuyerView() {
                 display: 'flex', alignItems: 'center', gap: 7,
                 padding: '5px 10px', background: W.overlay88,
                 backdropFilter: 'blur(8px)', borderRadius: W.radius.sm,
-                border: '1px solid rgba(0,212,200,0.25)',
+                border: `1px solid ${W.cyan}40`,
               }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.cyan, boxShadow: `0 0 6px ${W.cyan}` }}/>
                 <span style={{ fontSize: 10, fontWeight: 700, color: W.cyan, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Origin</span>
@@ -189,7 +189,7 @@ export function BuyerView() {
             <div style={{
               position: 'absolute', bottom: 10, right: 10, zIndex: 10,
               display: 'flex', gap: 10, pointerEvents: 'none',
-              padding: '4px 10px', background: 'rgba(6,6,16,0.80)',
+              padding: '4px 10px', background: `${W.bg}CC`,
               backdropFilter: 'blur(8px)', borderRadius: W.radius.sm,
               border: `1px solid ${W.glass07}`,
             }}>
@@ -211,7 +211,7 @@ export function BuyerView() {
         <div className={styles.rightPanel}>
           {/* Batch selector */}
           <div className={styles.batchSelectorWrap}>
-            <button onClick={() => setBatchDropdownOpen(p => !p)} style={{
+            <button type="button" onClick={() => setBatchDropdownOpen(p => !p)} style={{
               width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '7px 11px', borderRadius: W.radius.md,
               background: W.glass04, border: `1px solid ${W.glass12}`,
@@ -230,15 +230,15 @@ export function BuyerView() {
                   style={{
                     position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 30,
                     marginTop: 4, borderRadius: W.radius.md, overflow: 'hidden',
-                    background: 'rgba(13,13,28,0.96)', backdropFilter: 'blur(12px)',
+                    background: `${W.panel}F5`, backdropFilter: 'blur(12px)',
                     border: `1px solid ${W.glass12}`,
                     boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
                   }}>
                   {(batches ?? []).map((b, i) => (
-                    <button key={b.batch_id} onClick={() => { setBatchIndex(i); setBatchDropdownOpen(false); setSelectedStepIndex(null) }} style={{
+                    <button type="button" key={b.batch_id} onClick={() => { setBatchIndex(i); setBatchDropdownOpen(false); setSelectedStepIndex(null) }} style={{
                       width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                       padding: '8px 11px', border: 'none', cursor: 'pointer', outline: 'none',
-                      background: i === batchIndex ? 'rgba(124,92,252,0.12)' : 'transparent',
+                      background: i === batchIndex ? `${W.violet}1F` : 'transparent',
                       borderBottom: i < (batches ?? []).length - 1 ? W.hairlineBorder : 'none',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
@@ -258,11 +258,11 @@ export function BuyerView() {
             <div className={styles.tabSwitcherGrow}>
               <TabSwitcher items={TAB_ITEMS} active={activeTab} onSelect={setActiveTab} layoutId="buyer-tab-pill" />
             </div>
-            <button onClick={handleExport} style={{
+            <button type="button" onClick={handleExport} style={{
               display: 'flex', alignItems: 'center', gap: 5,
               padding: '6px 12px', height: '100%',
-              background: exporting ? 'rgba(34,214,138,0.15)' : W.glass04,
-              border: `1px solid ${exporting ? 'rgba(34,214,138,0.4)' : W.glass12}`,
+              background: exporting ? `${W.green}26` : W.glass04,
+              border: `1px solid ${exporting ? `${W.green}66` : W.glass12}`,
               borderRadius: W.radius.md, cursor: 'pointer', outline: 'none',
               color: exporting ? W.green : W.text2, fontSize: 10, fontWeight: 600,
               transition: 'all 0.2s', flexShrink: 0,

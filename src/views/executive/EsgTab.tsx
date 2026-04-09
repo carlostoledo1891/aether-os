@@ -3,6 +3,7 @@ import { Leaf } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { ESG_CATEGORY_COLOR, COVERAGE_STATUS_COLOR } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
 import { ExecutivePageIntro } from './ExecutivePageIntro'
@@ -17,13 +18,14 @@ function categoryToGlow(cat: string): 'cyan' | 'green' | 'violet' | 'amber' {
 }
 
 export function EsgTab() {
-  const { data: esgFrameworks, isLoading } = useServiceQuery('esg-frameworks', s => s.getESGFrameworks())
+  const { data: esgFrameworks, isLoading, error } = useServiceQuery('esg-frameworks', s => s.getESGFrameworks())
 
   const esgOverallCoverage = useMemo(() => {
     if (!esgFrameworks || esgFrameworks.length === 0) return 0
     return Math.round(esgFrameworks.reduce((sum, f) => sum + f.coverage_pct, 0) / esgFrameworks.length)
   }, [esgFrameworks])
 
+  if (error) return <ErrorFallback error={error} label="ESG frameworks" />
   if (isLoading || !esgFrameworks) {
     return <LoadingSkeleton variant="card" label="Loading ESG..." />
   }

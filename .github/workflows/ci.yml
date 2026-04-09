@@ -21,3 +21,6 @@ jobs:
       - name: Server tests
         run: |
           cd server && npm ci && npm test
+      - name: Engine tests
+        run: |
+          cd engine && npm ci && npm test

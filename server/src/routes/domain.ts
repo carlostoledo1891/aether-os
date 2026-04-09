@@ -6,62 +6,68 @@ import {
 
 export async function domainRoutes(app: FastifyInstance) {
   /* ─── Financial scenarios ───────────────────────────────────────────── */
-  app.get<{ Params: { key: string } }>('/api/financials/scenario/:key', async (req, reply) => {
+  app.get<{ Params: { key: string } }>('/api/financials/scenario/:key', {
+    schema: { tags: ['domain'], summary: 'Financial scenario by key', params: { type: 'object', properties: { key: { type: 'string', description: 'Scenario key (bear, consensus, bull)' } } } },
+  }, async (req, reply) => {
     const scenarios = getDomainState<Record<string, unknown>>('financial_scenarios')
     if (!scenarios) return reply.code(503).send({ error: 'Not seeded' })
     const s = (scenarios as Record<string, unknown>)[req.params.key]
     return s ?? reply.code(404).send({ error: 'Unknown scenario key' })
   })
 
-  app.get('/api/financials/sensitivity', async (_req, reply) => {
+  app.get('/api/financials/sensitivity', {
+    schema: { tags: ['domain'], summary: 'NPV sensitivity table' },
+  }, async (_req, reply) => {
     const data = getDomainState('sensitivity_table')
     return data ?? reply.code(503).send({ error: 'Not seeded' })
   })
 
   /* ─── Risk & Incident ───────────────────────────────────────────────── */
-  app.get('/api/risks', async () => getDomainState('risks') ?? [])
-  app.get('/api/incidents', async () => getDomainState('incidents') ?? [])
+  app.get('/api/risks', { schema: { tags: ['domain'], summary: 'Risk register' } }, async () => getDomainState('risks') ?? [])
+  app.get('/api/incidents', { schema: { tags: ['domain'], summary: 'Incident log' } }, async () => getDomainState('incidents') ?? [])
 
   /* ─── Pipeline & Capital ────────────────────────────────────────────── */
-  app.get('/api/offtakers', async () => getDomainState('offtakers') ?? [])
-  app.get('/api/capital', async () => getDomainState('capital') ?? {})
+  app.get('/api/offtakers', { schema: { tags: ['domain'], summary: 'Off-taker pipeline' } }, async () => getDomainState('offtakers') ?? [])
+  app.get('/api/capital', { schema: { tags: ['domain'], summary: 'Capital tracker' } }, async () => getDomainState('capital') ?? {})
 
   /* ─── DFS & Regulatory ──────────────────────────────────────────────── */
-  app.get('/api/dfs/workstreams', async () => getDomainState('dfs_workstreams') ?? [])
-  app.get('/api/regulatory', async () => getDomainState('regulatory_log') ?? [])
+  app.get('/api/dfs/workstreams', { schema: { tags: ['domain'], summary: 'DFS workstreams progress' } }, async () => getDomainState('dfs_workstreams') ?? [])
+  app.get('/api/regulatory', { schema: { tags: ['domain'], summary: 'Regulatory log' } }, async () => getDomainState('regulatory_log') ?? [])
 
   /* ─── Benchmarks, Audit, ESG ────────────────────────────────────────── */
-  app.get('/api/benchmarks', async () => getDomainState('benchmarks') ?? [])
-  app.get('/api/audit', async () => getDomainState('audit_trail') ?? [])
-  app.get('/api/esg', async () => getDomainState('esg_frameworks') ?? [])
+  app.get('/api/benchmarks', { schema: { tags: ['domain'], summary: 'Competitive benchmarks' } }, async () => getDomainState('benchmarks') ?? [])
+  app.get('/api/audit', { schema: { tags: ['domain'], summary: 'Audit trail events' } }, async () => getDomainState('audit_trail') ?? [])
+  app.get('/api/esg', { schema: { tags: ['domain'], summary: 'ESG framework coverage' } }, async () => getDomainState('esg_frameworks') ?? [])
 
   /* ─── Batches ───────────────────────────────────────────────────────── */
-  app.get('/api/batches', async () => getDomainState('batches') ?? [])
-  app.get<{ Params: { id: string } }>('/api/batches/:id', async (req, reply) => {
+  app.get('/api/batches', { schema: { tags: ['domain'], summary: 'All compliance batches' } }, async () => getDomainState('batches') ?? [])
+  app.get<{ Params: { id: string } }>('/api/batches/:id', {
+    schema: { tags: ['domain'], summary: 'Single batch by ID', params: { type: 'object', properties: { id: { type: 'string' } } } },
+  }, async (req, reply) => {
     const batches = getDomainState<Array<{ batch_id: string }>>('batches')
     const batch = batches?.find(b => b.batch_id === req.params.id)
     return batch ?? reply.code(404).send({ error: 'Batch not found' })
   })
 
   /* ─── Project-level static data ─────────────────────────────────────── */
-  app.get('/api/project/financials', async () => getDomainState('project_financials') ?? {})
-  app.get('/api/project/timeline', async () => getDomainState('project_timeline') ?? [])
-  app.get('/api/project/deposits', async () => getDomainState('deposit_data') ?? [])
-  app.get('/api/project/resources', async () => getDomainState('resource_classification') ?? {})
-  app.get('/api/project/hydrology', async () => getDomainState('hydrology_scenarios') ?? [])
-  app.get('/api/project/plant-performance', async () => getDomainState('plant_performance') ?? {})
-  app.get('/api/project/safety', async () => getDomainState('u_th_safety') ?? {})
-  app.get('/api/project/thresholds', async () => getDomainState('thresholds') ?? {})
-  app.get('/api/project/springs/count', async () => ({ count: getDomainState<number>('spring_count') ?? 0 }))
-  app.get('/api/project/market-prices', async () => getDomainState('market_prices') ?? {})
-  app.get('/api/project/scale-up', async () => getDomainState('scale_up_pathway') ?? {})
-  app.get('/api/project/hardware-sensors', async () => getDomainState('hardware_sensors') ?? [])
-  app.get('/api/project/cyber-pillars', async () => getDomainState('cyber_pillars') ?? [])
-  app.get('/api/project/api-handoffs', async () => getDomainState('api_handoffs') ?? [])
-  app.get('/api/project/scope3', async () => getDomainState('scope3_tracking') ?? {})
+  app.get('/api/project/financials', { schema: { tags: ['project'], summary: 'Project financials' } }, async () => getDomainState('project_financials') ?? {})
+  app.get('/api/project/timeline', { schema: { tags: ['project'], summary: 'Project timeline milestones' } }, async () => getDomainState('project_timeline') ?? [])
+  app.get('/api/project/deposits', { schema: { tags: ['project'], summary: 'Deposit data' } }, async () => getDomainState('deposit_data') ?? [])
+  app.get('/api/project/resources', { schema: { tags: ['project'], summary: 'Resource classification (JORC)' } }, async () => getDomainState('resource_classification') ?? {})
+  app.get('/api/project/hydrology', { schema: { tags: ['project'], summary: 'Hydrology scenarios' } }, async () => getDomainState('hydrology_scenarios') ?? [])
+  app.get('/api/project/plant-performance', { schema: { tags: ['project'], summary: 'Pilot plant performance' } }, async () => getDomainState('plant_performance') ?? {})
+  app.get('/api/project/safety', { schema: { tags: ['project'], summary: 'U/Th radioactivity safety profile' } }, async () => getDomainState('u_th_safety') ?? {})
+  app.get('/api/project/thresholds', { schema: { tags: ['project'], summary: 'Environmental thresholds' } }, async () => getDomainState('thresholds') ?? {})
+  app.get('/api/project/springs/count', { schema: { tags: ['project'], summary: 'Spring monitoring count', response: { 200: { type: 'object', properties: { count: { type: 'number' } } } } } }, async () => ({ count: getDomainState<number>('spring_count') ?? 0 }))
+  app.get('/api/project/market-prices', { schema: { tags: ['project'], summary: 'REE market prices' } }, async () => getDomainState('market_prices') ?? {})
+  app.get('/api/project/scale-up', { schema: { tags: ['project'], summary: 'Scale-up pathway' } }, async () => getDomainState('scale_up_pathway') ?? {})
+  app.get('/api/project/hardware-sensors', { schema: { tags: ['project'], summary: 'Hardware sensor inventory' } }, async () => getDomainState('hardware_sensors') ?? [])
+  app.get('/api/project/cyber-pillars', { schema: { tags: ['project'], summary: 'Cybersecurity trust pillars' } }, async () => getDomainState('cyber_pillars') ?? [])
+  app.get('/api/project/api-handoffs', { schema: { tags: ['project'], summary: 'API handoff contracts' } }, async () => getDomainState('api_handoffs') ?? [])
+  app.get('/api/project/scope3', { schema: { tags: ['project'], summary: 'Scope 3 emissions tracking' } }, async () => getDomainState('scope3_tracking') ?? {})
 
   /* ─── Context & Provenance (dynamic based on enricher state) ─────────── */
-  app.get('/api/context', async () => {
+  app.get('/api/context', { schema: { tags: ['domain'], summary: 'Data context (mode, banner label, active sources)' } }, async () => {
     const base = getDomainState<Record<string, unknown>>('data_context') ?? {}
     const weather = getLatestWeather()
     const fx = getMarketData('BRL/USD')
@@ -78,7 +84,7 @@ export async function domainRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get('/api/provenance', async () => {
+  app.get('/api/provenance', { schema: { tags: ['domain'], summary: 'Provenance profile with enricher-aware sections' } }, async () => {
     const base = getDomainState<{ presentationMode: boolean; sections: Record<string, { kind: string; hint: string }> }>('provenance_profile')
     if (!base) return {}
 
@@ -98,49 +104,119 @@ export async function domainRoutes(app: FastifyInstance) {
   })
 
   /* ─── Issuer & Spatial ──────────────────────────────────────────────── */
-  app.get('/api/issuer-snapshot', async () => getDomainState('issuer_snapshot') ?? {})
-  app.get('/api/spatial-insights', async () => getDomainState('spatial_insights') ?? {})
+  app.get('/api/issuer-snapshot', { schema: { tags: ['domain'], summary: 'Issuer snapshot (ASX citation)' } }, async () => getDomainState('issuer_snapshot') ?? {})
+  app.get('/api/spatial-insights', { schema: { tags: ['domain'], summary: 'Spatial insights (APA overlap, distances)' } }, async () => getDomainState('spatial_insights') ?? {})
 
   /* ─── Export bundle ─────────────────────────────────────────────────── */
-  app.get('/api/export/regulatory', async () => getDomainState('regulatory_export_bundle') ?? {})
+  app.get('/api/export/regulatory', { schema: { tags: ['export'], summary: 'Regulatory export bundle (JSON download)' } }, async () => getDomainState('regulatory_export_bundle') ?? {})
+
+  /* ─── DPP Export — EU Battery Passport schema-compliant JSON ────────── */
+  app.get<{ Params: { batchId: string } }>('/api/export/dpp/:batchId', {
+    schema: {
+      tags: ['export'],
+      summary: 'Digital Product Passport export (EU 2023/1542 schema)',
+      description: 'Generates a CEN/CENELEC-aligned DPP JSON for the given batch. Schema correctness is prioritized over data completeness — stub fields are explicitly marked.',
+      params: { type: 'object', properties: { batchId: { type: 'string' } } },
+      response: {
+        200: { type: 'object', properties: { schema_version: { type: 'string' }, regulation_ref: { type: 'string' }, export_timestamp: { type: 'string' }, batch_id: { type: 'string' }, coverage: { type: 'object' }, fields: { type: 'object' } } },
+        404: { type: 'object', properties: { error: { type: 'string' } } },
+      },
+    },
+  }, async (req, reply) => {
+    const batches = getDomainState<Array<{
+      batch_id: string; batch_date: string; tonnage_kg: number
+      feoc_percentage: number; ira_compliant: boolean
+      carbon_intensity: { value: number; tier: string; vs_chinese_baseline: number }
+    }>>('batches')
+    const batch = batches?.find(b => b.batch_id === req.params.batchId)
+    if (!batch) return reply.code(404).send({ error: 'Batch not found' })
+
+    const uThSafety = getDomainState<{ primary_mineral: string; u_th_profile: string }>('u_th_safety')
+
+    return {
+      schema_version: '0.1.0-draft',
+      regulation_ref: 'EU 2023/1542 Annex VI',
+      export_timestamp: new Date().toISOString(),
+      batch_id: batch.batch_id,
+      coverage: { mapped: 13, stub: 2, pending: 7, total: 22, pct: 59 },
+      fields: {
+        unique_battery_identifier: { value: batch.batch_id, status: 'mapped', cen_ref: 'Annex VI §1(a)' },
+        manufacturer_identification: { value: 'Meteoric Resources — Caldeira Project', status: 'mapped', cen_ref: 'Annex VI §1(b)' },
+        manufacturing_date: { value: batch.batch_date, status: 'mapped', cen_ref: 'Annex VI §1(c)' },
+        manufacturing_location: { value: 'Poços de Caldas, MG, Brazil (-21.79, -46.56)', status: 'mapped', cen_ref: 'Annex VI §1(d)' },
+        batch_weight_kg: { value: batch.tonnage_kg, status: 'mapped', cen_ref: 'Annex VI §1(e)' },
+        battery_chemistry: { value: 'NdFeB permanent magnet precursor (MREC)', status: 'mapped', cen_ref: 'Annex VI §2(a)' },
+        critical_raw_materials: { value: 'Nd, Pr, Dy, Tb (ionic clay adsorption REE)', status: 'mapped', cen_ref: 'Annex VI §2(b)' },
+        recycled_content_pct: { value: 0, status: 'mapped', cen_ref: 'Annex VI §2(c)' },
+        renewable_content_pct: { value: null, status: 'pending', cen_ref: 'Annex VI §2(d)' },
+        carbon_footprint_total: { value: batch.carbon_intensity.value, status: 'mapped', cen_ref: 'Annex VI §3(a)' },
+        carbon_footprint_lifecycle_stages: { value: null, status: 'stub', cen_ref: 'Annex VI §3(b)' },
+        carbon_footprint_class: { value: batch.carbon_intensity.tier, status: 'mapped', cen_ref: 'Annex VI §3(c)' },
+        supply_chain_due_diligence: { value: `FEOC ${batch.feoc_percentage}% — IRA ${batch.ira_compliant ? 'compliant' : 'non-compliant'}`, status: 'mapped', cen_ref: 'Annex VI §4(a)' },
+        third_party_verification: { value: null, status: 'pending', cen_ref: 'Annex VI §4(b)' },
+        country_of_origin: { value: 'Brazil', status: 'mapped', cen_ref: 'Annex VI §4(c)' },
+        feoc_compliance: { value: { feoc_pct: batch.feoc_percentage, ira_compliant: batch.ira_compliant }, status: 'mapped', cen_ref: 'IRA §45X' },
+        hazardous_substances: { value: uThSafety ? `${uThSafety.primary_mineral} — ${uThSafety.u_th_profile}` : null, status: uThSafety ? 'mapped' : 'stub', cen_ref: 'Annex VI §5(a)' },
+        heavy_metals: { value: 'Below detection limits (ionic clay process)', status: 'stub', cen_ref: 'Annex VI §5(b)' },
+        rated_capacity: { value: null, status: 'pending', cen_ref: 'Annex VI §6(a)' },
+        expected_lifetime: { value: null, status: 'pending', cen_ref: 'Annex VI §6(b)' },
+        collection_recycling_info: { value: null, status: 'pending', cen_ref: 'Annex VI §7(a)' },
+        dismantling_info: { value: null, status: 'pending', cen_ref: 'Annex VI §7(b)' },
+      },
+    }
+  })
 
   /* ─── Spring history ────────────────────────────────────────────────── */
-  app.get<{ Params: { id: string } }>('/api/springs/:id/history', async (req) => {
+  app.get<{ Params: { id: string } }>('/api/springs/:id/history', {
+    schema: { tags: ['project'], summary: 'Spring event history by ID', params: { type: 'object', properties: { id: { type: 'string' } } } },
+  }, async (req) => {
     const allEvents = getDomainState<Array<{ springId: string }>>('spring_events') ?? []
     return allEvents.filter(e => e.springId === req.params.id)
   })
 
   /* ─── Weather, Market, Seismic (from enrichers) ─────────────────────── */
-  app.get('/api/weather/current', async (_req, reply) => {
+  app.get('/api/weather/current', { schema: { tags: ['enrichers'], summary: 'Current weather (Open-Meteo)' } }, async (_req, reply) => {
     const data = getLatestWeather()
     return data ?? reply.code(503).send({ error: 'No weather data ingested' })
   })
 
-  app.get('/api/market/fx', async (_req, reply) => {
+  app.get('/api/market/fx', { schema: { tags: ['enrichers'], summary: 'BRL/USD exchange rate (BCB PTAX)' } }, async (_req, reply) => {
     const data = getMarketData('BRL/USD')
     return data ?? reply.code(503).send({ error: 'No FX data' })
   })
 
-  app.get('/api/market/stock', async (_req, reply) => {
+  app.get('/api/market/stock', { schema: { tags: ['enrichers'], summary: 'MEI.AX stock quote (Alpha Vantage)' } }, async (_req, reply) => {
     const data = getMarketData('MEI.AX')
     return data ?? reply.code(503).send({ error: 'No stock data' })
   })
 
-  app.get('/api/seismic/recent', async () => getRecentSeismic(20))
+  app.get('/api/seismic/recent', { schema: { tags: ['enrichers'], summary: 'Recent seismic events (USGS)' } }, async () => getRecentSeismic(20))
 
   /* ─── LAPOC latest ───────────────────────────────────────────────────── */
-  app.get('/api/lapoc/latest', async (_req, reply) => {
+  app.get('/api/lapoc/latest', { schema: { tags: ['enrichers'], summary: 'Latest LAPOC field instrument data' } }, async (_req, reply) => {
     const data = getDomainState('lapoc_latest')
     return data ?? reply.code(503).send({ error: 'No LAPOC data ingested' })
   })
 
-  /* ─── Alert actions ─────────────────────────────────────────────────── */
-  app.post<{ Params: { id: string } }>('/api/alerts/dismiss/:id', async (req) => {
+  /* ─── Alert actions (require API key when configured) ────────────────── */
+  const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.INGEST_API_KEY || ''
+
+  app.post<{ Params: { id: string } }>('/api/alerts/dismiss/:id', {
+    schema: { tags: ['alerts'], summary: 'Dismiss single alert', security: [{ apiKey: [] }], params: { type: 'object', properties: { id: { type: 'string' } } } },
+  }, async (req, reply) => {
+    if (ADMIN_KEY && req.headers['x-api-key'] !== ADMIN_KEY) {
+      return reply.code(401).send({ error: 'Unauthorized' })
+    }
     dismissAlert(req.params.id)
     return { ok: true }
   })
 
-  app.post('/api/alerts/dismiss-all', async () => {
+  app.post('/api/alerts/dismiss-all', {
+    schema: { tags: ['alerts'], summary: 'Dismiss all alerts', security: [{ apiKey: [] }] },
+  }, async (req, reply) => {
+    if (ADMIN_KEY && req.headers['x-api-key'] !== ADMIN_KEY) {
+      return reply.code(401).send({ error: 'Unauthorized' })
+    }
     dismissAllAlerts()
     return { ok: true }
   })

@@ -1,15 +1,17 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Mountain, Drill, Link2 } from 'lucide-react'
+import { Mountain, Drill, Link2, ChevronDown, ChevronUp } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { BarComparison } from '../../components/charts/BarComparison'
 import { SectionLabel } from '../../components/ui/SectionLabel'
 import { MutedCaption } from '../../components/ui/MutedCaption'
+import { DrillTraceSection } from '../../components/charts/DrillTraceSection'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { DepositDetail } from '../../components/map/DepositOverlay'
 
 const EXPLORATION_HIGHLIGHTS = [
@@ -26,10 +28,12 @@ interface GeologyPanelProps {
 }
 
 export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSelectDeposit }: GeologyPanelProps) {
-  const { data: DEPOSIT_DATA, isLoading: l1 } = useServiceQuery('deposit-data', s => s.getDepositData())
-  const { data: RESOURCE_CLASSIFICATION, isLoading: l2 } = useServiceQuery('resource-class', s => s.getResourceClassification())
-  const { data: snap, isLoading: l3 } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
+  const { data: DEPOSIT_DATA, isLoading: l1, error: e1 } = useServiceQuery('deposit-data', s => s.getDepositData())
+  const { data: RESOURCE_CLASSIFICATION, isLoading: l2, error: e2 } = useServiceQuery('resource-class', s => s.getResourceClassification())
+  const { data: snap, isLoading: l3, error: e3 } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
 
+  const firstError = e1 || e2 || e3
+  if (firstError) return <ErrorFallback error={firstError} label="Geology data" />
   if (l1 || l2 || l3 || !DEPOSIT_DATA || !RESOURCE_CLASSIFICATION || !snap) {
     return <LoadingSkeleton variant="card" label="Loading geology..." />
   }
@@ -68,13 +72,30 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         </MutedCaption>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, marginBottom: 8 }}>
           {[
-            { k: 'Global MRE', v: `${RESOURCE_CLASSIFICATION?.global_bt ?? '—'} Bt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.global_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
-            { k: 'M&I', v: `${RESOURCE_CLASSIFICATION?.mi_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.mi_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
-            { k: 'Measured', v: `${RESOURCE_CLASSIFICATION?.measured_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.measured_treo_ppm ?? 0).toLocaleString()} ppm TREO` },
-            { k: 'MREO avg', v: `${RESOURCE_CLASSIFICATION?.mreo_avg_pct ?? '—'}%`, c: W.text1, sub: 'Magnetic fraction' },
-          ].map(({ k, v, c, sub }) => (
+            { k: 'Global MRE', v: `${RESOURCE_CLASSIFICATION?.global_bt ?? '—'} Bt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.global_treo_ppm ?? 0).toLocaleString()} ppm TREO`, jorc: true },
+            { k: 'M&I', v: `${RESOURCE_CLASSIFICATION?.mi_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.mi_treo_ppm ?? 0).toLocaleString()} ppm TREO`, jorc: true },
+            { k: 'Measured', v: `${RESOURCE_CLASSIFICATION?.measured_mt ?? '—'} Mt`, c: W.text1, sub: `@ ${(RESOURCE_CLASSIFICATION?.measured_treo_ppm ?? 0).toLocaleString()} ppm TREO`, jorc: true },
+            { k: 'MREO avg', v: `${RESOURCE_CLASSIFICATION?.mreo_avg_pct ?? '—'}%`, c: W.text1, sub: 'Magnetic fraction', jorc: false },
+          ].map(({ k, v, c, sub, jorc }) => (
             <div key={k} style={{ padding: '6px 8px', borderRadius: W.radius.sm, background: `${c}0F`, border: `1px solid ${c}22` }}>
-              <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{k}</div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{k}</div>
+                {jorc && snap?.resource?.citation?.url && (
+                  <a
+                    href={snap.resource.citation.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`JORC reference for ${k}`}
+                    style={{
+                      fontSize: 7, fontWeight: 800, color: W.amber, background: `${W.amber}14`,
+                      border: `1px solid ${W.amber}30`, borderRadius: 3, padding: '0px 4px',
+                      textDecoration: 'none', letterSpacing: '0.06em',
+                    }}
+                  >
+                    JORC
+                  </a>
+                )}
+              </div>
               <div style={{ fontSize: 13, fontWeight: 700, color: c, fontFamily: 'var(--font-mono)' }}>{v}</div>
               <div style={{ fontSize: 10, color: W.text4 }}>{sub}</div>
             </div>
@@ -112,6 +133,9 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
           ))}
         </div>
       </GlassCard>
+
+      {/* Drill Trace Cross-Section */}
+      <DrillSectionCard />
 
       {(DEPOSIT_DATA ?? []).map(dep => (
         <GlassCard
@@ -184,3 +208,45 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
     </motion.div>
   )
 })
+
+/* ─── Collapsible Drill Section Card ───────────────────────────────────── */
+
+function DrillSectionCard() {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <GlassCard animate={false} glow={expanded ? 'cyan' : 'none'} style={{ padding: '10px 12px', flexShrink: 0 }}>
+      <button
+        type="button"
+        onClick={() => setExpanded(e => !e)}
+        style={{
+          all: 'unset', cursor: 'pointer', width: '100%',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}
+        aria-expanded={expanded}
+        aria-label="Toggle drill section view"
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <GlowingIcon icon={Drill} color="cyan" size={11} />
+          <SectionLabel>Drill Section — Intercept Overview</SectionLabel>
+        </div>
+        {expanded ? <ChevronUp size={13} style={{ color: W.text4 }} /> : <ChevronDown size={13} style={{ color: W.text4 }} />}
+      </button>
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div style={{ paddingTop: 10 }}>
+              <DrillTraceSection />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </GlassCard>
+  )
+}

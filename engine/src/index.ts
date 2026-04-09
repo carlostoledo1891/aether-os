@@ -77,8 +77,11 @@ async function main() {
   }
   console.log('[engine] Server is up. Starting tick loop.\n')
 
-  setInterval(tick, TICK_MS)
-  tick()
+  async function loop() {
+    await tick()
+    setTimeout(loop, TICK_MS)
+  }
+  loop()
 
   startOpenMeteoEnricher()
   startBcbEnricher()

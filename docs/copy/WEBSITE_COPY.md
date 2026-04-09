@@ -2,8 +2,9 @@
 
 **Purpose:** Single place to iterate marketing and in-product narrative. Sync changes here first, then reflect in `README.md`, `index.html`, and UI strings as needed.
 
-**Last synced from codebase:** 2026-04-08  
-**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, and stakeholder stress-test personas (issuer, capital, buyers, society, ecosystem, media).
+**Last synced from codebase:** 2026-04-09  
+**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, and stakeholder stress-test personas (issuer, capital, buyers, society, ecosystem, media).  
+**Releases since last sync:** Data Layer Refactor (MaybeAsync types, useServiceQuery, LoadingSkeleton), CTO Code Review & Quality Sprint (186 tests, ErrorFallback, two-layer cache contract, deployment gate, backend hardening, a11y, styling discipline), **Feature Sprint v5** (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges).
 
 ---
 
@@ -46,7 +47,7 @@ The **"Trust Bridge"** for rare earth supply chain compliance.
 **Supporting paragraph**  
 One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
 
-*Currently a pitch-ready prototype with simulated telemetry and public-reference map data. Production integration roadmap available on request.*
+*Currently a production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers (weather, FX, seismic). OpenAPI spec auto-generated from Fastify routes. DPP-compliant JSON export (EU 2023/1542). Bilingual community card (EN/PT-BR) with grievance path. Interactive drill trace schematic with JORC reference badges. 186 automated tests, deployment gate, and live link verified. Production integration roadmap available on request.*
 
 **Optional one-line (media / retail honesty)**  
 *Demo mixes public-reference map data, disclosure-aligned scenarios where cited, and simulated time series — not a substitute for filed instruments, competent-person sign-off, or operational systems of record.*
@@ -173,7 +174,10 @@ Regulatory export bundle is a **rehearsal artifact** for internal QA and annex d
 |------|------------------------|--------------|
 | Mock, normal | Demo data | Simulated plant/env time series; bundled GeoJSON |
 | Mock, presentation | Stakeholder session — illustrative run | Agency briefing structure; replace with instrumented feeds for production |
-| Live (stub) | *(live banner)* | Live mode set but telemetry still mock until ingestion ships |
+| Mock, disclosure | Disclosure mode — board-approved facts only | IR-safe: simulated/illustrative layers hidden |
+| Live, connected | Live pipeline — Aether Simulation Engine | Telemetry via API + WebSocket. Weather from Open-Meteo, FX from BCB. Plant/env streams synthetic until LAPOC instruments connect |
+| Live, degraded | Backend unreachable — showing cached data | Amber banner; stale data served from API-level cache |
+| Live, offline | Backend offline — reconnecting... | Red banner; no data available; exponential backoff retry |
 
 ---
 
@@ -181,16 +185,26 @@ Regulatory export bundle is a **rehearsal artifact** for internal QA and annex d
 
 Use for landing page or deck appendix:
 
-- **Live-style telemetry pulse** across **10+ sensor channels** *(demo: simulated drift until historian feeds land)*
+- **Three-process production architecture** — Fastify API + simulation engine + Vite frontend; Docker Compose orchestration with health checks
+- **Live-style telemetry pulse** across **10+ sensor channels** with **WebSocket broadcast** *(demo: simulated drift until historian feeds land)*
 - **Hydro Digital Twin** — **1,092** public-reference spring points, piezometer network, UDC monitoring *(status overlay: modeled)*
-- **Alert system** — threshold breaches with incident lifecycle *(roadmap: ack latency, false-alarm stats for insurer rooms)*
-- **Financial scenario modeling** — Bear / Consensus / Bull NPV sensitivity vs NdPr
-- **Data service architecture** — `MockDataService` + `createLiveDataService()` with honest banner; **clean API/DTO boundary** for integrators
+- **Alert system** — threshold breaches with incident lifecycle, **API-key-gated dismiss**, incident log *(roadmap: ack latency, false-alarm stats for insurer rooms)*
+- **Financial scenario modeling** — Bear / Consensus / Bull NPV sensitivity vs NdPr; **zero-cache policy** on geological/financial endpoints (never shows stale numbers)
+- **Data service architecture** — `MaybeAsync<T>` interface bridges mock (sync) and live (async) modes; `useServiceQuery` hook with **two-layer cache contract** (documented staleness semantics); **ErrorFallback** for graceful degradation; **clean API/DTO boundary** for integrators
 - **Molecular traceability** — blockchain-style timeline pit → magnet with hash chain narrative *(demo: illustrative hashes until ERP/CBP + lab + customs doc types)*
 - **Green Premium** — spot vs certified NdPr / DyTb with carbon tiers *(tie to same disclosure snapshot as financials)*
 - **Interactive map** — deposits, licences, drills, infrastructure, environmental layers with detail panels
-- **Time range** — 24h / 7d / 30d historical views
-- **Integrator-ready story** — read-only historians, unidirectional OT/IT gateways, explicit latency *(roadmap bullets for RFPs)*
+- **Time range** — 24h / 7d / 30d historical views with server-side ring buffer and retention policies
+- **Error resilience** — `ErrorFallback` component across all 14 data consumers; connection status banner (connected / degraded / offline); graceful server shutdown
+- **Accessibility** — focus trap on alert drawer, `aria-label` on icon buttons, explicit `type="button"` on all buttons, WCAG-aligned design tokens
+- **186 automated tests** across 3 packages (frontend, server, engine) — including live-mode integration tests that verify no infinite re-renders with async data
+- **Deployment gate** — mandatory checklist (tsc, tests, build, localhost click-through, Vercel preview) before every production deploy
+- **Integrator-ready story** — read-only historians, unidirectional OT/IT gateways, explicit latency, documented `isThenable` contract *(roadmap bullets for RFPs)*
+- **OpenAPI spec** — auto-generated from Fastify route schemas; Swagger UI at `/api/docs`, machine-readable spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and schemas.
+- **Digital Product Passport** (EU 2023/1542) — 22 CEN/CENELEC mandatory fields mapped, 59% coverage, schema-compliant JSON export per batch. Field-mapping table in Buyer → Compliance tab.
+- **Build verification stamp** — git SHA + build date visible in data mode banner. Tooltip shows full SHA and ISO timestamp.
+- **Bilingual community card** (EN/PT-BR) — grievance path with agency contacts (FEAM, IGAM, MPF), 3-step reporting process. Language toggle with localStorage persistence. Designed for communities in Poços de Caldas.
+- **Drill trace schematic** — interactive cross-section of 8 drill holes by depth and TREO grade. Click-to-detail with intercept data. JORC reference badges as clickable links to ASX filing on resource numbers.
 
 ---
 
@@ -206,7 +220,7 @@ Use for landing page or deck appendix:
 
 ## Built by
 
-**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. 40 years of local context that no outside team can replicate.
+**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 186 tests across 3 packages, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
@@ -236,17 +250,19 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 
 ---
 
-## Persona feedback on website copy (2026-04-08)
+## Persona feedback on website copy (2026-04-09, v3 — post CTO Code Review Sprint)
 
-| Persona | Verdict | Key quote |
-|---------|---------|-----------|
-| Chairman | Approves qualifier paragraph; wants "DEMO" watermark option | "Honest is fine; enforce it visually" |
-| CEO | CTAs are right; wants specific pilot scope/price | "Request a pilot" — but what scope, what cost? |
-| Chief Geologist | Geology/hydro principle is well-stated; wants it in the UI, not just docs | "Put the firewall on the screen, not in the manual" |
-| DoD Buyer | Cybersecurity pillars noted; wants deployment architecture | "Show me the infra story" |
-| NGO | Brazil notes are correct; wants PT collateral and grievance path in product | "Maps spread faster than disclaimers" |
-| Integrator | Feature list is developer-readable; wants OpenAPI link | "Where is the integration spec?" |
-| Journalist | Honesty paragraph is unusual and welcome; TAM needs sourcing | "The honesty is the story" |
+| Persona | Score | Verdict | Key quote |
+|---------|-------|---------|-----------|
+| Chairman | 8.0 | Live link restored; wants production smoke gate | "Test what the stakeholder sees, not what the developer sees" |
+| CEO | 7.5 | Loading states are baseline; wants cost model | "Shipping broken twice in the same day is a process problem" |
+| Chief Geologist | 7.5 | No geological content change; cache contract addresses stale-data concern | "Never show a stale number for geology" |
+| DoD Buyer | 7.0 | Real deployment model noted; wants FedRAMP | "Show me the infra story" |
+| NGO | 6.0 | Invisible to communities; needs PT + field-verified springs | "Maps spread faster than disclaimers" |
+| Integrator | 8.5 | Clean async abstraction; wants OpenAPI + OPC-UA | "Two-layer caches are fine if both layers agree on staleness semantics" |
+| Journalist | 7.0 | Process gap is the story; honesty narrative tested | "The honest thing to do would be to add 'deployed broken, fixed same day' to your transparency narrative" |
+
+**Weighted average: 7.3/10** (unchanged from v2 — infrastructure fixes don't move scores; feature work resumes after live link verified).
 
 ---
 

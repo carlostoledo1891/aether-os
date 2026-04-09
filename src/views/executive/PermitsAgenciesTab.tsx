@@ -10,6 +10,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useAetherService, useTelemetry } from '../../services/DataServiceProvider'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { RegulatoryEntry } from '../../services/dataService'
 
 function regulatoryToCsv(rows: RegulatoryEntry[]): string {
@@ -25,15 +26,16 @@ function regulatoryToCsv(rows: RegulatoryEntry[]): string {
 export function PermitsAgenciesTab() {
   const service = useAetherService()
   const { env } = useTelemetry()
-  const { data: regulatory, isLoading: l1 } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
-  const { data: risks, isLoading: l2 } = useServiceQuery('risks', s => s.getRiskRegister())
-  const { data: audit, isLoading: l3 } = useServiceQuery('audit-trail', s => s.getAuditTrail())
-  const { data: thresholds, isLoading: l4 } = useServiceQuery('thresholds', s => s.getThresholds())
-  const { data: profile, isLoading: l5 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
-  const { data: spatial, isLoading: l6 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
+  const { data: regulatory, isLoading: l1, error: e1 } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
+  const { data: risks, isLoading: l2, error: e2 } = useServiceQuery('risks', s => s.getRiskRegister())
+  const { data: audit, isLoading: l3, error: e3 } = useServiceQuery('audit-trail', s => s.getAuditTrail())
+  const { data: thresholds, isLoading: l4, error: e4 } = useServiceQuery('thresholds', s => s.getThresholds())
+  const { data: profile, isLoading: l5, error: e5 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
+  const { data: spatial, isLoading: l6, error: e6 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
 
-  const downloadJson = useCallback(() => {
-    const bundle = service.getRegulatoryExportBundle()
+  const downloadJson = useCallback(async () => {
+    const result = service.getRegulatoryExportBundle()
+    const bundle = result instanceof Promise ? await result : result
     const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
@@ -52,6 +54,8 @@ export function PermitsAgenciesTab() {
     URL.revokeObjectURL(a.href)
   }, [regulatory])
 
+  const firstError = e1 || e2 || e3 || e4 || e5 || e6
+  if (firstError) return <ErrorFallback error={firstError} label="Agencies data" />
   if (l1 || l2 || l3 || l4 || l5 || l6 || !profile) {
     return <LoadingSkeleton variant="card" label="Loading agencies…" />
   }

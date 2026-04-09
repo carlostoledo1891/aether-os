@@ -34,8 +34,20 @@ export function onConnectionStatusChange(fn: (s: ConnectionStatus) => void): () 
 }
 
 /* ─── Tiny fetch+cache helper ───────────────────────────────────────────── */
+/**
+ * Layer 1 cache — authoritative staleness boundary.
+ * useServiceQuery (Layer 2) is a 200ms dedup window only; it defers to
+ * this layer for freshness decisions.
+ *
+ * TTL per endpoint:
+ *  - Default: 30s  (static domain data that changes infrequently)
+ *  - History: 5s   (telemetry time-series)
+ *  - Geology / financial / resource: 0  (De Carvalho: "Never show a stale
+ *    number for geology." These endpoints always hit the network.)
+ */
 const cache = new Map<string, { data: unknown; at: number }>()
 const TTL_MS = 30_000
+const NO_CACHE = 0
 
 async function api<T>(path: string, ttl = TTL_MS): Promise<T> {
   const url = `${BASE}${path}`
@@ -147,8 +159,8 @@ export function createLiveDataService(): AetherDataService {
     getBatches() { return api<ComplianceLedger[]>('/api/batches') },
     getBatch(id: string) { return api<ComplianceLedger | undefined>(`/api/batches/${id}`) },
 
-    getFinancialScenario(key: ScenarioKey) { return api<FinancialScenario>(`/api/financials/scenario/${key}`) },
-    getSensitivityTable() { return api<SensitivityPoint[]>('/api/financials/sensitivity') },
+    getFinancialScenario(key: ScenarioKey) { return api<FinancialScenario>(`/api/financials/scenario/${key}`, NO_CACHE) },
+    getSensitivityTable() { return api<SensitivityPoint[]>('/api/financials/sensitivity', NO_CACHE) },
 
     getRiskRegister() { return api<RiskItem[]>('/api/risks') },
     getIncidentLog() { return api<IncidentRecord[]>('/api/incidents') },
@@ -162,12 +174,12 @@ export function createLiveDataService(): AetherDataService {
     getAuditTrail() { return api<AuditEvent[]>('/api/audit') },
     getESGFrameworks() { return api<ESGFramework[]>('/api/esg') },
 
-    getProjectFinancials() { return api<ProjectFinancials>('/api/project/financials') },
-    getMarketPrices() { return api<MarketPrices>('/api/project/market-prices') },
+    getProjectFinancials() { return api<ProjectFinancials>('/api/project/financials', NO_CACHE) },
+    getMarketPrices() { return api<MarketPrices>('/api/project/market-prices', NO_CACHE) },
     getProjectTimeline() { return api<readonly ProjectMilestone[]>('/api/project/timeline') },
-    getDepositData() { return api<DepositRecord[]>('/api/project/deposits') },
-    getResourceClassification() { return api<ResourceClassification>('/api/project/resources') },
-    getHydrologyScenarios() { return api<readonly HydrologyScenario[]>('/api/project/hydrology') },
+    getDepositData() { return api<DepositRecord[]>('/api/project/deposits', NO_CACHE) },
+    getResourceClassification() { return api<ResourceClassification>('/api/project/resources', NO_CACHE) },
+    getHydrologyScenarios() { return api<readonly HydrologyScenario[]>('/api/project/hydrology', NO_CACHE) },
     getScaleUpPathway() { return api<ScaleUpPathway>('/api/project/scale-up') },
     getPlantPerformance() { return api<PilotPlantPerformance>('/api/project/plant-performance') },
     getHardwareSensors() { return api<readonly HardwareSensorCategory[]>('/api/project/hardware-sensors') },

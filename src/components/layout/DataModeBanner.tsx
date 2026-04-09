@@ -13,6 +13,10 @@ const STATUS_LABELS: Record<ConnectionStatus, string> = {
   offline: 'Backend offline — reconnecting...',
 }
 
+const BUILD_SHA = (typeof __BUILD_SHA__ !== 'undefined' ? __BUILD_SHA__ : '').slice(0, 7)
+const BUILD_TIME = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : ''
+const BUILD_DATE = BUILD_TIME ? new Date(BUILD_TIME).toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric' }) : ''
+
 export function DataModeBanner({ context }: DataModeBannerProps) {
   const { telemetry } = useDataService()
   const [secondsAgo, setSecondsAgo] = useState(0)
@@ -33,23 +37,23 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
 
   const isDisclosure = context.disclosureMode
   const bannerBg = isOffline
-    ? 'rgba(239,68,68,0.10)'
+    ? `${W.red}1A`
     : isDegraded
-      ? 'rgba(245,158,11,0.10)'
+      ? `${W.amber}1A`
       : isDisclosure
-        ? 'rgba(124,92,252,0.08)'
+        ? `${W.violet}14`
         : context.mode === 'live' ? W.bannerBgLive : W.bannerBgMock
   const bannerBorder = isOffline
-    ? 'rgba(239,68,68,0.3)'
+    ? `${W.red}4D`
     : isDegraded
-      ? 'rgba(245,158,11,0.3)'
+      ? `${W.amber}4D`
       : isDisclosure
-        ? 'rgba(124,92,252,0.2)'
+        ? `${W.violet}33`
         : context.mode === 'live' ? W.bannerEdgeLive : W.bannerEdgeMock
   const bannerColor = isOffline
-    ? '#ef4444'
+    ? W.red
     : isDegraded
-      ? '#f59e0b'
+      ? W.amber
       : isDisclosure
         ? W.violet
         : context.mode === 'live' ? W.amber : W.cyan
@@ -107,6 +111,22 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
           title="Time since last telemetry update"
         >
           last tick: {secondsAgo}s ago
+        </span>
+      )}
+      {BUILD_SHA && (
+        <span
+          style={{
+            flexShrink: 0,
+            fontSize: 8,
+            color: W.text4,
+            fontFamily: 'var(--font-mono)',
+            opacity: 0.55,
+            letterSpacing: '0.04em',
+          }}
+          title={`Build ${BUILD_SHA} — ${BUILD_TIME}`}
+          aria-label={`Build ${BUILD_SHA} verified ${BUILD_DATE}`}
+        >
+          {BUILD_SHA} · {BUILD_DATE}
         </span>
       )}
     </div>

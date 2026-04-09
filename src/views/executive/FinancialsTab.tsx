@@ -3,6 +3,7 @@ import { DollarSign, Landmark, Link2 } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { ScenarioKey } from '../../services/dataService'
 import { SCENARIO_LABELS } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
@@ -12,12 +13,14 @@ import ty from './executiveTypography.module.css'
 export function FinancialsTab() {
   const [scenario, setScenario] = useState<ScenarioKey>('consensus')
 
-  const { data: fin, isLoading: loadingFin } = useServiceQueryWithArg('financials', scenario, (s, k) => s.getFinancialScenario(k))
-  const { data: sensitivityTable, isLoading: loadingSens } = useServiceQuery('sensitivity', s => s.getSensitivityTable())
-  const { data: PROJECT_FINANCIALS, isLoading: loadingProj } = useServiceQuery('project-financials', s => s.getProjectFinancials())
-  const { data: PROJECT_TIMELINE, isLoading: loadingTL } = useServiceQuery('project-timeline', s => s.getProjectTimeline())
-  const { data: snap, isLoading: loadingSnap } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
+  const { data: fin, isLoading: loadingFin, error: e1 } = useServiceQueryWithArg('financials', scenario, (s, k) => s.getFinancialScenario(k))
+  const { data: sensitivityTable, isLoading: loadingSens, error: e2 } = useServiceQuery('sensitivity', s => s.getSensitivityTable())
+  const { data: PROJECT_FINANCIALS, isLoading: loadingProj, error: e3 } = useServiceQuery('project-financials', s => s.getProjectFinancials())
+  const { data: PROJECT_TIMELINE, isLoading: loadingTL, error: e4 } = useServiceQuery('project-timeline', s => s.getProjectTimeline())
+  const { data: snap, isLoading: loadingSnap, error: e5 } = useServiceQuery('issuer-snapshot', s => s.getIssuerSnapshot())
 
+  const firstError = e1 || e2 || e3 || e4 || e5
+  if (firstError) return <ErrorFallback error={firstError} label="Financial data" />
   if (loadingFin || loadingSens || loadingProj || loadingTL || loadingSnap || !fin || !sensitivityTable || !PROJECT_FINANCIALS || !PROJECT_TIMELINE || !snap) {
     return <LoadingSkeleton variant="card" label="Loading financials..." />
   }

@@ -51,10 +51,25 @@ export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }:
   const [tab, setTab] = useState<PanelTab>('active')
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
+  const drawerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     if (!isOpen) return
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') { onClose(); return }
+      if (e.key === 'Tab' && drawerRef.current) {
+        const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        )
+        if (focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus()
+        }
+      }
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
@@ -78,6 +93,7 @@ export function AlertPanel({ alerts, isOpen, onClose, onDismiss, onDismissAll }:
             style={{ background: W.scrim }}
           />
           <motion.div
+            ref={drawerRef}
             role="dialog"
             aria-modal="true"
             aria-label="Alerts panel"

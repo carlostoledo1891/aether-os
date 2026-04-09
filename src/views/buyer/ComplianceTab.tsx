@@ -1,5 +1,6 @@
+import { useCallback } from 'react'
 import { motion } from 'motion/react'
-import { ShieldCheck, Leaf, Server, BarChart3 } from 'lucide-react'
+import { ShieldCheck, Leaf, Server, BarChart3, FileDown, ClipboardList } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -8,6 +9,8 @@ import { GreenPremiumCard } from '../../components/GreenPremiumCard'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
+import { DPP_FIELD_MAPPINGS, DPP_CATEGORIES, getDppCoverage, buildDppExport } from '../../data/dppSchema'
 import type { ComplianceLedger } from '../../types/telemetry'
 
 interface ComplianceTabProps {
@@ -15,11 +18,13 @@ interface ComplianceTabProps {
 }
 
 export function ComplianceTab({ batch }: ComplianceTabProps) {
-  const { data: benchmarks, isLoading: l1 } = useServiceQuery('benchmarks', s => s.getBenchmarks())
-  const { data: CYBER_TRUST_PILLARS, isLoading: l2 } = useServiceQuery('cyber-pillars', s => s.getCyberPillars())
-  const { data: U_TH_SAFETY, isLoading: l3 } = useServiceQuery('uth-safety', s => s.getUThSafety())
-  const { data: MARKET_PRICES, isLoading: l4 } = useServiceQuery('market-prices', s => s.getMarketPrices())
+  const { data: benchmarks, isLoading: l1, error: e1 } = useServiceQuery('benchmarks', s => s.getBenchmarks())
+  const { data: CYBER_TRUST_PILLARS, isLoading: l2, error: e2 } = useServiceQuery('cyber-pillars', s => s.getCyberPillars())
+  const { data: U_TH_SAFETY, isLoading: l3, error: e3 } = useServiceQuery('uth-safety', s => s.getUThSafety())
+  const { data: MARKET_PRICES, isLoading: l4, error: e4 } = useServiceQuery('market-prices', s => s.getMarketPrices())
 
+  const firstError = e1 || e2 || e3 || e4
+  if (firstError) return <ErrorFallback error={firstError} label="Compliance data" />
   if (l1 || l2 || l3 || l4 || !benchmarks || !CYBER_TRUST_PILLARS || !U_TH_SAFETY || !MARKET_PRICES) {
     return <LoadingSkeleton variant="card" label="Loading compliance..." />
   }
@@ -193,6 +198,115 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
       {MARKET_PRICES && (
         <GreenPremiumCard prices={MARKET_PRICES} />
       )}
+
+      {/* Digital Product Passport — EU 2023/1542 Field Mapping */}
+      <DppPassportSection batch={batch} uThSafety={U_TH_SAFETY} />
     </div>
   )
 }
+
+/* ─── DPP Passport Sub-Component ──────────────────────────────────────── */
+
+const STATUS_COLORS: Record<string, string> = { mapped: W.green, stub: W.amber, pending: W.text4 }
+
+function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uThSafety: UThSafetyT | null }) {
+  const coverage = getDppCoverage()
+
+  const handleExport = useCallback(() => {
+    const json = buildDppExport(batch, uThSafety)
+    const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `dpp-${batch.batch_id}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [batch, uThSafety])
+
+  return (
+    <GlassCard glow="violet" animate={false} style={{ padding: 14 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+        <GlowingIcon icon={ClipboardList} color="violet" size={13} />
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: W.text3 }}>
+          Digital Product Passport
+        </span>
+        <StatusChip label="EU 2023/1542" variant="violet" size="sm" />
+      </div>
+
+      {/* Coverage bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+        <div style={{ flex: 1, height: 6, background: W.glass05, borderRadius: W.radius.xs, overflow: 'hidden', display: 'flex' }}>
+          <div style={{ width: `${(coverage.mapped / coverage.total) * 100}%`, background: W.green, transition: 'width 0.5s' }} />
+          <div style={{ width: `${(coverage.stub / coverage.total) * 100}%`, background: W.amber, transition: 'width 0.5s' }} />
+        </div>
+        <span style={{ fontSize: 11, fontWeight: 700, color: W.violet, fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
+          {coverage.mapped}/{coverage.total}
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, marginBottom: 10 }}>
+        {(['mapped', 'stub', 'pending'] as const).map(s => (
+          <span key={s} style={{ fontSize: 9, color: STATUS_COLORS[s], fontWeight: 600, textTransform: 'uppercase' }}>
+            ● {s} ({coverage[s]})
+          </span>
+        ))}
+      </div>
+
+      {/* Field mapping table by category */}
+      {DPP_CATEGORIES.map(cat => (
+        <div key={cat} style={{ marginBottom: 8 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4, paddingLeft: 2 }}>
+            {cat}
+          </div>
+          {DPP_FIELD_MAPPINGS.filter(f => f.category === cat).map(f => (
+            <div key={f.id} style={{
+              display: 'grid', gridTemplateColumns: '1fr 100px 50px', gap: 4, padding: '4px 4px',
+              borderBottom: `1px solid ${W.glass04}`, alignItems: 'center',
+            }}>
+              <div>
+                <span style={{ fontSize: 10, color: W.text2 }}>{f.field}</span>
+                <span style={{ fontSize: 8, color: W.text4, marginLeft: 6, fontFamily: 'var(--font-mono)' }}>{f.cenRef}</span>
+              </div>
+              <span style={{ fontSize: 9, color: W.text3, fontFamily: 'var(--font-mono)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                title={f.aetherSource}
+              >
+                {f.aetherSource}
+              </span>
+              <span style={{
+                fontSize: 8, fontWeight: 700, textTransform: 'uppercase', textAlign: 'right',
+                color: STATUS_COLORS[f.status],
+              }}>
+                {f.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {/* Export button */}
+      <button
+        type="button"
+        onClick={handleExport}
+        style={{
+          marginTop: 8, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          padding: '8px 14px', borderRadius: W.radius.sm, border: `1px solid ${W.violet}40`,
+          background: `${W.violet}14`, color: W.violet, fontSize: 11, fontWeight: 700,
+          cursor: 'pointer', letterSpacing: '0.04em',
+        }}
+        aria-label={`Export DPP JSON for batch ${batch.batch_id}`}
+      >
+        <FileDown size={13} />
+        Export DPP JSON — {batch.batch_id}
+      </button>
+
+      <div style={{ marginTop: 8, padding: '6px 8px', background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
+        <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.4 }}>
+          Schema aligned to EU Battery Regulation 2023/1542 Annex VI. Fields marked "stub" contain placeholder values;
+          "pending" fields require downstream data not yet in the Aether pipeline. Enforcement begins Feb 2027.
+        </p>
+      </div>
+    </GlassCard>
+  )
+}
+
+type UThSafetyT = { primary_mineral: string; u_th_profile: string; solubilization: string; mrec_classification: string; radioactive_tailings: boolean; advantage_vs_hardrock: string }

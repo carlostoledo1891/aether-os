@@ -1,6 +1,7 @@
 import { FileBarChart, Rocket } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { ExecutiveCard } from './ExecutiveCard'
@@ -46,9 +47,11 @@ const PLATFORM_ROADMAP = [
 ] as const
 
 export function DfsTab() {
-  const { data: dfsWorkstreams, isLoading: loadingDfs } = useServiceQuery('dfs-workstreams', s => s.getDFSWorkstreams())
-  const { data: regulatory, isLoading: loadingReg } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
+  const { data: dfsWorkstreams, isLoading: loadingDfs, error: e1 } = useServiceQuery('dfs-workstreams', s => s.getDFSWorkstreams())
+  const { data: regulatory, isLoading: loadingReg, error: e2 } = useServiceQuery('regulatory', s => s.getRegulatoryLog())
 
+  const firstError = e1 || e2
+  if (firstError) return <ErrorFallback error={firstError} label="DFS data" />
   if (loadingDfs || loadingReg || !dfsWorkstreams || !regulatory) {
     return <LoadingSkeleton variant="card" label="Loading DFS..." />
   }

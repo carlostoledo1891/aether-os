@@ -2,14 +2,16 @@ import { Handshake } from 'lucide-react'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function PipelineTab() {
-  const { data: offtakers, isLoading } = useServiceQuery('offtakers', s => s.getOfftakerPipeline())
+  const { data: offtakers, isLoading, error } = useServiceQuery('offtakers', s => s.getOfftakerPipeline())
 
+  if (error) return <ErrorFallback error={error} label="Offtaker pipeline" />
   if (isLoading || !offtakers) {
     return <LoadingSkeleton variant="card" label="Loading pipeline..." />
   }

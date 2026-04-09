@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { ShieldAlert } from 'lucide-react'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import type { RiskItem } from '../../services/dataService'
@@ -10,9 +11,10 @@ import { ExecutiveCard } from './ExecutiveCard'
 import ty from './executiveTypography.module.css'
 
 export function RiskTab() {
-  const { data: risks, isLoading } = useServiceQuery('risks', s => s.getRiskRegister())
+  const { data: risks, isLoading, error } = useServiceQuery('risks', s => s.getRiskRegister())
   const risksByScore = useMemo(() => risks ? [...risks].sort((a: RiskItem, b: RiskItem) => b.score - a.score) : [], [risks])
 
+  if (error) return <ErrorFallback error={error} label="Risk register" />
   if (isLoading || !risks) {
     return <LoadingSkeleton variant="card" label="Loading risks..." />
   }

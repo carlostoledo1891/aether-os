@@ -77,6 +77,8 @@ export function HeaderStrip({
         <EsgScoreRing esg={esg} compact />
 
         <button
+          type="button"
+          aria-label="Open alerts"
           onClick={onAlertOpen}
           style={{
             position: 'relative',

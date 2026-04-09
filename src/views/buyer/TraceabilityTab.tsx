@@ -6,6 +6,7 @@ import { BlockchainTimeline } from '../../components/BlockchainTimeline'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { ComplianceLedger } from '../../types/telemetry'
 
 interface TraceabilityTabProps {
@@ -15,9 +16,11 @@ interface TraceabilityTabProps {
 }
 
 export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: TraceabilityTabProps) {
-  const { data: API_HANDOFFS, isLoading: l1 } = useServiceQuery('api-handoffs', s => s.getApiHandoffs())
-  const { data: SCOPE_3_TRACKING, isLoading: l2 } = useServiceQuery('scope3', s => s.getScope3Tracking())
+  const { data: API_HANDOFFS, isLoading: l1, error: e1 } = useServiceQuery('api-handoffs', s => s.getApiHandoffs())
+  const { data: SCOPE_3_TRACKING, isLoading: l2, error: e2 } = useServiceQuery('scope3', s => s.getScope3Tracking())
 
+  const firstError = e1 || e2
+  if (firstError) return <ErrorFallback error={firstError} label="Traceability data" />
   if (l1 || l2 || !API_HANDOFFS || !SCOPE_3_TRACKING) {
     return <LoadingSkeleton variant="card" label="Loading traceability..." />
   }

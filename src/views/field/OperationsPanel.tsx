@@ -12,6 +12,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useTelemetry } from '../../services/DataServiceProvider'
 import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { TimeRangeKey } from '../../services/dataService'
 import { CHAIN_STEPS, DOMAIN_COLOR, phVariant } from './constants'
 import { SectionLabel } from '../../components/ui/SectionLabel'
@@ -26,9 +27,9 @@ export const OperationsPanel = memo(function OperationsPanel({
   setOpsMapLayers: Dispatch<SetStateAction<FieldOpsMapLayers>>
 }) {
   const { plant } = useTelemetry()
-  const { data: PILOT_PLANT_PERFORMANCE, isLoading: l1 } = useServiceQuery('plant-perf', s => s.getPlantPerformance())
-  const { data: HARDWARE_SENSORS, isLoading: l2 } = useServiceQuery('hardware-sensors', s => s.getHardwareSensors())
-  const { data: spatial, isLoading: l3 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
+  const { data: PILOT_PLANT_PERFORMANCE, isLoading: l1, error: e1 } = useServiceQuery('plant-perf', s => s.getPlantPerformance())
+  const { data: HARDWARE_SENSORS, isLoading: l2, error: e2 } = useServiceQuery('hardware-sensors', s => s.getHardwareSensors())
+  const { data: spatial, isLoading: l3, error: e3 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
   const [range, setRange] = useState<TimeRangeKey>('24h')
   const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
   const plantHistory = history?.plantHistory ?? []
@@ -39,6 +40,8 @@ export const OperationsPanel = memo(function OperationsPanel({
   const recircData = plantHistory.map(h => h.flow_metrics.recirculation_pct)
   const treoData   = plantHistory.map(h => h.output.treo_grade_pct)
 
+  const firstError = e1 || e2 || e3
+  if (firstError) return <ErrorFallback error={firstError} label="Operations data" />
   if (l1 || l2 || l3 || !PILOT_PLANT_PERFORMANCE || !HARDWARE_SENSORS || !spatial) {
     return <LoadingSkeleton variant="card" label="Loading operations..." />
   }

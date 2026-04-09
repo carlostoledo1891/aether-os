@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Globe, Layers, Settings } from 'lucide-react'
 import { GlowingIcon } from '../components/ui/GlowingIcon'
@@ -106,6 +106,8 @@ function pickFeatureByPriority(
 
 export function FieldView() {
   const { plant, env } = useTelemetry()
+  const springsRef = useRef(env.springs)
+  springsRef.current = env.springs
   const { data: PROJECT_FINANCIALS } = useServiceQuery('project-financials', s => s.getProjectFinancials())
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
@@ -294,7 +296,7 @@ export function FieldView() {
           setSelectedHydroNode(null)
           return
         }
-        const springTelem = layerId === HYDRO_SPRING_LAYER_ID ? env.springs.find((s) => s.id === id) : undefined
+        const springTelem = layerId === HYDRO_SPRING_LAYER_ID ? springsRef.current.find((s) => s.id === id) : undefined
         const detail =
           layerId === HYDRO_SPRING_LAYER_ID
             ? toSpringDetail(props, coords, springTelem)
@@ -322,7 +324,6 @@ export function FieldView() {
       opsMapLayers.licenceEnvelope,
       selectedPlantNode,
       selectedHydroNode,
-      env.springs,
     ],
   )
 

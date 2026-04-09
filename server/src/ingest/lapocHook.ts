@@ -21,7 +21,9 @@ interface LapocPayload {
 }
 
 export async function lapocIngestRoutes(app: FastifyInstance) {
-  app.post<{ Body: LapocPayload }>('/ingest/lapoc', async (req, reply) => {
+  app.post<{ Body: LapocPayload }>('/ingest/lapoc', {
+    schema: { tags: ['ingest'], summary: 'Ingest LAPOC field instrument data', security: [{ apiKey: [] }] },
+  }, async (req, reply) => {
     const payload = req.body
     if (!payload.piezometer_readings && !payload.water_quality_samples) {
       return reply.code(400).send({ error: 'Missing piezometer_readings or water_quality_samples' })

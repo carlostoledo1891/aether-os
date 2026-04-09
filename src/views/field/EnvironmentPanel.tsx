@@ -1,6 +1,6 @@
-import { memo, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { motion } from 'motion/react'
-import { AlertTriangle, Droplets, FileCheck, Layers, MapPinned, RadioTower } from 'lucide-react'
+import { AlertTriangle, Droplets, FileCheck, Globe, Layers, MapPinned, Phone, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -14,9 +14,11 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useTelemetry } from '../../services/DataServiceProvider'
 import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
+import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { TimeRangeKey } from '../../services/dataService'
 import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
+import { COMMUNITY_STRINGS, type CommunityLang } from '../../data/communityTranslations'
 import type { FieldEnvMapLayers } from './fieldMapLayers'
 
 export const EnvironmentPanel = memo(function EnvironmentPanel({
@@ -29,10 +31,20 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
   siteWeather: SiteWeatherSnapshot
 }) {
   const { env } = useTelemetry()
-  const { data: scenarios, isLoading: loadingScenarios } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
-  const { data: scaleUp, isLoading: loadingScaleUp } = useServiceQuery('scale-up', s => s.getScaleUpPathway())
-  const { data: springCount, isLoading: loadingSpringCount } = useServiceQuery('spring-count', s => s.getSpringCount())
-  const { data: prov, isLoading: loadingProv } = useServiceQuery('provenance', s => s.getProvenanceProfile())
+  const { data: scenarios, isLoading: loadingScenarios, error: e1 } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
+  const { data: scaleUp, isLoading: loadingScaleUp, error: e2 } = useServiceQuery('scale-up', s => s.getScaleUpPathway())
+  const { data: springCount, isLoading: loadingSpringCount, error: e3 } = useServiceQuery('spring-count', s => s.getSpringCount())
+  const { data: prov, isLoading: loadingProv, error: e4 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
+  const [communityLang, setCommunityLang] = useState<CommunityLang>(() =>
+    (typeof localStorage !== 'undefined' && localStorage.getItem('aether-community-lang') as CommunityLang) || 'en',
+  )
+  const toggleLang = useCallback(() => {
+    setCommunityLang(prev => {
+      const next = prev === 'en' ? 'pt' : 'en'
+      try { localStorage.setItem('aether-community-lang', next) } catch { /* SSR safe */ }
+      return next
+    })
+  }, [])
   const [range, setRange] = useState<TimeRangeKey>('24h')
   const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
   const envHistory = history?.envHistory ?? []
@@ -63,6 +75,8 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
     return { direct, sentinel, inferred }
   }, [env.springs])
 
+  const firstError = e1 || e2 || e3 || e4
+  if (firstError) return <ErrorFallback error={firstError} label="Environment data" />
   if (loadingScenarios || loadingScaleUp || loadingSpringCount || loadingProv || !prov) {
     return <LoadingSkeleton variant="card" label="Loading environment…" />
   }
@@ -90,22 +104,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
         ) : null}
       </div>
 
-      <GlassCard animate={false} glow="amber" style={{ padding: '10px 13px', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-          <AlertTriangle size={12} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }} />
-          <div>
-            <div style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
-              Community & Stakeholder Notice
-            </div>
-            <p style={{ margin: 0, fontSize: 10, color: W.text3, lineHeight: 1.5 }}>
-              Spring status colors are <strong style={{ color: W.text2 }}>modeled for monitoring plan rehearsal</strong> — not field-verified findings.
-              Locations use public FBDS/CAR reference geometry. For actual water quality data, contact the
-              relevant monitoring authority (FEAM/IGAM). This view demonstrates how Aether would support
-              transparent environmental reporting, not substitute for it.
-            </p>
-          </div>
-        </div>
-      </GlassCard>
+      <CommunityNoticeCard lang={communityLang} onToggleLang={toggleLang} />
 
       <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
         <div className="mb-2 flex items-center gap-1.5">
@@ -381,3 +380,75 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
     </motion.div>
   )
 })
+
+/* ─── Bilingual Community Notice + Grievance Path ──────────────────────── */
+
+function CommunityNoticeCard({ lang, onToggleLang }: { lang: CommunityLang; onToggleLang: () => void }) {
+  const t = COMMUNITY_STRINGS[lang]
+
+  return (
+    <GlassCard animate={false} glow="amber" style={{ padding: '10px 13px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+        <AlertTriangle size={12} style={{ color: W.amber, marginTop: 1, flexShrink: 0 }} />
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              {t.title}
+            </div>
+            <button
+              type="button"
+              onClick={onToggleLang}
+              aria-label={`Switch language to ${t.toggle_label}`}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 3, padding: '2px 7px',
+                fontSize: 9, fontWeight: 700, color: W.violet, background: `${W.violet}14`,
+                border: `1px solid ${W.violet}30`, borderRadius: W.radius.xs, cursor: 'pointer',
+                letterSpacing: '0.04em', textTransform: 'uppercase',
+              }}
+            >
+              <Globe size={9} />
+              {t.toggle_label}
+            </button>
+          </div>
+          <p style={{ margin: '0 0 8px', fontSize: 10, color: W.text3, lineHeight: 1.5 }}>
+            {t.disclaimer}{' '}
+            <strong style={{ color: W.text2 }}>{t.disclaimer_bold}</strong>{' '}
+            {t.disclaimer_rest}
+          </p>
+
+          {/* Grievance path */}
+          <div style={{ padding: '8px 10px', background: `${W.amber}08`, border: `1px solid ${W.amber}1A`, borderRadius: W.radius.sm, marginBottom: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
+              <Phone size={10} style={{ color: W.amber, flexShrink: 0 }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: W.amber, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {t.grievance_title}
+              </span>
+            </div>
+            <p style={{ margin: '0 0 5px', fontSize: 10, color: W.text3, lineHeight: 1.45 }}>
+              {t.grievance_intro}
+            </p>
+            <ol style={{ margin: 0, paddingLeft: 16, fontSize: 10, color: W.text3, lineHeight: 1.55 }}>
+              {t.grievance_steps.map((step, i) => (
+                <li key={i} style={{ marginBottom: 3 }}>{step}</li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Contact directory */}
+          <div style={{ fontSize: 10, fontWeight: 700, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>
+            {t.contacts_title}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {t.contacts.map(c => (
+              <div key={c.label} style={{ padding: '5px 7px', background: W.glass03, borderRadius: W.radius.sm, border: W.hairlineBorder }}>
+                <div style={{ fontSize: 10, color: W.text2, fontWeight: 600 }}>{c.label}</div>
+                <div style={{ fontSize: 11, color: W.cyan, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{c.value}</div>
+                {c.note && <div style={{ fontSize: 9, color: W.text4, marginTop: 1 }}>{c.note}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </GlassCard>
+  )
+}

@@ -23,8 +23,12 @@ export function getDb(): Database.Database {
   return db
 }
 
-function initSchema() {
-  db.exec(`
+const SCHEMA_VERSION = 1
+
+const MIGRATIONS: Array<(d: Database.Database) => void> = [
+  // v0 → v1: initial schema
+  (d) => {
+    d.exec(`
     CREATE TABLE IF NOT EXISTS telemetry_latest (
       id INTEGER PRIMARY KEY CHECK (id = 1),
       plant_json TEXT NOT NULL,
@@ -86,46 +90,58 @@ function initSchema() {
       ingested_at TEXT NOT NULL
     );
   `)
+  },
+]
+
+function initSchema() {
+  const currentVersion = (db.pragma('user_version', { simple: true }) as number) ?? 0
+  for (let v = currentVersion; v < SCHEMA_VERSION; v++) {
+    MIGRATIONS[v](db)
+  }
+  db.pragma(`user_version = ${SCHEMA_VERSION}`)
 }
 
 /* ─── Telemetry operations ──────────────────────────────────────────────── */
 
 const HISTORY_LIMITS: Record<TimeRangeKey, number> = { '24h': 60, '7d': 120, '30d': 200 }
 
-export function upsertTelemetry(tick: TelemetryTick, source: string) {
+export const upsertTelemetry = (tick: TelemetryTick, source: string) => {
+  const db = getDb()
   const now = new Date().toISOString()
-  const stmt = db.prepare(`
-    INSERT INTO telemetry_latest (id, plant_json, env_json, esg_json, alerts_json, source, updated_at)
-    VALUES (1, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(id) DO UPDATE SET
-      plant_json = excluded.plant_json,
-      env_json = excluded.env_json,
-      esg_json = excluded.esg_json,
-      alerts_json = excluded.alerts_json,
-      source = excluded.source,
-      updated_at = excluded.updated_at
-  `)
-  stmt.run(
-    JSON.stringify(tick.plant),
-    JSON.stringify(tick.env),
-    JSON.stringify(tick.esg),
-    JSON.stringify(tick.alerts),
-    source,
-    now,
-  )
+  const plantJson = JSON.stringify(tick.plant)
+  const envJson = JSON.stringify(tick.env)
 
-  const histStmt = db.prepare(`
-    INSERT INTO telemetry_history (range_key, plant_json, env_json, precip_mm, created_at)
-    VALUES (?, ?, ?, ?, ?)
-  `)
-  histStmt.run('24h', JSON.stringify(tick.plant), JSON.stringify(tick.env), 0, now)
+  const txn = db.transaction(() => {
+    db.prepare(`
+      INSERT INTO telemetry_latest (id, plant_json, env_json, esg_json, alerts_json, source, updated_at)
+      VALUES (1, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        plant_json = excluded.plant_json,
+        env_json = excluded.env_json,
+        esg_json = excluded.esg_json,
+        alerts_json = excluded.alerts_json,
+        source = excluded.source,
+        updated_at = excluded.updated_at
+    `).run(plantJson, envJson, JSON.stringify(tick.esg), JSON.stringify(tick.alerts), source, now)
 
-  trimHistory('24h')
+    const histStmt = db.prepare(`
+      INSERT INTO telemetry_history (range_key, plant_json, env_json, precip_mm, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `)
+    histStmt.run('24h', plantJson, envJson, 0, now)
+    histStmt.run('7d', plantJson, envJson, 0, now)
+    histStmt.run('30d', plantJson, envJson, 0, now)
+
+    trimHistory('24h')
+    trimHistory('7d')
+    trimHistory('30d')
+  })
+  txn()
 }
 
 function trimHistory(rangeKey: TimeRangeKey) {
   const limit = HISTORY_LIMITS[rangeKey]
-  db.prepare(`
+  getDb().prepare(`
     DELETE FROM telemetry_history
     WHERE range_key = ? AND id NOT IN (
       SELECT id FROM telemetry_history WHERE range_key = ? ORDER BY id DESC LIMIT ?
@@ -133,31 +149,36 @@ function trimHistory(rangeKey: TimeRangeKey) {
   `).run(rangeKey, rangeKey, limit)
 }
 
+function safeParse<T>(json: string, fallback: T): T {
+  try { return JSON.parse(json) as T }
+  catch { console.warn('[db] corrupt JSON in row, using fallback'); return fallback }
+}
+
 export function getLatestTelemetry(): (TelemetryTick & { source: string; updated_at: string }) | null {
-  const row = db.prepare('SELECT * FROM telemetry_latest WHERE id = 1').get() as {
+  const row = getDb().prepare('SELECT * FROM telemetry_latest WHERE id = 1').get() as {
     plant_json: string; env_json: string; esg_json: string; alerts_json: string
     source: string; updated_at: string
   } | undefined
 
   if (!row) return null
   return {
-    plant: JSON.parse(row.plant_json) as PlantTelemetry,
-    env: JSON.parse(row.env_json) as EnvTelemetry,
-    esg: JSON.parse(row.esg_json) as EsgScore,
-    alerts: JSON.parse(row.alerts_json) as AlertItem[],
+    plant: safeParse<PlantTelemetry>(row.plant_json, {} as PlantTelemetry),
+    env: safeParse<EnvTelemetry>(row.env_json, {} as EnvTelemetry),
+    esg: safeParse<EsgScore>(row.esg_json, { overall: 0, breakdown: {} } as unknown as EsgScore),
+    alerts: safeParse<AlertItem[]>(row.alerts_json, []),
     source: row.source,
     updated_at: row.updated_at,
   }
 }
 
 export function getTelemetryHistory(rangeKey: TimeRangeKey): HistoricalTelemetry {
-  const rows = db.prepare(
+  const rows = getDb().prepare(
     'SELECT plant_json, env_json, precip_mm FROM telemetry_history WHERE range_key = ? ORDER BY id ASC',
   ).all(rangeKey) as { plant_json: string; env_json: string; precip_mm: number }[]
 
   return {
-    plantHistory: rows.map(r => JSON.parse(r.plant_json) as PlantTelemetry),
-    envHistory: rows.map(r => JSON.parse(r.env_json) as EnvTelemetry),
+    plantHistory: rows.map(r => safeParse<PlantTelemetry>(r.plant_json, {} as PlantTelemetry)),
+    envHistory: rows.map(r => safeParse<EnvTelemetry>(r.env_json, {} as EnvTelemetry)),
     precipMmSeries: rows.map(r => r.precip_mm),
   }
 }
@@ -165,7 +186,7 @@ export function getTelemetryHistory(rangeKey: TimeRangeKey): HistoricalTelemetry
 /* ─── Domain state (static seed data) ────────────────────────────────── */
 
 export function setDomainState(key: string, value: unknown) {
-  db.prepare(`
+  getDb().prepare(`
     INSERT INTO domain_state (key, value_json, updated_at)
     VALUES (?, ?, ?)
     ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json, updated_at = excluded.updated_at
@@ -173,15 +194,16 @@ export function setDomainState(key: string, value: unknown) {
 }
 
 export function getDomainState<T>(key: string): T | null {
-  const row = db.prepare('SELECT value_json FROM domain_state WHERE key = ?').get(key) as
+  const row = getDb().prepare('SELECT value_json FROM domain_state WHERE key = ?').get(key) as
     { value_json: string } | undefined
-  return row ? JSON.parse(row.value_json) as T : null
+  if (!row) return null
+  return safeParse<T>(row.value_json, null as unknown as T)
 }
 
 /* ─── Weather ──────────────────────────────────────────────────────────── */
 
 export function upsertWeather(payload: WeatherIngestPayload) {
-  db.prepare(`
+  getDb().prepare(`
     INSERT INTO weather_latest (id, source, provenance, latitude, longitude, precip_mm, series_json, updated_at)
     VALUES (1, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
@@ -196,7 +218,7 @@ export function upsertWeather(payload: WeatherIngestPayload) {
 }
 
 export function getLatestWeather() {
-  const row = db.prepare('SELECT * FROM weather_latest WHERE id = 1').get() as {
+  const row = getDb().prepare('SELECT * FROM weather_latest WHERE id = 1').get() as {
     source: string; provenance: string; latitude: number; longitude: number
     precip_mm: number; series_json: string; updated_at: string
   } | undefined
@@ -205,7 +227,7 @@ export function getLatestWeather() {
     source: row.source, provenance: row.provenance,
     latitude: row.latitude, longitude: row.longitude,
     precipMm: row.precip_mm,
-    series: JSON.parse(row.series_json) as { time: string[]; precipitation_sum: number[] },
+    series: safeParse(row.series_json, { time: [] as string[], precipitation_sum: [] as number[] }),
     updatedAt: row.updated_at,
   }
 }
@@ -213,7 +235,7 @@ export function getLatestWeather() {
 /* ─── Market ──────────────────────────────────────────────────────────── */
 
 export function upsertMarket(payload: MarketIngestPayload) {
-  db.prepare(`
+  getDb().prepare(`
     INSERT INTO market_data (symbol, source, provenance, kind, value, currency, detail_json, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(symbol) DO UPDATE SET
@@ -229,7 +251,7 @@ export function upsertMarket(payload: MarketIngestPayload) {
 }
 
 export function getMarketData(symbol: string) {
-  const row = db.prepare('SELECT * FROM market_data WHERE symbol = ?').get(symbol) as {
+  const row = getDb().prepare('SELECT * FROM market_data WHERE symbol = ?').get(symbol) as {
     symbol: string; source: string; provenance: string; kind: string
     value: number; currency: string; detail_json: string | null; updated_at: string
   } | undefined
@@ -237,28 +259,36 @@ export function getMarketData(symbol: string) {
   return {
     symbol: row.symbol, source: row.source, provenance: row.provenance,
     kind: row.kind, value: row.value, currency: row.currency,
-    detail: row.detail_json ? JSON.parse(row.detail_json) : null,
+    detail: row.detail_json ? safeParse(row.detail_json, null) : null,
     updatedAt: row.updated_at,
   }
 }
 
 /* ─── Seismic ──────────────────────────────────────────────────────────── */
 
+const MAX_SEISMIC_EVENTS = 500
+
 export function upsertSeismic(payload: SeismicIngestPayload) {
-  const stmt = db.prepare(`
+  const d = getDb()
+  const stmt = d.prepare(`
     INSERT OR REPLACE INTO seismic_events (id, magnitude, place, event_time, latitude, longitude, depth_km, source, ingested_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
-  const insertMany = db.transaction((events: SeismicIngestPayload['events']) => {
+  const insertMany = d.transaction((events: SeismicIngestPayload['events']) => {
     for (const e of events) {
       stmt.run(e.id, e.magnitude, e.place, e.time, e.latitude, e.longitude, e.depth_km, payload.source, payload.timestamp)
     }
+    d.prepare(`
+      DELETE FROM seismic_events WHERE id NOT IN (
+        SELECT id FROM seismic_events ORDER BY event_time DESC LIMIT ?
+      )
+    `).run(MAX_SEISMIC_EVENTS)
   })
   insertMany(payload.events)
 }
 
 export function getRecentSeismic(limit = 20) {
-  return db.prepare(
+  return getDb().prepare(
     'SELECT * FROM seismic_events ORDER BY event_time DESC LIMIT ?',
   ).all(limit) as Array<{
     id: string; magnitude: number; place: string; event_time: string
@@ -269,17 +299,23 @@ export function getRecentSeismic(limit = 20) {
 /* ─── Alert operations ──────────────────────────────────────────────────── */
 
 export function dismissAlert(alertId: string) {
-  const latest = getLatestTelemetry()
-  if (!latest) return
-  const alerts = latest.alerts.map(a => a.id === alertId ? { ...a, dismissed: true } : a)
-  db.prepare('UPDATE telemetry_latest SET alerts_json = ?, updated_at = ? WHERE id = 1')
-    .run(JSON.stringify(alerts), new Date().toISOString())
+  const d = getDb()
+  d.transaction(() => {
+    const latest = getLatestTelemetry()
+    if (!latest) return
+    const alerts = latest.alerts.map(a => a.id === alertId ? { ...a, dismissed: true } : a)
+    d.prepare('UPDATE telemetry_latest SET alerts_json = ?, updated_at = ? WHERE id = 1')
+      .run(JSON.stringify(alerts), new Date().toISOString())
+  })()
 }
 
 export function dismissAllAlerts() {
-  const latest = getLatestTelemetry()
-  if (!latest) return
-  const alerts = latest.alerts.map(a => ({ ...a, dismissed: true }))
-  db.prepare('UPDATE telemetry_latest SET alerts_json = ?, updated_at = ? WHERE id = 1')
-    .run(JSON.stringify(alerts), new Date().toISOString())
+  const d = getDb()
+  d.transaction(() => {
+    const latest = getLatestTelemetry()
+    if (!latest) return
+    const alerts = latest.alerts.map(a => ({ ...a, dismissed: true }))
+    d.prepare('UPDATE telemetry_latest SET alerts_json = ?, updated_at = ? WHERE id = 1')
+      .run(JSON.stringify(alerts), new Date().toISOString())
+  })()
 }

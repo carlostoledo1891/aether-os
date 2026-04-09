@@ -1,6 +1,8 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import websocket from '@fastify/websocket'
+import swagger from '@fastify/swagger'
+import swaggerUi from '@fastify/swagger-ui'
 import { healthRoutes } from './routes/health.js'
 import { telemetryRoutes } from './routes/telemetry.js'
 import { domainRoutes } from './routes/domain.js'
@@ -10,6 +12,7 @@ import { marketIngestRoutes } from './ingest/marketHook.js'
 import { lapocIngestRoutes } from './ingest/lapocHook.js'
 import { telemetryWsRoutes } from './ws/telemetryChannel.js'
 import { seedIfNeeded } from './seed.js'
+import { getDb } from './store/db.js'
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10)
 const HOST = process.env.HOST ?? '0.0.0.0'
@@ -21,6 +24,41 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
 
   await app.register(cors, { origin: CORS_ORIGIN })
   await app.register(websocket)
+
+  await app.register(swagger, {
+    openapi: {
+      openapi: '3.1.0',
+      info: {
+        title: 'Aether OS API',
+        version: '0.1.0',
+        description:
+          'REST + WebSocket API for the Aether OS critical-minerals supply-chain platform. ' +
+          'Serves domain data, telemetry, enricher outputs, and ingest endpoints for the simulation engine.',
+        contact: { name: 'Aether OS', url: 'https://aether-os.com' },
+        license: { name: 'Proprietary' },
+      },
+      tags: [
+        { name: 'health', description: 'Server health and uptime' },
+        { name: 'telemetry', description: 'Real-time and historical telemetry' },
+        { name: 'domain', description: 'Seeded domain data (financials, risks, batches, etc.)' },
+        { name: 'project', description: 'Project-level static data (deposits, resources, hydrology)' },
+        { name: 'enrichers', description: 'Weather, market, seismic, and LAPOC data from external sources' },
+        { name: 'ingest', description: 'Engine → API data ingestion (requires x-api-key)' },
+        { name: 'export', description: 'Regulatory and DPP export bundles' },
+        { name: 'alerts', description: 'Alert management (requires x-api-key)' },
+      ],
+      components: {
+        securitySchemes: {
+          apiKey: { type: 'apiKey', name: 'x-api-key', in: 'header' },
+        },
+      },
+    },
+  })
+
+  await app.register(swaggerUi, {
+    routePrefix: '/api/docs',
+    uiConfig: { docExpansion: 'list', deepLinking: true },
+  })
 
   seedIfNeeded()
 
@@ -52,6 +90,7 @@ async function main() {
 
   try {
     await app.listen({ port: PORT, host: HOST })
+    setupGracefulShutdown(app)
     console.log(`\n  Aether API running at http://${HOST}:${PORT}`)
     console.log(`  WebSocket at ws://${HOST}:${PORT}/ws/telemetry`)
     console.log(`  Health check: http://localhost:${PORT}/api/health\n`)
@@ -59,6 +98,17 @@ async function main() {
     app.log.error(err)
     process.exit(1)
   }
+}
+
+function setupGracefulShutdown(app: Awaited<ReturnType<typeof buildApp>>) {
+  const shutdown = async () => {
+    console.log('\n[server] Shutting down gracefully...')
+    await app.close()
+    try { getDb().close() } catch { /* already closed */ }
+    process.exit(0)
+  }
+  process.on('SIGTERM', shutdown)
+  process.on('SIGINT', shutdown)
 }
 
 const isDirectRun = process.argv[1]?.endsWith('index.js') || process.argv[1]?.endsWith('index.ts')

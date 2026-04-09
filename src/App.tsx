@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useMemo } from 'react'
+import { lazy, Suspense, useCallback, useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
@@ -28,6 +28,7 @@ function AppShell() {
   const [alertOpen, setAlertOpen] = useState(false)
 
   const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
+  const closeAlertPanel = useCallback(() => setAlertOpen(false), [])
   const dataContext = useMemo(() => service.getDataContext(), [service])
   const { esg, activeAlerts } = telemetry
   const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
@@ -65,7 +66,7 @@ function AppShell() {
                 background: W.violet,
                 borderRadius: W.radius.sm,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: '-0.03em',
+                fontSize: 16, fontWeight: 800, color: W.textInverse, letterSpacing: '-0.03em',
                 animation: 'pulse 1.5s ease-in-out infinite',
               }}>
                 Æ
@@ -107,7 +108,7 @@ function AppShell() {
       <AlertPanel
         alerts={activeAlerts}
         isOpen={alertOpen}
-        onClose={() => setAlertOpen(false)}
+        onClose={closeAlertPanel}
         onDismiss={dismissAlert}
         onDismissAll={dismissAllAlerts}
       />

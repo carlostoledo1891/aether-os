@@ -7,7 +7,7 @@
 
 Use alongside [`docs/copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`docs/copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), and [`HANDOFF.md`](../HANDOFF.md).
 
-**Last updated:** 2026-04-08 (post Synthetic Data Bridge)
+**Last updated:** 2026-04-09 (post CTO Code Review Sprint + Copy Updates — v4)
 
 ---
 
@@ -828,6 +828,275 @@ Use before a Meteoric-facing session:
 
 ---
 
+# Persona Re-Evaluation — v4 (Post CTO Code Review Sprint + Copy Updates, 2026-04-09)
+
+> **Context:** This evaluation covers the cumulative impact of three releases since v2: the Data Layer Refactor (MaybeAsync types, useServiceQuery, LoadingSkeleton, two hotfixes), the CTO Code Review & Quality Sprint (186 tests, ErrorFallback on 14 consumers, two-layer cache contract with TTL=0 on geological/financial endpoints, deployment gate, backend hardening with transactions/JSON guards/graceful shutdown, accessibility improvements, styling discipline), and updated website + pitch deck copy (production-hardened narrative, v1→v3 scorecard, expanded traction signals). Each persona has access to the live application, the website copy, and the pitch deck.
+
+---
+
+## Internal Advisors
+
+### Business Expert
+
+**Sentiment: Satisfied with the foundation. Impatient for the next phase.**
+
+**What moved:** The copy is now legitimately impressive for a solo-founder prototype. The pitch deck's Slide 7 (Technical credibility) reads like a Series A engineering narrative — three-process architecture, 186 tests across 3 packages, deployment gate, two-layer cache with documented staleness semantics. When I say "186 automated tests including live-mode integration tests that verify no infinite re-renders with async data" to a technical due diligence team, that sentence closes the "is this real engineering?" question permanently.
+
+The website copy update — from "pitch-ready prototype" to "production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers" — is a significant repositioning. The old copy invited skepticism. The new copy invites evaluation.
+
+**What concerns me:** We have now spent three consecutive sessions on infrastructure and quality. Each session was necessary. But the persona scores have not moved since the Synthetic Data Bridge, and they will not move until we ship something a non-developer stakeholder can see and react to. The ErrorFallback and LoadingSkeleton are invisible to a Chairman — they prevent bad experiences but don't create new good ones.
+
+**Updated killer question:** *"We now have 186 tests, a deployment gate, and a hardened backend. What is the next deliverable that makes a persona score actually increase — and when does it ship?"*
+
+---
+
+### CTO / Product Leader
+
+**Sentiment: Quality gate is now credible. Technical debt from the sprint is minimal.**
+
+**What moved:** Every item I flagged after the Data Layer Refactor has been addressed:
+
+- ✅ Integration test for live mode — THE test exists (6 component-level tests rendering RiskTab with async service)
+- ✅ Production smoke test / deployment gate — documented in HANDOFF.md
+- ✅ HANDOFF.md protocol violation — corrected
+- ✅ DEDUP_WINDOW_MS is tested
+- ✅ isThenable contract documented
+- ✅ Selector useRef pattern guarded with JSDoc, INVARIANT, ESLint rule, and eslint-disable justifications
+- ✅ Two-layer cache contract documented with authoritative layer identified
+- ✅ TTL=0 on geological/financial endpoints — De Carvalho principle enforced at architecture level
+- ✅ `__clearCacheForTesting()` for cross-test isolation
+- ✅ react-hooks/refs lint suppressions with explanations
+
+The eslint.config.js no-restricted-syntax rule that catches accidental 3-arg useServiceQuery calls is a good lightweight guard. The ESLint suppressions for the react-hooks/refs rule are properly justified — the latest-ref pattern is intentional and the v7 rule is overly strict for this use case.
+
+**What's still outstanding from my quality checklist:**
+
+- **Coverage floor:** npm run test:coverage runs but no CI enforcement. Target 60% as baseline, ratchet up.
+- **Playwright CI:** No automated frontend smoke test post-deploy. The deployment checklist is manual.
+- **Remaining inline styles:** 739 → still ~700+. The 3 raw hex values and 6 BuyerView rgba values were fixed, but the bulk migration (EnvironmentPanel 84, ComplianceTab 52, TraceabilityTab 46) is deferred.
+- **MAP_STACKING bypasses:** ViewSwitcher, HeaderStrip, BuyerView still use hardcoded z-index values.
+- **knip / ts-prune:** Dead export audit not run beyond MapHeaderStrip deletion.
+
+**Updated killer question:** *"The quality floor is solid. What is the first feature — not refactor — that ships this week?"*
+
+---
+
+## External Stakeholders
+
+### Dr Andrew Tunks — Executive Chairman
+
+**Previous score: 8.0 → Updated score: 8.0 (unchanged)**
+
+**What I notice when I log in:** The app loads. Every tab works. When the backend is slow, I see a loading skeleton with a label ("Loading risks...") instead of a blank screen. When the backend is down, I see an error card with a clear message instead of an infinite spinner. The alert drawer traps my keyboard focus correctly. These are professional touches that I expect, not features I celebrate.
+
+**What I notice in the copy:** The pitch deck now says "production-hardened" on the title slide. The governance line — "We show the same numbers and maps we'd put in front of counsel — with the disclaimer layer always visible. And our deployment checklist ensures we never ship a broken link to a stakeholder again" — is the right thing to say after the broken-link incident. The v1→v3 scorecard in Appendix E is transparent. I appreciate being told my score hasn't moved and why.
+
+**What's still missing:** My top gap from v2 remains: the screenshot watermark / demo overlay for presentation mode. The deployment gate is a process improvement, not a governance feature I can verify in the UI. I want to see that the system has a pre-deploy gate — perhaps a build number or last-verified timestamp visible in the UI.
+
+**Score rationale:** No new governance capability shipped. The broken-link process gap has been addressed, but the deployment checklist is invisible to me as a user. My score does not move on backend infrastructure.
+
+**Updated killer question:** *"The deployment gate is a text file. Show me the UI element that tells me when this build was last verified — and by whom."*
+
+---
+
+### Mr Stuart Gale — CEO & Managing Director
+
+**Previous score: 7.5 → Updated score: 7.5 (unchanged)**
+
+**What I notice when I log in:** The regulatory export bundle now actually downloads a JSON file in live mode — that was broken before. The 7d and 30d history tabs now have data, which means I can show a week's trend in a board meeting. The ErrorFallback cards are professionally handled. The connection status banner tells me the system state. These are good.
+
+**What I notice in the copy:** The traction slide is substantially stronger. "186 automated tests across 3 packages" and "mandatory deployment gate" signal engineering maturity. "4 external API enrichers live" tells me the integration story is real. But I still don't see a pricing model, a cost-of-ownership analysis, or a customer LOI.
+
+**What's still missing:** My top gap remains cost of ownership. I also note that the Roadmap section now shows IR disclosure mode as ✅ done, which is a good signal — it means the team is actually executing, not just listing. But the remaining items (OPC-UA, alarm ack, multi-tenant, Playwright CI) have no dates or cost estimates.
+
+**Score rationale:** The regulatory export fix is a real UX improvement. The 7d/30d history population is meaningful for operational monitoring. But these are fixes to things that should have worked, not new capabilities. No score movement.
+
+**Updated killer question:** *"The pitch says 186 tests and deployment gate — that is engineering. What is the commercial gate? Who is the first paying customer and when do they sign?"*
+
+---
+
+### Dr Marcelo De Carvalho — Executive Director & Chief Geologist
+
+**Previous score: 7.5 → Updated score: 7.5 (unchanged, but architecturally acknowledged)**
+
+**What I notice when I log in:** The geological data loads without staleness artifacts. If I understand the release notes correctly, the deposit data, resource classification, hydrology scenarios, financial scenarios, and market prices now bypass all caching — they always fetch fresh from the server. This directly addresses my principle: "Never show a stale number for geology." I cannot verify this from the UI alone, but the pitch deck and website copy both reference it, and the architectural contract is documented.
+
+**What I notice in the copy:** The pitch deck Slide 7 now contains a killer question — "How do you prevent stale geological data on screen?" — with the answer: "TTL=0 on all geological/financial endpoints. No caching. De Carvalho principle enforced at the architecture level." My name is on a technical constraint. That is a sign the team takes scientific data integrity seriously.
+
+The website feature list now says: "Financial scenario modeling — Bear / Consensus / Bull NPV sensitivity vs NdPr; zero-cache policy on geological/financial endpoints (never shows stale numbers)." This is the right language.
+
+**What's still missing:** My top gaps remain: drill trace visualization, JORC reference badges as interactive elements (not just ASX citation links), and basket normalization on competitor benchmarks. No geological content has changed. The app still shows the same polygons, the same collars, the same resource numbers. The architecture is ready for my data but my data is not in it.
+
+**Score rationale:** The zero-cache policy is architecturally significant and directly responsive to my stated concern. In a previous release I would have been uncomfortable knowing cached geological data might appear on screen for 30 seconds after a server update. That concern is now eliminated. However, this is a defensive improvement — it prevents a bad outcome rather than enabling a new good one. My score moves when I see drill traces, JORC badges I can click through to the ASX filing, and basket-normalized benchmarks.
+
+**Updated insight:** *"You named a technical constraint after my principle. That tells me the engineering team listens to the science. Now show me something new that I, as a geologist, can evaluate — a drill section, an assay intercept, a grade-tonnage curve. The architecture is waiting for content."*
+
+---
+
+### US DoD Program Officer
+
+**Previous score: 7.0 → Updated score: 7.0 (unchanged)**
+
+**What I notice when I log in:** The alert dismiss now requires API authentication — good, that was an open security gap. The backend has graceful shutdown on SIGTERM, which matters for container orchestration. The database uses transactions for writes and has JSON parse guards — basic but necessary data integrity.
+
+**What I notice in the copy:** The deployment architecture is now described in the pitch deck (Slide 7): three-process with Docker Compose, Nginx reverse proxy, health checks, graceful shutdown. This answers the "show me the infra story" question at a conceptual level.
+
+**What's still missing:** FedRAMP/IL4 path. TLS on WebSocket. Immutable audit store (still SQLite). STIG hardening checklist. Classification handling. Data residency controls. The API-key-gated dismiss is a step, but the auth model needs RBAC, not just a shared key.
+
+**Score rationale:** The security improvements (API key on dismiss, graceful shutdown, transaction wrapping) are good hygiene but not procurement-level security. No score movement.
+
+**Updated killer question:** *"You have an API key on alert dismiss. Do you have RBAC, session management, audit logging of who dismissed what and when, and SOC 2 Type II controls? That is the distance between a prototype and a procurable system."*
+
+---
+
+### EU Battery Passport Enforcement Officer
+
+**Previous score: 6.5 → Updated score: 6.5 (unchanged)**
+
+**What I notice:** Nothing has changed for my purposes. No DPP field-mapping table. No CEN/CENELEC schema export. No batch-level schema compliance demonstration. The infrastructure hardening is irrelevant to enforcement readiness.
+
+**What I notice in the copy:** The pitch deck roadmap now shows IR disclosure mode ✅, which demonstrates execution. But the DPP items remain in "pending" status. Feb 2027 is approaching.
+
+**Score rationale:** No movement until I see a schema-compliant JSON export from a batch. The clock is ticking.
+
+**Updated killer question:** *"Same question as last time: export me one batch as a DPP-compliant JSON. The schema correctness matters more than whether the data is simulated."*
+
+---
+
+### Project Finance Analyst (ECA / Bank)
+
+**Previous score: 7.5 → Updated score: 7.5 (unchanged)**
+
+**What I notice when I log in:** The 7d and 30d history views now have data — this means I can show trending to a credit committee. The error handling means the monitoring dashboard degrades gracefully if connectivity drops. The database transaction wrapping means covenant-critical writes are atomic.
+
+**What I notice in the copy:** The "database migration strategy — schema-versioned SQLite with ordered migration array; transactional writes; JSON parse guards" signals operational maturity for a data store that would hold covenant monitoring data.
+
+**What's still missing:** DSCR projections, drawdown schedule with milestones, alarm acknowledgement workflow. The audit trail is still seed data, not production events.
+
+**Score rationale:** The 7d/30d history fix and transactional writes are meaningful for monitoring use cases, but no new covenant or financial monitoring capability was added. No score movement.
+
+---
+
+### Water Justice NGO Representative
+
+**Previous score: 6.0 → Updated score: 6.0 (unchanged)**
+
+**What I notice:** Nothing. The ErrorFallback component, cache contract, and deployment gate are invisible to the communities I represent. The spring colors are still modeled. Portuguese language support still does not exist. The community disclaimer card exists but has not been improved. The grievance path is still documentation, not a UI feature.
+
+**What I notice in the copy:** The website copy still says "Maps spread faster than disclaimers" as my key quote. This is accurate. Nothing has been done about it.
+
+**Score rationale:** Three consecutive infrastructure sessions have shipped zero community-facing improvements. My score is patient but not indefinite.
+
+**Updated killer question:** *"When will a community member in Pocos de Caldas see something new in this product — in Portuguese, about their water, with a phone number to call?"*
+
+---
+
+### SCADA / Process Historian Integrator
+
+**Previous score: 8.5 → Updated score: 8.5 (unchanged)**
+
+**What I notice:** The two-layer cache contract is now formally documented — Layer 1 (API TTL) is authoritative, Layer 2 (useServiceQuery 200ms) is mount-coalescing dedup only. My concern about "two-layer caches that don't agree on staleness semantics" has been directly addressed in both code comments and marketing copy. The isThenable duck-type contract is documented. The MaybeAsync<T> interface with useServiceQuery is clean architecture.
+
+The ESLint no-restricted-syntax guard for 3-arg useServiceQuery calls is a nice touch — prevents the next developer from misusing the hook API.
+
+**What's still missing:** OpenAPI spec (still). OPC-UA / MQTT bridge (still). Channel metadata in telemetry DTO (units, precision, sample rate, staleness threshold). These are the items that would let me give a cost estimate for historian integration.
+
+**Score rationale:** My concerns have been heard and documented. But documentation doesn't change my integration cost estimate — the OpenAPI spec does. No score movement.
+
+**Updated killer question:** *"The cache contract documentation is exactly what I asked for — thank you. Now generate the OpenAPI spec from Fastify and I will have a quote within a week."*
+
+---
+
+### Equity Research Analyst / Journalist
+
+**Previous score: 7.0 → Updated score: 7.0 (unchanged)**
+
+**What I notice in the copy:** The pitch deck now includes a v1→v2→v3 scorecard showing that the weighted average has been flat at 7.3 for two releases. This is unusual transparency — most startups would hide stagnant metrics. The "v3 key insight" section admitting that "infrastructure fixes don't move scores; feature work resumes after live link verified" is the kind of honesty that makes a good paragraph.
+
+The "186 tests including live-mode integration tests" is more compelling than "131 tests" was. "Deployment gate" is a governance signal. "4 external API enrichers live" is verifiable. These are improvements to the pitch narrative.
+
+**What's still missing:** TAM/SAM/SOM still says "methodology: directional" — no analyst reports cited. No customer LOIs. No signed pilots. "186 tests" is engineering proof, but capital markets need market proof.
+
+The governance line — "And our deployment checklist ensures we never ship a broken link to a stakeholder again" — is an admission of the broken-link incident. I notice that the v3 evaluation surfaced this as a process gap. The fact that it is now addressed in the governance narrative is consistent with the transparency theme.
+
+**Score rationale:** Improved copy but no new verifiable claims. The transparency about flat scores is compelling editorial material. No score movement.
+
+**Updated insight:** *"Three infrastructure releases with honest self-assessment and flat scores. That is a story about discipline, not stagnation. But the next story I want to write is 'first customer signs' — not 'tests now at 200.'"*
+
+---
+
+## Aggregate Scorecard — v4 (Post CTO Code Review Sprint + Copy Updates, 2026-04-09)
+
+| Persona | v1 | v2 | v3 | v4 | Delta (v3→v4) | What moved | Biggest remaining gap |
+|---------|-----|-----|-----|-----|---------------|------------|----------------------|
+| Chairman (Tunks) | 7.5 | 8.0 | 8.0 | 8.0 | — | Deployment gate (process, not UI) | Build verification visible in UI |
+| CEO (Gale) | 7.0 | 7.5 | 7.5 | 7.5 | — | Regulatory export works; 7d/30d history | Cost of ownership + first customer |
+| Chief Geologist (De Carvalho) | 7.5 | 7.5 | 7.5 | 7.5 | — | TTL=0 on geology endpoints (defensive) | Drill trace viz + JORC badges |
+| DoD Program Officer | 6.5 | 7.0 | 7.0 | 7.0 | — | API-key auth on dismiss | FedRAMP/IL4 + RBAC + immutable audit |
+| EU Enforcement | 6.0 | 6.5 | 6.5 | 6.5 | — | Nothing | DPP field mapping + schema JSON |
+| Project Finance | 7.0 | 7.5 | 7.5 | 7.5 | — | Transactional writes; 7d/30d history | DSCR + drawdown schedule |
+| Water Justice NGO | 5.5 | 6.0 | 6.0 | 6.0 | — | Nothing | PT language + field-verified springs |
+| SCADA Integrator | 7.5 | 8.5 | 8.5 | 8.5 | — | Cache contract documented (as asked) | OpenAPI spec + OPC-UA bridge |
+| Journalist / Researcher | 6.5 | 7.0 | 7.0 | 7.0 | — | Stronger pitch copy; transparency | TAM sourcing + customer LOIs |
+| **Weighted average** | **6.8** | **7.3** | **7.3** | **7.3** | **—** | | |
+
+---
+
+## v4 Synthesis
+
+v4 is a second consecutive zero-delta release. This is not a failure — it is the correct outcome when the sprint was infrastructure hardening, not feature development. The personas are evaluating what the product does for them, not how it is built.
+
+**What DID improve (but doesn't move scores):**
+
+- Application stability and resilience (ErrorFallback, LoadingSkeleton, connection banner)
+- Data integrity guarantees (TTL=0 on geology/financial, transactional writes, JSON parse guards)
+- Copy quality (pitch deck and website significantly stronger)
+- Process maturity (deployment gate, 186 tests, ESLint guards)
+- Security posture (API-key auth, graceful shutdown)
+
+**What moves scores (by persona priority):**
+
+| Priority | Next deliverable | Personas it moves | Estimated delta |
+|----------|-----------------|-------------------|-----------------|
+| 1 | First real stakeholder demo or LOI | CEO (+0.5), Journalist (+0.5-1.0), all | High |
+| 2 | DPP field-mapping table + schema JSON export | EU Regulator (+1.0-1.5) | High |
+| 3 | OpenAPI spec generation from Fastify routes | SCADA Integrator (+0.5) | Medium |
+| 4 | Drill trace visualization + JORC reference badges | Chief Geologist (+0.5-1.0) | Medium-High |
+| 5 | Portuguese community card + grievance path in UI | NGO (+1.0+) | High for that persona |
+| 6 | Cost of ownership model in pitch | CEO (+0.5) | Medium |
+| 7 | Build verification stamp in UI (deployment hash/date) | Chairman (+0.5) | Low-Medium |
+
+**Business Expert's verdict:** The engineering foundation is now excellent. The quality gate is credible. The copy tells a strong story. But no persona score has moved in two releases. The next session must ship a user-visible feature that at least one persona can point to and say "that is new, and it matters to me." The three best candidates are: DPP field-mapping table (EU regulator, highest gap-to-effort ratio), OpenAPI spec (SCADA integrator, lowest effort), or drill trace visualization (Chief Geologist, highest emotional impact in a Meteoric room).
+
+**CTO's verdict:** The codebase is in the best shape it has ever been. 186 tests, clean types, documented contracts, lint guards, deployment gate. The technical debt that remains (inline styles, z-index magic numbers, coverage floor) is cosmetic, not structural. Ship features.
+
+---
+
+## Priority actions (updated post v4)
+
+| # | Action | Personas driving it | Status |
+|---|--------|---------------------|--------|
+| 1 | ~~**Implement IR disclosure mode**~~ | Chairman, CEO, all external | ✅ Done |
+| 2 | ~~**Community disclaimer card**~~ on Hydro Twin | NGO, community, Chief Geologist | ✅ Done |
+| 3 | ~~**Roadmap with milestones and costs**~~ | CEO, PF analyst, investor | ✅ Done |
+| 4 | ~~**JORC reference badges**~~ | Chief Geologist, journalist | ✅ Done |
+| 5 | ~~**Real backend + WebSocket + engine**~~ | CEO, integrator, PF analyst, all | ✅ Done |
+| 6 | ~~**External API enrichment**~~ (Open-Meteo, BCB, USGS) | PF analyst, journalist, NGO | ✅ Done |
+| 7 | ~~**LAPOC ingestion contract**~~ | Chief Geologist, integrator | ✅ Done |
+| 8 | ~~**Run end-to-end locally**~~ — `npm run dev:all` verified | All (prerequisite) | ✅ Done |
+| 9 | ~~**Server integration tests**~~ (22 route-level) | CTO quality gate | ✅ Done |
+| 10 | ~~**186 tests + deployment gate + ErrorFallback**~~ | CTO quality gate | ✅ Done |
+| 11 | **DPP field-mapping table** + schema JSON export | EU regulator (+1.0-1.5) | **Next** |
+| 12 | **OpenAPI spec generation** from Fastify routes | SCADA integrator (+0.5) | **Next** |
+| 13 | **Drill trace visualization** + JORC interactive badges | Chief Geologist (+0.5-1.0) | **Next** |
+| 14 | **Portuguese community card** + grievance path | NGO (+1.0) | **Next** |
+| 15 | **Build verification stamp** in UI | Chairman (+0.5) | **Next** |
+| 16 | **Source TAM/SAM/SOM** — methodology note or citation | Journalist, investor | Pending |
+| 17 | **Cost of ownership model** for pitch | CEO, PF analyst | Pending |
+| 18 | **Connect real LAPOC instruments** | Chief Geologist, all | Future (Dr. Caponi) |
+
+---
+
 ## Changelog
 
 | Date | Change |
@@ -840,3 +1109,4 @@ Use before a Meteoric-facing session:
 | 2026-04-08 | Session close: Business Expert evaluated codebase quality (top 5-10% AI-assisted), cataloged 13 founder skills, confirmed founder story as primary competitive moat. All personas re-evaluated post team reveal — scores improved across the board. |
 | 2026-04-08 | **Synthetic Data Bridge re-evaluation.** All 9 external + 2 internal personas re-evaluated after: real Fastify backend, simulation engine, 4 external API enrichers, rewritten LiveDataService, LAPOC contract, Docker Compose. Weighted average **6.8 → 7.3**. SCADA integrator had largest jump (+1.0). Chief Geologist unchanged (architecture doesn't add geological content). Priority actions updated — 7 of 15 now complete. |
 | 2026-04-09 | **Data Layer Refactor evaluation (v3).** Zero-delta release — all scores unchanged at **7.3** weighted average. Infrastructure fix (MaybeAsync types, useServiceQuery hook, LoadingSkeleton, 17 view migrations, two hotfixes) restored live deployment but added no user-facing capability. CTO flagged: missing production smoke test, HANDOFF protocol violation, need integration test for live mode. Business Expert: verify live link clean before any feature work. |
+| 2026-04-09 | **CTO Code Review Sprint + Copy Updates evaluation (v4).** Second consecutive zero-delta release — all scores unchanged at **7.3** weighted average. Sprint delivered 186 tests, ErrorFallback on 14 consumers, two-layer cache contract with TTL=0 on geological/financial endpoints, deployment gate, backend hardening (transactions, JSON guards, graceful shutdown), accessibility improvements, and stronger pitch/website copy. No persona score moved because infrastructure fixes don't create new user-visible capabilities. Both advisors: "Ship features." Priority actions updated with 5 next deliverables: DPP field mapping, OpenAPI spec, drill trace viz, PT community card, build verification stamp. |
