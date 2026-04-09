@@ -1,0 +1,491 @@
+/* ─── Control Room Animations & Layout ───────────────────────────────── */
+
+/* Flowing dashed lines along SVG paths */
+@keyframes dashFlow {
+  to { stroke-dashoffset: -24; }
+}
+
+@keyframes dashFlowSlow {
+  to { stroke-dashoffset: -32; }
+}
+
+@keyframes dashFlowReverse {
+  to { stroke-dashoffset: 24; }
+}
+
+/* Status pulse on equipment nodes */
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Glow ring for selected equipment */
+@keyframes selectGlow {
+  0%, 100% { box-shadow: 0 0 8px var(--glow-color, rgba(124, 92, 252, 0.3)); }
+  50% { box-shadow: 0 0 18px var(--glow-color, rgba(124, 92, 252, 0.5)); }
+}
+
+/* Scan line sweep across schematic */
+@keyframes scanLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Control room overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 6, 16, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ececf8;
+}
+
+.headerSub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #7878b0;
+}
+
+.closeBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #a0a0c8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ececf8;
+}
+
+/* Main body: KPI strip | schematic | detail panel */
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Left KPI strip */
+.kpiStrip {
+  width: 170px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-y: auto;
+}
+
+.kpiCard {
+  padding: 10px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s;
+}
+
+.kpiCard:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.kpiLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7878b0;
+  margin-bottom: 4px;
+}
+
+.kpiValue {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.kpiTarget {
+  font-size: 9px;
+  color: #7878b0;
+}
+
+/* Center schematic area */
+.schematicArea {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schematicSvg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Bottom bar */
+.bottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.categoryTabs {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.categoryTab {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #7878b0;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+
+.categoryTab:hover {
+  color: #a0a0c8;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.categoryTabActive {
+  composes: categoryTab;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ececf8;
+}
+
+.locationBadge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #7878b0;
+  letter-spacing: 0.05em;
+}
+
+/* Equipment node in SVG */
+.equipmentGroup {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.equipmentGroup:hover .nodeRect {
+  stroke-opacity: 1;
+  filter: brightness(1.2);
+}
+
+.equipmentDimmed {
+  opacity: 0.25;
+}
+
+/* Status dot animation */
+.statusDot {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+/* Flow line animation */
+.flowProcess {
+  stroke-dasharray: 8 6;
+  animation: dashFlow 1.2s linear infinite;
+}
+
+.flowReagent {
+  stroke-dasharray: 4 8;
+  animation: dashFlowSlow 2s linear infinite;
+}
+
+.flowRecycle {
+  stroke-dasharray: 6 8;
+  animation: dashFlowReverse 1.8s linear infinite;
+}
+
+.flowProduct {
+  stroke-dasharray: 12 4;
+  animation: dashFlow 1.5s linear infinite;
+}
+
+.flowWaste {
+  stroke-dasharray: 3 6;
+  animation: dashFlowSlow 2.5s linear infinite;
+}
+
+/* Detail panel (right sidebar) */
+.detailPanel {
+  width: 280px;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: rgba(13, 13, 28, 0.5);
+}
+
+.detailHeader {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detailTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #7878b0;
+  letter-spacing: 0.06em;
+  margin-bottom: 3px;
+}
+
+.detailName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ececf8;
+  margin-bottom: 6px;
+}
+
+.detailSection {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.detailSectionTitle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7878b0;
+  margin-bottom: 8px;
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 11px;
+}
+
+.specRow:last-child {
+  border-bottom: none;
+}
+
+.specKey {
+  color: #8888b8;
+}
+
+.specValue {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: #ececf8;
+  text-align: right;
+  max-width: 55%;
+}
+
+.sensorRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sensorRow:last-child {
+  border-bottom: none;
+}
+
+.sensorDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.sensorLabel {
+  flex: 1;
+  font-size: 11px;
+  color: #8888b8;
+}
+
+.sensorValue {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: #ececf8;
+}
+
+.sensorUnit {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #7878b0;
+  width: 40px;
+  text-align: right;
+}
+
+/* Pilot Plant HUD Card (collapsed) */
+.hudCard {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  width: 210px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.hudCard:hover {
+  transform: translateY(-1px);
+}
+
+.hudHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.hudStatusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.hudTitle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a0a0c8;
+}
+
+.hudMetricsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.hudMetric {
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.hudMetricLabel {
+  font-size: 8px;
+  color: #7878b0;
+  margin-bottom: 1px;
+}
+
+.hudMetricValue {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* Mini process dots */
+.processDotsRow {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.processDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.processLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hudFooter {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: #7878b0;
+  margin-top: 6px;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* Connected equipment links in detail panel */
+.connectedLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #a0a0c8;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin: 2px;
+}
+
+.connectedLink:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ececf8;
+}

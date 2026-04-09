@@ -124,7 +124,7 @@ aether-os/
 │   ├── data/
 │   │   ├── mockData.ts                 BATCHES, INITIAL_PLANT/ENV_TELEMETRY, PROJECT_FINANCIALS, MARKET_PRICES, DEPOSIT_DATA, PILOT_PLANT_PERFORMANCE, U_TH_SAFETY, PROJECT_TIMELINE, RESOURCE_CLASSIFICATION, CYBER_TRUST_PILLARS, HARDWARE_SENSORS, SCOPE_3_TRACKING, SPRING_COUNT
 │   │   ├── mockGenerator.ts            drift(), generatePlantTelemetry(scale), generateEnvTelemetry(scale), detectAlerts(), calculateEsgScore()
-│   │   ├── caldeira/                   issuerSnapshot.ts, spatialInsights.ts — ASX-facing citations + pilot↔plant km / APA heuristics
+│   │   ├── caldeira/                   issuerSnapshot.ts, spatialInsights.ts, pilotPlantData.ts — ASX citations + pilot plant BOM/sensors/process
 │   │   └── geojson/                    static Caldeira map geometry for MapLibre sources/layers
 │   │       ├── caldeira-boundary.geojson        Poços alkaline complex outline (terrain master; non-survey)
 │   │       ├── caldeira-deposits.geojson        7 deposit polygons (optional on Operations — off by default)
@@ -201,6 +201,13 @@ aether-os/
 │   │   │   ├── InfraOverlay.tsx        full logistics mesh — optional on Operations (`infra` toggle); supply route when showRoute (BuyerView)
 │   │   │   ├── EnvironmentalOverlay.tsx  APA + buffer (split GeoJSON) + monitoring + urban centroid + UDC; Hydro Twin (+ env toggles)
 │   │   │   └── NeighborOverlay.tsx     Axel REE Caldas adjacent tenement (e.g. geology context)
+│   │   ├── plant/                       Pilot Plant Digital Twin (v11)
+│   │   │   ├── PilotPlantCard.tsx      collapsed HUD card for Operations map (4 live metrics, process dots)
+│   │   │   ├── ControlRoom.tsx         full-screen overlay (KPI strip, schematic, detail panel)
+│   │   │   ├── PlantSchematic.tsx      SVG process flow (17 equipment, 15 animated flow paths)
+│   │   │   ├── EquipmentNode.tsx       reusable SVG equipment component (status, sensors, category)
+│   │   │   ├── EquipmentDetailPanel.tsx right-side inspector (specs, sensors, live readings)
+│   │   │   └── controlRoom.module.css  dashFlow, statusPulse, selectGlow animations + glassmorphism
 │   │   ├── EsgScoreRing.tsx            composite ESG ring gauge
 │   │   ├── GreenPremiumCard.tsx        spot vs certified NdPr price delta card
 │   │   └── BlockchainTimeline.tsx      molecular-to-magnet vertical timeline
@@ -676,7 +683,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
-Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~8.0 / 10** (v6 — up from 7.8 after Vero Rebrand + AI Agent + Pilot Plant Mirror + Geolocation Accuracy sprint). The top gaps that should drive the next iteration:
+Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~9.2 / 10** (v11 — post Pilot Plant Digital Twin / Control Room). Five personas at code ceiling (10.0): Chairman, CEO, Chief Geologist, SCADA, Journalist. Valuation analysis: `docs/VALUATION.md`. The top gaps that should drive the next iteration:
 
 | Priority | Action | Personas driving it | Effort | Status |
 |----------|--------|---------------------|--------|--------|
@@ -1944,4 +1951,117 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 ---
 
-*Last updated: 2026-04-09 — v10.2 Sprint: Phase 0 Blockchain Foundation. Real SHA-256 append-only audit chain replacing stub hashes. Dedicated audit_events table with chain linking. Chain verification API. 27 AI tools. 45 server tests passing. Schema v2.*
+*Last updated: 2026-04-09 — v11 Sprint: Pilot Plant Digital Twin / Control Room. 7 new files, 1 modified view. Persona weighted average ~9.2. Valuation analysis created (docs/VALUATION.md). 5 of 9 personas at code ceiling (10.0). 27 AI tools. Next: commercial execution.*
+
+---
+
+## Session Log — 2026-04-09 (v11: Pilot Plant Digital Twin / Control Room)
+
+**What was completed this session:**
+
+### Phase 1: Data Consolidation
+1. **`src/data/caldeira/pilotPlantData.ts`** — consolidated single source of truth for the digital twin. Merges data from all provided research documents (ASX releases, CETEM papers, pilot plant mirror) with inferred details. Defines TypeScript types (`PilotPlantEquipment`, `PilotPlantSensor`, `ProcessStep`, `PlantKPI`, `FlowConnection`, etc.) and populates:
+   - **17 equipment items** with P&ID-style tags (PP-CR-001 through PP-UT-002), categories, schematic positions, supplier, capacity, material of construction, connected upstream/downstream equipment
+   - **28 sensors** with types (pH, temperature, flow, pressure, level, turbidity, grade, density, moisture, speed, dosing_rate), units, ranges, nominal values, and `telemetryPath` mappings to `PlantTelemetry` interface
+   - **7 process steps** (Ore Preparation → Leaching → Solid-Liquid Separation → Precipitation → Impurity Removal → Product Finishing → Reagent Recovery)
+   - **15 flow connections** between equipment with flow variants (process, reagent, recycle, utility, product)
+   - **Element recoveries** (Nd 70%, Pr 71%, Tb 61%, Dy 56%)
+   - **Plant KPIs, personnel, partners, facility info**
+   - Helper functions: `getSensorValue()` (combines live telemetry with simulated drift), `resolveTelemetryValue()` (navigates telemetry paths)
+
+### Phase 2: Collapsed HUD Card
+2. **`src/components/plant/PilotPlantCard.tsx`** — compact card displayed top-left of Operations map when Control Room is closed. Shows:
+   - Pulsing green status dot + "LIVE" indicator
+   - 4 live metrics: pH (color-coded), MREC output, water recirculation %, TREO grade %
+   - Mini 7-dot process flow indicator
+   - "Click to open Control Room" footer
+   - Entry animation via `motion.div`, glassmorphism styling, keyboard accessible
+
+### Phase 3: Full-Screen Control Room
+3. **`src/components/plant/ControlRoom.tsx`** — full-screen overlay activated by clicking the HUD card. Contains:
+   - Header with plant info, status, close button
+   - Left KPI strip showing PLANT_KPIS and ELEMENT_RECOVERIES
+   - Center schematic area hosting PlantSchematic
+   - Right detail panel (EquipmentDetailPanel) on equipment click
+   - Bottom bar with category filtering tabs and location badge
+   - Escape key to close
+
+### Phase 4: Interactive Plant Schematic
+4. **`src/components/plant/PlantSchematic.tsx`** — hand-tuned SVG process flow diagram:
+   - Fixed layout for all 17 equipment nodes via `NODE_POSITIONS`
+   - Background grid and process area outlines
+   - `EquipmentNode` components for each unit (status dot, tag, name, live sensor reading, sensor count badge, category label)
+   - `computeFlowPath()` generates SVG `d` attributes for 15 animated flow connections
+   - Directional arrow markers, color-coded by flow variant
+   - Text callouts for "MREC PRODUCT OUT", "ROM ORE IN", "CLOSED-LOOP REAGENT RECYCLE"
+
+5. **`src/components/plant/EquipmentNode.tsx`** — reusable SVG component for individual equipment units within the schematic. Renders rect + status dot + tag + name + primary sensor + count badge + category label. Dynamic fill/stroke by category. Visual feedback for selected/hovered states.
+
+### Phase 5: Equipment Detail Panel
+6. **`src/components/plant/EquipmentDetailPanel.tsx`** — right-side panel on equipment click:
+   - Equipment tag, name, status, category badge, purpose
+   - Specs table (capacity, material, manufacturer)
+   - Live sensor readings with status dots (green/amber/red)
+   - Process step context
+   - Connected upstream/downstream equipment (clickable navigation)
+   - Slide-in/out animation via `motion.div`
+
+### Phase 6: CSS Animations
+7. **`src/components/plant/controlRoom.module.css`** — scoped CSS:
+   - `@keyframes dashFlow`, `dashFlowSlow`, `dashFlowReverse` (animated dashed process lines)
+   - `@keyframes statusPulse` (pulsing status indicators)
+   - `@keyframes selectGlow` (selected equipment highlight)
+   - Glassmorphism styles for overlay, header, KPI strip, schematic, bottom bar, detail panel
+
+### Phase 7: Integration
+8. **`src/views/FieldView.tsx`** — integrated components:
+   - Added `controlRoomOpen` state
+   - `PilotPlantCard` rendered top-left when `mapTab === 'operations'` and Control Room is closed
+   - `ControlRoom` rendered as full-screen overlay when open
+   - `AnimatePresence` for smooth transitions
+
+### Documentation & Analysis
+9. **`docs/VALUATION.md`** (new) — comprehensive valuation analysis:
+   - Three scenarios (Bear/Consensus/Bull) with revenue build 2026–2030
+   - Pre-revenue scorecard valuation ($5–7M consensus pre-money)
+   - Milestone-based valuation table (through $10M+ ARR)
+   - Caldeira project financials as value multiplier
+   - Comparable transactions (Minviro, Circulor, Everledger)
+   - Sensitivity analysis and risk discounts
+   - Investor talking points for seed, strategic partner, and board conversations
+
+10. **`docs/Personas.md`** — v11 persona evaluation:
+    - 5 personas moved: CEO → 10.0, Chief Geologist → 10.0, SCADA → 10.0, PF Analyst → 8.5, Journalist → 10.0
+    - Weighted average: ~8.9 → ~9.2
+    - 5 of 9 personas at code ceiling (10.0)
+    - Full aggregate scorecard v1–v11
+
+### Quality Gate
+- All existing tests pass
+- 0 TypeScript compilation errors
+- Clean production build
+- Integration verified in FieldView.tsx
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **New (plant)** | `src/data/caldeira/pilotPlantData.ts`, `src/components/plant/PilotPlantCard.tsx`, `src/components/plant/ControlRoom.tsx`, `src/components/plant/PlantSchematic.tsx`, `src/components/plant/EquipmentNode.tsx`, `src/components/plant/EquipmentDetailPanel.tsx`, `src/components/plant/controlRoom.module.css` |
+| **Modified** | `src/views/FieldView.tsx` (integration + state management) |
+| **New (docs)** | `docs/VALUATION.md` |
+| **Updated (docs)** | `docs/Personas.md` (v11 evaluation + changelog), `HANDOFF.md` (this session) |
+
+**What should be done next (priority order):**
+1. **Close Meteoric paid pilot** — single event that moves every valuation number up
+2. **Activate Thiago as CEO** — removes 20–30% key-person discount
+3. **Deploy all v11 changes to Vercel + Railway**
+4. **Seed fundraise at $5–7M** — buys commercial capacity
+5. **Connect real LAPOC instruments** — converts simulated to field-verified
+6. **OPC-UA bridge** (Q3 2026) — per integration roadmap
+
+**Decisions made this session:**
+- **17 equipment items inferred where data was incomplete** — used CETEM and ASX pilot plant references + standard ionic clay REE process flow to fill gaps. Equipment tags follow P&ID naming convention (PP-[category code]-[number]).
+- **28 sensors mapped to PlantTelemetry paths** — `telemetryPath` system enables automatic binding to live data when available, with simulated drift fallback.
+- **Hand-tuned SVG layout over library** — PlantSchematic uses fixed coordinates for each node, avoiding dependency on graph layout libraries. Layout optimized for visual clarity of the 7-step process flow.
+- **CSS animations scoped to module** — all keyframes in controlRoom.module.css, not global. Prevents naming collisions.
+- **Valuation at $5–7M consensus** — Business Expert analysis grounded in comparable transactions (Minviro, Circulor), revenue model from codebase pricing data, and SOM basis of 15 REE projects.

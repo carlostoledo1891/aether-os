@@ -5,7 +5,6 @@ import {
   useGeoJsonFeatureCollection,
   type Feature,
   type FeatureCollection,
-  type FeatureProperties,
   type PointGeometry,
 } from './geojson'
 import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
@@ -20,7 +19,8 @@ export type DrillCampaign =
 
 export type DrillHoleType = 'DD' | 'AC' | 'AUGER'
 
-interface DrillHoleProperties extends FeatureProperties {
+interface DrillHoleProperties {
+  [key: string]: unknown
   id: string
   deposit: string
   treo_ppm: number

@@ -22,7 +22,7 @@ export interface PolygonGeometry {
 export type Geometry = PointGeometry | LineStringGeometry | PolygonGeometry
 
 export interface Feature<
-  P extends FeatureProperties = FeatureProperties,
+  P extends Record<string, unknown> = FeatureProperties,
   G extends Geometry = Geometry,
 > {
   type: 'Feature'
@@ -30,16 +30,16 @@ export interface Feature<
   properties: P
 }
 
-export interface FeatureCollection<F extends Feature = Feature> {
+export interface FeatureCollection<F extends Feature<Record<string, unknown>, Geometry> = Feature> {
   type: 'FeatureCollection'
   features: F[]
 }
 
-export function emptyFeatureCollection<F extends Feature = Feature>(): FeatureCollection<F> {
+export function emptyFeatureCollection<F extends Feature<Record<string, unknown>, Geometry> = Feature>(): FeatureCollection<F> {
   return { type: 'FeatureCollection', features: [] }
 }
 
-export function useGeoJsonFeatureCollection<F extends Feature = Feature>(url: string) {
+export function useGeoJsonFeatureCollection<F extends Feature<Record<string, unknown>, Geometry> = Feature>(url: string) {
   const [data, setData] = useState<FeatureCollection<F> | null>(null)
 
   useEffect(() => {

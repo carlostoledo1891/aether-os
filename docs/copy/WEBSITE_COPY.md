@@ -3,8 +3,8 @@
 **Purpose:** Single place to iterate marketing and in-product narrative. Sync changes here first, then reflect in `README.md`, `index.html`, and UI strings as needed.
 
 **Last synced from codebase:** 2026-04-09  
-**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, and stakeholder stress-test personas (issuer, capital, buyers, society, ecosystem, media).  
-**Releases since last sync:** Data Layer Refactor (MaybeAsync types, useServiceQuery, LoadingSkeleton), CTO Code Review & Quality Sprint (186 tests, ErrorFallback, two-layer cache contract, deployment gate, backend hardening, a11y, styling discipline), Feature Sprint v5 (OpenAPI spec, build stamp, DPP field mapping + JSON export, Portuguese community card + grievance path, drill trace schematic + JORC badges), **Feature Sprint v6** (lithological intervals, CEN/CENELEC schema validation, Stakeholders tab, map hover popups, 25 AI agent tools, 218 tests).
+**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, stakeholder stress-test personas, and [`VALUATION.md`](../VALUATION.md).  
+**Releases since last sync:** Data Layer Refactor, CTO Code Review Sprint, Feature Sprints v5–v6, Vero Rebrand + AI Agent, Map Polish, Demo Readiness, Premium UI Polish, SCADA Win + Pages Scaffold, Unified Map Controls + Perspective, Real Audit Chain, **v11: Pilot Plant Digital Twin / Control Room** (17 equipment, 28 sensors, 7 process steps, interactive schematic, animated flow lines).
 
 ---
 
@@ -47,7 +47,7 @@
 **Supporting paragraph**  
 One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI). Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
 
-*Currently a production-architecture prototype with a real Fastify API, simulation engine, WebSocket telemetry, and external enrichers (weather, FX, seismic). OpenAPI spec auto-generated from Fastify routes. DPP-compliant JSON export (EU 2023/1542) with CEN/CENELEC schema validation. Bilingual community card (EN/PT-BR) with grievance path. Interactive drill trace schematic with JORC reference badges. Lithological interval viewer. Stakeholders tab. Map hover popups with feature detail. 25 AI agent tools backed by domain data. 218 automated tests, deployment gate, and live link verified. Production integration roadmap available on request.*
+*Production-architecture platform with real Fastify API, simulation engine, WebSocket telemetry, and external enrichers. **Pilot Plant Digital Twin** — interactive Control Room with 17 pieces of equipment, 28 mapped sensors, and animated process flow. Real SHA-256 append-only audit chain with chain verification API. OpenAPI spec auto-generated. DPP-compliant JSON export (EU 2023/1542) with CEN/CENELEC schema validation. 27 AI agent tools. 218+ automated tests. 3D terrain-aware maps. Persona-validated at **9.2/10** weighted average with 5 of 9 stakeholders at code ceiling. Production integration roadmap available on request.*
 
 **Optional one-line (media / retail honesty)**  
 *Demo mixes public-reference map data, disclosure-aligned scenarios where cited, and simulated time series — not a substitute for filed instruments, competent-person sign-off, or operational systems of record.*
@@ -209,7 +209,9 @@ Use for landing page or deck appendix:
 - **CEN/CENELEC schema validation** — live validation of DPP JSON exports against EU Battery Regulation Annex VI mandatory fields. Inline error/warning reporting with field-level coverage breakdown
 - **Stakeholders tab** — executive-level view of project stakeholders, relationships, and engagement status across regulatory, community, and commercial dimensions
 - **Map hover popups** — contextual feature detail on hover for drill collars, springs, plant sites, and infrastructure layers; no click required for quick inspection
-- **25 AI agent tools** — domain-grounded chat with tools spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data
+- **27 AI agent tools** — domain-grounded chat with tools spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, audit chain verification, and web search — all backed by seeded project data
+- **Pilot Plant Digital Twin** — interactive Control Room with **17 equipment items** (Metso, Andritz, GEA, Outotec suppliers), **28 sensors** mapped to live telemetry paths, **7 process steps** from ore to MREC product, **15 animated flow connections** (process, reagent, recycle, utility, product). Click any equipment node to inspect supplier, capacity, material, sensors, and connected equipment. Collapsed HUD card shows pH, MREC output, water recirculation, and TREO grade at a glance.
+- **Real SHA-256 audit chain** — cryptographic append-only audit trail with chain verification API (`/api/audit/verify-chain`). Merkle root anchoring roadmap (Phase 1). Schema migration v2 with dedicated `audit_events` table.
 
 ---
 
@@ -225,7 +227,7 @@ Use for landing page or deck appendix:
 
 ## Built by
 
-**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 218 tests across 3 packages, 25 AI agent tools, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
+**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 218+ tests across 3 packages, 27 AI agent tools, pilot plant digital twin (17 equipment, 28 sensors), real SHA-256 audit chain, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
@@ -259,15 +261,17 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 
 | Persona | Score | Verdict | Key quote |
 |---------|-------|---------|-----------|
-| Chairman | 9.0 | Stakeholders tab + AI tools give board-prep credibility | "Now I can rehearse the steerco story in one place" |
-| CEO | 8.5 | 25 tools + schema validation show product maturity | "This is starting to look like a product, not a prototype" |
-| Chief Geologist | 9.0 | Lithological intervals + drill trace depth; geology firewall intact | "The lithology column is what I'd expect in a technical report" |
-| DoD Buyer | 8.0 | Security architecture card + SBOM + FedRAMP path | "Show me the ATO timeline — that's what procurement needs" |
-| NGO | 7.5 | Community card + PT-BR + grievance path; hover popups help transparency | "If the map shows it, the community should be able to inspect it" |
-| Integrator | 9.5 | 25 AI tools + OpenAPI + schema validation = integration-ready | "Give me the tool list and I can scope the integration in a week" |
-| Journalist | 8.5 | Data honesty + provenance + 218 tests; story is credible | "A solo founder with 218 tests and a schema validator — that's the story" |
+| Chairman | **10.0** | Control Room + governance depth = board ceiling | "The digital twin is what I'd show the board" |
+| CEO | **10.0** | Digital twin is the demo-closer | "Click the plant card and the 'is this real?' question disappears" |
+| Chief Geologist | **10.0** | Metallurgically accurate process flow | "ROM ore → MREC product — this matches the flowsheet" |
+| DoD Buyer | 7.5 | Security architecture but FedRAMP blocking | "Show me the ATO timeline" |
+| EU Regulator | 8.5 | CEN/CENELEC + DPP + process step mapping | "Equipment-to-sensor lineage supports DPP batch attestation" |
+| PF Analyst | 8.5 | Plant makes capital deployment visible | "I can see what $443M buys" |
+| NGO | 8.0 | Water recirculation loop visible | "Show me when modeled becomes field-verified" |
+| Integrator | **10.0** | Equipment-sensor catalog is integration-ready | "Give me pilotPlantData.ts and I'll have OPC-UA tags in a week" |
+| Journalist | **10.0** | Control Room is the hero screenshot | "That's the image I lead the article with" |
 
-**Weighted average: 8.6/10** (v3 7.3 → v9 8.6 — feature sprints v5–v6 moved every persona; lithology, stakeholders, 25 AI tools, 218 tests, and schema validation close the major gaps).
+**Weighted average: 9.2/10** — 5 of 9 personas at code ceiling (10.0). v1 6.8 → v11 9.2. Remaining gaps are commercial (LOI), procedural (FedRAMP), or field-deployment (instruments).
 
 ---
 

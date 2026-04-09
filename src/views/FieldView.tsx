@@ -2,6 +2,8 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
+import { PilotPlantCard } from '../components/plant/PilotPlantCard'
+import { ControlRoom } from '../components/plant/ControlRoom'
 import { MapBase, CALDEIRA_BBOX } from '../components/map/MapBase'
 import type { MapLayerMouseEvent } from '../components/map/MapBase'
 import { PlantOverlay, PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../components/map/PlantOverlay'
@@ -151,6 +153,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
+  const [controlRoomOpen, setControlRoomOpen] = useState(false)
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
   const [selectedPlantNode, setSelectedPlantNode] = useState<PlantOverlayNodeDetail | null>(null)
@@ -726,6 +729,16 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               )}
             </AnimatePresence>
             <MapLayerPicker layers={layerToggles} onToggle={handleLayerToggle} />
+            <AnimatePresence>
+              {mapTab === 'operations' && !controlRoomOpen && (
+                <PilotPlantCard onOpen={() => setControlRoomOpen(true)} />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {controlRoomOpen && (
+                <ControlRoom onClose={() => setControlRoomOpen(false)} />
+              )}
+            </AnimatePresence>
             {mapTab === 'operations' && (
               <div style={{
                 position: 'absolute',

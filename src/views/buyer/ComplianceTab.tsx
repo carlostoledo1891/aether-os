@@ -148,7 +148,7 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
             { date: 'Q4 2026', label: 'AWS GovCloud deployment' },
             { date: 'Q1 2027', label: 'IL4 assessment initiation' },
             { date: 'Q2 2027', label: 'Authority to Operate (ATO)' },
-          ].map((m, i) => (
+          ].map((m) => (
             <div key={m.date} className={css.rowSpaced} style={{ alignItems: 'flex-start', gap: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.violet, display: 'inline-block', boxShadow: `0 0 6px ${W.violet}60` }} />
