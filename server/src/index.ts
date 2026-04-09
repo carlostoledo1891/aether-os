@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import websocket from '@fastify/websocket'
@@ -16,6 +17,13 @@ import { chatRoutes } from './routes/chat.js'
 import { chatUploadRoutes } from './routes/chatUpload.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
+
+const ENV_HINTS: Array<[string, string]> = [
+  ['GOOGLE_GENERATIVE_AI_API_KEY', 'AI chat will return 501. Get a key at https://aistudio.google.com/apikey'],
+]
+for (const [key, hint] of ENV_HINTS) {
+  if (!process.env[key]) console.warn(`\u26A0 ${key} not set \u2014 ${hint}`)
+}
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10)
 const HOST = process.env.HOST ?? '0.0.0.0'
