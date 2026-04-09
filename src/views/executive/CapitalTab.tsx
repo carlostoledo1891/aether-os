@@ -181,8 +181,8 @@ export function CapitalTab() {
                   <ReferenceLine y={1.3} stroke={W.amber} strokeDasharray="6 3" label={{ value: '1.3x covenant', fill: W.text4, fontSize: 9, position: 'right' }} />
                   <Tooltip
                     contentStyle={{ background: W.panel, border: W.chromeBorder, borderRadius: 8, fontSize: 10, color: W.text2 }}
-                    formatter={(v: number, name: string) => [`${v}x`, name.charAt(0).toUpperCase() + name.slice(1)]}
-                    labelFormatter={(y: number) => `Year ${y}`}
+                    formatter={(v, name) => [`${v}x`, String(name).charAt(0).toUpperCase() + String(name).slice(1)]}
+                    labelFormatter={(y) => `Year ${y}`}
                   />
                   <Legend wrapperStyle={{ fontSize: 10, color: W.text3 }} />
                   <Line type="monotone" dataKey="bear" stroke={W.red} strokeWidth={1.5} dot={false} name="Bear" />
