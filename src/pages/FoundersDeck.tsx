@@ -793,7 +793,6 @@ export default function FoundersDeck() {
                   'Dev pipeline — new features, regulatory datasets, DPP compliance fields',
                   'Field work — geology, hydrology, plant commissioning, community dashboards',
                   'Science — Dr. Caponi coordination, instrument validation, data provenance',
-                  '2 US-based frontier AI companies — active collaboration shaping the product',
                 ].map(item => (
                   <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: V, marginTop: 6, flexShrink: 0 }} />
@@ -832,7 +831,7 @@ export default function FoundersDeck() {
               ))}
             </div>
             <p style={{ fontSize: 11, color: W.text4, maxWidth: 600 }}>
-              I see the regulations creating the market. I see the perfect storm forming for rare earth minerals tech. I need to stay in the product — you handle the front.
+              Today I work with 2 US-based frontier AI companies. I see the regulations creating the market. The perfect storm is forming for rare earth minerals tech. Seed money lets me go 100% on Vero — you handle the front.
             </p>
           </>)}
 

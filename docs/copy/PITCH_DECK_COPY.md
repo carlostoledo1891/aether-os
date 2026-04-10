@@ -426,8 +426,8 @@ Juliano Dutra (CTO lens) + Guilherme Bonifácio (Business lens). Pragmatic needs
 *Talk track: No flattery. Juliano — I need someone who has shipped at scale to validate architecture decisions and set the hiring bar. The dev hire reports to you. Guilherme — I need someone who has built revenue engines to own GTM and investor pipeline. The commercial hire reports to you.*
 
 **Slide 22 — Why I Need You** ⚪ (NEW)  
-Focus thesis: Carlos stays on product + science + field (Caldeira pilot, LAPOC, features, regulatory datasets, 2 US AI company collaborations). Cannot simultaneously run GTM, fundraising, pricing, board governance. The split: Carlos = product. Juliano = tech mentorship. Guilherme = commercial front.  
-*Talk track: I work with 2 US-based frontier AI companies. I see the regulations creating the market. I see the perfect storm for rare earth minerals tech. I need to stay in the product — you handle the front. That is the deal.*
+Focus thesis: Carlos stays on product + science + field (Caldeira pilot, LAPOC, features, regulatory datasets). Cannot simultaneously run GTM, fundraising, pricing, board governance. Today working with 2 US-based frontier AI companies — seed money enables 100% Vero focus. The split: Carlos = product. Juliano = tech mentorship. Guilherme = commercial front.  
+*Talk track: Today I work with 2 US-based frontier AI companies. I see the regulations creating the market. The perfect storm is forming for rare earth minerals tech. Seed money lets me go 100% on Vero — you handle the front. That is the deal.*
 
 **Slide 23 — The Ask** ⚪  
 $500k-1M · $5-7M pre-money · 18 months. Hiring plan + milestone targets.  
