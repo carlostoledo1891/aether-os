@@ -34,9 +34,9 @@ function S({ children, style, id }: { children: ReactNode; style?: React.CSSProp
 /* ── Data ────────────────────────────────────────────────────────── */
 
 const HERO_STATS = [
-  { value: '9.2 / 10', label: 'Persona Score' },
+  { value: '9.3 / 10', label: 'Persona Score' },
+  { value: '310', label: 'Automated Tests' },
   { value: '27', label: 'AI Agent Tools' },
-  { value: '218+', label: 'Automated Tests' },
   { value: 'SHA-256', label: 'Audit Chain' },
 ]
 
@@ -99,7 +99,7 @@ const PERSPECTIVES = [
     metrics: [
       { value: '3', label: 'Scenarios' },
       { value: 'Live', label: 'DSCR' },
-      { value: '9.2', label: 'Score' },
+      { value: '9.3', label: 'Score' },
     ],
   },
 ]
@@ -119,9 +119,23 @@ const CALDEIRA = [
 ]
 
 const TEAM = [
-  { name: 'Carlos Toledo', role: 'Founder & Product Lead', desc: 'Born inside the Caldeira. Air Force, full-stack engineer, product designer. Built the entire platform solo — 40 years of local geological context.' },
-  { name: 'Dr. Heber Caponi', role: 'Chief Scientific Advisor', desc: 'LAPOC researcher. Decades of active Caldeira field work. Bridges simulated data to field-verified ground truth.' },
+  { name: 'Carlos Toledo', role: 'Founder & Product Lead', desc: 'Born inside the Caldeira. Air Force pilot, full-stack engineer, product designer. 310 tests, enterprise security, 27 AI tools — built solo. 40 years of local context.' },
+  { name: 'Dr. Heber Caponi', role: 'Chief Scientific Advisor', desc: 'LAPOC researcher. Decades of active Caldeira field work. The bridge from simulated to field-verified data.' },
   { name: 'Thiago A.', role: 'CEO (designated)', desc: 'Brazilian / international law. Enterprise operations and commercial execution at scale.' },
+]
+
+const AUDIENCES = [
+  { label: 'Defense & Procurement', need: 'FEOC supply chain verification', offer: 'Security posture + audit chain + FEOC origin tracking', accent: W.violet, stat: '8.0', statLabel: 'DoD Score' },
+  { label: 'EU Compliance', need: 'Digital Product Passport readiness', offer: '22 CEN/CENELEC DPP fields mapped with schema validation', accent: W.green, stat: '59%', statLabel: 'DPP Coverage' },
+  { label: 'Project Finance', need: 'Technical risk de-risking', offer: 'Bear/Consensus/Bull scenarios + DSCR + 310 automated tests', accent: W.amber, stat: '9.0', statLabel: 'PF Score' },
+  { label: 'Communities', need: 'Honest environmental monitoring', offer: 'Hydro Twin + bilingual grievance path + visible "modeled" labels', accent: W.cyan, stat: 'PT/EN', statLabel: 'Bilingual' },
+]
+
+const SECURITY_STATS = [
+  { value: '310', label: 'Tests', sub: '260 frontend + 50 server' },
+  { value: 'CSP', label: 'Headers', sub: 'Content Security Policy' },
+  { value: '120', label: 'Rate Limit', sub: 'Requests / minute' },
+  { value: '0', label: 'TS Errors', sub: 'Strict mode, both packages' },
 ]
 
 /* ── Shared inline-style helpers ─────────────────────────────────── */
@@ -175,6 +189,7 @@ export default function LandingPage() {
         <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
           {[
             { label: 'Platform', id: 'platform' },
+            { label: 'Security', id: 'security' },
             { label: 'Market', id: 'market' },
             { label: 'Team', id: 'team' },
           ].map(l => (
@@ -285,7 +300,12 @@ export default function LandingPage() {
       </section>
 
       {/* ── Problem ────────────────────────────────────────────── */}
-      <S style={{ ...wrap, padding: '120px 24px' }}>
+      <S style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(ellipse at 50% 30%, ${W.red}04 0%, transparent 55%)`,
+        }} />
+        <div style={{ ...wrap, position: 'relative' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={labelStyle(W.red)}>The Gap</div>
           <h2 style={sectionTitle}>Critical minerals. Zero standard tooling.</h2>
@@ -304,6 +324,7 @@ export default function LandingPage() {
               <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
             </div>
           ))}
+        </div>
         </div>
       </S>
 
@@ -359,6 +380,38 @@ export default function LandingPage() {
         </div>
       </S>
 
+      {/* ── Who We Serve ──────────────────────────────────────── */}
+      <S style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(ellipse at 50% 50%, ${W.violet}05 0%, transparent 55%)`,
+        }} />
+        <div style={{ ...wrap, position: 'relative' }}>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <div style={labelStyle(W.violet)}>Who We Serve</div>
+            <h2 style={sectionTitle}>Every stakeholder. Their deepest need.</h2>
+            <p style={{ ...bodyText, margin: '0 auto' }}>
+              Vero doesn't pitch features — it solves the specific problem that keeps each
+              stakeholder up at night.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+            {AUDIENCES.map(a => (
+              <div key={a.label} style={{ ...card, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: a.accent, opacity: 0.7 }} />
+                <div style={{ fontSize: 14, fontWeight: 700, color: W.text1, marginBottom: 6 }}>{a.label}</div>
+                <div style={{ fontSize: 12, color: a.accent, fontWeight: 600, marginBottom: 12 }}>{a.need}</div>
+                <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0, flex: 1 }}>{a.offer}</p>
+                <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${W.glass06}`, textAlign: 'center' }}>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: a.accent, fontFamily: 'var(--font-mono)' }}>{a.stat}</div>
+                  <div style={{ fontSize: 10, color: W.text4, marginTop: 2 }}>{a.statLabel}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </S>
+
       {/* ── Digital Twin Spotlight ──────────────────────────────── */}
       <S style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
         <div style={{
@@ -397,8 +450,69 @@ export default function LandingPage() {
         </div>
       </S>
 
+      {/* ── Security & Trust ───────────────────────────────────── */}
+      <S id="security" style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(ellipse at 50% 50%, ${W.violet}05 0%, transparent 55%)`,
+        }} />
+        <div style={{ ...wrap, textAlign: 'center', position: 'relative' }}>
+          <div style={labelStyle(W.violet)}>Enterprise Ready</div>
+          <h2 style={sectionTitle}>Security & engineering quality</h2>
+          <p style={{ ...bodyText, margin: '0 auto 48px' }}>
+            The sprint that moved two persona scores on infrastructure alone. DoD 7.5 → 8.0.
+            PF Analyst 8.5 → 9.0. Zero new features — pure engineering discipline.
+          </p>
+
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: 16, maxWidth: 740, margin: '0 auto',
+          }}>
+            {SECURITY_STATS.map(s => (
+              <div key={s.label} style={{
+                padding: '24px 16px',
+                background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14,
+                textAlign: 'center',
+              }}>
+                <div style={{ fontSize: 28, fontWeight: 800, color: W.violet, fontFamily: 'var(--font-mono)', lineHeight: 1.1 }}>
+                  {s.value}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: W.text1, marginTop: 6 }}>{s.label}</div>
+                <div style={{ fontSize: 10, color: W.text4, marginTop: 3 }}>{s.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{
+            marginTop: 32, display: 'flex', flexDirection: 'column', gap: 8,
+            maxWidth: 640, marginInline: 'auto', textAlign: 'left',
+          }}>
+            {[
+              'Content Security Policy + CORS lockdown + rate limiting on every endpoint',
+              'API key authentication on sensitive routes — fail-closed by default',
+              'React.memo on all 14 map overlays — zero unnecessary re-renders',
+              'Unified z-index constant — no more stacking bugs across the UI',
+              'ARIA labels on every interactive control — accessible by design',
+            ].map((line, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <div style={{
+                  width: 5, height: 5, borderRadius: '50%', background: W.violet,
+                  marginTop: 7, flexShrink: 0, boxShadow: `0 0 6px ${W.violet}40`,
+                }} />
+                <span style={{ fontSize: 13, color: W.text2, lineHeight: 1.55 }}>{line}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </S>
+
       {/* ── Market ─────────────────────────────────────────────── */}
-      <S id="market" style={{ ...wrap, padding: '120px 24px' }}>
+      <S id="market" style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(ellipse at 50% 40%, ${W.green}04 0%, transparent 55%)`,
+        }} />
+        <div style={{ ...wrap, position: 'relative' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={labelStyle(W.green)}>Market Opportunity</div>
           <h2 style={sectionTitle}>Regulatory tailwinds drive adoption</h2>
@@ -432,6 +546,7 @@ export default function LandingPage() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </S>
 
@@ -469,7 +584,12 @@ export default function LandingPage() {
       </S>
 
       {/* ── Team ───────────────────────────────────────────────── */}
-      <S id="team" style={{ ...wrap, padding: '120px 24px' }}>
+      <S id="team" style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: `radial-gradient(ellipse at 50% 40%, ${W.violet}04 0%, transparent 55%)`,
+        }} />
+        <div style={{ ...wrap, position: 'relative' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={labelStyle(W.violet)}>Team</div>
           <h2 style={sectionTitle}>Built from inside the Caldeira</h2>
@@ -482,6 +602,7 @@ export default function LandingPage() {
               <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0 }}>{t.desc}</p>
             </div>
           ))}
+        </div>
         </div>
       </S>
 

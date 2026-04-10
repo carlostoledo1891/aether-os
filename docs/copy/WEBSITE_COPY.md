@@ -2,9 +2,9 @@
 
 **Purpose:** Single place to iterate marketing and in-product narrative. Sync changes here first, then reflect in `README.md`, `index.html`, and UI strings as needed.
 
-**Last synced from codebase:** 2026-04-09  
-**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`index.html`](../../index.html), primary view components, stakeholder stress-test personas, and [`VALUATION.md`](../VALUATION.md).  
-**Releases since last sync:** Data Layer Refactor, CTO Code Review Sprint, Feature Sprints v5–v6, Vero Rebrand + AI Agent, Map Polish, Demo Readiness, Premium UI Polish, SCADA Win + Pages Scaffold, Unified Map Controls + Perspective, Real Audit Chain, **v11: Pilot Plant Digital Twin / Control Room** (17 equipment, 28 sensors, 7 process steps, interactive schematic, animated flow lines).
+**Last synced from codebase:** 2026-04-10  
+**Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`branding.md`](../branding.md), [`strategy.md`](../strategy.md), primary view components, stakeholder stress-test personas, and [`VALUATION.md`](../VALUATION.md).  
+**Releases since last sync:** All through **v13: CTO EGO Sprint Ultimate Edition** — security hardening, 310 tests, design token compliance, React.memo on all overlays, unified Z-index, accessibility, dead code removal, Mini Engine/Prefeitura dashboard.
 
 ---
 
@@ -45,12 +45,25 @@
 *The trust layer for critical mineral supply chains.*
 
 **Supporting paragraph**  
-One platform to align field operations, compliance evidence, and board-level metrics for critical mineral supply chains. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI). Built for operators, buyers, and investors who need defensible provenance — not another spreadsheet.
+One platform to verify field operations, prove compliance, and align board decisions — purpose-built for the rare earth supply chain, from mine to magnet. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI).
 
-*Production-architecture platform with real Fastify API, simulation engine, WebSocket telemetry, and external enrichers. **Pilot Plant Digital Twin** — interactive Control Room with 17 pieces of equipment, 28 mapped sensors, and animated process flow. Real SHA-256 append-only audit chain with chain verification API. OpenAPI spec auto-generated. DPP-compliant JSON export (EU 2023/1542) with CEN/CENELEC schema validation. 27 AI agent tools. 218+ automated tests. 3D terrain-aware maps. Persona-validated at **9.2/10** weighted average with 5 of 9 stakeholders at code ceiling. Production integration roadmap available on request.*
+*Production-hardened: 310 automated tests, enterprise security (CSP, rate limiting, API auth), Pilot Plant Digital Twin (17 equipment, 28 sensors), SHA-256 audit chain, DPP-compliant JSON export (22 CEN/CENELEC fields), 27 AI agent tools, OpenAPI spec. Persona-validated at **9.3/10** weighted average. Production integration roadmap available on request.*
 
 **Optional one-line (media / retail honesty)**  
 *Demo mixes public-reference map data, disclosure-aligned scenarios where cited, and simulated time series — not a substitute for filed instruments, competent-person sign-off, or operational systems of record.*
+
+---
+
+## Who Vero Serves (persona-specific value propositions)
+
+| Audience | What keeps them up at night | What Vero offers |
+|----------|----------------------------|------------------|
+| **Operators** | Siloed data across engineering, permitting, IR, and community. No unified story for board or investor. | One narrative canvas — from drill collar to product output. Control Room digital twin. Hydro Twin for LI defense. |
+| **Defense Buyers** | 18–24 month procurement delays when FEOC documentation is incomplete. No way to verify supply chain provenance. | Infrastructure-first security posture + FEOC origin tracking + SHA-256 audit chain. OpenAPI spec for integration. |
+| **EU Compliance** | Battery Passport enforcement (Feb 2027) with no standard tooling. Schema gaps across the supply chain. | 22 CEN/CENELEC DPP fields mapped. Schema-validated JSON export. Inline validation with error reporting. |
+| **Investors / PF** | Technical risk in the investment model. No visibility into operational readiness. | 310 tests, rate limiting, zero-cache on financials. Bear/Consensus/Bull scenarios. DSCR projections. Capital tracker. |
+| **Community / NGO** | Mining companies making promises about water without transparent monitoring. No grievance path. | Hydro Twin with "modeled" labels visible before spring colors. Bilingual community card (PT/EN). FEAM/IGAM contacts. |
+| **Integrators** | Undocumented APIs, no equipment catalog, unknown protocols. | OpenAPI at `/api/docs`. 17 equipment items, 28 sensors documented. OPC-UA/MQTT roadmap. Cost estimate in a week. |
 
 ---
 
@@ -196,8 +209,12 @@ Use for landing page or deck appendix:
 - **Interactive map** — deposits, licences, drills, infrastructure, environmental layers with detail panels
 - **Time range** — 24h / 7d / 30d historical views with server-side ring buffer and retention policies
 - **Error resilience** — `ErrorFallback` component across all 14 data consumers; connection status banner (connected / degraded / offline); graceful server shutdown
-- **Accessibility** — focus trap on alert drawer, `aria-label` on icon buttons, explicit `type="button"` on all buttons, WCAG-aligned design tokens
-- **218 automated tests** across 3 packages (frontend, server, engine) — including live-mode integration tests that verify no infinite re-renders with async data
+- **Enterprise security hardening** — CSP headers, `@fastify/rate-limit` (global + per-route), API key auth on chat/upload, fail-closed ingest guard, CORS explicit allowlist, global error handler (no stack traces in production)
+- **Accessibility** — focus trap on alert drawer, `aria-label` on all interactive icon buttons, `aria-expanded` on disclosures, explicit `type="button"` on all buttons, WCAG-aligned design tokens
+- **React.memo on all 14 map overlays** — zero unnecessary re-renders during pan/zoom. Unified `Z` constant for z-index management.
+- **Design token compliance** — all colors from `W.*` (TypeScript) and `var(--w-*)` (CSS). Theme-switchable architecture.
+- **Public dashboard engine (Mini Engine)** — JSON-driven system for branded public pages. Live: Prefeitura de Poços de Caldas partnership dashboard at `/view/prefeitura-pocos`
+- **310 automated tests** across 3 packages (260 frontend + 50 server) — including overlay contract tests, hook behavior tests, chat route auth tests, error path coverage, and live-mode integration tests
 - **Deployment gate** — mandatory checklist (tsc, tests, build, localhost click-through, Vercel preview) before every production deploy
 - **Integrator-ready story** — read-only historians, unidirectional OT/IT gateways, explicit latency, documented `isThenable` contract *(roadmap bullets for RFPs)*
 - **OpenAPI spec** — auto-generated from Fastify route schemas; Swagger UI at `/api/docs`, machine-readable spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and schemas.
@@ -212,22 +229,25 @@ Use for landing page or deck appendix:
 - **27 AI agent tools** — domain-grounded chat with tools spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, audit chain verification, and web search — all backed by seeded project data
 - **Pilot Plant Digital Twin** — interactive Control Room with **17 equipment items** (Metso, Andritz, GEA, Outotec suppliers), **28 sensors** mapped to live telemetry paths, **7 process steps** from ore to MREC product, **15 animated flow connections** (process, reagent, recycle, utility, product). Click any equipment node to inspect supplier, capacity, material, sensors, and connected equipment. Collapsed HUD card shows pH, MREC output, water recirculation, and TREO grade at a glance.
 - **Real SHA-256 audit chain** — cryptographic append-only audit trail with chain verification API (`/api/audit/verify-chain`). Merkle root anchoring roadmap (Phase 1). Schema migration v2 with dedicated `audit_events` table.
+- **Hydro Digital Twin** — spring monitoring network with **1,092 public-reference spring points**, piezometer readings, water quality gauges with threshold indicators, climate data (precipitation, temperature, humidity, evapotranspiration, soil moisture), violet climate palette distinct from operational cyan
 
 ---
 
 ## Call to Action
 
-| Audience | CTA |
-|----------|-----|
-| Operators | **Request a pilot deployment** — hydro + discharge KPIs tied to your LI conditions |
-| Buyers / OEMs | **Design partnership** — passport schema and batch attestation API co-development |
-| Investors | **Schedule a demo** — see the full stack from pit to magnet |
+| Audience | CTA | Opening Line |
+|----------|-----|--------------|
+| Operators | **Request a pilot deployment** — hydro + discharge KPIs tied to your LI conditions | "We built it inside the Caldeira. Now let's build it on your project." |
+| Defense / Compliance | **Design partnership** — passport schema and batch attestation API co-development | "22 DPP fields mapped. Help us get the rest right before Feb 2027." |
+| Investors | **Schedule a demo** — see the full stack from pit to magnet | "310 tests, 9.3 persona score, $5–7M pre-money. 45 minutes." |
+| Integrators | **Review the API** — OpenAPI spec + equipment catalog + integration roadmap | "Here's the spec. How fast can you map OPC-UA tags?" |
+| Community | **Explore the dashboard** — Prefeitura de Poços de Caldas partnership page | "Monitoring in Portuguese, with the phone number to call." |
 
 ---
 
 ## Built by
 
-**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 218+ tests across 3 packages, 27 AI agent tools, pilot plant digital twin (17 equipment, 28 sensors), real SHA-256 audit chain, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
+**Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 310 tests, enterprise security hardening, 27 AI agent tools, pilot plant digital twin (17 equipment, 28 sensors), real SHA-256 audit chain, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
@@ -257,29 +277,31 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 
 ---
 
-## Persona feedback on website copy (2026-04-09, v9 — Feature Sprint v6)
+## Persona feedback on website copy (2026-04-10, v13 — CTO EGO Sprint Ultimate Edition)
 
 | Persona | Score | Verdict | Key quote |
 |---------|-------|---------|-----------|
 | Chairman | **10.0** | Control Room + governance depth = board ceiling | "The digital twin is what I'd show the board" |
 | CEO | **10.0** | Digital twin is the demo-closer | "Click the plant card and the 'is this real?' question disappears" |
 | Chief Geologist | **10.0** | Metallurgically accurate process flow | "ROM ore → MREC product — this matches the flowsheet" |
-| DoD Buyer | 7.5 | Security architecture but FedRAMP blocking | "Show me the ATO timeline" |
-| EU Regulator | 8.5 | CEN/CENELEC + DPP + process step mapping | "Equipment-to-sensor lineage supports DPP batch attestation" |
-| PF Analyst | 8.5 | Plant makes capital deployment visible | "I can see what $443M buys" |
-| NGO | 8.0 | Water recirculation loop visible | "Show me when modeled becomes field-verified" |
-| Integrator | **10.0** | Equipment-sensor catalog is integration-ready | "Give me pilotPlantData.ts and I'll have OPC-UA tags in a week" |
-| Journalist | **10.0** | Control Room is the hero screenshot | "That's the image I lead the article with" |
+| DoD Buyer | **8.0** | Security hardening moved score (+0.5) | "CSP, rate limiting, fail-closed ingest — this team thinks like an operator" |
+| EU Regulator | 8.5 | CEN/CENELEC + DPP + schema validation | "22 fields mapped. Show me the remaining 9." |
+| PF Analyst | **9.0** | 310 tests + rate limiting de-risks (+0.5) | "The technical risk discount in my model just got smaller" |
+| NGO | 8.0 | Hydro Twin + bilingual community card | "Show me when modeled becomes field-verified" |
+| Integrator | **10.0** | Equipment-sensor catalog + OpenAPI | "Give me pilotPlantData.ts and I'll have OPC-UA tags in a week" |
+| Journalist | **10.0** | Control Room hero screenshot + data honesty | "That's the image I lead the article with" |
 
-**Weighted average: 9.2/10** — 5 of 9 personas at code ceiling (10.0). v1 6.8 → v11 9.2. Remaining gaps are commercial (LOI), procedural (FedRAMP), or field-deployment (instruments).
+**Weighted average: 9.3/10** — 5 of 9 personas at code ceiling (10.0). v1 6.8 → v11 9.2 → v13 9.3. Two scores moved on security + engineering quality alone. Remaining gaps: FedRAMP (DoD), full DPP coverage (EU), covenant monitoring (PF), field-verified springs (NGO).
 
 ---
 
 ## Iteration checklist
 
 1. Update this file.
-2. Mirror critical strings in `README.md` / `HANDOFF.md` if they are "source of truth" for collaborators.
-3. Update React components for UI-visible strings.
-4. If claims touch resources or permits, align [`docs/data/caldeira/DATA_SOURCES.md`](../data/caldeira/DATA_SOURCES.md) and [`issuerSnapshot`](../../src/data/caldeira/issuerSnapshot.ts).
-5. Rehearse against **Appendix C** (coverage map) in [`PITCH_DECK_COPY.md`](./PITCH_DECK_COPY.md) before high-stakes demos.
-6. After each release, check persona verdicts in table above and [`docs/Personas.md`](../Personas.md) for gaps.
+2. Verify voice and naming against [`branding.md`](../branding.md).
+3. Verify persona framing against [`strategy.md`](../strategy.md) value map.
+4. Mirror critical strings in `README.md` / `HANDOFF.md` if they are "source of truth" for collaborators.
+5. Update React components for UI-visible strings (`LandingPage.tsx`, `PitchDeck.tsx`).
+6. If claims touch resources or permits, align [`docs/data/caldeira/DATA_SOURCES.md`](../data/caldeira/DATA_SOURCES.md) and [`issuerSnapshot`](../../src/data/caldeira/issuerSnapshot.ts).
+7. Rehearse against **Appendix C** (coverage map) in [`PITCH_DECK_COPY.md`](./PITCH_DECK_COPY.md) before high-stakes demos.
+8. After each release, check persona verdicts in table above and [`docs/Personas.md`](../Personas.md) for gaps.

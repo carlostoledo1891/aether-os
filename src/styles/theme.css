@@ -97,6 +97,7 @@
 
   /* Typography */
   --font-ui:   'Inter', sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 

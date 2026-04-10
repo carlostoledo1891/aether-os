@@ -58,8 +58,14 @@ const SLIDES: Slide[] = [
       '27 AI agent tools grounded in project data — geology, financials, compliance, lithology, DPP validation',
       'Real SHA-256 append-only audit chain with programmatic chain verification API',
       'EU DPP-compliant JSON export — 22 CEN/CENELEC fields mapped, schema-validated',
-      '218+ automated tests · SCADA integration surface · OpenAPI spec',
+      '310 automated tests · SCADA integration surface · OpenAPI spec at /api/docs',
     ],
+  },
+  {
+    type: 'stats',
+    title: 'Security & Enterprise Readiness',
+    accent: W.violet,
+    body: [],
   },
   {
     type: 'content',
@@ -95,8 +101,8 @@ const SLIDES: Slide[] = [
     title: 'The Team',
     accent: W.violet,
     body: [
-      'Carlos Toledo — Founder. Born inside the Caldeira. Air Force, full-stack engineer, product designer. Built the entire platform solo.',
-      'Dr. Heber Caponi — Chief Scientific Advisor (LAPOC). Decades of active Caldeira field research.',
+      'Carlos Toledo — Founder. Born inside the Caldeira. Air Force, full-stack engineer, product designer. Built the entire platform solo — 310 tests, enterprise security, 27 AI tools.',
+      'Dr. Heber Caponi — Chief Scientific Advisor (LAPOC). Decades of active Caldeira field research. Bridges simulated to field-verified.',
       'Thiago A. — CEO. Brazilian / international law, enterprise operations, commercial execution.',
       'Ready to scale — codebase architected for immediate team onboarding.',
     ],
@@ -121,10 +127,19 @@ const TWIN_STATS = [
   { value: '15', label: 'Flow Paths', sub: 'Animated connections' },
 ]
 
+const SECURITY_STATS = [
+  { value: '310', label: 'Tests', sub: '260 frontend + 50 server' },
+  { value: 'CSP', label: 'Headers', sub: 'Content Security Policy' },
+  { value: '120', label: 'Rate Limit', sub: 'Requests per minute' },
+  { value: '0', label: 'TS Errors', sub: 'Strict mode' },
+  { value: '14', label: 'Memo\'d', sub: 'Map overlay components' },
+  { value: 'ARIA', label: 'Accessible', sub: 'Labels on all controls' },
+]
+
 const TRACTION_STATS = [
-  { value: '9.2', label: 'Persona Score', sub: '/10 weighted avg' },
+  { value: '9.3', label: 'Persona Score', sub: '/10 weighted avg' },
   { value: '5 / 9', label: 'At Ceiling', sub: 'Personas at 10.0' },
-  { value: '218+', label: 'Tests', sub: 'Across 3 packages' },
+  { value: '310', label: 'Tests', sub: 'Across 3 packages' },
   { value: '27', label: 'AI Tools', sub: 'Domain-grounded' },
   { value: '17', label: 'Equipment', sub: 'In digital twin' },
   { value: '28', label: 'Sensors', sub: 'Mapped to telemetry' },
@@ -179,7 +194,11 @@ export default function PitchDeck() {
   const slide = SLIDES[currentSlide]
   const accent = slide.accent
 
-  const statsData = slide.title === 'Traction' ? TRACTION_STATS : TWIN_STATS
+  const statsData = slide.title === 'Traction'
+    ? TRACTION_STATS
+    : slide.title === 'Security & Enterprise Readiness'
+      ? SECURITY_STATS
+      : TWIN_STATS
 
   return (
     <div
@@ -229,6 +248,15 @@ export default function PitchDeck() {
           {slide.type === 'cover' && (
             <>
               <motion.div
+                animate={{ opacity: [0.3, 0.5, 0.3] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  position: 'absolute', width: '50vw', height: '50vw', borderRadius: '50%',
+                  background: `radial-gradient(circle, ${accent}14, transparent 70%)`,
+                  top: '-10vw', left: '25vw', filter: 'blur(80px)', pointerEvents: 'none',
+                }}
+              />
+              <motion.div
                 initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.1, ease }}
                 style={{
@@ -255,10 +283,26 @@ export default function PitchDeck() {
               </h1>
               <p style={{
                 fontSize: 'clamp(16px, 2.2vw, 22px)', color: W.text3,
-                maxWidth: 560, lineHeight: 1.5,
+                maxWidth: 560, lineHeight: 1.5, marginBottom: 40,
               }}>
                 {slide.subtitle}
               </p>
+              <div style={{ display: 'flex', gap: 0, flexWrap: 'wrap', justifyContent: 'center' }}>
+                {[
+                  { value: '9.3', label: 'Persona Score' },
+                  { value: '310', label: 'Tests' },
+                  { value: '27', label: 'AI Tools' },
+                  { value: 'SHA-256', label: 'Audit Chain' },
+                ].map((s, i) => (
+                  <div key={s.label} style={{
+                    textAlign: 'center', padding: '0 28px',
+                    borderLeft: i > 0 ? `1px solid ${W.glass08}` : 'none',
+                  }}>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)' }}>{s.value}</div>
+                    <div style={{ fontSize: 9, color: W.text4, marginTop: 3, letterSpacing: '0.04em' }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </>
           )}
 

@@ -2,9 +2,9 @@
 
 **Purpose:** Slide-ready narrative blocks for investor, buyer, and regulator-facing decks. Iterate here; export to Keynote/PDF separately.
 
-**Last synced from codebase:** 2026-04-09  
-**Source:** [`HANDOFF.md`](../../HANDOFF.md), [`README.md`](../../README.md), product positioning in views, governance disclaimers in `mockDataService` / executive tabs, stakeholder stress-test personas (issuer → capital → buyers → society → ecosystem → media), and [`VALUATION.md`](../VALUATION.md).  
-**Releases since last sync:** Synthetic Data Bridge, Data Layer Refactor, CTO Code Review Sprint, Feature Sprints v5–v6, Vero Rebrand + AI Agent, Map Polish, Demo Readiness, Premium UI Polish, SCADA Win + Pages Scaffold, Unified Map Controls + Perspective, Real Audit Chain, **v11: Pilot Plant Digital Twin / Control Room** (17 equipment, 28 sensors, 7 process steps, interactive SVG schematic, animated flow lines, equipment inspector).
+**Last synced from codebase:** 2026-04-10  
+**Source:** [`HANDOFF.md`](../../HANDOFF.md), [`README.md`](../../README.md), [`branding.md`](../branding.md), [`strategy.md`](../strategy.md), product positioning in views, governance disclaimers in `mockDataService` / executive tabs, stakeholder stress-test personas (issuer → capital → buyers → society → ecosystem → media), and [`VALUATION.md`](../VALUATION.md).  
+**Releases since last sync:** All through **v13: CTO EGO Sprint Ultimate Edition** — security hardening (CSP, rate limiting, API auth, CORS, error handler), 310 tests, design token compliance, React.memo on all overlays, unified Z-index, accessibility attributes, dead code removal.
 
 ---
 
@@ -48,8 +48,11 @@ Telemetry · compliance · traceability · capital — one stack, production-har
 **Single source of narrative (internal alignment)**  
 One canvas helps **synchronize** DFS, regulatory log, and field story — so engineering, permitting, IR, and community don't each tell a **slightly different** tale in the same week.
 
-**Production-grade data integrity (new — say this)**  
-Geological and financial data **never shows stale numbers** — zero-cache policy enforced at the architecture level. Every data consumer has **error fallback UI** — no more blank screens or infinite spinners when the backend is down. **Connection-aware banner** tells the user exactly what state the system is in. **218 automated tests** across 3 packages, including integration tests that simulate live async data flow and verify the app stays stable. **25 AI agent tools** grounded in domain data — lithology, DPP validation, security architecture, stakeholders, market sizing, and more.
+**Production-grade data integrity (say this)**  
+Geological and financial data **never shows stale numbers** — zero-cache policy enforced at the architecture level. Every data consumer has **error fallback UI** — no more blank screens or infinite spinners when the backend is down. **Connection-aware banner** tells the user exactly what state the system is in. **310 automated tests** across 3 packages, including integration tests that simulate live async data flow and verify the app stays stable. **27 AI agent tools** grounded in domain data — lithology, DPP validation, security architecture, stakeholders, market sizing, and more.
+
+**Enterprise security posture (what DoD and PF analysts need to hear)**  
+**Content Security Policy** headers on every response. **Rate limiting** (global 120/min + per-route overrides: chat 10/min, upload 5/min, ingest 60/min). **API key authentication** on sensitive endpoints. **Fail-closed ingest guard** — rejects data in production when credentials are missing. **CORS lockdown** to explicit allowlist. **Global error handler** — no stack traces in production responses. React.memo on all 14 map overlays. Unified z-index constant. ARIA labels on every interactive control.
 
 **Non–system-of-record boundary (say this out loud)**  
 Vero is **not** IMS, not the permit-conditions register, and not agency submission software. It is a **governance and rehearsal layer** until you wire versioned, owner-assigned updates and filed anchors.
@@ -129,10 +132,11 @@ flowchart LR
 - **MapLibre** stack with **GeoJSON** layers, click inspectors, and **provenance badges** (simulated vs public record vs illustrative).  
 - **`MaybeAsync<T>` service interface** — one contract bridges mock (sync) and live (async) modes; `useServiceQuery` hook with **documented two-layer cache** (Layer 1 = API TTL, authoritative; Layer 2 = 200ms mount-coalescing). **Geological and financial endpoints bypass all caching** — "Never show a stale number for geology."
 - **Error resilience** — `ErrorFallback` component across all 14 data consumers; connection status banner (connected / degraded / offline); no more infinite loading skeletons on backend failure.
-- **218 automated tests** across 3 packages — including live-mode integration tests that render real components with async services and assert bounded render counts, correct data flow, and zero console errors.
+- **310 automated tests** across 3 packages (260 frontend + 50 server) — including live-mode integration tests, overlay contract tests, hook behavior tests, chat route auth tests, and error path coverage.
+- **Security hardening** — CSP headers, `@fastify/rate-limit` (global + per-route), API key auth on chat/upload, fail-closed ingest guard, CORS explicit allowlist, global error handler (no stack traces in production). *This is the slide that moved DoD from 7.5 to 8.0 and PF Analyst from 8.5 to 9.0.*
 - **Deployment gate** — mandatory pre-deploy checklist (TypeScript clean, tests pass, build clean, localhost click-through all 3 views, Vercel preview verified). Documented in HANDOFF.md.
 - **Data honesty banner:** mock / presentation / disclosure / live modes with **explicit** copy about what is still simulated, plus **connection-aware** degradation states. **Build verification stamp** shows git SHA and build date — "Show me when this build was last verified."
-- **Accessibility hardened** — focus trap on dialogs, ARIA labels on icon buttons, explicit button types, WCAG-aligned design tokens.
+- **Accessibility hardened** — focus trap on dialogs, ARIA labels on all interactive icon buttons, `aria-expanded` on disclosures, explicit button types, WCAG-aligned design tokens.
 - **OpenAPI spec** auto-generated from Fastify route schemas — Swagger UI at `/api/docs`, raw spec at `/api/docs/json`. Every endpoint documented with tags, summaries, and response schemas. An integrator can have a cost estimate for historian integration within a week.
 - **Digital Product Passport** (EU 2023/1542 Annex VI) — 22 CEN/CENELEC mandatory fields mapped to Vero data sources. **59% coverage (13/22 mapped)**. Schema-compliant JSON export from any batch. **CEN/CENELEC schema validation** with inline error/warning reporting. Field-mapping table visible in the Buyer → Compliance tab.
 - **Bilingual community card** (EN/PT-BR) — grievance path with agency contacts (FEAM, IGAM, MPF), 3-step reporting process. Language toggle persists via localStorage. A community member in Poços de Caldas can see something relevant — in Portuguese, about their water, with a phone number to call.
@@ -140,7 +144,9 @@ flowchart LR
 - **Lithological interval viewer** — drill hole lithology columns with depth-scaled bars, color-coded by rock type, linked to collar metadata and assay intercepts.
 - **Stakeholders tab** — executive-level view of project stakeholders, relationships, and engagement status across regulatory, community, and commercial dimensions.
 - **Map hover popups** — contextual feature detail on hover for drill collars, springs, plant sites, and infrastructure layers; quick inspection without click.
-- **25 AI agent tools** — domain-grounded chat spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data.
+- **27 AI agent tools** — domain-grounded chat spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data.
+- **React.memo on all 14 map overlays** — zero unnecessary re-renders during pan/zoom. Unified `Z` constant for all z-index values — no more "popup behind the header" bugs.
+- **Design token compliance** — all colors flow from `W.*` (TypeScript) and `var(--w-*)` (CSS). Zero hardcoded hex values in core components. Theme-switchable architecture.
 
 **Governance line for verbal pitch:**  
 "We show the same numbers and maps we'd put in front of counsel — with the disclaimer layer always visible. And our deployment checklist ensures we never ship a broken link to a stakeholder again."
@@ -150,10 +156,30 @@ flowchart LR
 - *What QP signs off on a screenshot?* → **Nothing** until counsel/IR defines disclosure mode; default demo is **non-reliance**.  
 - *Can opponents FOIA spring layers?* → Public geometry labeled; **status colors = modeled UX**, not agency findings.  
 - *Community "red phone"?* → **Built** — bilingual community card with FEAM/IGAM/MPF phone numbers and a 3-step grievance process, in Portuguese.  
-- *What if the live link crashes during a demo?* → **218 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner.** Process problem solved — "test what the stakeholder sees."
+- *What if the live link crashes during a demo?* → **310 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner, rate limiting.** Process problem solved — "test what the stakeholder sees."
+- *What's your security posture?* → **CSP headers, rate limiting, API key auth, fail-closed ingest, CORS allowlist, error handler without stack traces.** Show them the vercel.json headers and the Fastify rate-limit config.
 - *How do you prevent stale geological data on screen?* → **TTL=0 on all geological/financial endpoints.** No caching. De Carvalho principle enforced at the architecture level.
 - *Export me a DPP-compliant JSON.* → **Done.** Buyer tab → Compliance → Export DPP JSON. 22 fields mapped to CEN/CENELEC Annex VI, 59% coverage, stubs explicitly marked.
 - *Give me the OpenAPI spec.* → `/api/docs` — Swagger UI with all endpoints. `/api/docs/json` for machine-readable spec.
+
+---
+
+## Slide 7.5 — Security & Enterprise Readiness (the slide that moved two persona scores)
+
+*Why this matters: DoD went 7.5 → 8.0 and PF Analyst went 8.5 → 9.0 on this sprint alone. Security posture and engineering quality are commercially significant — they're the two personas most likely to block a procurement decision on technical grounds.*
+
+- **Content Security Policy** headers on every response — allowlists for self, MapTiler, Google Fonts, blob: for map workers
+- **Rate limiting** — `@fastify/rate-limit` with global 120 req/min + per-route: chat 10/min, upload 5/min, ingest 60/min
+- **API key authentication** — chat and upload endpoints require `x-api-key` header; fail-closed ingest guard rejects data when credentials are unset in production
+- **CORS lockdown** — explicit allowlist in production (no reflect-all); env override for custom domains
+- **Global error handler** — generic 'Internal Server Error' in production, full details in dev; zero stack trace leakage
+- **310 automated tests** — 260 frontend + 50 server; overlay contracts, hook behavior, chat auth, error paths, live integration
+- **Zero TypeScript errors** — strict mode across frontend and server; `as any` eliminated except one documented exception
+- **Accessibility** — `aria-label` on all icon buttons, `aria-expanded` on disclosures, focus traps on dialogs
+- **React.memo** on all 14 map overlays — no unnecessary re-renders on pan/zoom
+- **Unified z-index** — single `Z` constant replaces all magic numbers; no stacking bugs
+
+**Speaker note:** "This is what a CTO looks for in technical due diligence. Not features — engineering discipline."
 
 ---
 
@@ -161,14 +187,16 @@ flowchart LR
 
 - **Pilot Plant Digital Twin** — interactive Control Room with **17 pieces of equipment**, **28 mapped sensors**, **7 process steps**, animated flow lines, and equipment-level inspector with live telemetry. Click any equipment to see supplier, specs, and real-time readings.
 - **19 GeoJSON datasets** integrated (deposits, licences, drill collars, springs, infrastructure, environmental zones).  
-- **218+ automated tests** across **3 packages** (173 frontend + 45 server + 13 engine) — including live-mode integration tests, component smoke tests, AI hallucination quality gate, engine generator tests, and **22 cryptographic audit chain tests**.
-- **3 audience-specific views** with **14 interactive map overlay layers** + **3D perspective** with terrain DEM.  
+- **310 automated tests** across **3 packages** (260 frontend + 50 server) — including live-mode integration tests, overlay contract tests, hook tests, chat route tests, and **22 cryptographic audit chain tests**.
+- **3 audience-specific views** with **14 interactive map overlay layers** (all React.memo'd) + **3D perspective** with terrain DEM.  
 - **Real SHA-256 append-only audit chain** — 27 AI agent tools, chain verification API, Merkle root anchoring roadmap.
 - **Three-process production architecture** — Fastify API (40+ REST endpoints + WebSocket), simulation engine (2s tick + 4 external enrichers), Vite frontend — Docker Compose orchestrated.
+- **Enterprise security hardening** — CSP headers, rate limiting, API auth, fail-closed ingest, CORS lockdown, production error handler.
 - **2-second simulated telemetry pulse** across **10+ sensor channels** with **WebSocket broadcast** and **connection-aware UI** (connected / degraded / offline).
-- **Persona-validated at ~9.2/10** weighted average — 5 of 9 stakeholder personas at code ceiling (10.0). See Appendix E.
+- **Persona-validated at ~9.3/10** weighted average — 5 of 9 stakeholder personas at code ceiling (10.0). See Appendix E.
 - **Mandatory deployment gate** — TypeScript clean, all tests pass, production build clean, localhost click-through, Vercel preview before production.
 - **4 external API enrichers** live — Open-Meteo (weather), BCB PTAX (FX), USGS (seismic), Alpha Vantage (stock).
+- **Public dashboard engine** — JSON-driven Mini Engine for custom branded pages. Live example: Prefeitura de Poços de Caldas partnership dashboard at `/view/prefeitura-pocos`.
 
 **Roadmap (verbal / appendix)**  
 Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for verified channels — **OPC-UA / MQTT** and latency SLOs; **ANM / IEF** vector imports; **ERP + CBP** hooks for ledger and passport export; ~~**IR disclosure mode**~~ ✅; **alarm ack + maintenance**, **multi-tenant + audit logging**; **Playwright CI** for frontend smoke; **coverage floor ratcheting** (currently no floor; target 60%+). **Society / local (Brazil):** plain-language **jobs, fiscal, monitoring independence**; **PT** collateral for Poços stakeholders.
@@ -193,7 +221,7 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 **Carlos Toledo** — Founder, Product & Technical Lead
 - **Born and raised in Pocos de Caldas** — inside the Caldeira. 40 years of local context no outside team can replicate.
 - **Brazilian Air Force Academy** (pilot) — systems discipline, operational rigor.
-- **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 218+ tests across 3 packages, 27 AI agent tools, pilot plant digital twin with 17 equipment and 28 sensors, 19 GeoJSON datasets, 14 overlay layers, real SHA-256 audit chain, deployment gate, accessibility-hardened, 4 external API enrichers live.
+- **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 310 tests across 3 packages, 27 AI agent tools, pilot plant digital twin with 17 equipment and 28 sensors, 19 GeoJSON datasets, 14 overlay layers, real SHA-256 audit chain, enterprise security hardening, CSP + rate limiting, deployment gate, accessibility-hardened, 4 external API enrichers live.
 
 **Dr. Heber Caponi** — Chief Scientific Advisor (LAPOC)
 - **Decades of active field research** on the Caldeira alkaline complex. Still conducting fieldwork today.
@@ -263,23 +291,23 @@ They will cross-check: **green premium**, recovery vs nameplate, ESG coverage %,
 
 ## Appendix E — Persona-scored feedback (current release)
 
-**Evaluation date:** 2026-04-09 (v11 — Pilot Plant Digital Twin / Control Room)
+**Evaluation date:** 2026-04-10 (v13 — CTO EGO Sprint Ultimate Edition)
 
-| Persona | v1 | v9 | v10 | v11 | Trajectory | Top strength | Top gap |
-|---------|----|----|-----|-----|----------:|-------------|---------|
-| Executive Chairman | 7.5 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Control Room + governance depth | Code ceiling reached |
-| CEO & MD | 7.0 | 9.0 | 9.5 | **10.0** | ↑ ceiling | Digital twin = demo-closer | Customer LOI (commercial) |
-| Chief Geologist | 7.5 | 9.0 | 9.5 | **10.0** | ↑ ceiling | Metallurgically accurate process flow | Field instruments |
-| DoD Buyer | 6.5 | 7.5 | 7.5 | **7.5** | → | Security architecture + SBOM | FedRAMP certification |
-| EU Regulator | 6.0 | 8.0 | 8.5 | **8.5** | → | CEN/CENELEC validation + DPP JSON | 100% DPP field coverage |
-| Project Finance | 7.0 | 8.0 | 8.0 | **8.5** | ↑ | Plant makes capital deployment visible | Covenant monitoring |
-| Water Justice NGO | 5.5 | 7.5 | 8.0 | **8.0** | → | Water recirculation loop visible | Field-verified springs |
-| SCADA Integrator | 7.5 | 9.0 | 9.5 | **10.0** | ↑ ceiling | Equipment-sensor catalog for integration | OPC-UA bridge (process) |
-| Journalist | 6.5 | 9.0 | 9.5 | **10.0** | ↑ ceiling | Control Room is the hero screenshot | Customer LOI |
+| Persona | v1 | v9 | v10 | v11 | v13 | Trajectory | Top strength | Top gap |
+|---------|----|----|-----|-----|-----|----------:|-------------|---------|
+| Executive Chairman | 7.5 | 9.5 | 10.0 | 10.0 | **10.0** | ↑ ceiling | Control Room + governance depth | Code ceiling reached |
+| CEO & MD | 7.0 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Digital twin = demo-closer | Customer LOI (commercial) |
+| Chief Geologist | 7.5 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Metallurgically accurate process flow | Field instruments |
+| DoD Buyer | 6.5 | 7.5 | 7.5 | 7.5 | **8.0** | ↑ | Security hardening moved score | FedRAMP certification |
+| EU Regulator | 6.0 | 8.0 | 8.5 | 8.5 | **8.5** | → | CEN/CENELEC validation + DPP JSON | 100% DPP field coverage |
+| Project Finance | 7.0 | 8.0 | 8.0 | 8.5 | **9.0** | ↑ | 310 tests + rate limiting de-risks | Covenant monitoring |
+| Water Justice NGO | 5.5 | 7.5 | 8.0 | 8.0 | **8.0** | → | Bilingual community card + Hydro Twin | Field-verified springs |
+| SCADA Integrator | 7.5 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Equipment-sensor catalog + OpenAPI | OPC-UA bridge (process) |
+| Journalist | 6.5 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Control Room hero screenshot | Customer LOI |
 
-**Weighted average: v1 6.8 → v9 8.6 → v10 8.9 → v11 9.2** — 5 of 9 personas at code ceiling (10.0).
+**Weighted average: v1 6.8 → v9 8.6 → v10 8.9 → v11 9.2 → v13 9.3** — 5 of 9 personas at code ceiling (10.0).
 
-**v11 key insight:** The Pilot Plant Digital Twin is the single most impactful feature delivered. It converts the platform from "monitoring + compliance dashboard" into "operational digital twin" — the category commanding the highest enterprise SaaS multiples. Every persona that interacts with industrial equipment scored higher. **Remaining gaps are entirely commercial or procedural — not code-deliverable.**
+**v13 key insight:** Two personas moved on engineering quality alone — a rare outcome that validates infrastructure investment. DoD (+0.5) responded to security hardening (CSP, rate limiting, API auth, fail-closed ingest). PF Analyst (+0.5) responded to test count, rate limiting, and production error handling as technical risk reduction. Zero-feature sprint, two score increases. **Remaining gaps: FedRAMP (DoD), full DPP coverage (EU), covenant monitoring (PF), field-verified springs (NGO) — all require external actions.**
 
 **Valuation (Business Expert analysis — see `docs/VALUATION.md`):**  
 Pre-revenue consensus: **$5–7M** pre-money. At $4.5M ARR (2030 consensus): **$55–90M**. Flagship customer (Caldeira) has $821M NPV at consensus — Vero's $102k/yr = 0.03% of project revenue.
@@ -290,6 +318,8 @@ Pre-revenue consensus: **$5–7M** pre-money. At $4.5M ARR (2030 consensus): **$
 
 1. Update deck copy here after each narrative change.
 2. Reconcile with [`WEBSITE_COPY.md`](./WEBSITE_COPY.md).
-3. Update [`HANDOFF.md`](../../HANDOFF.md) "pitch to" table if audiences shift.
-4. Keep financial and resource numbers chained to [`issuerSnapshot.ts`](../../src/data/caldeira/issuerSnapshot.ts) + latest ASX rule.
-5. After each release, update persona scores in Appendix E and [`docs/Personas.md`](../Personas.md).
+3. Verify voice and naming against [`branding.md`](../branding.md).
+4. Verify persona framing against [`strategy.md`](../strategy.md) value map.
+5. Update [`HANDOFF.md`](../../HANDOFF.md) "pitch to" table if audiences shift.
+6. Keep financial and resource numbers chained to [`issuerSnapshot.ts`](../../src/data/caldeira/issuerSnapshot.ts) + latest ASX rule.
+7. After each release, update persona scores in Appendix E and [`docs/Personas.md`](../Personas.md).
