@@ -2,6 +2,7 @@ import { useMemo, useState, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { AlertTriangle, ChevronDown } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from '../map/mapStacking'
 import { LITH_COLORS, LITH_LABELS, LITH_ORDER } from './lithologyPalette'
 import { GEO } from '../../data/geo/registry'
 
@@ -66,7 +67,7 @@ function LithTooltip({ data }: { data: TooltipData }) {
       position: 'fixed', left: data.x + 12, top: data.y - 10,
       background: W.panel, border: `1px solid ${W.glass12}`, borderRadius: W.radius.sm,
       padding: '6px 9px', fontSize: 10, lineHeight: 1.5, pointerEvents: 'none',
-      zIndex: 9999, maxWidth: 220,
+      zIndex: Z.modal, maxWidth: 220,
       boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
     }}>
       <div style={{ fontWeight: 700, color: W.text1, marginBottom: 2 }}>{data.holeId}</div>
@@ -243,7 +244,7 @@ export function DrillTraceSection() {
           </button>
           {dropdownOpen && (
             <div style={{
-              position: 'absolute', top: '100%', left: 0, marginTop: 2, zIndex: 20,
+              position: 'absolute', top: '100%', left: 0, marginTop: 2, zIndex: Z.tooltip,
               background: W.panel, border: `1px solid ${W.glass12}`, borderRadius: W.radius.sm,
               padding: 4, maxHeight: 200, overflowY: 'auto', minWidth: 160,
               boxShadow: '0 4px 12px rgba(0,0,0,0.4)',

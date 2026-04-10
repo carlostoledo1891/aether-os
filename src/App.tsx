@@ -186,8 +186,8 @@ function ViewEngineShell() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/lp" element={<Suspense fallback={<PageFallback />}><LandingPage /></Suspense>} />
-      <Route path="/pitch-deck" element={<Suspense fallback={<PageFallback />}><PitchDeck /></Suspense>} />
+      <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+      <Route path="/pitch-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PitchDeck /></Suspense></ErrorBoundary>} />
       <Route path="/view/:manifestId" element={<ViewEngineShell />} />
       <Route path="/*" element={<DashboardShell />} />
     </Routes>

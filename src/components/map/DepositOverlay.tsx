@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -89,7 +89,7 @@ interface DepositOverlayProps {
   highlightId?: string | null
 }
 
-export function DepositOverlay({
+export const DepositOverlay = memo(function DepositOverlay({
   hoveredDepositId = null,
   selectedDepositId = null,
   highlightId = null,
@@ -220,4 +220,4 @@ export function DepositOverlay({
       </Source>
     </>
   )
-}
+})

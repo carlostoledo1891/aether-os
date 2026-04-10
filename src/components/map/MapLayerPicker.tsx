@@ -1,6 +1,7 @@
 import { memo, useState } from 'react'
 import { Layers, X } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from './mapStacking'
 
 interface LayerToggle {
   id: string
@@ -17,9 +18,11 @@ export const MapLayerPicker = memo(function MapLayerPicker({ layers, onToggle }:
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ position: 'absolute', top: 120, right: 10, zIndex: 10 }}>
+    <div style={{ position: 'absolute', top: 120, right: 10, zIndex: Z.mapLayerPicker }}>
       <button
         onClick={() => setOpen(o => !o)}
+        aria-label="Toggle map layers"
+        aria-expanded={open}
         style={{
           width: 30,
           height: 30,
@@ -58,6 +61,7 @@ export const MapLayerPicker = memo(function MapLayerPicker({ layers, onToggle }:
             </span>
             <button
               onClick={() => setOpen(false)}
+              aria-label="Close layer picker"
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: W.text4, padding: 0, display: 'flex' }}
             >
               <X size={12} />

@@ -42,7 +42,7 @@ The prototype is built to pitch to:
 | Testing | Vitest 4.x + `@testing-library/react` + `happy-dom` |
 | **Backend** | **Fastify 5.8 + `better-sqlite3` 12.x** |
 | **Engine** | **Node.js + TypeScript (standalone process)** |
-| **Server testing** | **Vitest 4.x + Fastify `.inject()` (22 route-level tests)** |
+| **Server testing** | **Vitest 4.x + Fastify `.inject()` (50 route-level tests)** |
 | **Dev runner** | **`concurrently` (runs all 3 processes via `npm run dev:all`)** |
 | Font: UI | Inter (Google Fonts) |
 | Font: Mono | JetBrains Mono (Google Fonts) |
@@ -73,6 +73,7 @@ aether-os/
 │       │   ├── health.test.ts          health endpoint shape
 │       │   ├── telemetry.test.ts       ingest + current + history round-trip
 │       │   ├── domain.test.ts          seeded domain data endpoints
+│       │   ├── chat.test.ts            auth, schema, rate limit, 501 when AI unconfigured
 │       │   └── ingest-guard.test.ts    API key guard (reject/accept)
 │       ├── types/shared.ts             types shared with engine
 │       ├── routes/
@@ -116,19 +117,32 @@ aether-os/
 ├── scripts/caldeira-build/             UTM→WGS84 + merge → `caldeira-drillholes` / licence patch
 ├── src/
 │   ├── main.tsx                        entry point
-│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell (CSS module + view routing, dark theme only)
+│   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell + /view/:manifestId route (Mini Engine)
 │   ├── AppShell.module.css             root shell: bg + grid via CSS vars (--w-bg, --w-app-shell-grid)
 │   ├── types/
 │   │   ├── telemetry.ts                plant/env/ESG interfaces — ViewMode: 'operator'|'buyer'|'executive'
 │   │   └── liveTelemetry.ts            future LiveTelemetryEnvelope DTO (map → PlantTelemetry/EnvTelemetry)
 │   ├── data/
-│   │   ├── mockData.ts                 BATCHES, INITIAL_PLANT/ENV_TELEMETRY, PROJECT_FINANCIALS, MARKET_PRICES, DEPOSIT_DATA, PILOT_PLANT_PERFORMANCE, U_TH_SAFETY, PROJECT_TIMELINE, RESOURCE_CLASSIFICATION, CYBER_TRUST_PILLARS, HARDWARE_SENSORS, SCOPE_3_TRACKING, SPRING_COUNT
+│   │   ├── mockData.ts                 re-exports from domain/; legacy compat layer
 │   │   ├── mockGenerator.ts            drift(), generatePlantTelemetry(scale), generateEnvTelemetry(scale), detectAlerts(), calculateEsgScore()
+│   │   ├── domain/                     NEW — consolidated domain data (10 modules, barrel index.ts)
+│   │   │   ├── index.ts               barrel re-export
+│   │   │   ├── thresholds.ts          THRESHOLDS, SPRING_COUNT
+│   │   │   ├── deposits.ts            DEPOSIT_DATA, DepositRecord, DepositStatus, RESOURCE_CLASSIFICATION
+│   │   │   ├── financials.ts          PROJECT_FINANCIALS, MARKET_PRICES, PROJECT_TIMELINE, SCENARIOS, SENSITIVITY_TABLE
+│   │   │   ├── hydrology.ts           PREDICTIVE_HYDROLOGY_SCENARIOS, SCALE_UP_PATHWAY
+│   │   │   ├── compliance.ts          BATCHES, BENCHMARKS, AUDIT_TRAIL, ESG_FRAMEWORKS
+│   │   │   ├── risk.ts               RISKS, INCIDENT_LOG
+│   │   │   ├── plant.ts              PILOT_PLANT_PERFORMANCE, HARDWARE_SENSORS, LITHOLOGY_SUMMARY
+│   │   │   ├── stakeholders.ts       STAKEHOLDER_REGISTER
+│   │   │   └── commercial.ts         OFFTAKERS, CAPITAL, PRICING_MODEL, MARKET_SIZING, DSCR_PROJECTIONS, etc.
+│   │   ├── geo/                        NEW — GeoJSON registry
+│   │   │   └── registry.ts           GEO object — single source of truth for all 18 layer URLs, kinds, renderOrder
 │   │   ├── caldeira/                   issuerSnapshot.ts, spatialInsights.ts, pilotPlantData.ts — ASX citations + pilot plant BOM/sensors/process
 │   │   └── geojson/                    static Caldeira map geometry for MapLibre sources/layers
 │   │       ├── caldeira-boundary.geojson        Poços alkaline complex outline (terrain master; non-survey)
 │   │       ├── caldeira-deposits.geojson        7 deposit polygons (optional on Operations — off by default)
-│   │       ├── caldeira-licenses.geojson        7 per-block mining licence polygons + MRE-style props (`ops_reality_tenements`)
+│   │       ├── caldeira-licenses.geojson        6 per-block mining licence polygons (Figueira, Soberbo, Capão do Mel, Cupim Vermelho Norte, Dona Maria 1, Dona Maria 2)
 │   │       ├── caldeira-drillholes.geojson      ~205 collars DD/AC from ASX appendices (`build:caldeira-geojson`)
 │   │       ├── caldeira-pfs-engineering.geojson PFS starter pit + spent clay footprint
 │   │       ├── caldeira-ops-plant-sites.geojson pilot + commercial plant points (default On on Operations)
@@ -159,9 +173,11 @@ aether-os/
 │   │   └── setup.ts                    Vitest setup — imports @testing-library/jest-dom
 │   ├── styles/
 │   │   ├── fonts.css                   Google Fonts imports
-│   │   └── theme.css                   CSS variables (:root dark palette) + @theme inline (Tailwind 4 tokens)
+│   │   ├── theme.css                   CSS variables (:root dark palette) + @theme inline (Tailwind 4 tokens)
+│   │   └── shared.module.css          NEW — common layout utilities (.sectionHead, .grid2–4, .flexCol, etc.)
 │   ├── components/
 │   │   ├── ui/
+│   │   │   ├── index.ts               barrel export for all UI kit components
 │   │   │   ├── GlassCard.tsx           glassmorphism card (glow variants: violet|cyan|green|amber|red|none)
 │   │   │   ├── GlowingIcon.tsx         lucide icon + drop-shadow glow
 │   │   │   ├── StatusChip.tsx          pill badge (variant + dot)
@@ -171,16 +187,23 @@ aether-os/
 │   │   │   ├── SectionLabel.tsx       uppercase panel section titles
 │   │   │   ├── MutedCaption.tsx       disclaimer / helper paragraph style
 │   │   │   ├── HairlineDivider.tsx    1px separator (horizontal or vertical)
-│   │   │   └── LoadingSkeleton.tsx    pulsing glass-effect loading placeholder (card/row/metric/full variants)
+│   │   │   ├── LoadingSkeleton.tsx    pulsing glass-effect loading placeholder (card/row/metric/full variants)
+│   │   │   ├── MetricCard.tsx         NEW — compact metric tile (label, value, unit, sublabel, color)
+│   │   │   ├── SectionBlock.tsx       NEW — section header with icon + label + rightSlot + children
+│   │   │   ├── DataGrid.tsx           NEW — CSS grid wrapper (2/3/4 columns, configurable gap)
+│   │   │   ├── TabPanel.tsx           NEW — AnimatePresence + keyed motion.div for tab content
+│   │   │   └── PanelShell.tsx         NEW — scrollable flex column container
 │   │   ├── charts/
 │   │   │   ├── SparkLine.tsx           Recharts LineChart with threshold bands
 │   │   │   ├── GaugeChart.tsx          circular SVG gauge
 │   │   │   └── BarComparison.tsx       horizontal bar comparison
 │   │   ├── layout/
+│   │   │   ├── index.ts               barrel export
 │   │   │   ├── HeaderStrip.tsx         single-row navbar: logo (V monogram) | ViewSwitcher | AI chat | ESG, alerts
 │   │   │   ├── DataModeBanner.tsx      data-honesty strip (Demo data / Live — backend not connected + detail)
 │   │   │   ├── ViewSwitcher.tsx        3-tab nav (Field Operations | Compliance & Traceability | Executive Overview) + alert badge
-│   │   │   └── AlertPanel.tsx          right-side sliding alert drawer
+│   │   │   ├── AlertPanel.tsx          right-side sliding alert drawer
+│   │   │   └── MapPageLayout.tsx       NEW — map hero + sidebar + bottom strip layout
 │   │   ├── map/                        GeoJSON-driven MapLibre overlay system
 │   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; 3-style picker (Satellite/Operations/Topography) + localStorage; exports FIELD/BUYER/EXEC_VIEW_STATE
 │   │   │   ├── mapStacking.ts          MAP_STACKING z-index contract (field title, HUD, tooltip, etc.)
@@ -199,7 +222,7 @@ aether-os/
 │   │   │   ├── AccessRoutesOverlay.tsx    concept road LineString
 │   │   │   ├── LicenceEnvelopeOverlay.tsx optional 193 km² dashed context
 │   │   │   ├── InfraOverlay.tsx        full logistics mesh — optional on Operations (`infra` toggle); supply route when showRoute (BuyerView)
-│   │   │   ├── EnvironmentalOverlay.tsx  APA + buffer (split GeoJSON) + monitoring + urban centroid + UDC; Hydro Twin (+ env toggles)
+│   │   │   ├── EnvironmentalOverlay.tsx  APA + buffer (split GeoJSON) + monitoring + urban centroid; Hydro Twin (UDC deduped to HydroOverlay)
 │   │   │   └── NeighborOverlay.tsx     Axel REE Caldas adjacent tenement (e.g. geology context)
 │   │   ├── plant/                       Pilot Plant Digital Twin (v11)
 │   │   │   ├── PilotPlantCard.tsx      collapsed HUD card for Operations map (4 live metrics, process dots)
@@ -211,22 +234,46 @@ aether-os/
 │   │   ├── EsgScoreRing.tsx            composite ESG ring gauge
 │   │   ├── GreenPremiumCard.tsx        spot vs certified NdPr price delta card
 │   │   └── BlockchainTimeline.tsx      molecular-to-magnet vertical timeline
+│   ├── engine/                          NEW — Mini Engine / View Builder (JSON → React)
+│   │   ├── types.ts                   ViewManifest, SectionConfig, WidgetConfig
+│   │   ├── ViewEngine.tsx             JSON→React renderer (sections, widgets, theme/logo)
+│   │   ├── ViewEnginePage.tsx         route page — dedicated pages + generic engine fallback
+│   │   ├── WidgetRegistry.ts          registerWidget / getWidget / listWidgets (9 registered)
+│   │   ├── DataBridge.ts             resolveQuery + resolvePath (service method calls + dot-paths)
+│   │   ├── index.ts                   barrel export
+│   │   ├── presets/
+│   │   │   ├── index.ts              getPresetManifest + loadSandboxManifest + listPresets
+│   │   │   └── prefeitura.ts         PREFEITURA_MANIFEST (TS preset)
+│   │   └── sandbox/
+│   │       └── prefeitura/            franchise-mode Prefeitura de Poços de Caldas dashboard
+│   │           ├── manifest.json     JSON manifest (sandbox source of truth)
+│   │           ├── data.json         partnership KPIs (economia, social, ambiental, operacao)
+│   │           ├── PrefeituraPage.tsx dedicated page — Meteoric visual identity + real map
+│   │           ├── prefeitura.module.css branded styles (hero gradient, KPI cards, responsive)
+│   │           └── overrides.css     theme variable overrides
 │   └── views/
-│       ├── FieldView.tsx               2-tab MapLibre: Operations | Hydro Twin — layered overlays + `FieldMapGeoInspector` + `fieldMapLayers` toggles
+│       ├── FieldView.tsx               2-tab MapLibre: Operations | Hydro Twin — 474 lines (extracted useMapInteraction)
 │       ├── field/
 │       │   ├── constants.ts            MapTab, colors, chain/license data shared with panels
+│       │   ├── useMapInteraction.ts    NEW — extracted hook for hover/click/popup/selection (444 lines)
 │       │   ├── FieldMapChrome.module.css map hero container styling
 │       │   ├── FieldBottomMetrics.tsx  bottom KPI strip (5 tiles)
 │       │   ├── FieldPinnedAssetCard.tsx active asset / pinned node detail
 │       │   ├── OperationsPanel.tsx     Operations — map layer toggles (terrain vs legacy), spatial cross-check, plant metrics, sparklines
-│       │   ├── EnvironmentPanel.tsx    Hydro Twin — map env toggles, monitoring, modeling, aquifer / WQ / springs (+ MonitoringNetworkCard)
+│       │   ├── EnvironmentPanel.tsx    Hydro Twin — orchestrates 5 extracted sub-cards (272 lines, was 442)
+│       │   ├── PredictiveModelingCard.tsx NEW — extracted from EnvironmentPanel
+│       │   ├── LIReadinessCard.tsx     NEW — extracted from EnvironmentPanel
+│       │   ├── AquiferCard.tsx         NEW — extracted from EnvironmentPanel
+│       │   ├── WaterQualityCard.tsx    NEW — extracted from EnvironmentPanel
+│       │   ├── SpringsCard.tsx         NEW — extracted from EnvironmentPanel
+│       │   ├── LicenseTimeline.tsx     MOVED from components/ui/
 │       │   ├── fieldMapLayers.ts       DEFAULT_FIELD_OPS_LAYERS / ENV — plantSites on, infra+schematic+deposits off by default
 │       │   ├── FieldMapGeoInspector.tsx click-selection detail for licence / drill / PFS / infra / route / envelope / env
 │       │   ├── fieldMapGeoSelection.ts selection types + toAccessRouteDetail / toLicenceEnvelopeDetail
 │       │   ├── MonitoringNetworkCard.tsx tier mix + precip context (Tailwind + tokens)
 │       │   ├── GeologyPanel.tsx        deposit cards (used by ExecutiveView Assets, not Field map tabs)
 │       │   └── LicensesPanel.tsx       licence zone cards (used by ExecutiveView Assets)
-│       ├── BuyerView.tsx               supply-chain MapLibre hero + tabbed right panel (Compliance | Traceability)
+│       ├── BuyerView.tsx               supply-chain MapLibre hero — now includes LicenseOverlay + EnvironmentalOverlay
 │       └── ExecutiveView.tsx           full-width tabbed dashboard (no map) — Assets … ESG
 ```
 
@@ -2126,3 +2173,290 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 3. **Activate Thiago as CEO** — removes 20–30% key-person discount
 4. **Connect real LAPOC instruments** — converts simulated to field-verified
 5. **Seed fundraise at $5–7M** — buys commercial capacity
+
+---
+
+## Session Log — 2026-04-10 (v13: Vero Architecture Refactoring Sprint + EGO Perfection Sprint)
+
+**What was completed this session (2 major sprints, 31 tasks):**
+
+### Sprint 1: Vero Architecture Refactoring (16 tasks across 4 phases)
+
+#### Phase 1 — Geo Data Layer + Map Fix
+
+1. **Single GEO registry** — Created `src/data/geo/registry.ts` as single source of truth for all 18 GeoJSON layers. All 14 overlay components (`CaldeiraBoundary`, `LicenseOverlay`, `DepositOverlay`, `DrillHoleOverlay`, `EnvironmentalOverlay`, `HydroOverlay`, `InfraOverlay`, `OpsPlantSitesOverlay`, `PfsEngineeringOverlay`, `AccessRoutesOverlay`, `LicenceEnvelopeOverlay`, `NeighborOverlay`, `PlantOverlay`, `DrillTraceSection`) now import URLs from `GEO.*` instead of direct `.geojson?url` imports. Each entry has `id`, `url`, `kind` (polygon/line/point), and `renderOrder` for z-ordering.
+
+2. **Map layer reorder** — Reordered overlays in `FieldView.tsx` operations tab: polygons paint first (envelope, neighbors, deposits, licenses, PFS, APA), then lines (access routes), then points (drills, plant sites, infra, plant schematic). Fixes click-blocking where APA was rendering above points.
+
+3. **Licenses in Hydro Twin** — Added `LicenseOverlay` to the environment tab with `LICENSE_LAYER_ID` in `ENV_LAYER_PRIORITY` and `interactiveLayerIds`. Click handling wired for license selection in env tab.
+
+4. **UDC dedup** — Removed duplicate UDC source from `EnvironmentalOverlay`. Canonical UDC point lives in `hydro-nodes.geojson` via `HydroOverlay`. Removed `showUdc` prop and related rendering code. Updated `geoJsonSchema.test.ts`.
+
+#### Phase 2 — Domain Data Consolidation
+
+5. **Domain data package** — Created `src/data/domain/` with 10 modules: `thresholds.ts`, `deposits.ts`, `financials.ts`, `hydrology.ts`, `compliance.ts`, `risk.ts`, `plant.ts`, `stakeholders.ts`, `commercial.ts`, `index.ts`. Migrated ~1200 lines of inline data from `mockDataService.ts`. Updated `mockData.ts` to re-export for backward compat. `dataService.ts` and `liveDataService.ts` updated to import `DepositRecord`/`DepositStatus` from domain.
+
+6. **Dead export cleanup** — Deleted `BOARD_VALUE_AT_RISK`, `REAGENT_PROVENANCE`, `DEAL_SCENARIOS`, `BOARD_NARRATIVE` from `mockData.ts` (verified unused).
+
+7. **LicenseTimeline move** — Moved `src/components/ui/LicenseTimeline.tsx` → `src/views/field/LicenseTimeline.tsx`. Updated imports in `LicensesPanel.tsx` and `EnvironmentPanel.tsx`. Added TODO to `constants.ts` noting `LICENSE_ZONES`/`LICENSE_ITEMS` should eventually derive from the service.
+
+#### Phase 3 — UI Kit + Component Extraction
+
+8. **Atomic component kit** — Created 6 new primitives:
+   - `src/components/ui/MetricCard.tsx` — compact metric tile (label, value, unit, sublabel, color)
+   - `src/components/ui/SectionBlock.tsx` — header row (GlowingIcon + SectionLabel + rightSlot + children)
+   - `src/components/ui/DataGrid.tsx` — CSS grid wrapper (2/3/4 columns, configurable gap)
+   - `src/components/ui/TabPanel.tsx` — AnimatePresence + keyed motion.div
+   - `src/components/ui/PanelShell.tsx` — scrollable flex column container
+   - `src/components/layout/MapPageLayout.tsx` — map hero + sidebar + bottom strip layout
+   - Added barrel files: `src/components/ui/index.ts`, `src/components/layout/index.ts`
+
+9. **Monolith breakup** — Extracted `useMapInteraction` hook from `FieldView.tsx` (832→474 lines, 43% reduction). Extracted 5 sub-cards from `EnvironmentPanel.tsx` (442→272 lines, 38% reduction): `PredictiveModelingCard`, `LIReadinessCard`, `AquiferCard`, `WaterQualityCard`, `SpringsCard`.
+
+10. **CSS consolidation** — Created `src/styles/shared.module.css` with common layout utilities (`.sectionHead`, `.grid2`–`.grid4`, `.flexCol`, `.labelUpper`, `.mono10`).
+
+#### Phase 4 — Mini Engine / View Builder
+
+11. **Engine architecture** — Created `src/engine/` with:
+    - `types.ts` — `ViewManifest`, `SectionConfig`, `WidgetConfig` with `SectionKind` union and optional `geo` block
+    - `WidgetRegistry.ts` — `registerWidget`/`getWidget`/`listWidgets` + 9 registered components
+    - `DataBridge.ts` — `resolveQuery` (calls named service methods) + `resolvePath` (dot-path into data)
+    - `ViewEngine.tsx` — renders manifest: header (title/subtitle/logo), sections (metric-grid/card-stack/chart-row/hero-map/table/timeline/custom), widgets with data binding via `useServiceQuery`
+    - `index.ts` — barrel export
+
+12. **Theme and logo** — `ViewEngine` now reads `manifest.theme` (light/dark background+text toggle) and renders `manifest.logo` as an `<img>` in the header.
+
+13. **Sandbox JSON loading** — `src/engine/presets/index.ts` now has `loadSandboxManifest(id)` that dynamically imports `sandbox/<id>/manifest.json`. The `listPresets()` function includes both TS presets and sandbox entries.
+
+14. **Prefeitura preset** — `src/engine/presets/prefeitura.ts` defines `PREFEITURA_MANIFEST` with 5 sections (economic, operations, environmental, social, hero-map).
+
+15. **Route integration** — Added `/view/:manifestId` route in `App.tsx` with its own `DataServiceProvider` shell via `ViewEngineShell`. `ViewEnginePage.tsx` detects dedicated pages (`prefeitura-pocos` → lazy-loaded `PrefeituraPage`) and falls back to generic `ViewEngine` for other manifests.
+
+16. **Sandbox structure** — Created `src/engine/sandbox/prefeitura/` with `manifest.json`, `overrides.css`, `README.md`.
+
+### Sprint 2: EGO Perfection Sprint (15 tasks)
+
+#### Bug Fixes
+
+17. **Buyer view overlays** — Added `LicenseOverlay` + `EnvironmentalOverlay` (APA/buffer) to `BuyerView.tsx` map. Layer picker now has "License Areas" and "APA / Buffer" toggles. `LICENSE_LAYER_ID` and `ENV_APA_FILL_LAYER_ID` added to `buyerInteractiveLayerIds`.
+
+18. **Hover priority fix** — `handleMouseEnter` in `useMapInteraction.ts` now uses `pickFeatureByPriority(e.features, OPS_LAYER_PRIORITY | ENV_LAYER_PRIORITY)` before the naive first-feature fallback. Points always win when overlapping polygons.
+
+19. **APA in OPS_LAYER_PRIORITY** — Added `ENV_APA_FILL_LAYER_ID` at the end of `OPS_LAYER_PRIORITY` (lowest priority) so APA clicks can't shadow point features.
+
+#### Clean Code
+
+20. **useMapInteraction cleanup** — Removed unused `envMapLayers` from `UseMapInteractionParams` interface. Removed from FieldView call site. Removed `FieldEnvMapLayers` import.
+
+21. **DataBridge resolvePath** — Verified array index access works (string key `"0"` resolves on arrays). Confirmed by dedicated test.
+
+#### Test Coverage (+61 new tests, 234 total)
+
+22. **Engine tests** — `src/engine/__tests__/WidgetRegistry.test.ts` (12 tests), `DataBridge.test.ts` (9 tests), `ViewEngine.test.tsx` (5 tests: title, subtitle, sections, MetricCard rendering, unknown widget placeholder, hero-map placeholder).
+
+23. **Domain data tests** — `src/data/domain/__tests__/domain.test.ts` (12 tests: all exported constants validated for shape and non-emptiness).
+
+24. **UI Kit tests** — `MetricCard.test.tsx` (5), `DataGrid.test.tsx` (3), `SectionBlock.test.tsx` (3), `TabPanel.test.tsx` (1), `PanelShell.test.tsx` (1).
+
+25. **Geo registry test** — `src/data/geo/registry.test.ts` (10 tests: unique IDs, valid URL/kind, renderOrder conventions — polygon<20, line 20-29, point≥30).
+
+#### Prefeitura Dashboard
+
+26. **Partnership data** — `src/engine/sandbox/prefeitura/data.json` with 4 domains: `economia` (empregos, ISS, investimento, royalties, PIB), `social` (programas, jovem aprendiz, fundo, treinamentos, bolsas), `ambiental` (nascentes, recirculacao, CO2, dry-stack, monitoramento, energia), `operacao` (NdPr, TREO, LOM, recurso, licencas).
+
+27. **Prefeitura CSS module** — `src/engine/sandbox/prefeitura/prefeitura.module.css`: gradient hero with radial purple glow, responsive KPI grids (4/3/2 cols with mobile breakpoints), hover-animated KPI cards, branded map container with violet border glow, professional footer.
+
+28. **PrefeituraPage component** — `src/engine/sandbox/prefeitura/PrefeituraPage.tsx`: dedicated page reading `data.json`, featuring animated KPI cards with `whileInView` scroll animation, section headers with accent-colored dots + divider lines, real interactive `MapBase` with `CaldeiraBoundary` + `LicenseOverlay` + `OpsPlantSitesOverlay`, formatted BRL values, branded footer with legal text.
+
+29. **Route wiring** — `ViewEnginePage.tsx` detects `prefeitura-pocos` in `DEDICATED_PAGES` map and lazy-loads `PrefeituraPage` directly instead of the generic `ViewEngine`.
+
+#### Build Fixes
+
+30. **Strict TS** — Fixed 7 Vercel build errors: `service as unknown as Record<string, unknown>` (double cast), `W.bg0` → `W.bg`, sandbox loader typed as `Promise<{ default: unknown }>`, removed unused `CALDEIRA_BBOX` import, removed unused `Droplets` import, `PredictiveModelingCard.scenarios` accepts `readonly` arrays.
+
+### New File Structure
+
+```
+src/data/
+├── geo/
+│   ├── registry.ts                   Single GEO registry — all 18 layers with id, url, kind, renderOrder
+│   └── registry.test.ts             Validates IDs, kinds, renderOrder conventions
+├── domain/
+│   ├── index.ts                     Barrel re-export
+│   ├── thresholds.ts                THRESHOLDS, SPRING_COUNT
+│   ├── deposits.ts                  DEPOSIT_DATA, DepositRecord, DepositStatus, RESOURCE_CLASSIFICATION
+│   ├── financials.ts                PROJECT_FINANCIALS, MARKET_PRICES, PROJECT_TIMELINE, SCENARIOS, SENSITIVITY_TABLE
+│   ├── hydrology.ts                 PREDICTIVE_HYDROLOGY_SCENARIOS, SCALE_UP_PATHWAY
+│   ├── compliance.ts                BATCHES, BENCHMARKS, AUDIT_TRAIL, ESG_FRAMEWORKS
+│   ├── risk.ts                      RISKS, INCIDENT_LOG
+│   ├── plant.ts                     PILOT_PLANT_PERFORMANCE, HARDWARE_SENSORS, LITHOLOGY_SUMMARY
+│   ├── stakeholders.ts              STAKEHOLDER_REGISTER
+│   ├── commercial.ts                OFFTAKERS, CAPITAL, PRICING_MODEL, MARKET_SIZING, DSCR_PROJECTIONS, DRAWDOWN_SCHEDULE, DFS_WORKSTREAMS, REGULATORY_LOG
+│   └── __tests__/domain.test.ts     Shape validation for all exports
+
+src/engine/
+├── types.ts                          ViewManifest, SectionConfig, WidgetConfig
+├── ViewEngine.tsx                    JSON→React renderer (sections, widgets, data binding, theme/logo)
+├── ViewEnginePage.tsx                Route page — dedicated pages + generic engine fallback
+├── WidgetRegistry.ts                 Component registry (9 widgets registered)
+├── DataBridge.ts                     resolveQuery + resolvePath
+├── index.ts                          Barrel export
+├── presets/
+│   ├── index.ts                     getPresetManifest + listPresets
+│   └── prefeitura.ts                PREFEITURA_MANIFEST (TS preset)
+├── sandbox/
+│   ├── README.md                    Franchise mode docs
+│   └── prefeitura/
+│       ├── data.json                Partnership KPIs (economia, social, ambiental, operacao)
+│       ├── PrefeituraPage.tsx       Dedicated page — Meteoric visual identity + real map
+│       └── prefeitura.module.css    Branded styles (var(--w-*) tokens, responsive grids)
+└── __tests__/
+    ├── WidgetRegistry.test.ts       12 tests
+    ├── DataBridge.test.ts           9 tests
+    └── ViewEngine.test.tsx          5 tests
+
+src/components/map/__tests__/
+└── overlayContracts.test.ts         Layer ID + component export contracts for 12 overlays
+
+src/components/ui/
+├── MetricCard.tsx + .test.tsx        Compact metric tile
+├── SectionBlock.tsx + .test.tsx      Section header with icon + label + children
+├── DataGrid.tsx + .test.tsx          CSS grid wrapper (2/3/4 columns)
+├── TabPanel.tsx + .test.tsx          AnimatePresence wrapper
+├── PanelShell.tsx + .test.tsx        Scrollable flex column
+└── index.ts                          Barrel export
+
+src/components/layout/
+├── MapPageLayout.tsx                 Map hero + sidebar + bottom strip
+└── index.ts                          Barrel export
+
+src/views/buyer/__tests__/
+└── BuyerView.test.tsx               Smoke, compliance tab, layer controls
+
+src/views/field/
+├── useMapInteraction.ts              Extracted hook — hover/click/popup/selection (444 lines)
+├── __tests__/
+│   └── useMapInteraction.test.ts     Priority picking, hover state, mouse leave
+├── PredictiveModelingCard.tsx        Extracted from EnvironmentPanel
+├── LIReadinessCard.tsx               Extracted from EnvironmentPanel
+├── AquiferCard.tsx                   Extracted from EnvironmentPanel
+├── WaterQualityCard.tsx              Extracted from EnvironmentPanel
+├── SpringsCard.tsx                   Extracted from EnvironmentPanel
+└── LicenseTimeline.tsx               Moved from components/ui/
+
+src/styles/shared.module.css          Common layout utilities
+```
+
+### Quality Gate
+- 35 test files, 234 tests — all passing
+- 0 TypeScript compilation errors (`tsc -b` strict)
+- Clean Vite production build
+- Deployed to Vercel
+
+### Key Metrics
+- **100 files changed**, +5,104 / -1,976 lines
+- `FieldView.tsx`: 832 → 474 lines (43% reduction)
+- `EnvironmentPanel.tsx`: 442 → 272 lines (38% reduction)
+- `mockDataService.ts`: ~1200 lines of inline data eliminated
+- `mockData.ts`: 4 dead exports removed
+- Zero direct `.geojson?url` imports remaining in components
+- All map views (Operations, Hydro Twin, Buyer) now share identical license geometry via single GEO registry
+- Prefeitura public dashboard live at `/view/prefeitura-pocos`
+
+### Architecture Decisions
+- **GEO registry as object, not array** — `GEO.licenses.url` is more readable and type-safe than array lookup. `renderOrder` is metadata, not array position.
+- **Domain modules over single file** — one TS module per domain slice (deposits, financials, etc.) for tree-shaking and clear ownership. `index.ts` barrel for convenience.
+- **Dedicated page for Prefeitura over generic engine** — the engine is perfect for quick dashboards, but a branded public page benefits from a custom component with CSS module, real map integration, and scroll animations. The engine still serves as the generic fallback.
+- **Sandbox JSON as supplementary source** — `data.json` is the KPI source of truth for the Prefeitura page. `manifest.json` exists for the generic engine path but the dedicated page reads data directly.
+- **Priority-based hover picking** — reusing the same `OPS_LAYER_PRIORITY`/`ENV_LAYER_PRIORITY` arrays for both click and hover ensures consistent feature selection across interaction modes.
+- **readonly arrays in domain exports** — domain data is const-asserted; component props accept `readonly` to avoid unnecessary spread/copy.
+
+**What should be done next (priority order):**
+1. **Close Meteoric paid pilot** — single event that moves every valuation number up
+2. **Connect real LAPOC instruments** — converts simulated to field-verified
+3. **Expand Mini Engine** — build a second preset (e.g. marine-ops or defense), proving the engine's generalization
+4. **Migrate remaining monoliths** — `FieldPinnedAssetCard.tsx` (488 lines) and `ComplianceTab.tsx` (473 lines) are next extraction targets
+5. **Inline-style-to-CSS-module migration** — 77 files still use `style={{`, a multi-day effort deferred from this sprint
+6. **E2E / Playwright** — deferred; requires infrastructure setup
+7. **Component splitting** — 11 components over 300 lines (HydroOverlay 570, DrillTraceSection 530, PlantOverlay 477)
+
+---
+
+## Session v14 — CTO EGO Sprint Ultimate Edition (2026-04-10)
+
+### Context
+
+Full codebase audit across 4 dimensions (security, tests, design tokens, architecture), followed by systematic remediation of every finding above low severity.
+
+### Sprint 3: CTO EGO Sprint — Ultimate Edition (20 tasks)
+
+#### Phase 1 — Security Hardening (server)
+
+1. **Fail-closed ingest guard** — `/ingest/*` now returns 503 in production when `INGEST_API_KEY` unset. In development, unauthenticated ingest is permitted. Env vars moved inside `buildApp()` so tests can set them per-invocation.
+
+2. **Chat endpoint authentication** — `POST /api/chat` and `POST /api/chat/upload` now require `x-api-key` header matching `CHAT_API_KEY` env var. Skipped in dev when unset.
+
+3. **Rate limiting** — Installed `@fastify/rate-limit`. Global: 120 req/min. Per-route: chat 10/min, upload 5/min, ingest 60/min.
+
+4. **CORS lockdown** — Default changed from `origin: true` (reflect-all) to explicit allowlist in production (`localhost:5175`, `localhost:5173`). Env override preserved via comma-separated `CORS_ORIGIN`.
+
+5. **Global error handler** — `app.setErrorHandler()` returns `{ error: 'Internal Server Error' }` in production (no stack traces). Full error in development.
+
+6. **CSP headers** — `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin` added to `vercel.json`. Allows self, MapTiler, Google Fonts, blob: for MapLibre workers.
+
+#### Phase 2 — Test Coverage Elevation (+16 tests)
+
+7. **liveDataService error paths** — 4 new tests: degraded on fetch fail with cache, offline with no cache, recovery to connected, non-200 rejection.
+
+8. **Chat route unit tests** — `server/src/__tests__/chat.test.ts` — 5 new tests: auth rejection, wrong key, 501 when AI unconfigured, body validation, upload auth.
+
+9. **BuyerView behavioral tests** — `src/views/buyer/__tests__/BuyerView.test.tsx` — 3 new tests: smoke render, compliance tab content, layer controls.
+
+10. **Map overlay contract tests** — `src/components/map/__tests__/overlayContracts.test.ts` — 13 tests: all 12 overlay layer ID contracts + component export verification.
+
+11. **useMapInteraction hook test** — `src/views/field/__tests__/useMapInteraction.test.ts` — 6 tests: init state, ops priority, env priority, mouse leave, boundary skip, deposit popup.
+
+#### Phase 3 — Design Token Compliance
+
+12. **Unified Z constant** — Extended `mapStacking.ts` into full `Z` object covering all stacking contexts (tabIndicator=1 through modal=200). Replaced magic z-index numbers across 10+ files including the `zIndex: 9999` in DrillTraceSection. `MAP_STACKING` retained as deprecated alias.
+
+13. **Token sweep — top 5 offenders** — Migrated raw rgba/hex to `W.*` tokens in HydroOverlay, PlantOverlay, EquipmentNode, PlantSchematic. Added `W.gray` and `W.graySubtle` tokens to canvasTheme.
+
+14. **Prefeitura CSS tokens** — Rewrote `prefeitura.module.css` to use `var(--w-*)` CSS custom properties throughout. Zero hardcoded colors remaining.
+
+#### Phase 4 — Modularity and Dead Code
+
+15. **Dead code removal** — Deleted `overrides.css`, `manifest.json`. Removed `loadSandboxManifest()` and `SANDBOX_LOADERS` from presets. Updated sandbox README.
+
+16. **Error boundary parity** — `/lp` and `/pitch-deck` routes wrapped in `ErrorBoundary`.
+
+17. **Accessibility** — Added `aria-label` + `aria-expanded` to MapLayerPicker toggle/close, FieldPinnedAssetCard clear, EnvironmentPanel provenance.
+
+18. **React.memo()** — All 14 map overlay components wrapped in `memo()`: CaldeiraBoundary, LicenseOverlay, DepositOverlay, DrillHoleOverlay, EnvironmentalOverlay, HydroOverlay, InfraOverlay, OpsPlantSitesOverlay, PfsEngineeringOverlay, AccessRoutesOverlay, LicenceEnvelopeOverlay, NeighborOverlay, PlantOverlay, MapFeaturePopup.
+
+19. **Type safety** — Replaced `(mapRef as any)` with typed cast in FieldView/BuyerView. WidgetRegistry uses eslint-suppressed `any` (unavoidable for dynamic registry pattern).
+
+#### Phase 5 — Quality Gate
+
+20. **Verification** — `tsc -b --noEmit`: 0 errors (frontend + server). `vitest run`: 260 tests, 0 failures (frontend). 50 tests, 0 failures (server). `vite build`: clean production build.
+
+### Quality Gate
+- 38 test files, 260 frontend tests + 50 server tests — all passing
+- 0 TypeScript compilation errors (frontend + server, strict mode)
+- Clean Vite production build
+- CSP + security headers in vercel.json
+
+### Key Metrics
+- **53 files changed**
+- 0 critical/high security issues remaining (from 4)
+- Z-index fully centralized in `Z.*` constant
+- All 14 map overlays wrapped in `React.memo()`
+- All icon-only buttons have `aria-label`; disclosure buttons have `aria-expanded`
+- Dead code eliminated: `overrides.css`, `manifest.json`, `loadSandboxManifest()`, `SANDBOX_LOADERS`
+
+### Architecture Decisions
+- **Env vars inside `buildApp()`** — moved from module scope so test suites can set env vars before building the Fastify app. Required for `CHAT_API_KEY` and `CORS_ORIGIN` testing.
+- **Z constant over per-file magic numbers** — single source of truth for all z-index values. `MAP_STACKING` preserved as deprecated alias for backward compatibility.
+- **`@fastify/rate-limit` with per-route config** — global limit + route-level overrides via `config.rateLimit` in route options. No custom middleware needed.
+- **CSP in vercel.json over index.html** — easier to update without rebuilding; covers all routes including `/view/*` and `/lp`.
+- **`any` in WidgetRegistry** — the dynamic component registry maps strings to React components with different prop interfaces. `ComponentType<any>` is the only viable type; annotated with eslint-disable comment to document intent.

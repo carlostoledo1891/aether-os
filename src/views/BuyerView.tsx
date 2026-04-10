@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import type maplibregl from 'maplibre-gl'
 import { useMapCamera } from '../contexts/MapCameraContext'
 import { CALDEIRA_BBOX } from '../components/map/MapBase'
 import { motion, AnimatePresence } from 'motion/react'
@@ -21,6 +22,7 @@ import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import type { ComplianceLedger } from '../types/telemetry'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { W } from '../app/canvas/canvasTheme'
+import { Z } from '../components/map/mapStacking'
 import { ComplianceTab } from './buyer/ComplianceTab'
 import { TraceabilityTab } from './buyer/TraceabilityTab'
 import styles from './BuyerView.module.css'
@@ -104,7 +106,7 @@ export function BuyerView() {
     return () => {
       const mapRef = maps['buyerField' as keyof typeof maps] ?? maps.current
       if (!mapRef) return
-      const map = (mapRef as any).getMap?.()
+      const map = (mapRef as unknown as { getMap?: () => maplibregl.Map | undefined }).getMap?.()
       if (!map) return
       const center = map.getCenter()
       saveCamera({
@@ -276,7 +278,7 @@ export function BuyerView() {
 
             {/* Batch legend */}
             <div style={{
-              position: 'absolute', bottom: 12, right: 12, zIndex: 8,
+              position: 'absolute', bottom: 12, right: 12, zIndex: Z.mapHud,
               background: W.mapControlBg, border: W.mapControlBorder,
               borderRadius: 8, padding: '8px 10px',
               display: 'flex', flexDirection: 'column', gap: 4,
@@ -324,7 +326,7 @@ export function BuyerView() {
               {batchDropdownOpen && (
                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.15 }}
                   style={{
-                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 30,
+                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: Z.buyerPanel,
                     marginTop: 4, borderRadius: W.radius.md, overflow: 'hidden',
                     background: `${W.panel}F5`, backdropFilter: 'blur(12px)',
                     border: `1px solid ${W.glass12}`,

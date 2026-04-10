@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 import { W } from '../../app/canvas/canvasTheme'
 import type { Map } from 'maplibre-gl'
 import { Layer, Source, useMap } from 'react-map-gl/maplibre'
@@ -121,7 +121,7 @@ interface InfraOverlayProps {
   highlightId?: string | null
 }
 
-export function InfraOverlay({ showRoute = false, mapId = 'aetherField', highlightId = null }: InfraOverlayProps) {
+export const InfraOverlay = memo(function InfraOverlay({ showRoute = false, mapId = 'aetherField', highlightId = null }: InfraOverlayProps) {
   const raw = useGeoJsonFeatureCollection(GEO.infra.url)
 
   const points = useMemo(() => {
@@ -284,4 +284,4 @@ export function InfraOverlay({ showRoute = false, mapId = 'aetherField', highlig
       )}
     </>
   )
-}
+})

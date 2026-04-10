@@ -4,41 +4,103 @@
     "partner": "Prefeitura Municipal de Poços de Caldas",
     "project": "Caldeira Rare Earths Project"
   },
-  "economia": {
-    "empregos_diretos": 340,
-    "empregos_indiretos": 680,
-    "iss_anual_brl": 2100000,
-    "investimento_local_brl": 45000000,
-    "royalties_cfem_brl": 3200000,
-    "pib_contribuicao_pct": 1.8
+  "topBar": {
+    "logoUrl": "https://meteoric.com.au/wp-content/uploads/2024/01/meteoric-logo-white.png",
+    "logoAlt": "Meteoric Resources"
   },
-  "social": {
-    "programas_ativos": 12,
-    "jovem_aprendiz_vagas": 48,
-    "fundo_comunitario_brl": 500000,
-    "treinamentos_realizados": 156,
-    "familias_beneficiadas": 2800,
-    "bolsas_estudo": 24,
-    "parcerias_senai": 3
+  "hero": {
+    "title": "Painel de Impacto — Projeto Caldeira",
+    "subtitle": "Terras Raras · Poços de Caldas, MG"
   },
-  "ambiental": {
-    "nascentes_preservadas": 1092,
-    "nascentes_total": 1092,
-    "recirculacao_hidrica_pct": 95,
-    "co2_por_tonelada": 3.2,
-    "media_industria_co2": 11.0,
-    "disposicao": "Dry-stack",
-    "area_recuperada_ha": 12.4,
-    "estacoes_monitoramento": 47,
-    "energia_renovavel_pct": 100
-  },
-  "operacao": {
-    "producao_ndpr_tpa": 3250,
-    "treo_tpa": 18000,
-    "lom_anos": 25,
-    "recurso_mt": 1270,
-    "teor_medio_ppm": 2630,
-    "licencas_areas": 6,
-    "area_total_km2": 193
+  "mapHighlights": [
+    { "label": "Empregos Diretos", "value": "340", "color": "green" },
+    { "label": "ISS Estimado / Ano", "value": "R$ 2,1M", "color": "cyan" },
+    { "label": "Nascentes Preservadas", "value": "1.092", "color": "cyan" },
+    { "label": "Licenças Ativas", "value": "6", "color": "violet" }
+  ],
+  "bottomMetrics": [
+    { "label": "Investimento Local", "value": "R$ 45M", "caption": "Infraestrutura e cadeia produtiva" },
+    { "label": "Royalties CFEM", "value": "R$ 3,2M/ano", "caption": "Compensação financeira minerária" },
+    { "label": "Produção NdPr", "value": "3.250 t/ano", "caption": "Óxidos de terras raras" },
+    { "label": "Recirculação Hídrica", "value": "95%", "caption": "Reuso e recirculação" },
+    { "label": "Energia Renovável", "value": "100%", "caption": "Matriz energética limpa" }
+  ],
+  "sidebar": [
+    {
+      "title": "Impacto Econômico",
+      "icon": "trending-up",
+      "color": "green",
+      "items": [
+        { "label": "Empregos Diretos", "value": "340 postos" },
+        { "label": "Empregos Indiretos", "value": "680 postos" },
+        { "label": "Contribuição PIB", "value": "1,8%" },
+        { "label": "Investimento Local", "value": "R$ 45M" }
+      ]
+    },
+    {
+      "title": "Operação Minerária",
+      "icon": "mountain",
+      "color": "violet",
+      "items": [
+        { "label": "Produção NdPr", "value": "3.250 t/ano" },
+        { "label": "TREO Total", "value": "18.000 tpa" },
+        { "label": "Vida Útil (LOM)", "value": "25 anos" },
+        { "label": "Recurso Mineral", "value": "1.270 Mt" },
+        { "label": "Teor Médio", "value": "2.630 ppm TREO" },
+        { "label": "Área Total", "value": "193 km²" }
+      ]
+    },
+    {
+      "title": "Compromisso Ambiental",
+      "icon": "leaf",
+      "color": "cyan",
+      "items": [
+        { "label": "Nascentes Preservadas", "value": "1.092 / 1.092" },
+        { "label": "Recirculação Hídrica", "value": "95%" },
+        { "label": "CO₂ por Tonelada", "value": "3,2 t CO₂e/t" },
+        { "label": "Disposição", "value": "Dry-stack (sem barragens)" },
+        { "label": "Estações Monitoramento", "value": "47" },
+        { "label": "Área Recuperada", "value": "12,4 ha" }
+      ]
+    },
+    {
+      "title": "Programas Sociais",
+      "icon": "users",
+      "color": "amber",
+      "items": [
+        { "label": "Programas Ativos", "value": "12" },
+        { "label": "Jovem Aprendiz", "value": "48 vagas/ano" },
+        { "label": "Fundo Comunitário", "value": "R$ 500K/ano" },
+        { "label": "Famílias Beneficiadas", "value": "2.800" },
+        { "label": "Bolsas de Estudo", "value": "24/ano" },
+        { "label": "Parcerias SENAI", "value": "3" }
+      ]
+    },
+    {
+      "title": "Comunidade",
+      "icon": "heart",
+      "color": "violet",
+      "items": [
+        { "label": "Monitoramento Participativo", "value": "Tempo Real" },
+        { "label": "Dados Abertos", "value": "Portal Público" },
+        { "label": "Conselho Comunitário", "value": "Ativo" },
+        { "label": "Audiências Públicas", "value": "Trimestral" }
+      ]
+    },
+    {
+      "title": "Contatos Úteis",
+      "icon": "phone",
+      "color": "cyan",
+      "contacts": [
+        { "name": "Relações Comunitárias", "detail": "comunidade@meteoric.com.au" },
+        { "name": "Ouvidoria Ambiental", "detail": "ambiental@meteoric.com.au" },
+        { "name": "Emprego e Capacitação", "detail": "rh@meteoric.com.au" },
+        { "name": "Prefeitura de Poços de Caldas", "detail": "www.pocosdecaldas.mg.gov.br" }
+      ]
+    }
+  ],
+  "footer": {
+    "legal": "Este painel apresenta dados estimados e projetados para o Projeto Caldeira de Terras Raras. Os valores são baseados em estudos de viabilidade e podem sofrer alterações conforme o avanço do projeto.",
+    "partners": ["Meteoric Resources NL", "Prefeitura Municipal de Poços de Caldas"]
   }
 }

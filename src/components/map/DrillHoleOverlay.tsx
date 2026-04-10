@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -106,7 +106,7 @@ interface DrillHoleOverlayProps {
   holeTypeFilter?: DrillHoleType | 'all'
 }
 
-export function DrillHoleOverlay({
+export const DrillHoleOverlay = memo(function DrillHoleOverlay({
   hoveredHoleId = null,
   depositFilter = null,
   holeTypeFilter = 'all',
@@ -183,4 +183,4 @@ export function DrillHoleOverlay({
       />
     </Source>
   )
-}
+})

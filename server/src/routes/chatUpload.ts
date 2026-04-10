@@ -75,6 +75,7 @@ const ALLOWED_EXTENSIONS = new Set(['.csv', '.pdf', '.json', '.txt', '.tsv'])
 
 export async function chatUploadRoutes(app: FastifyInstance) {
   app.post('/api/chat/upload', {
+    config: { rateLimit: { max: 5, timeWindow: '1 minute' } },
     schema: {
       tags: ['ai'],
       summary: 'Upload a file for AI chat context',

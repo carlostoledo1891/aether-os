@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -66,7 +66,7 @@ interface PfsEngineeringOverlayProps {
   selectedId?: string | null
 }
 
-export function PfsEngineeringOverlay({
+export const PfsEngineeringOverlay = memo(function PfsEngineeringOverlay({
   hoveredId = null,
   selectedId = null,
 }: PfsEngineeringOverlayProps) {
@@ -134,4 +134,4 @@ export function PfsEngineeringOverlay({
       />
     </Source>
   )
-}
+})

@@ -94,6 +94,9 @@ export const W = {
   redBorderSoft:  'rgba(255,77,77,0.3)',
   /** Small alert count badges */
   redBadgeBg:     'rgba(255,77,77,0.15)',
+  /** Neutral/muted gray for waste, inactive, disabled states */
+  gray:           '#6B7280',
+  graySubtle:     'rgba(107,114,128,0.06)',
 
   glass03:      'rgba(255,255,255,0.03)',
   glass05:      'rgba(255,255,255,0.05)',

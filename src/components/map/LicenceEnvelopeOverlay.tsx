@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
@@ -5,7 +6,7 @@ import { GEO } from '../../data/geo/registry'
 
 export const LICENCE_ENVELOPE_FILL_LAYER_ID = 'licence-envelope-fill'
 
-export function LicenceEnvelopeOverlay() {
+export const LicenceEnvelopeOverlay = memo(function LicenceEnvelopeOverlay() {
   const data = useGeoJsonFeatureCollection(GEO.envelope.url)
   if (!data) return null
 
@@ -33,4 +34,4 @@ export function LicenceEnvelopeOverlay() {
       />
     </Source>
   )
-}
+})

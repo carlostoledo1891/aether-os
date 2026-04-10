@@ -257,6 +257,7 @@ function buildTools() {
 
 export async function chatRoutes(app: FastifyInstance) {
   app.post('/api/chat', {
+    config: { rateLimit: { max: 10, timeWindow: '1 minute' } },
     schema: {
       tags: ['ai'],
       summary: 'AI chat endpoint (streaming)',

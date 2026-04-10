@@ -80,6 +80,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
                 <button
                   type="button"
                   onClick={onClearGeo}
+                  aria-label="Clear selection"
                   className="flex h-4 w-4 items-center justify-center rounded cursor-pointer"
                   style={{ color: W.text4, background: W.glass06 }}
                 >

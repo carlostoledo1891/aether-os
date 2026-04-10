@@ -22,28 +22,6 @@ export const ViewEnginePage = memo(function ViewEnginePage() {
     return (
       <Suspense fallback={<div style={{ minHeight: '100vh', background: '#060610' }} />}>
         <DedicatedPage />
-        <Link
-          to="/"
-          style={{
-            position: 'fixed',
-            top: 16,
-            left: 16,
-            zIndex: 100,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '4px 10px',
-            borderRadius: W.radius.sm,
-            background: 'rgba(6,6,16,0.7)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: 'rgba(255,255,255,0.5)',
-            fontSize: 10,
-            textDecoration: 'none',
-            backdropFilter: 'blur(8px)',
-          }}
-        >
-          <ArrowLeft size={10} /> Aether OS
-        </Link>
       </Suspense>
     )
   }

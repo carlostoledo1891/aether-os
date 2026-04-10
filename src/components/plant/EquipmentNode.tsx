@@ -25,10 +25,10 @@ interface EquipmentNodeProps {
 }
 
 const ACCENT: Record<string, { stroke: string; fill: string; text: string }> = {
-  cyan:   { stroke: W.cyan,   fill: 'rgba(0,212,200,0.08)',   text: W.cyan },
-  violet: { stroke: W.violet, fill: 'rgba(124,92,252,0.08)',  text: W.violetSoft },
-  green:  { stroke: W.green,  fill: 'rgba(34,214,138,0.08)',  text: W.green },
-  amber:  { stroke: W.amber,  fill: 'rgba(245,166,35,0.08)',  text: W.amber },
+  cyan:   { stroke: W.cyan,   fill: W.cyanSubtle,    text: W.cyan },
+  violet: { stroke: W.violet, fill: W.violetSubtle,  text: W.violetSoft },
+  green:  { stroke: W.green,  fill: W.greenSubtle,   text: W.green },
+  amber:  { stroke: W.amber,  fill: W.amberSubtle,   text: W.amber },
 }
 
 const STATUS_COLOR: Record<string, string> = {

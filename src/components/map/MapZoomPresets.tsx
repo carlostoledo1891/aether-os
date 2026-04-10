@@ -1,6 +1,7 @@
 import { memo, useState, useCallback } from 'react'
 import { useMap } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from './mapStacking'
 import { CALDEIRA_BBOX } from './MapBase'
 import type { ComplianceLedger } from '../../types/telemetry'
 
@@ -67,7 +68,7 @@ export const MapZoomPresets = memo(function MapZoomPresets({ mapId, timeline }: 
 
   return (
     <div style={{
-      position: 'absolute', bottom: 165, right: 12, zIndex: 9,
+      position: 'absolute', bottom: 165, right: 12, zIndex: Z.hud,
       display: 'flex', flexDirection: 'column', gap: 2,
     }}>
       {presets.map(p => (

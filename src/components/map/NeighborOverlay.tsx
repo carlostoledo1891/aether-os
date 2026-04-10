@@ -1,9 +1,10 @@
+import { memo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
 import { GEO } from '../../data/geo/registry'
 
-export function NeighborOverlay() {
+export const NeighborOverlay = memo(function NeighborOverlay() {
   const data = useGeoJsonFeatureCollection(GEO.neighbors.url)
   if (!data) return null
 
@@ -44,4 +45,4 @@ export function NeighborOverlay() {
       />
     </Source>
   )
-}
+})

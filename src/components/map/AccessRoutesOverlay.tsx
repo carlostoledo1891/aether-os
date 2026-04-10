@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
@@ -5,7 +6,7 @@ import { GEO } from '../../data/geo/registry'
 
 export const ACCESS_ROUTE_LINE_LAYER_ID = 'access-route-line'
 
-export function AccessRoutesOverlay() {
+export const AccessRoutesOverlay = memo(function AccessRoutesOverlay() {
   const data = useGeoJsonFeatureCollection(GEO.routes.url)
   if (!data) return null
 
@@ -24,4 +25,4 @@ export function AccessRoutesOverlay() {
       />
     </Source>
   )
-}
+})

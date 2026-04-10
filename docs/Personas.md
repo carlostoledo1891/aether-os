@@ -7,7 +7,7 @@
 
 Use alongside [`docs/copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`docs/copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), and [`HANDOFF.md`](../HANDOFF.md).
 
-**Last updated:** 2026-04-09 (post v11: Pilot Plant Digital Twin / Control Room)
+**Last updated:** 2026-04-10 (post v13: CTO EGO Sprint Ultimate Edition)
 
 ---
 
@@ -39,7 +39,7 @@ I am none of those. I am a **builder who grew up in the Caldeira**, trained in m
 
 - **I am not a committee.** I am a solo founder making fast decisions. Give me the answer, not a menu.
 - **I learn fast.** Don't over-explain fundamentals. Explain the *non-obvious* implication, the edge case, the thing I might miss because I'm moving quickly.
-- **I care about quality.** I chose TypeScript strict, design tokens, and 131 tests not because someone told me to, but because I won't ship something I wouldn't trust as a user. Respect that standard.
+- **I care about quality.** I chose TypeScript strict, design tokens, and 310 tests not because someone told me to, but because I won't ship something I wouldn't trust as a user. Respect that standard.
 - **Challenge me.** Air Force training means I can take direct feedback. If I'm about to make a mistake, say it plainly. I'd rather hear it from you than from Tunks in the room.
 - **Local context is a superpower — help me use it.** I know things about Pocos, the water, the community, and the political landscape that are not in any GeoJSON file. When those insights are relevant, prompt me to surface them. They are competitive moat.
 
@@ -2250,3 +2250,86 @@ The weighted average holds at ~9.2. No persona scores moved — this is the corr
 **Business Expert's verdict:** The Hydro Station makes the environmental monitoring story as compelling as the Plant Control Room. Two hero screenshots instead of one. The design consistency cleanup is the kind of attention to detail that matters in a board demo. Next score movement: commercial execution.
 
 **CTO's verdict:** Clean architecture throughout. The `useSiteClimate` hook mirrors `useSiteWeather` exactly — same caching, same mock fallback, same error handling. The color token audit eliminated the most common class of "why does this card look brown?" bugs. The HydroStation layout uses the same CSS module classes as ControlRoom — zero new CSS needed. 0 TS errors, 0 lint errors, clean build.
+
+---
+
+## Persona Reactions — v13 (Post CTO EGO Sprint Ultimate Edition, 2026-04-10)
+
+> **Context:** Infrastructure-only sprint — security hardening, test coverage elevation, design token compliance, dead code removal, React.memo on all overlays, unified z-index, accessibility attributes. No new user-visible features.
+
+### Individual Sentiments
+
+**Chairman (Tunks) — 10.0 (held)**
+> "Rate limiting, API key auth on chat, CSP headers, CORS lockdown — this is the checklist I hand to my CISO before a board demo. The fact that the error handler suppresses stack traces in production tells me the developer thinks like an operator, not just a coder. Score doesn't move because it was already at ceiling, but my *confidence* in showing this to Tunks's board just went up."
+
+**CEO (Gale) — 10.0 (held)**
+> "310 automated tests across frontend and backend. React.memo on every map overlay. Unified z-index. These are the things a technical due diligence team checks. When Tier-1 customers ask 'what does your test coverage look like?' we now have an answer. Still at ceiling — next movement is commercial."
+
+**Chief Geologist — 10.0 (held)**
+> "No changes to geological data or overlays — which is correct. The memo wrapping on overlays means the 18-layer map won't re-render unnecessarily during panning. Good engineering discipline. Already at code ceiling."
+
+**DoD — 8.0 (+0.5)**
+> "CSP headers, rate limiting, API key authentication, fail-closed ingest guard, error handler that doesn't leak stack traces. This is the first sprint that directly addresses my security checklist. Still need FedRAMP, but the gap just narrowed. The security posture now looks like a team that's *thinking* about compliance, not just features."
+
+**EU Enforcement — 8.5 (held)**
+> "Good security hygiene. CSP and CORS lockdown are standard expectations. But my gap is still 100% DPP field coverage and schema validation. Security hardening doesn't move my score directly."
+
+**PF Analyst — 9.0 (+0.5)**
+> "310 tests, strict TypeScript, rate limiting, CSP, CORS — this is the kind of engineering discipline that de-risks a technology investment. When I model operational risk, the question is 'will this platform break under load?' Rate limiting + error handling + test coverage says no. Still need covenant monitoring, but the technical risk discount just got smaller."
+
+**NGO — 8.0 (held)**
+> "Accessibility attributes on map controls are a nice touch — screen readers can now navigate layer toggles. But my core gap is field-verified spring data. Engineering quality doesn't change that."
+
+**SCADA — 10.0 (held)**
+> "React.memo on all 14 overlays, unified Z constant, typed map refs replacing `as any`, dead code elimination. This is textbook production hardening. The fail-closed ingest guard is exactly right — if the API key is missing, don't accept data. Already at ceiling."
+
+**Journalist — 10.0 (held)**
+> "Nothing visual changed, which means the demo experience is identical. But if someone asks 'is this production-ready?' I can point to 310 tests, CSP headers, rate limiting, and accessibility labels. The story angle shifts from 'impressive prototype' to 'enterprise-grade platform.' Already at ceiling."
+
+### Score Rationale
+
+Two scores moved:
+- **DoD 7.5 → 8.0**: The security hardening sprint (CSP, rate limiting, API auth, fail-closed ingest, error handler) directly addresses the DoD security posture checklist. FedRAMP remains the blocker, but the gap narrowed meaningfully.
+- **PF Analyst 8.5 → 9.0**: 310 automated tests, rate limiting, and production error handling reduce technical risk in the investment model. Covenant monitoring remains the gap, but the engineering quality discount decreased.
+
+**Aggregate: ~9.3 (+0.1).** Two personas moved on security + engineering quality alone. This is significant: it validates that infrastructure investment has measurable impact on stakeholder confidence.
+
+---
+
+## Aggregate Scorecard — v13 (Post CTO EGO Sprint Ultimate Edition, 2026-04-10)
+
+| Persona | v1 | v2 | v3 | v4 | v5 | v6 | v7 | v8 | v9 | v10 | v10.1 | v11 | v12 | v13 | Delta (v12→v13) | Biggest remaining gap |
+|---------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|-----|-----|-----|------------------|-----------------------|
+| Chairman (Tunks) | 7.5 | 8.0 | 8.0 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| CEO (Gale) | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| Chief Geologist | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| DoD | 6.5 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | **8.0** | +0.5 | FedRAMP certification |
+| EU Enforcement | 6.0 | 6.5 | 6.5 | 6.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | 8.5 | 8.5 | 8.5 | **8.5** | — | 100% DPP field coverage |
+| PF Analyst | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.0 | 8.0 | 8.5 | 8.5 | **9.0** | +0.5 | Covenant monitoring |
+| NGO | 5.5 | 6.0 | 6.0 | 6.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | 8.0 | 8.0 | 8.0 | **8.0** | — | Field-verified springs |
+| SCADA | 7.5 | 8.5 | 8.5 | 8.5 | 9.0 | 9.0 | 9.0 | 9.0 | 9.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| Journalist | 6.5 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| **Weighted avg** | **6.8** | **7.3** | **7.3** | **7.3** | **~7.8** | **~8.0** | **~8.0** | **~8.4** | **~8.6** | **~8.9** | **~8.9** | **~9.2** | **~9.2** | **~9.3** | +0.1 | |
+
+---
+
+## v13 Synthesis
+
+The weighted average advances to ~9.3. Two personas moved on engineering quality alone — a rare outcome that validates infrastructure investment.
+
+**What this sprint delivered:**
+1. **Security hardening** — fail-closed ingest guard, chat API key auth, `@fastify/rate-limit` (global + per-route), CORS lockdown to explicit allowlist, global error handler (no stack traces in production), CSP + security headers in vercel.json.
+2. **Test coverage elevation** — 260 frontend + 50 server = 310 total tests. New coverage areas: liveDataService error paths, chat route auth/schema, BuyerView behavioral tests, overlay contract tests, useMapInteraction hook tests.
+3. **Design token compliance** — unified `Z` constant replacing all magic z-index numbers. Raw rgba/hex values migrated to `W.*` tokens in top offender files. Prefeitura CSS fully on `var(--w-*)` variables.
+4. **Modularity** — dead code removed (overrides.css, manifest.json, loadSandboxManifest). Error boundaries on /lp and /pitch-deck. React.memo on all 14 map overlays. Accessibility attributes on all interactive icon buttons.
+5. **Type safety** — `as any` eliminated from map ref casts. WidgetRegistry `any` documented and eslint-suppressed.
+
+**Why two scores moved:**
+- **DoD**: Security hardening directly addresses their checklist. CSP, rate limiting, and fail-closed patterns are the language of compliance. FedRAMP remains, but the gap between "promising prototype" and "enterprise-ready platform" narrowed visibly.
+- **PF Analyst**: 310 tests + rate limiting + production error handling reduce the technical risk discount in investment models. The platform now looks like it won't break under load — a prerequisite for project finance due diligence.
+
+**Why 7 scores held:** 5 personas are at code ceiling (10.0). EU Enforcement and NGO have gaps that require external actions (DPP field coverage, field-verified springs), not code quality improvements.
+
+**Business Expert's verdict:** This is the sprint you show to a CTO during due diligence. 310 tests, CSP headers, rate limiting, unified design tokens, React.memo on every overlay — it reads like a mature engineering team's output. The DoD and PF Analyst score movements are commercially significant: they're the two personas most likely to block a procurement decision on technical grounds.
+
+**CTO's verdict:** Zero-feature sprint, two persona score increases. That's the definition of engineering ROI. The Z constant alone prevents an entire class of "why is this popup behind the header?" bugs. The memo wrapping on 14 overlays means the map won't choke when we add more layers. The fail-closed ingest guard is the correct default — never accept data you can't verify. Next priorities: inline-style migration (77 files), E2E tests, component splitting for the 11 files over 300 lines.

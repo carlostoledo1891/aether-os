@@ -1,5 +1,6 @@
-import type { CSSProperties } from 'react'
+import { memo, type CSSProperties } from 'react'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from './mapStacking'
 import { LITH_COLORS } from '../charts/lithologyPalette'
 
 export interface LithologyBarInterval {
@@ -21,7 +22,7 @@ interface MapFeaturePopupProps {
   y: number
 }
 
-export function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
+export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
   if (!data) return null
 
   const hasLith = data.lithologyIntervals && data.lithologyIntervals.length > 0
@@ -33,7 +34,7 @@ export function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
     position: 'absolute',
     left: x + 12,
     top: y - 8,
-    zIndex: 60,
+    zIndex: Z.mapPopup,
     pointerEvents: 'none',
     background: W.panel,
     border: `1px solid ${W.glass12}`,
@@ -79,4 +80,4 @@ export function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
       </div>
     </div>
   )
-}
+})

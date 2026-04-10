@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
@@ -17,7 +18,7 @@ export interface EnvironmentalOverlayProps {
   showUrban?: boolean
 }
 
-export function EnvironmentalOverlay({
+export const EnvironmentalOverlay = memo(function EnvironmentalOverlay({
   showApa = true,
   showBuffer = true,
   showMonitoring = true,
@@ -187,7 +188,7 @@ export function EnvironmentalOverlay({
       )}
     </>
   )
-}
+})
 
 /** Parse GeoJSON feature props for map inspector (APA, buffer, monitoring, urban). */
 export function parseEnvMapFeature(properties: Record<string, unknown>): {

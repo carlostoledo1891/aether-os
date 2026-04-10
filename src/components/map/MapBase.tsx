@@ -4,6 +4,7 @@ import type { MapLayerMouseEvent } from 'maplibre-gl'
 import type maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from './mapStacking'
 
 export type { MapLayerMouseEvent }
 
@@ -206,7 +207,7 @@ function MapStylePicker({
 
   return (
     <div style={{
-      position: 'absolute', bottom: 24, left: 10, zIndex: 5,
+      position: 'absolute', bottom: 24, left: 10, zIndex: Z.mapStyleControl,
       display: 'flex', flexDirection: 'column', gap: 4,
     }}>
       {open && (
@@ -311,7 +312,7 @@ export function MapBase({
       <div style={{
         position: 'absolute', bottom: 4, right: 8,
         fontSize: 9, color: 'rgba(255,255,255,0.18)',
-        fontFamily: 'var(--font-mono)', pointerEvents: 'none', zIndex: 1,
+        fontFamily: 'var(--font-mono)', pointerEvents: 'none', zIndex: Z.tabIndicator,
       }}>
         © MapTiler · OpenStreetMap contributors
       </div>

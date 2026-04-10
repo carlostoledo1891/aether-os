@@ -1,6 +1,6 @@
 // GeoJSON `data` props use `as never` to bridge FeatureCollection/GeoJSON.GeoJSON
 // type mismatch between our typed GeoJSON and react-map-gl's maplibre binding.
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Layer, Marker, Source, useMap } from 'react-map-gl/maplibre'
 import { Droplets } from 'lucide-react'
@@ -164,7 +164,7 @@ interface HydroOverlayProps {
   onOpenStation?: () => void
 }
 
-export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip, onOpenStation }: HydroOverlayProps) {
+export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip, onOpenStation }: HydroOverlayProps) {
   const { current: mapRef } = useMap()
   const staticNodes = useGeoJsonFeatureCollection<HydroNodeFeature>(GEO.hydroNodes.url)
   const staticSprings = useGeoJsonFeatureCollection<HydroSpringFeature>(GEO.hydroSprings.url)
@@ -195,7 +195,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
         const sensor = sensorMap[feature.properties.id]
         const nodeType = feature.properties.nodeType
         let strokeColor: string = W.cyan
-        let fillColor: string = 'rgba(0,212,200,0.12)'
+        let fillColor: string = W.cyanSubtle
         let labelColor: string = W.cyan
         let metric: string = ''
         let statusLabel: string = 'Normal'
@@ -218,12 +218,12 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
           statusLabel = sensor.status
         } else if (nodeType === 'mine') {
           strokeColor = W.violet
-          fillColor = 'rgba(124,92,252,0.12)'
+          fillColor = W.violetSubtle
           labelColor = W.violetSoft
           statusLabel = 'Observed'
         } else {
           strokeColor = W.border2
-          fillColor = 'rgba(46,46,82,0.12)'
+          fillColor = W.glass12
           labelColor = W.text3
           statusLabel = 'Hub'
         }
@@ -392,7 +392,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenStation?.() } }}
         style={{
           zIndex: MAP_STACKING.hud,
-          background: 'rgba(6, 6, 16, 0.88)',
+          background: W.overlay88,
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: `1px solid ${W.cyan}20`,
@@ -473,7 +473,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
                 style={{
                   position: 'absolute', top, left, minWidth: 170, maxWidth: TOOLTIP_W,
                   transform: 'translateY(-50%)',
-                  background: 'rgba(5,5,16,0.94)', backdropFilter: 'blur(12px)',
+                  background: W.mapControlBg, backdropFilter: 'blur(12px)',
                   border: `1px solid ${strokeColor}40`, borderRadius: W.radius.md,
                   padding: '10px 12px', zIndex: MAP_STACKING.tooltip,
                   boxShadow: `0 0 18px ${strokeColor}18`, pointerEvents: 'none',
@@ -515,7 +515,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
               style={{
                 position: 'absolute', top, left, minWidth: 170, maxWidth: TOOLTIP_W,
                 transform: 'translateY(-50%)',
-                background: 'rgba(5,5,16,0.94)', backdropFilter: 'blur(12px)',
+                background: W.mapControlBg, backdropFilter: 'blur(12px)',
                 border: `1px solid ${hoveredNode.properties.strokeColor}35`, borderRadius: W.radius.md,
                 padding: '10px 12px', zIndex: MAP_STACKING.tooltip,
                 boxShadow: `0 0 18px ${hoveredNode.properties.strokeColor}14`, pointerEvents: 'none',
@@ -536,7 +536,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
                 </div>
               )}
               {hoveredNode.properties.nodeType === 'udc' && (
-                <div style={{ padding: '4px 8px', background: 'rgba(255,77,77,0.08)', border: '1px solid rgba(255,77,77,0.25)', borderRadius: W.radius.sm, marginBottom: 6 }}>
+                <div style={{ padding: '4px 8px', background: W.redSubtle, border: W.mapHudBorderRed, borderRadius: W.radius.sm, marginBottom: 6 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: W.red, fontFamily: 'var(--font-mono)' }}>{env.legacy_infrastructure.radiation_usv_h.toFixed(3)} uSv/h</span>
                 </div>
               )}
@@ -567,4 +567,4 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip,
       </div>
     </>
   )
-}
+})

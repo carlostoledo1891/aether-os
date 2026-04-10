@@ -22,6 +22,7 @@ interface LapocPayload {
 
 export async function lapocIngestRoutes(app: FastifyInstance) {
   app.post<{ Body: LapocPayload }>('/ingest/lapoc', {
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
     schema: { tags: ['ingest'], summary: 'Ingest LAPOC field instrument data', security: [{ apiKey: [] }] },
   }, async (req, reply) => {
     const payload = req.body

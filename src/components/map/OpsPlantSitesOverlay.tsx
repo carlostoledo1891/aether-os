@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -32,7 +32,7 @@ interface OpsPlantSitesOverlayProps {
   selectedId?: string | null
 }
 
-export function OpsPlantSitesOverlay({
+export const OpsPlantSitesOverlay = memo(function OpsPlantSitesOverlay({
   hoveredId = null,
   selectedId = null,
 }: OpsPlantSitesOverlayProps) {
@@ -103,4 +103,4 @@ export function OpsPlantSitesOverlay({
       />
     </Source>
   )
-}
+})

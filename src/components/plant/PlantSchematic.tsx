@@ -30,7 +30,7 @@ const FLOW_COLORS: Record<string, string> = {
   reagent: W.amber,
   recycle: W.violetSoft,
   product: W.green,
-  waste: '#6B7280',
+  waste: W.gray,
 }
 
 const FLOW_CSS_CLASS: Record<string, string> = {
@@ -355,8 +355,8 @@ export const PlantSchematic = memo(function PlantSchematic({
           width={130}
           height={22}
           rx={5}
-          fill="rgba(107,114,128,0.06)"
-          stroke="#6B7280"
+          fill={W.graySubtle}
+          stroke={W.gray}
           strokeWidth={0.5}
           strokeOpacity={0.3}
         />
@@ -366,7 +366,7 @@ export const PlantSchematic = memo(function PlantSchematic({
           textAnchor="middle"
           fontFamily="var(--font-mono)"
           fontSize={7}
-          fill="#6B7280"
+          fill={W.gray}
           fillOpacity={0.6}
         >
           → DRY STACK / PIT BACKFILL

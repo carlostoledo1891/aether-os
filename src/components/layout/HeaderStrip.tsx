@@ -3,6 +3,7 @@ import type { EsgScore, ViewMode } from '../../types/telemetry'
 import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
 import { W } from '../../app/canvas/canvasTheme'
+import { Z } from '../map/mapStacking'
 
 interface HeaderStripProps {
   esg: EsgScore
@@ -33,7 +34,7 @@ export function HeaderStrip({
       backdropFilter: 'blur(20px)',
       borderBottom: W.hairlineBorder,
       flexShrink: 0,
-      zIndex: 50,
+      zIndex: Z.header,
       gap: 12,
     }}>
       {/* Logo */}

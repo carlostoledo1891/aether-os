@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import {
@@ -69,7 +69,7 @@ interface LicenseOverlayProps {
   selectedLicenseId?: string | null
 }
 
-export function LicenseOverlay({
+export const LicenseOverlay = memo(function LicenseOverlay({
   hoveredLicenseId = null,
   selectedLicenseId = null,
 }: LicenseOverlayProps) {
@@ -155,4 +155,4 @@ export function LicenseOverlay({
       />
     </Source>
   )
-}
+})

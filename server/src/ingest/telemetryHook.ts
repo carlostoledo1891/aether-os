@@ -5,6 +5,7 @@ import { broadcastTelemetry } from '../ws/telemetryChannel.js'
 
 export async function telemetryIngestRoutes(app: FastifyInstance) {
   app.post<{ Body: IngestPayload }>('/ingest/telemetry', {
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
     schema: { tags: ['ingest'], summary: 'Ingest telemetry tick from engine', security: [{ apiKey: [] }] },
   }, async (req, reply) => {
     const payload = req.body

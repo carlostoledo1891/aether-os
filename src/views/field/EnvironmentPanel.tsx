@@ -98,6 +98,8 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
         <button
           type="button"
           onClick={() => setProvExpanded(p => !p)}
+          aria-label="Toggle data provenance"
+          aria-expanded={provExpanded}
           className="inline-flex items-center gap-1.5 font-mono text-[8px] font-semibold uppercase tracking-wide"
           style={{ color: W.text4, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
         >

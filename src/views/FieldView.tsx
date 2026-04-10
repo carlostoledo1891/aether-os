@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import type maplibregl from 'maplibre-gl'
 import { motion, AnimatePresence } from 'motion/react'
 import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
@@ -31,6 +32,7 @@ import { NeighborOverlay } from '../components/map/NeighborOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPicker } from '../components/map/MapLayerPicker'
 import { W } from '../app/canvas/canvasTheme'
+import { Z } from '../components/map/mapStacking'
 import { useMapCamera } from '../contexts/MapCameraContext'
 import { useMap } from 'react-map-gl/maplibre'
 import { useTelemetry } from '../services/DataServiceProvider'
@@ -89,7 +91,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     return () => {
       const mapRef = maps['aetherField' as keyof typeof maps] ?? maps.current
       if (!mapRef) return
-      const map = (mapRef as any).getMap?.()
+      const map = (mapRef as unknown as { getMap?: () => maplibregl.Map | undefined }).getMap?.()
       if (!map) return
       const center = map.getCenter()
       saveCamera({
@@ -377,7 +379,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                     fontFamily: 'var(--font-mono)',
                     pointerEvents: 'none',
                     animation: 'pulse 1.5s ease-in-out infinite',
-                    zIndex: 50,
+                    zIndex: Z.header,
                   }}
                 >
                   Alert source: {highlightFeatureId}
@@ -405,7 +407,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                 position: 'absolute',
                 bottom: 12,
                 right: 12,
-                zIndex: 8,
+                zIndex: Z.mapHud,
                 background: W.mapControlBg,
                 border: W.mapControlBorder,
                 borderRadius: 8,

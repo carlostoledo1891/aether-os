@@ -1,6 +1,6 @@
 // GeoJSON `data` props use `as never` to bridge FeatureCollection/GeoJSON.GeoJSON
 // type mismatch between our typed GeoJSON and react-map-gl's maplibre binding.
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Layer, Marker, Source, useMap } from 'react-map-gl/maplibre'
 import type { EnvTelemetry, PlantTelemetry } from '../../types/telemetry'
@@ -66,12 +66,12 @@ type PlantNodeRenderFeature = Feature<PlantNodeRenderProperties, PointGeometry>
 type PlantEdgeFeature = Feature<PlantEdgeProperties, LineStringGeometry>
 
 const DC: Record<Domain, { stroke: string; fill: string; text: string }> = {
-  extraction: { stroke: W.cyan, fill: 'rgba(0,212,200,0.12)', text: W.cyan },
-  processing: { stroke: W.violet, fill: 'rgba(124,92,252,0.12)', text: W.violetSoft },
-  compliance: { stroke: W.green, fill: 'rgba(34,214,138,0.12)', text: W.green },
-  monitor: { stroke: W.amber, fill: 'rgba(245,166,35,0.12)', text: W.amber },
-  transport: { stroke: W.violetSoft, fill: 'rgba(157,128,255,0.12)', text: W.violetSoft },
-  external: { stroke: W.border3, fill: 'rgba(66,66,112,0.08)', text: W.text4 },
+  extraction: { stroke: W.cyan, fill: W.cyanSubtle, text: W.cyan },
+  processing: { stroke: W.violet, fill: W.violetSubtle, text: W.violetSoft },
+  compliance: { stroke: W.green, fill: W.greenSubtle, text: W.green },
+  monitor: { stroke: W.amber, fill: W.amberSubtle, text: W.amber },
+  transport: { stroke: W.violetSoft, fill: W.violetSubtle, text: W.violetSoft },
+  external: { stroke: W.border3, fill: W.glass08, text: W.text4 },
 }
 
 const SR: Record<NodeStatus, string> = {
@@ -216,7 +216,7 @@ interface PlantOverlayProps {
   selectedNodeId: string | null
 }
 
-export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: PlantOverlayProps) {
+export const PlantOverlay = memo(function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: PlantOverlayProps) {
   const { current: mapRef } = useMap()
   const staticNodes = useGeoJsonFeatureCollection<PlantNodeFeature>(GEO.plantNodes.url)
   const staticEdges = useGeoJsonFeatureCollection<PlantEdgeFeature>(GEO.plantEdges.url)
@@ -398,9 +398,9 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
       {/* ── Bottom badge ───────────────────────────────────────────────────── */}
       <div style={{
         position: 'absolute', left: '50%', bottom: 16, transform: 'translateX(-50%)',
-        fontSize: 8, color: 'rgba(124,92,252,0.60)', fontFamily: 'var(--font-mono)',
+        fontSize: 8, color: W.violetSoft, opacity: 0.6, fontFamily: 'var(--font-mono)',
         letterSpacing: '0.08em', pointerEvents: 'none',
-        textShadow: '0 0 8px rgba(124,92,252,0.28)', zIndex: MAP_STACKING.plantBadge, whiteSpace: 'nowrap',
+        textShadow: `0 0 8px ${W.violetGlow}`, zIndex: MAP_STACKING.plantBadge, whiteSpace: 'nowrap',
       }}>
         CALDEIRA PROJECT · 193 km² · 77 licenses
       </div>
@@ -427,7 +427,7 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
               style={{
                 position: 'absolute', top, left, minWidth: 176, maxWidth: TOOLTIP_W,
                 transform: 'translateY(-50%)',
-                background: 'rgba(13,13,28,0.94)', backdropFilter: 'blur(12px)',
+                background: W.chromeHeaderBg, backdropFilter: 'blur(12px)',
                 border: `1px solid ${hoveredPalette.stroke}35`, borderRadius: W.radius.md,
                 padding: '10px 12px', zIndex: MAP_STACKING.tooltip,
                 boxShadow: `0 0 18px ${hoveredPalette.stroke}14`, pointerEvents: 'none',
@@ -474,4 +474,4 @@ export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: Plan
       </div>
     </>
   )
-}
+})

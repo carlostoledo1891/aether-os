@@ -4,6 +4,7 @@ import type { MarketIngestPayload, SeismicIngestPayload } from '../types/shared.
 
 export async function marketIngestRoutes(app: FastifyInstance) {
   app.post<{ Body: MarketIngestPayload }>('/ingest/market', {
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
     schema: { tags: ['ingest'], summary: 'Ingest market data (FX or stock)', security: [{ apiKey: [] }] },
   }, async (req, reply) => {
     const payload = req.body
@@ -15,6 +16,7 @@ export async function marketIngestRoutes(app: FastifyInstance) {
   })
 
   app.post<{ Body: SeismicIngestPayload }>('/ingest/seismic', {
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
     schema: { tags: ['ingest'], summary: 'Ingest seismic events (USGS)', security: [{ apiKey: [] }] },
   }, async (req, reply) => {
     const payload = req.body

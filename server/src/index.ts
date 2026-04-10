@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import rateLimit from '@fastify/rate-limit'
 import websocket from '@fastify/websocket'
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
@@ -27,13 +28,20 @@ for (const [key, hint] of ENV_HINTS) {
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10)
 const HOST = process.env.HOST ?? '0.0.0.0'
-const CORS_ORIGIN = process.env.CORS_ORIGIN ?? true
-const INGEST_API_KEY = process.env.INGEST_API_KEY ?? ''
 
 export async function buildApp(opts: { logger?: boolean } = {}) {
+  const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+  const DEFAULT_ORIGINS = ['http://localhost:5175', 'http://localhost:5173']
+  const CORS_ORIGIN: string[] | string = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+    : (IS_PRODUCTION ? DEFAULT_ORIGINS : '*' as unknown as string)
+  const INGEST_API_KEY = process.env.INGEST_API_KEY ?? ''
+  const CHAT_API_KEY = process.env.CHAT_API_KEY ?? ''
+
   const app = Fastify({ logger: opts.logger ?? true })
 
-  await app.register(cors, { origin: CORS_ORIGIN })
+  await app.register(cors, { origin: CORS_ORIGIN as string | string[] })
+  await app.register(rateLimit, { global: true, max: 120, timeWindow: '1 minute' })
   await app.register(websocket)
   await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } })
 
@@ -74,18 +82,41 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
     uiConfig: { docExpansion: 'list', deepLinking: true },
   })
 
+  app.setErrorHandler((error: { statusCode?: number; message?: string; stack?: string }, _req, reply) => {
+    const status = error.statusCode ?? 500
+    if (IS_PRODUCTION && status >= 500) {
+      reply.code(status).send({ error: 'Internal Server Error' })
+    } else {
+      reply.code(status).send({ error: error.message, ...(error.statusCode ? {} : { stack: error.stack }) })
+    }
+  })
+
   seedIfNeeded()
 
-  if (INGEST_API_KEY) {
-    app.addHook('onRequest', async (req, reply) => {
-      if (req.url.startsWith('/ingest/')) {
-        const key = req.headers['x-api-key']
-        if (key !== INGEST_API_KEY) {
-          return reply.code(401).send({ error: 'Invalid or missing API key' })
+  app.addHook('onRequest', async (req, reply) => {
+    if (req.url.startsWith('/ingest/')) {
+      if (!INGEST_API_KEY) {
+        if (IS_PRODUCTION) {
+          return reply.code(503).send({ error: 'Ingest disabled — INGEST_API_KEY not configured' })
         }
+        return
       }
-    })
-  }
+      const key = req.headers['x-api-key']
+      if (key !== INGEST_API_KEY) {
+        return reply.code(401).send({ error: 'Invalid or missing API key' })
+      }
+    }
+
+    if (req.url.startsWith('/api/chat')) {
+      if (!CHAT_API_KEY) {
+        if (!IS_PRODUCTION) return
+      }
+      const key = req.headers['x-api-key']
+      if (key !== CHAT_API_KEY) {
+        return reply.code(401).send({ error: 'Invalid or missing API key' })
+      }
+    }
+  })
 
   await app.register(healthRoutes)
   await app.register(telemetryRoutes)

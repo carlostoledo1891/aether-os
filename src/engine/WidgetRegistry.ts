@@ -10,13 +10,16 @@ import { SparkLine } from '../components/charts/SparkLine'
 import { GaugeChart } from '../components/charts/GaugeChart'
 import { BarComparison } from '../components/charts/BarComparison'
 
-const registry = new Map<string, ComponentType<any>>()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type WidgetComponent = ComponentType<any>
 
-export function registerWidget(type: string, component: ComponentType<any>) {
+const registry = new Map<string, WidgetComponent>()
+
+export function registerWidget(type: string, component: WidgetComponent) {
   registry.set(type, component)
 }
 
-export function getWidget(type: string): ComponentType<any> | undefined {
+export function getWidget(type: string): WidgetComponent | undefined {
   return registry.get(type)
 }
 
