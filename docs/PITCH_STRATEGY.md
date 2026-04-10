@@ -11,7 +11,7 @@
 
 | Date | Milestone | Recipients | Assets Sent |
 |------|-----------|------------|-------------|
-| **Apr 9** | Founders pitch | Juliano Dutra, Guilherme Bonifácio | FoundersDeck, Tech page, Business page, Website, Platform demo |
+| **Apr 9** | Founders pitch (joint email) | Juliano Dutra + Guilherme Bonifácio (both on the same thread) | FoundersDeck, Tech page, Business page, Website, Platform demo |
 | **Apr 13** | Science validation | Dr. Heber Caponi (LAPOC) | Warm personal email — no deck, conversation opener |
 | **Apr 15** | Meteoric pitch | Dr. Marcelo De Carvalho (+ forwarded to Gale, Tunks) | MeteoricDeck, Platform demo |
 
@@ -91,75 +91,45 @@ Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credibl
 
 ## 3. Email Copy
 
-### Email 1: To Juliano Dutra — Apr 9
+### Email 1: To Juliano Dutra + Guilherme Bonifácio (together) — Apr 9
 
-**Subject:** Vero — I built the platform, now I need your CTO lens
+**To:** Juliano, Guilherme  
+**Subject:** Vero — quero mostrar pra vocês e pedir opinião honesta
 
 **Body:**
 
-Juliano,
+Juliano, Guilherme,
 
-Quero te mostrar algo que construí sozinho nos últimos meses — e pedir tua opinião honesta.
+Quero mostrar pra vocês algo que construí sozinho nos últimos meses — e pedir a opinião honesta de vocês dois.
 
-**Vero** is a critical mineral operations platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 27 AI tools (Gemini 2.5), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
+**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 27 AI tools (Gemini 2.5), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
 
-The platform is deployed, the data is real (Caldeira Project, Meteoric Resources — ASX: MEI), and I'm pitching Meteoric for a $102k/yr pilot contract on April 15.
+The platform runs on real data from the Caldeira Project (Meteoric Resources — ASX: MEI, $821M NPV). On April 15, I'm pitching Meteoric for a $102k/yr pilot contract — 0.03% of their annual revenue.
 
-I need a technical mentor. Not time — leverage. Architecture review, hiring bar, code review authority. Advisory board seat, quarterly cadence.
+The timing thesis: the EU is mandating Digital Product Passports by Feb 2027. The US has FEOC restrictions on IRA credits. Regulations are creating a compliance SaaS market that doesn't exist yet — just like Pix created the fintech explosion. I see the perfect storm forming for rare earth minerals tech.
+
+I need both of you. Not time — leverage. Juliano, I need a technical mentor: architecture review, hiring bar, scaling guidance. Guilherme, I need a commercial front: GTM, investor pipeline, revenue strategy. Advisory board seats, quarterly cadence.
+
+The deck explains everything — including why I need you specifically and what each of you brings.
 
 Here's everything:
 
-- **Founders Deck:** https://aether-os.vercel.app/founders-deck
-- **Tech Deep Dive (for you):** https://aether-os.vercel.app/tech
-- **Business Case:** https://aether-os.vercel.app/business
+- **Founders Deck (start here):** https://aether-os.vercel.app/founders-deck
+- **Tech Deep Dive (Juliano):** https://aether-os.vercel.app/tech
+- **Business Case (Guilherme):** https://aether-os.vercel.app/business
 - **Live Platform:** https://aether-os.vercel.app
 - **Website:** https://aether-os.vercel.app/lp
 
-Open the platform. Run the AI agent. Check the Control Room. The code speaks for itself.
+Open the platform. Run the AI agent. Check the Control Room. The code and the numbers speak for themselves.
 
-I'd like 20 minutes of your time this week.
+I'd like 20 minutes with you both this week.
 
 Carlos Toledo
 carlos@vero.supply
 
 ---
 
-### Email 2: To Guilherme Bonifácio — Apr 9
-
-**Subject:** Vero — critical minerals SaaS, $31.9B TAM, need your commercial lens
-
-**Body:**
-
-Guilherme,
-
-Quero te mostrar algo e pedir tua opinião honesta como investidor e estrategista.
-
-**Vero** is a compliance and operations platform for critical mineral supply chains. The EU is mandating Digital Product Passports by Feb 2027. The US has FEOC restrictions on IRA credits. The market doesn't have a purpose-built SaaS product yet.
-
-I built one. Inside the Caldeira, on real data from Meteoric Resources (ASX: MEI, $821M NPV). 310 tests. 27 AI tools. Pilot plant digital twin. Scoring 9.4/10 across 9 stakeholder personas.
-
-On April 15, I'm pitching Meteoric for a $102k/yr pilot contract — 0.03% of their annual revenue. The timing thesis: regulations are creating the market, just like Pix created the fintech explosion.
-
-I need a commercial execution partner. GTM, investor pipeline, revenue strategy. Not time — leverage. Advisory board seat.
-
-Here's everything:
-
-- **Founders Deck:** https://aether-os.vercel.app/founders-deck
-- **Business Case (for you):** https://aether-os.vercel.app/business
-- **Tech Deep Dive:** https://aether-os.vercel.app/tech
-- **Live Platform:** https://aether-os.vercel.app
-- **Website:** https://aether-os.vercel.app/lp
-
-Open the platform. It's real.
-
-I'd like 20 minutes of your time this week.
-
-Carlos Toledo
-carlos@vero.supply
-
----
-
-### Email 3: To Dr. Heber Caponi — Apr 13
+### Email 2: To Dr. Heber Caponi — Apr 13
 
 **Subject:** Vero — ideias sobre a Caldeira e uma pergunta honesta
 
@@ -187,7 +157,7 @@ carlos@vero.supply
 
 ---
 
-### Email 4: To Dr. Marcelo De Carvalho — Apr 15
+### Email 3: To Dr. Marcelo De Carvalho — Apr 15
 
 **Subject:** Vero for Caldeira — your digital twin is already built
 
