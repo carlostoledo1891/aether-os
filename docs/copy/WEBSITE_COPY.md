@@ -4,7 +4,7 @@
 
 **Last synced from codebase:** 2026-04-10  
 **Source:** [`README.md`](../../README.md), [`HANDOFF.md`](../../HANDOFF.md), [`branding.md`](../branding.md), [`strategy.md`](../strategy.md), primary view components, stakeholder stress-test personas, and [`VALUATION.md`](../VALUATION.md).  
-**Releases since last sync:** All through **v13: CTO EGO Sprint Ultimate Edition** — security hardening, 310 tests, design token compliance, React.memo on all overlays, unified Z-index, accessibility, dead code removal, Mini Engine/Prefeitura dashboard.
+**Releases since last sync:** All through **v16: Juliano + Guilherme Final Sprint** — shared deck components (`src/components/deck/`), 6 new FoundersDeck slides (Disclaimer, LAPOC Pipeline, Risk/Mitigation, Exit Paths, Monday Play, Why Before Monday), Strategic Advisor team card, DevTools easter egg, LandingPage nav fix (#ai-agent, #market links), code deduplication (~400 lines across 4 files), React Router ESC navigation, plus all v15/v13 changes.
 
 ---
 
@@ -47,7 +47,7 @@
 **Supporting paragraph**  
 One platform to verify field operations, prove compliance, and align board decisions — purpose-built for the rare earth supply chain, from mine to magnet. Flagship deployment: **Caldeira Project** (Meteoric Resources, ASX: MEI).
 
-*Production-hardened: 310 automated tests, enterprise security (CSP, rate limiting, API auth), Pilot Plant Digital Twin (17 equipment, 28 sensors), SHA-256 audit chain, DPP-compliant JSON export (22 CEN/CENELEC fields), 27 AI agent tools, OpenAPI spec. Persona-validated at **9.3/10** weighted average. Production integration roadmap available on request.*
+*Production-hardened: 310 automated tests, enterprise security (CSP, rate limiting, API auth), Pilot Plant Digital Twin (17 equipment, 28 sensors), SHA-256 audit chain, DPP-compliant JSON export (22 CEN/CENELEC fields), 27 AI agent tools, OpenAPI spec. Persona-validated at **9.4/10** weighted average. Production integration roadmap available on request.*
 
 **Optional one-line (media / retail honesty)**  
 *Demo mixes public-reference map data, disclosure-aligned scenarios where cited, and simulated time series — not a substitute for filed instruments, competent-person sign-off, or operational systems of record.*
@@ -230,6 +230,9 @@ Use for landing page or deck appendix:
 - **Pilot Plant Digital Twin** — interactive Control Room with **17 equipment items** (Metso, Andritz, GEA, Outotec suppliers), **28 sensors** mapped to live telemetry paths, **7 process steps** from ore to MREC product, **15 animated flow connections** (process, reagent, recycle, utility, product). Click any equipment node to inspect supplier, capacity, material, sensors, and connected equipment. Collapsed HUD card shows pH, MREC output, water recirculation, and TREO grade at a glance.
 - **Real SHA-256 audit chain** — cryptographic append-only audit trail with chain verification API (`/api/audit/verify-chain`). Merkle root anchoring roadmap (Phase 1). Schema migration v2 with dedicated `audit_events` table.
 - **Hydro Digital Twin** — spring monitoring network with **1,092 public-reference spring points**, piezometer readings, water quality gauges with threshold indicators, climate data (precipitation, temperature, humidity, evapotranspiration, soil moisture), violet climate palette distinct from operational cyan
+- **Interactive report templates** — 3 light-mode reports (Environment, Operations, Drill Tests) accessible via ViewSwitcher dropdown. Each report is a vertically-scrollable single page with data visualizations, JORC tables, process flows, cost curves, and community metrics. Time range selector (7d/30d/90d/1yr/All). Export PDF via native browser print dialog. Portal-based lightbox preserves dashboard state underneath.
+- **Report light palette (`WL`)** — purpose-built light-mode variant of the `W` design token system. Print-optimized CSS with `@media print` styles. Zero new dependencies for PDF export.
+- **Founders Deck** (`/founders-deck`) — 20-slide pitch deck tailored for serial founders/angels. Real code blocks from codebase, architecture diagrams, hallucination test suite, scorecard valuation, persona score progression, competitive comparison with dollar amounts. Persona-targeted slide badges (Juliano=CTO, Guilherme=Business).
 
 ---
 
@@ -239,7 +242,7 @@ Use for landing page or deck appendix:
 |----------|-----|--------------|
 | Operators | **Request a pilot deployment** — hydro + discharge KPIs tied to your LI conditions | "We built it inside the Caldeira. Now let's build it on your project." |
 | Defense / Compliance | **Design partnership** — passport schema and batch attestation API co-development | "22 DPP fields mapped. Help us get the rest right before Feb 2027." |
-| Investors | **Schedule a demo** — see the full stack from pit to magnet | "310 tests, 9.3 persona score, $5–7M pre-money. 45 minutes." |
+| Investors | **Schedule a demo** — see the full stack from pit to magnet | "310 tests, 9.4 persona score, $5–7M pre-money. 45 minutes." |
 | Integrators | **Review the API** — OpenAPI spec + equipment catalog + integration roadmap | "Here's the spec. How fast can you map OPC-UA tags?" |
 | Community | **Explore the dashboard** — Prefeitura de Poços de Caldas partnership page | "Monitoring in Portuguese, with the phone number to call." |
 
@@ -249,7 +252,7 @@ Use for landing page or deck appendix:
 
 **Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 310 tests, enterprise security hardening, 27 AI agent tools, pilot plant digital twin (17 equipment, 28 sensors), real SHA-256 audit chain, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
-**Dr. Heber Caponi** — Chief Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
+**Dr. Heber Caponi** — Chief Scientific Officer. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
 **Thiago A.** — CEO. Brazilian and international law, enterprise operations, commercial execution.
 
@@ -277,6 +280,72 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 
 ---
 
+---
+
+## Founders-Focused Enhancements (v16: Founders Pitch Deck)
+
+**Added:** 2026-04-10  
+**Target personas:** Juliano Dutra (CTO, iFood co-founder, 20+ angel investments) and Guilherme Bonifácio (Business, iFood co-founder, 110+ angel investments, Kanoa Capital)
+
+### New Landing Page Sections (`/lp`)
+
+**Hero enhancement**  
+Added stat line: "310 automated tests · Zero compilation errors · TypeScript strict · One developer"  
+Hero CTA updated to link to `/founders-deck` alongside `/` (platform).
+
+**AI Agent section** (new)  
+- Headline: "27 domain tools. Grounded in truth."
+- Copy: "Gemini 2.5 Flash with 27 domain-specific tools. 10 hallucination tests. Every response carries visible provenance — the agent refuses to speculate."
+- Terminal block: Hallucination test suite showing the "refuses lithium" test
+- Tool categories card: Geology, Financial, Compliance, Operations, Environmental, Market
+- Provenance note: "Provenance UI on every response · Sources collapsible"
+
+**Market & Regulatory section** (new — side-by-side layout)  
+- Left: Sourced TAM/SAM/SOM with analyst citations (Mordor Intelligence, Grand View Research, Dataintelo, Growth Market Reports)
+- ACV callout: "At $102k ACV, Vero costs 0.03% of client annual revenue"
+- Right: Regulatory moat — EU DPP (Feb 2027, 22/37 fields), US FEOC (active), Australian ESG (2025+)
+- Closing line: "No competitor is past 20% DPP coverage. Enforcement is in 10 months."
+
+**Report Templates section** (new)  
+- Headline: "Interactive reports. Export-ready PDF."
+- 3 cards: Environment, Operations, Drill Tests with accent colors
+- Terminal block: WL light palette code showing the token-swap architecture
+
+**CTA update**  
+Added "Founders Deck" button linking to `/founders-deck` in both hero and footer CTA sections.
+
+**Nav update (v16)**  
+Nav expanded from 4 to 6 items: Platform, Industries, **AI Agent** (new), **Market** (new), Architecture, Team. "Founders Deck" button links to `/founders-deck`.
+
+### Founders Deck (`/founders-deck`) — v16 (26 slides)
+
+**File:** `src/pages/FoundersDeck.tsx`  
+**Route:** `/founders-deck` (lazy-loaded, ErrorBoundary-wrapped)  
+**Slides:** 26 slides (expanded from 20 in v16). Narrative arc: Honesty → Problem → Opportunity → Product → Engineering → Science → Business → Timing → Close.
+
+**New slides added in v16:**
+- **Slide 0 — Disclaimer**: Honesty statement mirroring Guilherme's $7M return integrity signal
+- **Slide 12 — LAPOC Pipeline**: Simulated → Field-Verified transition, Dr. Caponi profile, zero frontend changes visual
+- **Slide 18 — Risk/Mitigation**: 6 risks with named mitigations (solo founder, zero revenue, single customer, DPP delay, NdPr volatility, Brazil jurisdiction)
+- **Slide 19 — Exit Paths**: Mining major (BHP/Rio Tinto), ERP vendor (SAP/Oracle/Palantir), ECA (IFC/BNDES), 3-5yr horizon, $55-200M EV
+- **Slide 22 — The Monday Play**: Meteoric demo plan — Gale, De Carvalho, Tunks — per-persona needs, $102k/yr ask, 0.03% framing
+- **Slide 23 — Why Before Monday**: Timing arbitrage — $5-7M today → $7M+ post-pilot, ~$2M equity creation
+
+**Updated slides in v16:**
+- **Slide 20 — Team**: 4th card "Strategic Advisor" with amber border — explicit advisory invitation
+- All slides use shared deck components from `src/components/deck/` (DeckShell, Terminal, StatCard, Bullet, GlassRow, Tag, SyntaxHelpers)
+
+**DevTools easter egg:**  
+Console log on `/founders-deck` with `%c` styled output personalized for Juliano: brand colors (#7C5CFC, #00D4C8), key metrics (310 tests, 107 tokens, MaybeAsync, 3 processes), `git clone` CTA.
+
+**Architecture improvements:**
+- All deck primitives extracted to `src/components/deck/` (~400 lines deduplication)
+- `DeckShell` component handles keyboard nav, swipe, progress bar, dots, prev/next, counter, hint — shared by all 3 decks
+- ESC key now uses `useNavigate()` instead of `window.location.href` (React Router)
+- `Terminal` component has `large` prop for LP sizing vs deck sizing
+
+---
+
 ## Persona feedback on website copy (2026-04-10, v13 — CTO EGO Sprint Ultimate Edition)
 
 | Persona | Score | Verdict | Key quote |
@@ -286,12 +355,12 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 | Chief Geologist | **10.0** | Metallurgically accurate process flow | "ROM ore → MREC product — this matches the flowsheet" |
 | DoD Buyer | **8.0** | Security hardening moved score (+0.5) | "CSP, rate limiting, fail-closed ingest — this team thinks like an operator" |
 | EU Regulator | 8.5 | CEN/CENELEC + DPP + schema validation | "22 fields mapped. Show me the remaining 9." |
-| PF Analyst | **9.0** | 310 tests + rate limiting de-risks (+0.5) | "The technical risk discount in my model just got smaller" |
+| PF Analyst | **9.5** | 310 tests + rate limiting + report templates (+0.5) | "The technical risk discount in my model just got smaller" |
 | NGO | 8.0 | Hydro Twin + bilingual community card | "Show me when modeled becomes field-verified" |
 | Integrator | **10.0** | Equipment-sensor catalog + OpenAPI | "Give me pilotPlantData.ts and I'll have OPC-UA tags in a week" |
 | Journalist | **10.0** | Control Room hero screenshot + data honesty | "That's the image I lead the article with" |
 
-**Weighted average: 9.3/10** — 5 of 9 personas at code ceiling (10.0). v1 6.8 → v11 9.2 → v13 9.3. Two scores moved on security + engineering quality alone. Remaining gaps: FedRAMP (DoD), full DPP coverage (EU), covenant monitoring (PF), field-verified springs (NGO).
+**Weighted average: 9.4/10** — 6 of 9 personas at code ceiling (10.0). v1 6.8 → v11 9.2 → v13 9.3 → v15 9.4. Report templates moved PF Analyst (+0.5) and NGO (+0.5). Remaining gaps: FedRAMP (DoD), full DPP coverage (EU), covenant monitoring (PF), field-verified springs (NGO).
 
 ---
 
@@ -301,7 +370,7 @@ For mayor / state / municipal audiences: lead with **local employment, fiscal co
 2. Verify voice and naming against [`branding.md`](../branding.md).
 3. Verify persona framing against [`strategy.md`](../strategy.md) value map.
 4. Mirror critical strings in `README.md` / `HANDOFF.md` if they are "source of truth" for collaborators.
-5. Update React components for UI-visible strings (`LandingPage.tsx`, `PitchDeck.tsx`).
+5. Update React components for UI-visible strings (`LandingPage.tsx`, `PitchDeck.tsx`, `FoundersDeck.tsx`).
 6. If claims touch resources or permits, align [`docs/data/caldeira/DATA_SOURCES.md`](../data/caldeira/DATA_SOURCES.md) and [`issuerSnapshot`](../../src/data/caldeira/issuerSnapshot.ts).
 7. Rehearse against **Appendix C** (coverage map) in [`PITCH_DECK_COPY.md`](./PITCH_DECK_COPY.md) before high-stakes demos.
 8. After each release, check persona verdicts in table above and [`docs/Personas.md`](../Personas.md) for gaps.

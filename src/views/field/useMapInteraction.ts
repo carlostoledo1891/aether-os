@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { MapLayerMouseEvent } from '../../components/map/MapBase'
 import { PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../../components/map/PlantOverlay'
 import type { PlantOverlayNodeDetail } from '../../components/map/PlantOverlay'
@@ -91,6 +91,7 @@ export interface UseMapInteractionReturn {
   geoSelection: FieldMapGeoSelection | null
   setGeoSelection: React.Dispatch<React.SetStateAction<FieldMapGeoSelection | null>>
   handleMouseEnter: (e: MapLayerMouseEvent) => void
+  handleMouseMove: (e: MapLayerMouseEvent) => void
   handleMouseLeave: () => void
   handleMapClick: (e: MapLayerMouseEvent) => void
 }
@@ -245,6 +246,18 @@ export function useMapInteraction({
       if (typeof label === 'string') setMapHoverHint(label)
     },
     [mapTab],
+  )
+
+  const rafRef = useRef(0)
+  const handleMouseMove = useCallback(
+    (e: MapLayerMouseEvent) => {
+      if (rafRef.current) return
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0
+        handleMouseEnter(e)
+      })
+    },
+    [handleMouseEnter],
   )
 
   const handleMouseLeave = useCallback(() => {
@@ -441,6 +454,7 @@ export function useMapInteraction({
     geoSelection,
     setGeoSelection,
     handleMouseEnter,
+    handleMouseMove,
     handleMouseLeave,
     handleMapClick,
   }

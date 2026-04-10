@@ -2,7 +2,7 @@
 
 **Purpose:** Define how Vero reaches each stakeholder segment — who we target, what we lead with, how we close, and what we charge. This is the operational companion to [`branding.md`](branding.md) (brand identity) and [`Personas.md`](Personas.md) (stakeholder profiles).
 
-**Last updated:** 2026-04-10 (post v13 — CTO EGO Sprint Ultimate Edition)  
+**Last updated:** 2026-04-10 (post v16 — Juliano + Guilherme Final Sprint)  
 **Cross-references:** [`VALUATION.md`](VALUATION.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`branding.md`](branding.md)
 
 ---
@@ -11,7 +11,7 @@
 
 Vero wins by being the **only platform built inside the project it serves**. The founder grew up in the Caldeira, the chief scientist studies it, and every feature was stress-tested against 9 named stakeholder personas before a single line of marketing was written.
 
-The GTM strategy is **persona-first**: each audience hears the message framed around their deepest need, not a generic feature list. The product already scores 9.3/10 across 9 stakeholders — the gap is commercial execution, not code.
+The GTM strategy is **persona-first**: each audience hears the message framed around their deepest need, not a generic feature list. The product already scores 9.4/10 across 9 stakeholders — the gap is commercial execution, not code.
 
 **Core insight:** In critical minerals, trust is sold peer-to-peer. Operators trust operators. Regulators trust schema compliance. Investors trust test counts and architecture. The strategy mirrors this — lead with the evidence each persona already knows how to evaluate.
 
@@ -71,7 +71,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 
 ### Tier 3 — Investors
 
-**Strategy:** Demo → Deck → Financial Model. The product sells itself when seen — 310 tests, 9.3 persona score, and a Pilot Plant Digital Twin are not things competitors can fake.
+**Strategy:** Demo → Deck → Financial Model. The product sells itself when seen — 310 tests, 9.4 persona score, and a Pilot Plant Digital Twin are not things competitors can fake.
 
 **Approach:**
 1. 45-minute live demo (not slides) — walk through Field Ops → Compliance → Executive
@@ -79,7 +79,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 3. Share VALUATION.md financial model for deep-dive investors
 4. Close with seed ask: hire commercial lead, onboard 5 pilots, connect LAPOC instruments
 
-**Message:** "9.3/10 across 9 stakeholder personas. 310 automated tests. Built by a founder inside the Caldeira. $5–7M pre-money."
+**Message:** "9.4/10 across 9 stakeholder personas. 310 automated tests. Built by a founder inside the Caldeira. $5–7M pre-money."
 
 ### Tier 4 — Regulators & Standards Bodies
 
@@ -145,7 +145,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 - "310 tests, zero TypeScript errors, CSP headers, rate limiting"
 - Show OpenAPI docs at /api/docs
 - Show build verification stamp
-- "Persona-scored at 9.3/10 — here's the methodology"
+- "Persona-scored at 9.4/10 — here's the methodology"
 
 **Minutes 40–45: Ask**
 - Persona-specific CTA (see Section 2 opening lines)
@@ -205,7 +205,7 @@ No direct competitor exists in "critical mineral supply chain trust layer." Adja
 ### Competitive Moat
 
 1. **Founder inside the Caldeira** — 40 years of local context no outside team can replicate
-2. **Persona-validated at 9.3/10** — proven product-market fit methodology, not just feature claims
+2. **Persona-validated at 9.4/10** — proven product-market fit methodology, not just feature claims
 3. **Three truths in one platform** — no competitor covers field ops + compliance + executive in one stack
 4. **Architecture credibility** — 310 tests, production 3-process architecture, OpenAPI, SHA-256 audit chain
 5. **Mini Engine** — JSON-driven public dashboards (Prefeitura) that no competitor even attempts
@@ -222,7 +222,7 @@ Subject: "What if due diligence took 45 minutes instead of 45 days?"
 Body: 2 sentences about Vero + link to LP. No attachment.
 
 **Email 2 — The proof (Day 3)**
-Subject: "310 tests, 9.3/10 persona score, built inside a Caldeira"
+Subject: "310 tests, 9.4/10 persona score, built inside a Caldeira"
 
 Body: Screenshot of Control Room + 3 bullet metrics. Link to live demo.
 
@@ -297,6 +297,52 @@ Body: Direct calendar link. No pitch, just demo offer.
 | Solo-founder bandwidth limits sales | Pipeline dies | Seed hire #1 = commercial lead; automate demo scheduling |
 | Competitor enters with deep pockets | Price pressure, feature race | Moat is local context + persona methodology — not replicable by throwing engineers at it |
 | Technical due diligence finds gaps | Investor confidence shaken | 310 tests + zero TS errors + CSP headers + rate limiting already address this; maintain quality gate |
+
+---
+
+## 11. Meteoric Pitch Plan (Apr 14 Demo)
+
+**Who's in the room:**
+- **Nick Gale (CEO)** — Needs execution credibility for capital raises. Digital twin is his demo-closer.
+- **Dr. De Carvalho (Chief Geologist)** — Needs defensible QP-grade data with JORC badges. Will test the AI agent.
+- **Nick Tunks (Chairman)** — Needs one coherent field-to-filing-to-market story. Executive Overview is his slide.
+
+**The ask:** Growth tier pilot — $102k/yr annual contract.
+
+**90-day integration plan:**
+1. Week 0-2: Contract + API keys + LAPOC instrument mapping
+2. Week 2-4: First live sensor data flowing (simulated labels → field-verified)
+3. Week 4-6: Custom DFS presentation views via Mini Engine
+4. Week 6-8: Community dashboard review with Prefeitura
+5. Week 8-12: Full production, board-ready
+
+**0.03% framing:** Vero costs $102k/yr — 0.03% of Caldeira's $315M annual revenue consensus. Less than one day of interest on the $443M CAPEX construction loan. Price sensitivity: effectively zero.
+
+---
+
+## 12. Dr. Caponi Formalization
+
+**Role:** Chief Scientific Advisor (LAPOC)
+
+**What connects:** Piezometers, water quality sensors, geological sampling from LAPOC field instruments. When LAPOC data connects to Vero, every "simulated" label in the Hydro Twin becomes "field-verified."
+
+**Formalization terms:** Advisory agreement, equity stake (0.5-1%), vesting over 2 years. Deliverable: LAPOC instrument data access and scientific credentialing.
+
+**Impact:** The single highest-value technical milestone — converts a demo into a product. Also the PR moment: "Built by the founder who grew up in the Caldeira, validated by the scientist who has studied it for decades."
+
+---
+
+## 13. Founders-as-Advisors Outreach
+
+**Targets:** Juliano Dutra (CTO lens), Guilherme Bonifácio (Business lens)
+
+**Positioning:** Strategic Advisory role. Not just investors — operators who shape GTM, pipeline, and commercial execution.
+
+**What they bring:**
+- Juliano: 20+ angel investments, iFood/Gringo technical leadership, code review credibility
+- Guilherme: 110+ investments, search fund diligence methodology, commercial activation playbook
+
+**Timing play:** Their investment at $5-7M pre-money creates the runway that closes the Meteoric pilot. The pilot closes the valuation gap. 30-40% paper value increase in days, not months.
 
 ---
 

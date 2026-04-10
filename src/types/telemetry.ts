@@ -102,6 +102,8 @@ export interface ComplianceLedger {
 
 export type ViewMode = 'operator' | 'buyer' | 'executive'
 
+export type ReportType = 'environment' | 'operations' | 'drill-tests'
+
 export interface AlertItem {
   id: string
   severity: 'critical' | 'warning' | 'info'

@@ -126,6 +126,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     geoSelection,
     setGeoSelection,
     handleMouseEnter,
+    handleMouseMove,
     handleMouseLeave,
     handleMapClick,
   } = useMapInteraction({ mapTab, opsMapLayers, springsRef })
@@ -283,6 +284,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               cursor={isHovering ? 'pointer' : ''}
               highlightWater={mapTab === 'environment'}
               onMouseEnter={handleMouseEnter}
+              onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={handleMapClick}
             >

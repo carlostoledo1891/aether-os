@@ -70,20 +70,22 @@ function computeFlowPath(
   fromTag: string,
   toTag: string,
 ): string {
-  const from = NODE_POSITIONS[fromTag]
-  const to = NODE_POSITIONS[toTag]
-  if (!from || !to) return ''
+  const fromRaw = NODE_POSITIONS[fromTag]
+  const toRaw = NODE_POSITIONS[toTag]
+  if (!fromRaw || !toRaw) return ''
+
+  // Apply MARGIN to match EquipmentNode rendering offset
+  const from = { x: fromRaw.x + MARGIN, y: fromRaw.y }
+  const to = { x: toRaw.x + MARGIN, y: toRaw.y }
 
   const fx = from.x + NODE_W / 2
   const fy = from.y + NODE_H / 2
   const tx = to.x + NODE_W / 2
   const ty = to.y + NODE_H / 2
 
-  // Determine connection points (right/bottom of source, left/top of target)
   const dx = tx - fx
   const dy = ty - fy
 
-  // Simple case: mostly horizontal
   if (Math.abs(dy) < NODE_H) {
     const startX = dx > 0 ? from.x + NODE_W : from.x
     const endX = dx > 0 ? to.x : to.x + NODE_W
@@ -93,7 +95,6 @@ function computeFlowPath(
     return `M${startX},${startY} C${midX},${startY} ${midX},${endY} ${endX},${endY}`
   }
 
-  // Mostly vertical
   if (Math.abs(dx) < NODE_W) {
     const startX = from.x + NODE_W / 2
     const startY = dy > 0 ? from.y + NODE_H : from.y
@@ -103,7 +104,6 @@ function computeFlowPath(
     return `M${startX},${startY} C${startX},${midY} ${endX},${midY} ${endX},${endY}`
   }
 
-  // Diagonal — route through elbow
   const startX = dx > 0 ? from.x + NODE_W : from.x
   const startY = from.y + NODE_H / 2
   const endX = to.x + NODE_W / 2
@@ -181,9 +181,9 @@ export const PlantSchematic = memo(function PlantSchematic({
         const eqTags = step.equipmentTags.filter(t => NODE_POSITIONS[t])
         if (eqTags.length === 0) return null
         const positions = eqTags.map(t => NODE_POSITIONS[t])
-        const minX = Math.min(...positions.map(p => p.x)) - 12
+        const minX = Math.min(...positions.map(p => p.x + MARGIN)) - 12
         const minY = Math.min(...positions.map(p => p.y)) - 18
-        const maxX = Math.max(...positions.map(p => p.x)) + NODE_W + 12
+        const maxX = Math.max(...positions.map(p => p.x + MARGIN)) + NODE_W + 12
         const maxY = Math.max(...positions.map(p => p.y)) + NODE_H + 12
 
         const dc: Record<string, string> = {

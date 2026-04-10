@@ -1,5 +1,5 @@
 import { Bell, Sparkles } from 'lucide-react'
-import type { EsgScore, ViewMode } from '../../types/telemetry'
+import type { EsgScore, ReportType, ViewMode } from '../../types/telemetry'
 import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
 import { W } from '../../app/canvas/canvasTheme'
@@ -12,6 +12,7 @@ interface HeaderStripProps {
   onAlertOpen: () => void
   view: ViewMode
   onViewChange: (v: ViewMode) => void
+  onReportOpen?: (type: ReportType) => void
   disclosureMode?: boolean
   onChatOpen?: () => void
 }
@@ -19,7 +20,7 @@ interface HeaderStripProps {
 export function HeaderStrip({
   esg,
   alertCount, fieldAlertCount, onAlertOpen,
-  view, onViewChange,
+  view, onViewChange, onReportOpen,
   disclosureMode,
   onChatOpen,
 }: HeaderStripProps) {
@@ -72,7 +73,7 @@ export function HeaderStrip({
 
       {/* Center: view tabs */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} />
+        <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} onReportOpen={onReportOpen} />
       </div>
 
       {/* Right: ESG ring → AI chat → Alerts */}

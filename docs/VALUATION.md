@@ -122,7 +122,7 @@ For pre-revenue / seed-stage vertical SaaS with regulatory tailwinds in critical
 | Market Size (TAM $18.8B, SAM $1.6B) | 20% | 4.0 | 0.80 |
 | Product / Technology | 20% | 4.5 | 0.90 |
 | Competitive Landscape | 15% | 3.5 | 0.525 |
-| Traction (Meteoric anchor, 218 tests, digital twin) | 10% | 3.5 | 0.35 |
+| Traction (Meteoric anchor, 310 tests, digital twin) | 10% | 3.5 | 0.35 |
 | Regulatory Tailwind Timing | 10% | 4.5 | 0.45 |
 | **Total** | **100%** | | **4.15 / 5.0** |
 
@@ -253,7 +253,7 @@ Post-tax NPV turns negative at NdPr ~$50/kg. Breakeven NdPr OPEX is $22/kg — s
 
 ### To a Seed Investor
 
-"Vero is vertical SaaS for critical mineral operators and their stakeholders. TAM $18.8B growing 11%. SAM $1.6B in compliance/traceability SaaS growing 14%, driven by EU Battery Passport (hard enforcement Feb 2027) and US FEOC requirements. We're not pre-product — production-grade platform with 218 tests, named anchor relationship, and a pilot plant digital twin running live telemetry. The founder grew up inside the flagship deposit. Pre-money $5–7M consensus for a seed that buys 18 months of runway, a commercial hire, and 5 paid pilots."
+"Vero is vertical SaaS for critical mineral operators and their stakeholders. TAM $18.8B growing 11%. SAM $1.6B in compliance/traceability SaaS growing 14%, driven by EU Battery Passport (hard enforcement Feb 2027) and US FEOC requirements. We're not pre-product — production-grade platform with 310 tests, named anchor relationship, and a pilot plant digital twin running live telemetry. The founder grew up inside the flagship deposit. Pre-money $5–7M consensus for a seed that buys 18 months of runway, a commercial hire, and 5 paid pilots."
 
 ### To a Strategic Partner (ECA, DoD, Mining Major)
 

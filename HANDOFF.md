@@ -120,7 +120,7 @@ aether-os/
 │   ├── App.tsx                         ErrorBoundary → DataServiceProvider → MapProvider → AppShell + /view/:manifestId route (Mini Engine)
 │   ├── AppShell.module.css             root shell: bg + grid via CSS vars (--w-bg, --w-app-shell-grid)
 │   ├── types/
-│   │   ├── telemetry.ts                plant/env/ESG interfaces — ViewMode: 'operator'|'buyer'|'executive'
+│   │   ├── telemetry.ts                plant/env/ESG interfaces — ViewMode: 'operator'|'buyer'|'executive', ReportType: 'environment'|'operations'|'drill-tests'
 │   │   └── liveTelemetry.ts            future LiveTelemetryEnvelope DTO (map → PlantTelemetry/EnvTelemetry)
 │   ├── data/
 │   │   ├── mockData.ts                 re-exports from domain/; legacy compat layer
@@ -201,9 +201,18 @@ aether-os/
 │   │   │   ├── index.ts               barrel export
 │   │   │   ├── HeaderStrip.tsx         single-row navbar: logo (V monogram) | ViewSwitcher | AI chat | ESG, alerts
 │   │   │   ├── DataModeBanner.tsx      data-honesty strip (Demo data / Live — backend not connected + detail)
-│   │   │   ├── ViewSwitcher.tsx        3-tab nav (Field Operations | Compliance & Traceability | Executive Overview) + alert badge
+│   │   │   ├── ViewSwitcher.tsx        3-tab nav (Field Operations | Compliance & Traceability | Executive Overview) + alert badge + Reports hover dropdown (Environment | Operations | Drill Tests)
 │   │   │   ├── AlertPanel.tsx          right-side sliding alert drawer
 │   │   │   └── MapPageLayout.tsx       NEW — map hero + sidebar + bottom strip layout
+│   │   ├── deck/                        Shared deck/LP primitives (v16)
+│   │   │   ├── index.ts               barrel export
+│   │   │   ├── DeckShell.tsx           full-screen deck container + keyboard/swipe nav + progress + chrome (useNavigate for ESC)
+│   │   │   ├── Terminal.tsx            macOS-style terminal window (large prop for LP variant)
+│   │   │   ├── StatCard.tsx            value/label/sub metric card (configurable accent)
+│   │   │   ├── Bullet.tsx              accent dot + paragraph (configurable color)
+│   │   │   ├── GlassRow.tsx            horizontal stat strip with dividers
+│   │   │   ├── Tag.tsx                 persona badge pill (color variants)
+│   │   │   └── SyntaxHelpers.tsx       Kw, Str, Num, Cmt, Fn syntax highlighting spans
 │   │   ├── map/                        GeoJSON-driven MapLibre overlay system
 │   │   │   ├── MapBase.tsx             react-map-gl + MapLibre wrapper; 3-style picker (Satellite/Operations/Topography) + localStorage; exports FIELD/BUYER/EXEC_VIEW_STATE
 │   │   │   ├── mapStacking.ts          MAP_STACKING z-index contract (field title, HUD, tooltip, etc.)
@@ -231,6 +240,14 @@ aether-os/
 │   │   │   ├── EquipmentNode.tsx       reusable SVG equipment component (status, sensors, category)
 │   │   │   ├── EquipmentDetailPanel.tsx right-side inspector (specs, sensors, live readings)
 │   │   │   └── controlRoom.module.css  dashFlow, statusPulse, selectGlow animations + glassmorphism
+│   │   ├── reports/                     NEW — Interactive report templates (light-mode lightbox)
+│   │   │   ├── reportTheme.ts          WL (W-Light) palette — light-mode variant of W tokens
+│   │   │   ├── ReportViewer.tsx         lightbox shell (portal, scroll, close, light mode wrapper)
+│   │   │   ├── ReportViewer.module.css  lightbox layout, light-mode CSS overrides, @media print styles
+│   │   │   ├── ReportToolbar.tsx        time range selector (7d/30d/90d/1yr/All) + Export PDF button
+│   │   │   ├── EnvironmentReport.tsx    APA/buffer, water quality, springs, permitting timeline, community, sustainability
+│   │   │   ├── OperationsReport.tsx     production, cost curve, mining physicals, process flow, pilot plant, financials, CAPEX
+│   │   │   └── DrillTestsReport.tsx     JORC table, grade distribution, RE recovery, Pilot vs ANSTO, lithology
 │   │   ├── EsgScoreRing.tsx            composite ESG ring gauge
 │   │   ├── GreenPremiumCard.tsx        spot vs certified NdPr price delta card
 │   │   └── BlockchainTimeline.tsx      molecular-to-magnet vertical timeline
@@ -251,6 +268,11 @@ aether-os/
 │   │           ├── PrefeituraPage.tsx dedicated page — Meteoric visual identity + real map
 │   │           ├── prefeitura.module.css branded styles (hero gradient, KPI cards, responsive)
 │   │           └── overrides.css     theme variable overrides
+│   ├── pages/
+│   │   ├── LandingPage.tsx              /lp — marketing landing page (uses deck/Terminal, deck/SyntaxHelpers)
+│   │   ├── PitchDeck.tsx                /pitch-deck — 11-slide investor deck (uses DeckShell)
+│   │   ├── MeteoricDeck.tsx             /meteoric-deck — 11-slide Meteoric-specific deck (uses DeckShell)
+│   │   └── FoundersDeck.tsx             /founders-deck — 26-slide Juliano+Guilherme deck (uses DeckShell, all shared primitives, DevTools easter egg)
 │   └── views/
 │       ├── FieldView.tsx               2-tab MapLibre: Operations | Hydro Twin — 474 lines (extracted useMapInteraction)
 │       ├── field/
@@ -307,9 +329,19 @@ aether-os/
 | `monitor` | amber | Piezometers, UDC |
 | `external` | border3 | Competitor projects (muted) |
 
-### Theme System (Dark only)
+### Theme System (Dark + Report Light)
 
-Single dark mode. The `:root` variables in `theme.css` define the palette. Board/light mode infrastructure was removed in the v7 Map Polish sprint — if reintroduced, it must ship as a complete feature.
+Primary dark mode. The `:root` variables in `theme.css` define the palette. Board/light mode infrastructure was removed in the v7 Map Polish sprint.
+
+**Report Light Mode (`WL`)** — a second palette in `src/components/reports/reportTheme.ts` mirrors the `W` token shape with light-mode colors. Used exclusively inside the Report lightbox (portal). The lightbox container also overrides `--w-glass-card-*` CSS variables so `GlassCard` components render correctly in light mode. `@media print` styles in `ReportViewer.module.css` hide chrome and flatten the lightbox for PDF export via `window.print()`.
+
+| Token | Dark (`W`) | Light (`WL`) |
+|-------|-----------|--------------|
+| `bg` | `#07070E` | `#FFFFFF` |
+| `panel` | `#0D0D1C` | `#F5F5FA` |
+| `surface` | `#121228` | `#EDEDF5` |
+| `text1` | `#ECECF8` | `#1A1A2E` |
+| `violet` | `#7C5CFC` | `#7C5CFC` (unchanged) |
 
 ### Map Style Selector
 
@@ -538,16 +570,19 @@ ErrorBoundary
   └── DataServiceProvider   service = useMemo(() => createDataService(), [])
         └── MapProvider
               └── AppShell (div.AppShell.module.css — var(--w-bg), grid via --w-app-shell-grid)
-                    ├── HeaderStrip
+                    ├── HeaderStrip → ViewSwitcher (+ Reports dropdown)
                     ├── DataModeBanner     — getDataContext() from injected service
                     ├── main (flex:1) → AnimatePresence → motion.div.viewLayer → active view
-                    └── AlertPanel
+                    ├── AlertPanel
+                    ├── ChatPanel
+                    └── ReportViewer (lazy, portal — rendered when reportOpen !== null)
 ```
 
 `createDataService()` uses **`getDataMode()`** from `src/config/env.ts`: **`createMockDataService()`** or **`createLiveDataService()`**.
 
 **State held in `AppShell`:**
 - `view: ViewMode` — passed to `HeaderStrip` / `ViewSwitcher`
+- `reportOpen: ReportType | null` — which report lightbox is open (environment / operations / drill-tests)
 - `alertOpen: boolean` — alert drawer
 - `chatOpen: boolean` — AI chat drawer
 - Telemetry via `DataServiceProvider` (`useTelemetry()` / `useAetherService()`)
@@ -678,10 +713,11 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | Multi-tenancy / auth | High | Add Clerk or Supabase Auth before client handoff |
 | ~~MapTiler custom style~~ | ~~Medium~~ | ✅ Done — 3-style picker in MapBase (Satellite/Operations/Topography) with localStorage persistence |
 | ~~Satellite toggle~~ | ~~Medium~~ | ✅ Done — included in the map style selector (Phase 3 of Vero rebrand sprint) |
-| PDF export polish | Medium | Currently `window.print()`; replace with `jsPDF` or Puppeteer |
+| ~~Online report templates~~ | ~~Medium~~ | ✅ Done — 3 interactive reports (Environment, Operations, Drill Tests) in light-mode lightbox with time range selector + Export PDF via `window.print()` |
+| PDF export polish | Low | Currently `window.print()` with `@media print` CSS; replace with `jsPDF` or Puppeteer for pixel-perfect output |
 | Localization (i18n) | Low | EN/PT toggle was deliberately removed; re-add via a proper i18n library if needed |
 | Mobile layout | Low | Currently optimized for 1440px+; 16:9 pitch screens |
-| Expand test coverage | Low | 151 tests (129 frontend + 22 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add integration test for live mode + production smoke test. |
+| Expand test coverage | Low | 310 tests (260 frontend + 50 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add integration test for live mode + production smoke test. |
 | Overlay throttle optimization | Low | Throttle `tick` updates with `requestAnimationFrame` for smoother panning |
 | ~~AI Agent (read-only analyst)~~ | ~~High~~ | ✅ Done — `POST /api/chat` streaming endpoint with Gemini 2.5 Flash, 17 domain tools + web search. Frontend `ChatPanel.tsx` with file upload. |
 | ~~Pilot Plant Mirror~~ | ~~Medium~~ | ✅ Done — `data/caldeira/pilot-plant-mirror.json` structured catalog, JSON Schema, link audit, PDF extraction. |
@@ -725,12 +761,13 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | CTO roadmap & trust pass (2026-04) | App shell (`AppShell.module.css`), `getDataMode` + `createLiveDataService`, `env.ts` / `liveTelemetry.ts`, Field splits (`FieldBottomMetrics`, `FieldPinnedAssetCard`, `MonitoringNetworkCard`), hydro mappers + `MAP_STACKING`, Open-Meteo + `useSiteWeather`, expanded Vitest coverage, `.github/workflows/ci.yml`, **FieldView = two map tabs** (Operations \| Hydro Twin), field `FIELD_VIEW_STATE.zoom` **10.98**. |
 | [Pre-Pitch Sprint](9671ef66-ee46-4dfd-8484-ad20c71491bc) | **12-task pre-pitch sprint.** Data integrity: fixed 10 inconsistencies (resource 1.537 Bt sum, IAC mineralogy, deposit notes, FCF/FEOC data-driven, funded_m alignment, spring count in ESG). Refactors: audit filter chips, keyboard a11y on expandable cards, NeighborOverlay wired, CSS token sync, DFS regulatory log differentiation, MapLibre `readonly` tuple build fixes. New features: IR disclosure mode (`VITE_DISCLOSURE_MODE`), community disclaimer card, ASX citation badges, platform roadmap stepper. Demo polish: branded loading skeleton, BuyerView empty state + hooks order fix. Quality gate: 0 lint errors, 131 tests, clean production build. |
 | [Synthetic Data Bridge](c7b1afd8-1a6a-4e0e-a1f3-0ffec8cc219a) | **Production elevation: 3-process architecture.** Scaffolded `server/` (Fastify 5.8 + SQLite + WebSocket), `engine/` (simulation bot + 4 external API enrichers: Open-Meteo, BCB PTAX, USGS Seismic, Alpha Vantage). Rewrote `liveDataService.ts` to use real `fetch()` + `WebSocket`. 40+ REST endpoints seeded from mockData. LAPOC ingestion contract (`LapocTelemetryPayload`). Docker Compose (3 services). `npm run dev:all`. Vite proxy. Dynamic provenance. Persona re-evaluation: weighted avg 6.8 → 7.3. **Live App Deployment:** 5 code fixes (DB_PATH, WS URL, CORS, ingest guard, backoff), 22 server tests, engine API key, frontend resilience (connectionStatus), CI update. **Data Layer Refactor (2026-04-09):** `MaybeAsync<T>` types, `useServiceQuery` hook, `LoadingSkeleton`, 17 view files migrated from broken `useMemo` pattern, band-aids removed, two hotfixes (infinite re-render loop + WS URL path). |
+| [Juliano + Guilherme Final Sprint](f61908c1-ab56-4538-80e9-322ee7091d1a) | **v16 code quality + strategic credibility sprint.** Extracted shared deck components (`src/components/deck/` — DeckShell, Terminal, StatCard, Bullet, GlassRow, Tag, SyntaxHelpers) eliminating ~400 lines of duplication across 4 files. Refactored PitchDeck, MeteoricDeck, FoundersDeck, LandingPage to use shared components. Added 6 new FoundersDeck slides (Disclaimer, LAPOC Pipeline, Risk/Mitigation, Exit Paths, Monday Play, Why Before Monday). Updated Team slide with Strategic Advisor seat. DevTools easter egg for Juliano. Fixed LP nav (#ai-agent, #market). React Router ESC navigation. Reconciled VALUATION.md (218→310 tests) and strategy.md (9.3→9.4, +3 new sections). Updated copy docs. |
 
 ---
 
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
-Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~9.2 / 10** (v11 — post Pilot Plant Digital Twin / Control Room). Five personas at code ceiling (10.0): Chairman, CEO, Chief Geologist, SCADA, Journalist. Valuation analysis: `docs/VALUATION.md`. The top gaps that should drive the next iteration:
+Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~9.4 / 10** (v15 — post Online Report Templates). Five personas at code ceiling (10.0): Chairman, CEO, Chief Geologist, SCADA, Journalist. Valuation analysis: `docs/VALUATION.md`. The top gaps that should drive the next iteration:
 
 | Priority | Action | Personas driving it | Effort | Status |
 |----------|--------|---------------------|--------|--------|
@@ -764,7 +801,7 @@ Nine stakeholder personas have been evaluated against the current release (see `
 | Member | Role | Strategic value |
 |--------|------|----------------|
 | **Carlos Toledo** | Founder, Product & Technical Lead | Pocos native, Air Force pilot, full-stack dev, Product Design. Builds the product. |
-| **Dr. Heber Caponi** | Chief Scientific Advisor (LAPOC) | Decades of active Caldeira field research. **Most strategic member** — converts "simulated" into "field-verified." LAPOC instruments are the first live data channel. |
+| **Dr. Heber Caponi** | Chief Scientific Officer (LAPOC) | Decades of active Caldeira field research. **Most strategic member** — converts "simulated" into "field-verified." LAPOC instruments are the first live data channel. |
 | **Thiago A.** | CEO (designated) | Brazilian/international law, enterprise ops, dev team management. Business, legal, and commercial execution. |
 | **Full-Stack Developer** | Engineering (designated) | Ready at pilot. Codebase architected for immediate second-developer productivity. |
 
@@ -814,7 +851,7 @@ Three persona roles are defined in `docs/Personas.md`. They are invoked by the u
 - **Design tokens** — all colors must use `W.*` tokens (TS) or `var(--w-*)` (CSS). No raw hex values.
 - **CSS Modules** — layout styles live in `.module.css` files, not inline. Inline styles only for truly dynamic values.
 - **Accessibility** — `type="button"` on all buttons, ARIA roles on interactive elements, reduced-motion support.
-- **Test coverage** — 186 tests (151 frontend + 22 server + 13 engine) across 27 files (all passing). Never reduce. Add tests for new logic.
+- **Test coverage** — 310 tests (260 frontend + 50 server) across 38 files (all passing). Never reduce. Add tests for new logic.
 - **Advisor personas** — when the user says "act as the Business Expert" or "act as the CTO," read and adopt the full persona from `docs/Personas.md` Part 1 before responding.
 
 ### Deployment checklist (mandatory before every production deploy)
@@ -1834,7 +1871,7 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 | **Theme** | `src/app/canvas/canvasTheme.ts`, `src/styles/theme.css` |
 | **Data/Services** | `src/data/mockData.ts`, `src/data/mockGenerator.ts`, `src/services/mockDataService.ts`, `src/services/dataService.ts` |
 | **Server** | `server/src/routes/domain.ts` (health + channels endpoints), `server/src/seed.ts` |
-| **Pages** | `src/pages/LandingPage.tsx` (new), `src/pages/PitchDeck.tsx` (new) |
+| **Pages** | `src/pages/LandingPage.tsx`, `src/pages/PitchDeck.tsx`, `src/pages/MeteoricDeck.tsx`, `src/pages/FoundersDeck.tsx` |
 | **Routing** | `src/main.tsx`, `src/App.tsx` |
 | **Scripts** | `scripts/fit-licence-hulls.mjs` (new) |
 | **Tests (fixed)** | `src/app/canvas/canvasTheme.test.ts`, `src/services/mockDataService.test.ts` |
@@ -2460,3 +2497,180 @@ Full codebase audit across 4 dimensions (security, tests, design tokens, archite
 - **`@fastify/rate-limit` with per-route config** — global limit + route-level overrides via `config.rateLimit` in route options. No custom middleware needed.
 - **CSP in vercel.json over index.html** — easier to update without rebuilding; covers all routes including `/view/*` and `/lp`.
 - **`any` in WidgetRegistry** — the dynamic component registry maps strings to React components with different prop interfaces. `ComponentType<any>` is the only viable type; annotated with eslint-disable comment to document intent.
+
+---
+
+## Session v15 — Online Report Templates (2026-04-10)
+
+### Context
+
+Business and CTO expert assessment of Meteoric Resources Scoping Study (ASX announcement, 47 pages) led to the design and implementation of 3 interactive online report templates — Environment, Operations, and Drill Tests — accessible via a hover dropdown in the ViewSwitcher, rendered in a light-mode lightbox with time range selectors and PDF export.
+
+### What was built (9 tasks)
+
+#### Infrastructure
+
+1. **`ReportType` in `telemetry.ts`** — new union type `'environment' | 'operations' | 'drill-tests'` alongside `ViewMode`.
+
+2. **`reportTheme.ts`** — `WL` (W-Light) palette mirroring the dark `W` token shape with light-mode colors. Accent colors (`violet`, `cyan`, etc.) remain unchanged. `TimeRange` type exported for toolbar.
+
+3. **`ReportViewer.module.css`** — lightbox layout (fixed inset 24px, border-radius 16px), light-mode CSS variable overrides for `GlassCard`, and `@media print` styles that flatten the lightbox and hide chrome for PDF export.
+
+4. **`ReportViewer.tsx`** — portal-based lightbox shell. AnimatePresence for animated entry/exit. Escape key close. Body scroll lock. Lazy-loads the 3 report components. Renders `ReportToolbar` + scrollable content area.
+
+5. **`ReportToolbar.tsx`** — title + subtitle display, time range segmented control (7d / 30d / 90d / 1yr / All), and Export PDF button that calls `window.print()`.
+
+#### Report Templates
+
+6. **`EnvironmentReport.tsx`** — hero header, APA & Buffer Zone compliance cards (7 licence zones, 100% compliance), water quality monitoring (sulfate, nitrate, pH, radiation with threshold progress bars), springs monitoring network (1,092 springs by tier: 84% active, 12% reduced, 4% suppressed), permitting & licensing timeline (EIS → LP → LI → Operation License), community engagement (89% social acceptance, jobs stats), sustainability design (dry stack tailings, 95% water recirculation, 100% renewable grid, dry backfill), and data provenance disclaimer.
+
+7. **`OperationsReport.tsx`** — hero header, production summary (13,584 tpa TREO, 4,228 tpa NdPr, 6.0 Mtpa throughput, 20-yr LOM), cost structure (C1 US$7/kg, AISC US$9/kg, NdPr breakeven US$22/kg), revenue by scenario (bear/consensus/bull progress bars), mining physicals (strip ratio 0.12:1, clay depth, throughput, mine life), 7-step AMSUL process flow (ROM → MREC), pilot plant performance table (Nd/Pr/Tb/Dy recoveries, nameplate vs peak), financial snapshot (NPV US$821M, IRR 28%, payback 3 yrs, CAPEX US$443M), and CAPEX breakdown by category with percentage bars.
+
+8. **`DrillTestsReport.tsx`** — hero header, global mineral resource summary (1.54 Bt, 2,359 ppm TREO, 24% MREO, 750+ holes), JORC 2012 resource classification table (Measured / Indicated / M+I / Inferred / Total with color-coded classification dots), grade distribution by deposit (horizontal bar chart sorted by TREO ppm with status badges), 12-element RE recovery table (La through Y with inline progress bars and group labels), Pilot vs ANSTO validation comparison (4-element dual bar chart), stratigraphic sequence description with lithology color palette (7 rock types from `lithologyPalette.ts`), deposit lithology summary table (12 deposits with laterite/saprolite depth and hole counts).
+
+#### Wiring
+
+9. **ViewSwitcher + HeaderStrip + AppShell** — ViewSwitcher gains a "Reports" button after Executive Overview tab. On hover, a dropdown (AnimatePresence) shows 3 options (Environment, Operations, Drill Tests). Selection calls `onReportOpen(type)` which propagates through `HeaderStrip` to `AppShell`, setting `reportOpen` state, which lazy-renders `ReportViewer` as a portal overlay. No route change — dashboard state preserved underneath.
+
+### Quality Gate
+- 38 test files, 260 frontend tests + 50 server tests — all passing
+- 0 TypeScript compilation errors (frontend + server, strict mode)
+- Zero new dependencies (PDF export via native `window.print()`)
+
+### Key Metrics
+- **7 new files** created in `src/components/reports/`
+- **4 existing files** modified (`telemetry.ts`, `App.tsx`, `HeaderStrip.tsx`, `ViewSwitcher.tsx`)
+- 3 content-rich report templates totaling ~1,200 lines of presentation code
+- Light-mode palette (`WL`) with print-optimized CSS
+
+### Architecture Decisions
+- **Portal over route** — reports render as a portal overlay (z-index 300+), preserving dashboard state underneath. No route change means no loss of map camera position, selected features, or open panels.
+- **`window.print()` over jsPDF** — zero new dependencies. Browser's native "Save as PDF" dialog handles layout. Light theme ensures good print contrast. `@media print` CSS hides toolbar buttons and close button, flattens the lightbox to `position: static`.
+- **`WL` light palette as separate constant** — not a CSS theme toggle. Reports use `WL` in inline styles. `ReportViewer.module.css` overrides CSS variables for components that use `var(--w-*)` (e.g., `GlassCard`). This avoids theme-switching complexity while delivering a clean light-mode experience.
+- **`TimeRange` as prop, not global state** — each report receives `range` as a prop from `ReportToolbar`. For now, the range is visual context; data comes from existing domain constants. When live data flows through `useServiceQuery`, the range prop will control API query parameters.
+- **Hover dropdown over click** — the Reports dropdown opens on `mouseEnter` with a 150ms close delay on `mouseLeave`. This matches dashboard navigation patterns and avoids adding a click target that competes with the view tabs.
+
+---
+
+## Session v16 — Juliano + Guilherme Final Sprint (2026-04-10)
+
+### Context
+
+CTO + Business Strategist sprint pairing with Juliano Dutra (CTO lens — iFood co-founder, Gringo CTO, 20+ angel investments) and Guilherme Bonifácio (Business lens — 110+ investments, Kanoa Capital, FEA-USP Economics). Sprint goals: eliminate code duplication across deck/LP files, add 6 strategic slides to FoundersDeck (Meteoric pitch plan + Caponi formalization + timing arbitrage), update team slide with advisory invitation, reconcile stale doc numbers, and prepare for Monday Meteoric demo.
+
+### What was built (10 tasks)
+
+#### Phase 1: Code Quality (Juliano's Sprint)
+
+1. **Shared deck components** (`src/components/deck/`) — Extracted 7 reusable primitives from duplicated code across 4 files (~400 lines eliminated):
+   - `DeckShell.tsx` — Full-screen deck container with keyboard nav (arrows, space, ESC via `useNavigate()`), swipe handling, animated progress bar, dot pager, prev/next buttons, slide counter, hint text. Replaces ~80 identical lines in each deck.
+   - `Terminal.tsx` — macOS-style terminal window with traffic lights. `large` prop for LP sizing (10px dots, 12px font) vs deck sizing (8px dots, 11px font).
+   - `StatCard.tsx` — Value/label/sub metric card with configurable `accent` color.
+   - `Bullet.tsx` — Accent dot + paragraph with configurable color.
+   - `GlassRow.tsx` — Horizontal stat strip with dividers.
+   - `Tag.tsx` — Persona badge pill with color variants.
+   - `SyntaxHelpers.tsx` — `Kw`, `Str`, `Num`, `Cmt`, `Fn` syntax highlighting spans.
+   - `index.ts` — Barrel export for clean imports.
+
+2. **Refactored PitchDeck.tsx** — removed duplicated primitives and nav logic, imports from `components/deck/`, uses `DeckShell`. Updated persona score 9.3→9.4.
+
+3. **Refactored MeteoricDeck.tsx** — same treatment as PitchDeck.
+
+4. **Refactored FoundersDeck.tsx** — uses `DeckShell` + shared primitives. Expanded from 20 to 26 slides (see Phase 2).
+
+5. **Refactored LandingPage.tsx** — `Terminal` alias uses shared `Terminal` with `large` prop. Syntax helpers (`Kw`, `Str`, etc.) imported from `components/deck/`. Nav expanded from 4 to 6 items (+`#ai-agent`, +`#market`).
+
+6. **React Router navigation** — `DeckShell` uses `useNavigate()` instead of `window.location.href` for ESC key. `TouchEvent` imported from `react` (fixes `React.TouchEvent` namespace issue).
+
+7. **DevTools easter egg** — `console.log` with `%c` styled output on `/founders-deck`: personalized message for Juliano using `W.violet` (#7C5CFC) and `W.cyan` (#00D4C8), references 310 tests, 107 tokens, MaybeAsync, 3 processes, HANDOFF.md, and `git clone` CTA.
+
+#### Phase 2: Strategic Slides (Guilherme's Sprint)
+
+8. **6 new FoundersDeck slides:**
+   - **Slide 0 — Disclaimer** — Honesty statement mirroring Guilherme's $7M return integrity. Tags: Public Reference, Disclosure-Aligned, Simulated.
+   - **Slide 12 — LAPOC Pipeline** — Simulated → Field-Verified transition with before/after visual. Dr. Caponi profile. Terminal showing `DataContext.telemetry: 'simulated' | 'live'` zero-frontend-change architecture.
+   - **Slide 18 — Risk/Mitigation** — 6 risks with specific counters: solo founder, zero revenue, single customer, DPP delay, NdPr volatility, Brazil jurisdiction. Color-coded accent dots.
+   - **Slide 19 — Exit Paths** — 3 acquirer categories (Mining Major, ERP/SCM Vendor, ECA/Dev Bank) with named examples, thesis, and implied EV at consensus ARR ($55-200M). 3-5yr horizon.
+   - **Slide 22 — The Monday Play** — Meteoric demo plan: Gale (CEO), De Carvalho (Chief Geologist), Tunks (Chairman). Per-persona needs. $102k/yr Growth tier. GlassRow with 0.03% framing.
+   - **Slide 23 — Why Before Monday** — Timing arbitrage: $5-7M today → $7M+ post-pilot. ~$2M equity creation card. 30-40% paper increase visual. Three-color bullet sequence (green/violet/amber).
+
+9. **Updated Team slide** — 4 cards (was 3). New "Strategic Advisor" card with amber border accent and "Open seat" role. Copy: "Operator experience + capital network. This role shapes GTM, pipeline, and commercial execution."
+
+#### Phase 3: Documentation
+
+10. **Reconciled stale numbers:**
+    - `VALUATION.md`: 218→310 tests in scorecard and seed paragraph.
+    - `strategy.md`: 9.3→9.4 persona score (5 instances). Added §11 Meteoric Pitch Plan, §12 Dr. Caponi Formalization, §13 Founders-as-Advisors Outreach.
+    - `PITCH_DECK_COPY.md`: Updated releases line, replaced 20-slide copy with 26-slide copy + talk tracks, added DevTools easter egg note.
+    - `WEBSITE_COPY.md`: Updated releases line, expanded FoundersDeck section with v16 changes, documented nav fix and architecture improvements.
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **New (deck components)** | `src/components/deck/DeckShell.tsx`, `Terminal.tsx`, `StatCard.tsx`, `Bullet.tsx`, `GlassRow.tsx`, `Tag.tsx`, `SyntaxHelpers.tsx`, `index.ts` |
+| **Refactored (pages)** | `src/pages/PitchDeck.tsx`, `src/pages/MeteoricDeck.tsx`, `src/pages/FoundersDeck.tsx`, `src/pages/LandingPage.tsx` |
+| **Docs** | `docs/VALUATION.md`, `docs/strategy.md`, `docs/copy/PITCH_DECK_COPY.md`, `docs/copy/WEBSITE_COPY.md`, `HANDOFF.md` |
+
+### Quality Gate
+- 0 TypeScript compilation errors (frontend + server, strict mode)
+- ~400 lines of duplication eliminated across 4 files
+- All 3 deck routes + LP route verified: `/pitch-deck`, `/meteoric-deck`, `/founders-deck`, `/lp`
+- React Router navigation replaces `window.location.href` in all deck ESC handlers
+
+### Architecture Decisions
+- **`DeckShell` as render-prop** — `children: (idx: number) => ReactNode` keeps slide content co-located in each deck file while sharing navigation/chrome logic. This avoids the complexity of a slide registry pattern while eliminating the duplication.
+- **`Terminal` with `large` prop** — LP's Terminal was slightly larger (10px dots, 12px font) than deck Terminal (8px dots, 11px font). Rather than forcing one size, the `large` boolean provides the LP variant. LP wraps it as a local `Terminal` component for backward compatibility.
+- **Import alias in LandingPage** — `import { Terminal as TerminalBase } from 'components/deck'` + local `function Terminal({ title, children }) { return <TerminalBase title={title} large>{children}</TerminalBase> }`. This preserves LP's existing call sites unchanged.
+- **Barrel export** — `src/components/deck/index.ts` re-exports all primitives. Consumers import `from '../components/deck'` — clean one-line imports.
+- **26-slide narrative arc** — Honesty → Problem → Opportunity → Product → Engineering → Science → Business → Timing → Close. The 6 new slides follow the strategic frame: "Here's what I built" (1-11) → "Here's what happens Monday" (22-23) → "Here's what changes if you join before Monday" (23).
+
+---
+
+## Session v17 — Team Restructure + UI Polish Sprint (2026-04-10)
+
+### Context
+
+CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive scaling, color discipline, architecture SVG diagrams, map pin hover fix, and plant twin flow line alignment; (2) Team restructure — Dr. Caponi promoted from "Chief Scientific Advisor" to "Chief Scientific Officer", 2 new FoundersDeck slides ("Why You?" and "Why I Need You") for Juliano/Guilherme advisory pitch.
+
+### What was built
+
+#### Phase 1: UI Polish Sprint
+
+1. **Responsive content scaling** — Widened `maxWidth` constraints across all 3 decks (FoundersDeck, PitchDeck, MeteoricDeck) from 600-800px to 740-940px. Shared primitives (`StatCard`, `GlassRow`, `Tag`, `Terminal`) now use `clamp()` for fluid font scaling. LandingPage wrap from 1120px to 1200px.
+
+2. **Color discipline** — Stripped all decorative color diversity from FoundersDeck. Tags, StatCards, Bullets default to violet. Removed unused `C` (cyan) constant. Color only used for semantic meaning: amber=warning/simulated, green=verified/passing.
+
+3. **Architecture SVG diagrams** — Replaced 3 Terminal-heavy slides with inline SVG diagrams:
+   - Architecture slide: system topology with trust boundary, 3 process boxes, 4 enrichers, SQLite, security badges
+   - Data Service slide: class diagram (AetherDataService interface, Mock/Live implementations, useServiceQuery hook)
+   - AI Agent slide: trust boundary with Gemini gateway, hallucination fence, tool router → 6 domain categories
+   - Digital Twin slide: simplified 5-node AMSUL process flow with sensor dots
+
+4. **Map pin hover fix** — Added `handleMouseMove` with RAF throttle to `useMapInteraction.ts`, wired through `FieldView.tsx` → `MapBase` via `onMouseMove`. Fixes missing hover on pins over polygons.
+
+5. **Plant twin flow line alignment** — Fixed 20px horizontal displacement in `PlantSchematic.tsx` by adding `MARGIN` offset to `computeFlowPath()` and PROCESS_STEPS area calculations.
+
+#### Phase 2: Team Restructure
+
+6. **Dr. Caponi title change** — "Chief Scientific Advisor" → "Chief Scientific Officer" across FoundersDeck, LandingPage, PitchDeck, PITCH_DECK_COPY.md, WEBSITE_COPY.md, HANDOFF.md team table.
+
+7. **2 new FoundersDeck slides (28 total):**
+   - **Slide 21 — Why You?** — Pragmatic advisory pitch. Juliano (CTO lens: tech mentorship, architecture validation, hiring bar) and Guilherme (Business lens: commercial execution, GTM, investor pipeline). "Not asking for time — asking for leverage."
+   - **Slide 22 — Why I Need You** — Focus thesis. Left column: Carlos's lane (Caldeira pilot, LAPOC, features, regulatory datasets, 2 US AI companies). Right column: what he cannot do simultaneously (GTM, fundraising, pricing, governance). Bottom: three-way split (Carlos=product, Juliano=tech mentorship, Guilherme=commercial front).
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **UI Polish** | `src/components/deck/DeckShell.tsx`, `StatCard.tsx`, `GlassRow.tsx`, `Tag.tsx`, `Terminal.tsx` |
+| **Deck pages** | `src/pages/FoundersDeck.tsx`, `src/pages/PitchDeck.tsx`, `src/pages/MeteoricDeck.tsx` |
+| **Website** | `src/pages/LandingPage.tsx` |
+| **Map fix** | `src/views/field/useMapInteraction.ts`, `src/views/FieldView.tsx` |
+| **Plant fix** | `src/components/plant/PlantSchematic.tsx` |
+| **Docs** | `docs/copy/PITCH_DECK_COPY.md`, `docs/copy/WEBSITE_COPY.md`, `HANDOFF.md` |
+
+### Quality Gate
+- 0 TypeScript compilation errors (strict mode)
+- All deck routes verified: `/pitch-deck`, `/meteoric-deck`, `/founders-deck`, `/lp`
+- FoundersDeck: 28 slides (was 26)

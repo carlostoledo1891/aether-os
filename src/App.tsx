@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useRef, useState, useMemo } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import type { AlertItem, ViewMode } from './types/telemetry'
+import type { AlertItem, ReportType, ViewMode } from './types/telemetry'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { MapCameraProvider } from './contexts/MapCameraContext'
 import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
@@ -18,7 +18,10 @@ import shell from './AppShell.module.css'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'))
 const PitchDeck = lazy(() => import('./pages/PitchDeck'))
+const MeteoricDeck = lazy(() => import('./pages/MeteoricDeck'))
+const FoundersDeck = lazy(() => import('./pages/FoundersDeck'))
 const ViewEnginePage = lazy(() => import('./engine/ViewEnginePage').then(m => ({ default: m.ViewEnginePage })))
+const ReportViewer = lazy(() => import('./components/reports/ReportViewer').then(m => ({ default: m.ReportViewer })))
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
 
@@ -32,6 +35,7 @@ function createDataService() {
 
 function AppShell() {
   const [view, setView] = useState<ViewMode>('operator')
+  const [reportOpen, setReportOpen] = useState<ReportType | null>(null)
   const [alertOpen, setAlertOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
   const [highlightFeatureId, setHighlightFeatureId] = useState<string | null>(null)
@@ -42,6 +46,8 @@ function AppShell() {
   const openAlertPanel = useCallback(() => { setChatOpen(false); setAlertOpen(true) }, [])
   const openChatPanel = useCallback(() => { setAlertOpen(false); setChatOpen(true) }, [])
   const closeChatPanel = useCallback(() => setChatOpen(false), [])
+  const handleReportOpen = useCallback((type: ReportType) => { setReportOpen(type) }, [])
+  const handleReportClose = useCallback(() => setReportOpen(null), [])
 
   const handleAlertNavigate = useCallback((alert: AlertItem) => {
     if (alert.source === 'operator') {
@@ -71,6 +77,7 @@ function AppShell() {
         onChatOpen={openChatPanel}
         view={view}
         onViewChange={setView}
+        onReportOpen={handleReportOpen}
         disclosureMode={dataContext.disclosureMode}
       />
       <DataModeBanner context={dataContext} />
@@ -143,6 +150,12 @@ function AppShell() {
         onNavigate={handleAlertNavigate}
       />
       <ChatPanel isOpen={chatOpen} onClose={closeChatPanel} />
+
+      {reportOpen && (
+        <Suspense fallback={null}>
+          <ReportViewer type={reportOpen} onClose={handleReportClose} />
+        </Suspense>
+      )}
     </div>
   )
 }
@@ -188,6 +201,8 @@ export default function App() {
     <Routes>
       <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
       <Route path="/pitch-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PitchDeck /></Suspense></ErrorBoundary>} />
+      <Route path="/meteoric-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
+      <Route path="/founders-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
       <Route path="/view/:manifestId" element={<ViewEngineShell />} />
       <Route path="/*" element={<DashboardShell />} />
     </Routes>

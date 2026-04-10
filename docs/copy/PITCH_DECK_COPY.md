@@ -4,7 +4,7 @@
 
 **Last synced from codebase:** 2026-04-10  
 **Source:** [`HANDOFF.md`](../../HANDOFF.md), [`README.md`](../../README.md), [`branding.md`](../branding.md), [`strategy.md`](../strategy.md), product positioning in views, governance disclaimers in `mockDataService` / executive tabs, stakeholder stress-test personas (issuer → capital → buyers → society → ecosystem → media), and [`VALUATION.md`](../VALUATION.md).  
-**Releases since last sync:** All through **v13: CTO EGO Sprint Ultimate Edition** — security hardening (CSP, rate limiting, API auth, CORS, error handler), 310 tests, design token compliance, React.memo on all overlays, unified Z-index, accessibility attributes, dead code removal.
+**Releases since last sync:** All through **v16: Juliano + Guilherme Final Sprint** — shared deck components (`src/components/deck/`), 6 new FoundersDeck slides (Disclaimer, LAPOC Pipeline, Risk/Mitigation, Exit Paths, Monday Play, Why Before Monday), Strategic Advisor team card, DevTools easter egg, LandingPage nav fix, code deduplication (~400 lines), React Router ESC navigation, plus all v15/v13 changes (report templates, security hardening, 310 tests).
 
 ---
 
@@ -147,6 +147,7 @@ flowchart LR
 - **27 AI agent tools** — domain-grounded chat spanning financials, geology, compliance, lithology, DPP validation, security architecture, stakeholders, market sizing, and web search — all backed by seeded project data.
 - **React.memo on all 14 map overlays** — zero unnecessary re-renders during pan/zoom. Unified `Z` constant for all z-index values — no more "popup behind the header" bugs.
 - **Design token compliance** — all colors flow from `W.*` (TypeScript) and `var(--w-*)` (CSS). Zero hardcoded hex values in core components. Theme-switchable architecture.
+- **Interactive report templates** — 3 exportable reports (Environment, Operations, Drill Tests) in a light-mode lightbox. JORC resource tables, CAPEX breakdowns, process flows, water quality monitoring, community metrics, RE recovery tables — all with time range selectors and PDF export. The PF Analyst can attach the Operations Report to a credit committee memo. The NGO can export the Environment Report as standalone evidence. Zero new dependencies.
 
 **Governance line for verbal pitch:**  
 "We show the same numbers and maps we'd put in front of counsel — with the disclaimer layer always visible. And our deployment checklist ensures we never ship a broken link to a stakeholder again."
@@ -193,7 +194,7 @@ flowchart LR
 - **Three-process production architecture** — Fastify API (40+ REST endpoints + WebSocket), simulation engine (2s tick + 4 external enrichers), Vite frontend — Docker Compose orchestrated.
 - **Enterprise security hardening** — CSP headers, rate limiting, API auth, fail-closed ingest, CORS lockdown, production error handler.
 - **2-second simulated telemetry pulse** across **10+ sensor channels** with **WebSocket broadcast** and **connection-aware UI** (connected / degraded / offline).
-- **Persona-validated at ~9.3/10** weighted average — 5 of 9 stakeholder personas at code ceiling (10.0). See Appendix E.
+- **Persona-validated at ~9.4/10** weighted average — 5 of 9 stakeholder personas at code ceiling (10.0). See Appendix E.
 - **Mandatory deployment gate** — TypeScript clean, all tests pass, production build clean, localhost click-through, Vercel preview before production.
 - **4 external API enrichers** live — Open-Meteo (weather), BCB PTAX (FX), USGS (seismic), Alpha Vantage (stock).
 - **Public dashboard engine** — JSON-driven Mini Engine for custom branded pages. Live example: Prefeitura de Poços de Caldas partnership dashboard at `/view/prefeitura-pocos`.
@@ -223,7 +224,7 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 - **Brazilian Air Force Academy** (pilot) — systems discipline, operational rigor.
 - **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 310 tests across 3 packages, 27 AI agent tools, pilot plant digital twin with 17 equipment and 28 sensors, 19 GeoJSON datasets, 14 overlay layers, real SHA-256 audit chain, enterprise security hardening, CSP + rate limiting, deployment gate, accessibility-hardened, 4 external API enrichers live.
 
-**Dr. Heber Caponi** — Chief Scientific Advisor (LAPOC)
+**Dr. Heber Caponi** — Chief Scientific Officer (LAPOC)
 - **Decades of active field research** on the Caldeira alkaline complex. Still conducting fieldwork today.
 - The scientific authority who converts Vero's "simulated" labels into **"field-verified"** labels.
 - LAPOC instrument data is the **first live data channel** — the bridge from demo to product.
@@ -305,12 +306,152 @@ They will cross-check: **green premium**, recovery vs nameplate, ESG coverage %,
 | SCADA Integrator | 7.5 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Equipment-sensor catalog + OpenAPI | OPC-UA bridge (process) |
 | Journalist | 6.5 | 9.0 | 9.5 | 10.0 | **10.0** | ↑ ceiling | Control Room hero screenshot | Customer LOI |
 
-**Weighted average: v1 6.8 → v9 8.6 → v10 8.9 → v11 9.2 → v13 9.3** — 5 of 9 personas at code ceiling (10.0).
+**Weighted average: v1 6.8 → v9 8.6 → v10 8.9 → v11 9.2 → v13 9.3 → v15 9.4** — 5 of 9 personas at code ceiling (10.0).
 
 **v13 key insight:** Two personas moved on engineering quality alone — a rare outcome that validates infrastructure investment. DoD (+0.5) responded to security hardening (CSP, rate limiting, API auth, fail-closed ingest). PF Analyst (+0.5) responded to test count, rate limiting, and production error handling as technical risk reduction. Zero-feature sprint, two score increases. **Remaining gaps: FedRAMP (DoD), full DPP coverage (EU), covenant monitoring (PF), field-verified springs (NGO) — all require external actions.**
 
 **Valuation (Business Expert analysis — see `docs/VALUATION.md`):**  
 Pre-revenue consensus: **$5–7M** pre-money. At $4.5M ARR (2030 consensus): **$55–90M**. Flagship customer (Caldeira) has $821M NPV at consensus — Vero's $102k/yr = 0.03% of project revenue.
+
+---
+
+---
+
+## Founders Deck — Juliano Dutra + Guilherme Bonifácio Edition (v16)
+
+**Route:** `/founders-deck`  
+**File:** `src/pages/FoundersDeck.tsx`  
+**Created:** 2026-04-10 · **Updated:** 2026-04-10 (v17 — 28 slides, team restructure + advisory pitch)  
+**Targets:** Juliano Dutra (CTO lens — iFood co-founder, Gringo CTO, 20+ angel investments, Unicamp CS) and Guilherme Bonifácio (Business lens — iFood co-founder, 110+ angel investments, Kanoa Capital, FEA-USP Economics)
+
+### Persona Targeting Legend
+
+- 🔵 **Juliano slide** — Technical deep-dive, code quality, architecture
+- 🟠 **Guilherme slide** — Market, unit economics, valuation, defensibility, risk
+- ⚪ **Both** — Product capability, team, timeline, strategic timing
+
+### Narrative Arc
+
+**Honesty → Problem → Opportunity → Product → Engineering → Science → Business → Timing → Close**
+
+### Slide-by-Slide Copy + Talk Track (28 slides)
+
+**Slide 0 — Disclaimer** ⚪  
+"This demo mixes public-reference data, disclosure-aligned scenarios, and simulated time series. Nothing is an attestation. The data honesty banner is always visible. We show honest limits before flashy features — because that's how trust is built."  
+*Talk track: Open with honesty. This mirrors Guilherme's $7M return to investors at Mercê do Bairro — integrity before numbers. For Juliano, it signals engineering discipline: if we label simulation, we label simulation.*
+
+**Slide 1 — Cover** ⚪  
+"Vero — Verified Origin · Trusted Supply"  
+Persona score 9.4/10 · 310 tests · 27 AI tools · 14 overlays · 17 equipment  
+*Talk track: Solo founder, TypeScript strict, zero compilation errors. This is the "one person built this?" moment.*
+
+**Slide 2 — The Problem** ⚪  
+China 70% control, DoD 18-24mo delays, EU DPP in 10 months, Meteoric $443M CAPEX with no governance layer.  
+*Talk track: Frame the urgency. $443M project with no unified data layer. 15+ more like it in the pipeline.*
+
+**Slide 3 — The Market** 🟠  
+TAM $18.8B→$31.9B (Mordor + GVR), SAM $1.6B→$5.2B (Dataintelo + GMR), SOM $15M→$45M (bottom-up ASX/TSX).  
+*Talk track: Guilherme — sourced numbers, not back-of-napkin. CAGR 11-14% is fintech-adjacent growth.*
+
+**Slide 4 — Regulatory Catalyst** 🟠  
+EU DPP Feb 2027, US FEOC active, Australian ESG 2025+. "Pix created the fintech explosion because regulation created the market."  
+*Talk track: Guilherme knows this pattern — Pix, LGPD. DPP is the Pix moment for mineral compliance.*
+
+**Slide 5 — Three Truths, One Platform** ⚪  
+Ground Truth → Trade Truth → Board Truth. Cards with icons and stakeholder targeting.  
+*Talk track: Three views, three audiences, one data layer. Platform, not dashboard.*
+
+**Slide 6 — The Caldeira Showcase** ⚪  
+NPV $821M, CAPEX $443M, Revenue $315M, IRR 28%, Resource 1.54Bt, Mine Life 20 yrs. 0.03% framing.  
+*Talk track: Real ASX-listed project. Our fee = 0.03% of revenue. Less than one day of construction loan interest.*
+
+**Slide 7 — Architecture Deep Dive** 🔵  
+3-process: aether-engine → aether-api → Vite Frontend. Terminal blocks: enrichers, security, WebSocket.  
+*Talk track: Juliano — three processes, not a monolith. Engine enriches from 4 external APIs. Docker Compose orchestrates.*
+
+**Slide 8 — Code Quality** 🔵  
+310 tests, 0 TS errors, 135+ files, 2,500+ HANDOFF.md. Design token system (107 tokens).  
+*Talk track: Juliano — design tokens typed, const. HANDOFF.md written for the next developer, not for demo.*
+
+**Slide 9 — Data Service Architecture** 🔵  
+`AetherDataService` with `MaybeAsync<T>`. Mock (sync) vs Live (Promise). Zero frontend changes.  
+*Talk track: Juliano — clean service boundary. Swap implementation, zero refactoring.*
+
+**Slide 10 — AI Agent** 🔵  
+27 tools, 6 categories, Gemini 2.5 Flash. Hallucination tests — "refuses lithium" shown.  
+*Talk track: Juliano — 10 honesty tests, 100% pass required. Not GPT-wrapper territory.*
+
+**Slide 11 — Digital Twin** ⚪  
+17 equipment, 28 sensors, 7 process steps, 15 animated flow paths.  
+*Talk track: Hand-tuned SVG. Click any equipment — the "wow" moment.*
+
+**Slide 12 — LAPOC Pipeline** 🔵🟠 (NEW)  
+Simulated → Field-Verified transition. Before/after visual. Dr. Caponi profile. Zero frontend changes.  
+*Talk track: This is the single highest-value technical milestone. When LAPOC connects, every "simulated" label becomes "field-verified." The architecture already handles it — `DataContext.telemetry: 'simulated' | 'live'`. Validated by the scientist who studied this deposit for decades.*
+
+**Slide 13 — Reports** ⚪  
+3 light-mode reports, WL palette, PDF export via browser print.  
+*Talk track: Light mode, time range selectors, one-click PDF. Zero new dependencies.*
+
+**Slide 14 — Personas** 🟠  
+9 stakeholders, v1 6.8 → v15 9.4. Full table. 6 of 9 at code ceiling.  
+*Talk track: Guilherme — product methodology. How you validate PMF before customers.*
+
+**Slide 15 — Competitive Moat** 🟠  
+Minviro, Circulor, Everledger comparison. Honesty positioning as defense.  
+*Talk track: Guilherme — Everledger is the cautionary tale. Honesty-first is the Everledger defense.*
+
+**Slide 16 — Revenue Model** 🟠  
+Pilot $30k, Growth $102k, Enterprise $180-350k. Three 2030 scenarios. 95%+ margin.  
+*Talk track: Guilherme — $2k/mo costs, 95%+ gross margin. SaaS economics he's seen 110 times.*
+
+**Slide 17 — Valuation** 🟠  
+Scorecard 83rd percentile. Bear $3-4M / Consensus $5-7M / Bull $8-12M.  
+*Talk track: Guilherme — 4.15/5.0 total. Better product than comps at higher valuations.*
+
+**Slide 18 — Risk/Mitigation** 🟠 (NEW)  
+6 risks with specific counters: solo founder, zero revenue, single customer, DPP delay, NdPr volatility, Brazil jurisdiction.  
+*Talk track: Guilherme runs search funds — risk assessment is his job. Every risk has a named mitigation, not "we'll figure it out."*
+
+**Slide 19 — Exit Paths** 🟠 (NEW)  
+Mining major (BHP/Rio Tinto), ERP vendor (SAP/Oracle/Palantir), ECA (IFC/BNDES). 3-5yr horizon, $55-200M EV.  
+*Talk track: Guilherme — three exit categories, named acquirers, implied EV at consensus ARR. DFS → Construction → Production creates the acquisition window.*
+
+**Slide 20 — Team** ⚪ (UPDATED)  
+Carlos Toledo, Dr. Caponi (Chief Scientific Officer), Full-Stack Dev (activating), Strategic Advisor (open seat).  
+*Talk track: Core team. Dr. Caponi is not advisory — he is the scientific authority inside Vero. The dev seat and advisor seat are explicit invitations.*
+
+**Slide 21 — Why You?** ⚪ (NEW)  
+Juliano Dutra (CTO lens) + Guilherme Bonifácio (Business lens). Pragmatic needs: tech mentorship for scaling, commercial execution partner. Advisory board seat. Quarterly check-ins. Not asking for time — asking for leverage.  
+*Talk track: No flattery. Juliano — I need someone who has shipped at scale to validate architecture decisions and set the hiring bar. The dev hire reports to you. Guilherme — I need someone who has built revenue engines to own GTM and investor pipeline. The commercial hire reports to you.*
+
+**Slide 22 — Why I Need You** ⚪ (NEW)  
+Focus thesis: Carlos stays on product + science + field (Caldeira pilot, LAPOC, features, regulatory datasets, 2 US AI company collaborations). Cannot simultaneously run GTM, fundraising, pricing, board governance. The split: Carlos = product. Juliano = tech mentorship. Guilherme = commercial front.  
+*Talk track: I work with 2 US-based frontier AI companies. I see the regulations creating the market. I see the perfect storm for rare earth minerals tech. I need to stay in the product — you handle the front. That is the deal.*
+
+**Slide 23 — The Ask** ⚪  
+$500k-1M · $5-7M pre-money · 18 months. Hiring plan + milestone targets.  
+*Talk track: 3 pilots by Month 6, seed round by Month 9.*
+
+**Slide 24 — The Monday Play** ⚪ (NEW)  
+Monday April 14: Gale (CEO), De Carvalho (Chief Geologist), Tunks (Chairman). Per-persona needs. $102k/yr Growth tier. 0.03% framing.  
+*Talk track: This is the catalyst event. Each person in the room has a specific need. The demo is tailored to each. The ask is $102k/yr — 0.03% of their revenue.*
+
+**Slide 25 — Why Before Monday** ⚪ (NEW)  
+Pre-money $5-7M today → $7M+ post-pilot. ~$2M equity value creation. 30-40% paper increase in days.  
+*Talk track: Your investment creates the runway that closes the pilot. The pilot closes the valuation gap. Join before the catalyst, not after. This is the timing arbitrage.*
+
+**Slide 26 — Timeline** ⚪  
+Apr 14 → Meteoric demo. Apr 18 → Term sheet. May → LAPOC. Jun → First revenue. Jul-Sep → Seed. Feb 2027 → EU DPP.  
+*Talk track: Monday is live. EU DPP in 10 months. The window is now.*
+
+**Slide 27 — Close** ⚪  
+"The product is better than the pitch. Come see it."  
+*Talk track: Don't say more. The demo closes.*
+
+### DevTools Easter Egg (Juliano-specific)
+
+A `console.log` with `%c` styled output fires on `/founders-deck` — personalized message for Juliano with brand colors (#7C5CFC, #00D4C8), key metrics (310 tests, 107 tokens, MaybeAsync, 3 processes), and a `git clone` CTA. Uses `W.violet` and `W.cyan` hex values. Simple, personal, zero gimmicks.
 
 ---
 
