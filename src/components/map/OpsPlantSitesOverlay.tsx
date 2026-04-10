@@ -8,7 +8,7 @@ import {
   type FeatureProperties,
   type PointGeometry,
 } from './geojson'
-import sitesUrl from '../../data/geojson/caldeira-ops-plant-sites.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 interface OpsPlantProperties extends FeatureProperties {
   id: string
@@ -36,23 +36,21 @@ export function OpsPlantSitesOverlay({
   hoveredId = null,
   selectedId = null,
 }: OpsPlantSitesOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<OpsPlantFeature>(sitesUrl)
+  const raw = useGeoJsonFeatureCollection<OpsPlantFeature>(GEO.plantSites.url)
 
   const data = useMemo<FeatureCollection<OpsPlantFeature> | null>(() => {
     if (!raw) return null
     return {
       type: 'FeatureCollection',
       features: raw.features.map((f) => {
-        const isComm = f.properties.id === 'PLANT-COMM-01'
-        const base = isComm ? W.mapCommercial : W.green
         const h = f.properties.id === hoveredId
         const s = f.properties.id === selectedId
         return {
           ...f,
           properties: {
             ...f.properties,
-            dotColor: base,
-            dotRadius: isComm ? 11 : 10,
+            dotColor: W.green,
+            dotRadius: 10,
             dotOpacity: s ? 1 : h ? 0.95 : 0.88,
           },
         }

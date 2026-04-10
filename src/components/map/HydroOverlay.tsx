@@ -3,8 +3,10 @@
 import { useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Layer, Marker, Source, useMap } from 'react-map-gl/maplibre'
+import { Droplets } from 'lucide-react'
 import type { EnvTelemetry, SpringTelemetry } from '../../types/telemetry'
 import { W } from '../../app/canvas/canvasTheme'
+import { THRESHOLDS } from '../../data/mockData'
 import {
   emptyFeatureCollection,
   useGeoJsonFeatureCollection,
@@ -13,9 +15,9 @@ import {
   type FeatureProperties,
   type PointGeometry,
 } from './geojson'
-import hydroNodesUrl from '../../data/geojson/hydro-nodes.geojson?url'
-import hydroSpringsUrl from '../../data/geojson/hydro-springs.geojson?url'
+import { GEO } from '../../data/geo/registry'
 import styles from './HydroOverlay.module.css'
+import hudCss from '../plant/controlRoom.module.css'
 import { MAP_STACKING } from './mapStacking'
 import { tierShort, type HydroNodeType, type HydroWeatherStripModel } from './hydroDetailMappers'
 import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from './hydroLayerIds'
@@ -159,12 +161,13 @@ interface HydroOverlayProps {
   hoveredNodeId: string | null
   selectedNodeId: string | null
   weatherStrip?: HydroWeatherStripModel | null
+  onOpenStation?: () => void
 }
 
-export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip }: HydroOverlayProps) {
+export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip, onOpenStation }: HydroOverlayProps) {
   const { current: mapRef } = useMap()
-  const staticNodes = useGeoJsonFeatureCollection<HydroNodeFeature>(hydroNodesUrl)
-  const staticSprings = useGeoJsonFeatureCollection<HydroSpringFeature>(hydroSpringsUrl)
+  const staticNodes = useGeoJsonFeatureCollection<HydroNodeFeature>(GEO.hydroNodes.url)
+  const staticSprings = useGeoJsonFeatureCollection<HydroSpringFeature>(GEO.hydroSprings.url)
 
   const sensorMap = useMemo(() => {
     const byId: Record<string, EnvTelemetry['aquifer']['sensors'][number]> = {}
@@ -247,7 +250,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         const status = telem?.status ?? 'Active'
         const tier = telem?.monitoring_tier ?? 'modeled_inferred'
         const circleOpacity = tierCircleOpacity(tier)
-        const color = status === 'Active' ? W.teal : status === 'Reduced' ? W.tealMuted : W.tealDark
+        const color = W.cyan
         const radius = springPinRadiusPx(status, tier)
         const lastVisit = telem?.last_field_visit
         const lastFieldVisitDisplay = lastVisit
@@ -376,57 +379,73 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         )}
       </div>
 
-      {/* ── Consolidated Monitoring card ──────────────────────────────────── */}
-      <div
-        className={`${styles.springCounter} ${springCounts.suppressed > 0 ? styles.springCounterBorderAlert : styles.springCounterBorderOk}`}
-        style={{ zIndex: MAP_STACKING.hud }}
+      {/* ── Monitoring HUD card (mirrors PilotPlantCard) ──────────────────── */}
+      <motion.div
+        className={hudCss.hudCard}
+        initial={{ opacity: 0, x: -12 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -12 }}
+        transition={{ duration: 0.25 }}
+        onClick={onOpenStation}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenStation?.() } }}
+        style={{
+          zIndex: MAP_STACKING.hud,
+          background: 'rgba(6, 6, 16, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: `1px solid ${W.cyan}20`,
+          borderRadius: W.radius.md,
+          padding: '10px 12px',
+          boxShadow: `0 0 20px ${W.cyan}10`,
+        }}
       >
-        <div style={{ fontSize: 10, fontWeight: 600, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
-          Monitoring
+        <div className={hudCss.hudHeader}>
+          <div className={hudCss.hudStatusDot} style={{ background: springCounts.suppressed > 0 ? W.red : W.green }} />
+          <Droplets size={10} style={{ color: W.cyan, opacity: 0.7 }} />
+          <span className={hudCss.hudTitle}>Hydro Station</span>
+          <span style={{ marginLeft: 'auto', fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>LIVE</span>
         </div>
-        {/* Springs section */}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.teal, display: 'inline-block' }} />
-            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.teal, fontWeight: 600 }}>{springCounts.active} Active</span>
+
+        <div className={hudCss.hudMetricsGrid}>
+          <div className={hudCss.hudMetric}>
+            <div className={hudCss.hudMetricLabel}>Springs</div>
+            <div className={hudCss.hudMetricValue} style={{ color: W.cyan }}>
+              {springCounts.active}<span style={{ fontSize: 8, color: W.text4, marginLeft: 2 }}>/ {springCounts.active + springCounts.reduced + springCounts.suppressed}</span>
+            </div>
           </div>
-          {springCounts.reduced > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.tealMuted, display: 'inline-block' }} />
-              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.tealMuted, fontWeight: 600 }}>{springCounts.reduced} Reduced</span>
+          <div className={hudCss.hudMetric}>
+            <div className={hudCss.hudMetricLabel}>SO₄</div>
+            <div className={hudCss.hudMetricValue} style={{ color: env.water_quality.sulfate_ppm < THRESHOLDS.sulfate_warning_ppm ? W.green : W.amber }}>
+              {env.water_quality.sulfate_ppm.toFixed(0)}<span style={{ fontSize: 8, color: W.text4, marginLeft: 2 }}>ppm</span>
             </div>
-          )}
-          {springCounts.suppressed > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: W.tealDark, display: 'inline-block' }} />
-              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: W.tealDark, fontWeight: 600 }}>{springCounts.suppressed} Suppressed</span>
+          </div>
+          <div className={hudCss.hudMetric}>
+            <div className={hudCss.hudMetricLabel}>Precip 30d</div>
+            <div className={hudCss.hudMetricValue} style={{ color: weatherStrip && weatherStrip.anomalyMm < 0 ? W.amber : W.cyan }}>
+              {weatherStrip ? (weatherStrip.loading ? '…' : `${weatherStrip.windowPrecipMm.toFixed(0)}`) : '—'}<span style={{ fontSize: 8, color: W.text4, marginLeft: 2 }}>mm</span>
             </div>
-          )}
+          </div>
+          <div className={hudCss.hudMetric}>
+            <div className={hudCss.hudMetricLabel}>Anomaly</div>
+            <div className={hudCss.hudMetricValue} style={{ color: weatherStrip && weatherStrip.anomalyMm < 0 ? W.amber : W.cyan }}>
+              {weatherStrip ? `${weatherStrip.anomalyMm >= 0 ? '+' : ''}${weatherStrip.anomalyMm.toFixed(0)}` : '—'}<span style={{ fontSize: 8, color: W.text4, marginLeft: 2 }}>mm</span>
+            </div>
+          </div>
         </div>
-        <div style={{ height: 1, background: W.glass08, margin: '4px 0' }} />
-        {/* Precipitation section */}
-        {weatherStrip && (
-          <div style={{ display: 'flex', gap: 8, fontSize: 11, color: W.text2, marginTop: 6 }}>
-            <span style={{ fontWeight: 600 }}>
-              {weatherStrip.loading ? '…' : `${weatherStrip.windowPrecipMm.toFixed(1)} mm`}
+
+        <div className={hudCss.processDotsRow}>
+          {[W.cyan, springCounts.reduced > 0 ? W.amber : W.cyan, springCounts.suppressed > 0 ? W.red : W.cyan].map((color, i, arr) => (
+            <span key={i}>
+              <span className={hudCss.processDot} style={{ background: color, boxShadow: `0 0 4px ${color}60` }} />
+              {i < arr.length - 1 && <span className={hudCss.processLine} />}
             </span>
-            <span style={{ color: W.text4 }}>30-day</span>
-            <span style={{ color: weatherStrip.anomalyMm < 0 ? W.amber : W.cyan, fontFamily: 'var(--font-mono)' }}>
-              Δ {weatherStrip.anomalyMm >= 0 ? '+' : ''}{weatherStrip.anomalyMm.toFixed(1)} mm
-            </span>
-            <span style={{
-              fontSize: 9,
-              padding: '0 4px',
-              borderRadius: 3,
-              background: W.glass06,
-              color: W.text4,
-              fontFamily: 'var(--font-mono)',
-            }}>
-              {weatherStrip.source === 'openmeteo' ? 'Open-Meteo' : 'mock'}
-            </span>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+
+        <div className={hudCss.hudFooter}>Click to open Hydro Station</div>
+      </motion.div>
 
       {/* ── Hover tooltip card ─────────────────────────────────────────────── */}
       <AnimatePresence>
@@ -534,7 +553,7 @@ export function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip 
         {[
           { label: 'Piezometer', color: W.cyan },
           { label: 'UDC Site', color: W.red },
-          { label: 'Spring', color: W.teal },
+          { label: 'Spring', color: W.cyan },
           { label: 'Water Feature', color: W.cyan },
         ].map(({ label, color }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>

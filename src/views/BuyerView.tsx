@@ -10,6 +10,8 @@ import { CountdownTimer } from '../components/ui/CountdownTimer'
 import { MapBase, BUYER_VIEW_STATE } from '../components/map/MapBase'
 import type { MapLayerMouseEvent } from '../components/map/MapBase'
 import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
+import { LicenseOverlay, LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
+import { EnvironmentalOverlay, ENV_APA_FILL_LAYER_ID } from '../components/map/EnvironmentalOverlay'
 import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverlay'
 import { InfraOverlay } from '../components/map/InfraOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
@@ -126,12 +128,16 @@ export function BuyerView() {
 
   const [buyerLayers, setBuyerLayers] = useState({
     boundary: true,
+    licenses: true,
+    apa: true,
     deposits: true,
     infrastructure: true,
     markers: true,
   })
   const buyerLayerToggles = [
     { id: 'boundary', label: 'Caldeira Boundary', checked: buyerLayers.boundary },
+    { id: 'licenses', label: 'License Areas', checked: buyerLayers.licenses },
+    { id: 'apa', label: 'APA / Buffer', checked: buyerLayers.apa },
     { id: 'deposits', label: 'Deposits', checked: buyerLayers.deposits },
     { id: 'infrastructure', label: 'Infrastructure', checked: buyerLayers.infrastructure },
     { id: 'markers', label: 'Batch Markers', checked: buyerLayers.markers },
@@ -149,7 +155,7 @@ export function BuyerView() {
     setActiveTab('traceability')
   }, [])
 
-  const buyerInteractiveLayerIds = [DEPOSIT_LAYER_ID]
+  const buyerInteractiveLayerIds = [DEPOSIT_LAYER_ID, LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID]
 
   const handleBuyerMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feat = e.features?.[0]
@@ -238,6 +244,8 @@ export function BuyerView() {
             >
               <BatchFitBounds mapId="buyerField" batchId={batchId} timeline={batch.molecular_timeline} skipInitialFit={!!initialCamera} />
               {buyerLayers.boundary && <CaldeiraBoundary />}
+              {buyerLayers.licenses && <LicenseOverlay hoveredLicenseId={null} selectedLicenseId={null} />}
+              {buyerLayers.apa && <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} />}
               {buyerLayers.deposits && <DepositOverlay highlightId={originDepositId} />}
               {buyerLayers.infrastructure && <InfraOverlay showRoute mapId="buyerField" />}
               {buyerLayers.markers && batch.molecular_timeline.map((step, i) => {

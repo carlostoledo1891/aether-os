@@ -13,7 +13,7 @@ import type {
   StakeholderRegister,
   TelemetryTick,
 } from './dataService'
-import type { DepositRecord } from '../data/mockData'
+import type { DepositRecord } from '../data/domain/deposits'
 import type { ComplianceLedger, SpringEvent } from '../types/telemetry'
 import type { IssuerSnapshot } from '../data/caldeira/issuerSnapshot'
 

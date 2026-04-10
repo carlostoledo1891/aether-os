@@ -1951,7 +1951,7 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 ---
 
-*Last updated: 2026-04-09 — v11 Sprint: Pilot Plant Digital Twin / Control Room. 7 new files, 1 modified view. Persona weighted average ~9.2. Valuation analysis created (docs/VALUATION.md). 5 of 9 personas at code ceiling (10.0). 27 AI tools. Next: commercial execution.*
+*Last updated: 2026-04-10 — v12 Sprints: Hydro Monitoring Upgrade + Design Consistency. HydroStation overlay (no-scroll, violet climate palette), Monitoring HUD card (PilotPlantCard pattern), Open-Meteo enrichment (temp/humidity/ET0/soil moisture), color token audit (~30 hardcoded hex/rgba replaced with W tokens / CSS vars), APA/Buffer → cyan, springs → cyan, buyer/field/executive background normalization. Persona weighted average ~9.2 (maintained). 0 TS errors, clean build.*
 
 ---
 
@@ -2065,3 +2065,64 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 - **Hand-tuned SVG layout over library** — PlantSchematic uses fixed coordinates for each node, avoiding dependency on graph layout libraries. Layout optimized for visual clarity of the 7-step process flow.
 - **CSS animations scoped to module** — all keyframes in controlRoom.module.css, not global. Prevents naming collisions.
 - **Valuation at $5–7M consensus** — Business Expert analysis grounded in comparable transactions (Minviro, Circulor), revenue model from codebase pricing data, and SOM basis of 15 REE projects.
+
+---
+
+## Session Log — 2026-04-10 (v12: Hydro Monitoring Upgrade + Design Consistency Sprint)
+
+**What was completed this session (2 sprints, 11 tasks):**
+
+### Sprint 1: Hydro & Climate Monitoring Upgrade
+
+1. **Bug fix: overlay mutual exclusion** — `switchTab` in `FieldView.tsx` now resets both `controlRoomOpen` and `hydroStationOpen`. ControlRoom render guarded by `mapTab === 'operations'`, HydroStation by `mapTab === 'environment'`. Clicking Hydro while Plant is open no longer leaves Plant mounted.
+
+2. **Color token audit (phase 1)** — Replaced hardcoded hex in FieldView legend (`#22c55e`, `#eab308`, `#ef4444`, `#fff3`, `#fff6` → `W.green`, `W.amber`, `W.red`, `W.glass04`, `W.glass08`). Replaced 12+ hardcoded `#7878b0`/`#8888b8`/`#a0a0c8`/`#ececf8` in `controlRoom.module.css` with `var(--w-text1)` through `var(--w-text4)`. Added `--w-map-control-bg` and `--w-map-control-border` CSS vars to `theme.css`. Spring status colors changed from teal family to cyan/amber/red.
+
+3. **Monitoring HUD card rewrite** — Replaced the old `.springCounter` card in `HydroOverlay.tsx` with a `motion.div` using `hudCard` CSS classes from `controlRoom.module.css`. Matches PilotPlantCard exactly: same glass effect, position, animation, 4-metric grid (Springs, SO₄, Precip 30d, Anomaly), status dots strip, "Click to open Hydro Station" footer.
+
+4. **HydroStation overlay** — Created `src/views/field/HydroStation.tsx` following ControlRoom architecture. Header with Droplets icon, spring/piezo counts, status indicator. Left KPI strip (Spring Health + Water Quality + Piezometers). Center Climate Dashboard: spring health segmented bar, climate KPI cards, 30-day precipitation bar chart, daily temperature range mini-chart, water balance (precip vs ET₀), WQ gauges with threshold bars, aquifer piezometer depth indicators.
+
+5. **Open-Meteo API enrichment** — Expanded `openMeteoClient.ts` with `fetchPastDaysClimate()` fetching temperature max/min, relative humidity, ET₀ evapotranspiration, wind speed, soil moisture. Created `DailyClimateSeries` interface. Added `useSiteClimate()` hook with derived KPIs (tempMaxAvg, tempMinAvg, humidityAvg, et0Total, windMaxAvg, soilMoistureAvg, waterBalance). Full mock fallback.
+
+### Sprint 2: Design Consistency
+
+6. **HydroStation layout refactor** — Removed vertical scroll (`overflowY: 'auto'` → `overflow: 'hidden'`). Converted to fixed-height 2-row grid: top row = spring health bar + climate KPI cards, bottom row = precipitation chart (left) + water balance/temperature (right). WQ gauges merged into left KPI strip. Color palette shifted to purple/violet (`#C4B5FD`, `W.violetSoft`, `W.violet`, `#7E22CE`) for all climate data; cyan reserved for spring health.
+
+7. **Spring pins → all cyan** — Changed `HydroOverlay.tsx` spring color from status-based `W.teal`/`W.tealMuted`/`W.tealDark` to uniform `W.cyan`. Updated legend. Differentiation now by opacity (via monitoring tier) only.
+
+8. **APA & Buffer zones → cyan** — Changed `EnvironmentalOverlay.tsx` APA/Buffer fill/line/label colors from `W.green` to `W.cyan`. Consistent cyan accent across all environmental map layers.
+
+9. **Background normalization (buyer tabs)** — `ComplianceTab.module.css`: 4 classes replaced green rgba with `var(--w-glass-04)` + `var(--w-border-chrome)`. `TraceabilityTab.module.css`: `.riskNote` neutral glass + amber left-border accent; `.qrGrid` softened to glass tokens. `TraceabilityTab.tsx`: QR cell `rgba(157,128,255,0.8)` → `W.violet`.
+
+10. **Background normalization (field panels)** — `GeologyPanel.tsx`, `EnvironmentPanel.tsx`, `MonitoringNetworkCard.tsx`: hardcoded cyan-tinted rgba backgrounds → `W.glass04` + `W.chromeBorder`.
+
+11. **Misc normalization** — `ChatPanel.module.css`: fixed `--w-glass08` typo → `--w-glass-08`, replaced mismatched violet `rgba(121,99,227,...)` with `var(--w-violet-subtle)`, teal `rgba(64,209,169,...)` with `var(--w-cyan-subtle)`. `EsgTab.tsx`: inline Tailwind rgba → `W.glass04`/`W.chromeBorder`/`W.cyanSubtle`. `MapFeaturePopup.tsx`: shadow → `W.scrim`. `MapZoomPresets.tsx`: one-off violet background → `W.overlay88` + `W.mapControlBorder`.
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **New** | `src/views/field/HydroStation.tsx` |
+| **Modified (core)** | `src/views/FieldView.tsx` (hydroStationOpen state, mutual exclusion, HydroStation render), `src/components/map/HydroOverlay.tsx` (new Monitoring HUD card, spring color → cyan, hudCard imports), `src/components/map/EnvironmentalOverlay.tsx` (APA/Buffer → cyan) |
+| **Modified (API)** | `src/services/weather/openMeteoClient.ts` (DailyClimateSeries, fetchPastDaysClimate), `src/hooks/useSiteWeather.ts` (useSiteClimate hook, mockClimateSeries, deriveClimateKpis) |
+| **Modified (CSS)** | `src/components/plant/controlRoom.module.css` (12+ hex → CSS vars), `src/components/map/HydroOverlay.module.css` (legend → CSS vars), `src/styles/theme.css` (new --w-map-control-* vars) |
+| **Modified (bg cleanup)** | `src/views/buyer/ComplianceTab.module.css`, `src/views/buyer/TraceabilityTab.module.css`, `src/views/buyer/TraceabilityTab.tsx`, `src/views/field/GeologyPanel.tsx`, `src/views/field/EnvironmentPanel.tsx`, `src/views/field/MonitoringNetworkCard.tsx`, `src/views/executive/EsgTab.tsx`, `src/components/layout/ChatPanel.module.css`, `src/components/map/MapFeaturePopup.tsx`, `src/components/map/MapZoomPresets.tsx` |
+
+### Quality Gate
+- 0 TypeScript compilation errors
+- Clean production build
+- No linter errors on modified files
+
+### Decisions Made
+- **Violet palette for climate data** — all HydroStation climate charts/gauges use `#C4B5FD` → `W.violetSoft` → `W.violet` → `#7E22CE` gradient, matching drill layer color language. Cyan reserved exclusively for spring health. Reduces cognitive load.
+- **No vertical scroll in overlays** — both ControlRoom and HydroStation fit entirely in viewport. Content consolidated into 2-row grid layouts.
+- **Uniform spring pin color** — status differentiation removed from pin color (all cyan); tier-based opacity remains. Simpler map visual.
+- **APA/Buffer cyan instead of green** — unifies environmental layers with the cyan accent used throughout the map. Green reserved for status indicators (nominal/ok).
+- **Glass tokens over accent-tinted backgrounds** — buyer/field panels now use `var(--w-glass-04)` + `var(--w-border-chrome)` instead of per-section accent-colored backgrounds. Eliminates "brownish" bleed-through on dark canvas.
+
+**What should be done next (priority order):**
+1. **Deploy v12 changes to Vercel** — verify HydroStation overlay, monitoring card, and background consistency in production
+2. **Close Meteoric paid pilot** — single event that moves every valuation number up
+3. **Activate Thiago as CEO** — removes 20–30% key-person discount
+4. **Connect real LAPOC instruments** — converts simulated to field-verified
+5. **Seed fundraise at $5–7M** — buys commercial capacity

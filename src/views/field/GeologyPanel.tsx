@@ -123,7 +123,7 @@ export const GeologyPanel = memo(function GeologyPanel({ selectedDeposit, onSele
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {EXPLORATION_HIGHLIGHTS.map(({ id, name, result, note }) => (
-            <div key={id} style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.04)', border: '1px solid rgba(0,212,200,0.12)' }}>
+            <div key={id} style={{ padding: '5px 7px', borderRadius: W.radius.sm, background: W.glass04, border: W.chromeBorder }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 6 }}>
                 <span style={{ fontSize: 10, fontWeight: 600, color: W.text2 }}>{name}</span>
                 <span style={{ fontSize: 10, fontWeight: 700, color: W.cyan, fontFamily: 'var(--font-mono)', flexShrink: 0 }}>{result}</span>

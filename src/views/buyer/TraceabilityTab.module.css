@@ -127,8 +127,9 @@
 .riskNote {
   margin-top: 8px;
   padding: 7px 9px;
-  background: rgba(245, 166, 35, 0.06);
-  border: 1px solid rgba(245, 166, 35, 0.18);
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
+  border-left: 2px solid var(--w-amber);
   border-radius: var(--w-radius-sm);
 }
 
@@ -150,13 +151,13 @@
   width: 56px;
   height: 56px;
   flex-shrink: 0;
-  border: 2px solid rgba(124, 92, 252, 0.4);
+  border: var(--w-border-chrome);
   border-radius: var(--w-radius-sm);
   padding: 3px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1px;
-  background: rgba(124, 92, 252, 0.06);
+  background: var(--w-glass-04);
 }
 
 .qrCell {

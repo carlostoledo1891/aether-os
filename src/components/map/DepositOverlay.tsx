@@ -9,7 +9,7 @@ import {
   type FeatureProperties,
   type PolygonGeometry,
 } from './geojson'
-import depositsUrl from '../../data/geojson/caldeira-deposits.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 type DepositStatus = 'measured' | 'indicated' | 'inferred' | 'exploration'
 
@@ -94,7 +94,7 @@ export function DepositOverlay({
   selectedDepositId = null,
   highlightId = null,
 }: DepositOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<DepositFeature>(depositsUrl)
+  const raw = useGeoJsonFeatureCollection<DepositFeature>(GEO.deposits.url)
 
   const data = useMemo<FeatureCollection<DepositFeature> | null>(() => {
     if (!raw) return null

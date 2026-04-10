@@ -1,0 +1,55 @@
+/* Shared layout utilities used across multiple components */
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionHeadBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexStart {
+  display: flex;
+  align-items: flex-start;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.labelUpper {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.labelUpperBold {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mono10 {
+  font-size: 10px;
+  font-family: var(--font-mono);
+}

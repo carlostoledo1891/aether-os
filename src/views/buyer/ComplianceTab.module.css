@@ -41,8 +41,8 @@
 .infoBox {
   margin-top: 10px;
   padding: 7px 9px;
-  background: rgba(34, 214, 138, 0.07);
-  border: 1px solid rgba(34, 214, 138, 0.2);
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
 }
 
 .infoParagraph {
@@ -87,8 +87,8 @@
 
 .pillarCard {
   padding: 7px 9px;
-  background: rgba(34, 214, 138, 0.05);
-  border: 1px solid rgba(34, 214, 138, 0.14);
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
 }
 
 .pillarHeader {
@@ -123,13 +123,13 @@
 }
 
 .footnoteGreen {
-  background: rgba(34, 214, 138, 0.07);
-  border: 1px solid rgba(34, 214, 138, 0.18);
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
 }
 
 .footnoteGreenAlt {
-  background: rgba(34, 214, 138, 0.06);
-  border: 1px solid rgba(34, 214, 138, 0.15);
+  background: var(--w-glass-04);
+  border: var(--w-border-chrome);
 }
 
 .footnoteP {

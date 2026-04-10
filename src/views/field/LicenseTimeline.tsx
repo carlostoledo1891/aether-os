@@ -1,5 +1,5 @@
 import { W } from '../../app/canvas/canvasTheme'
-import { LICENSE_COLORS, LICENSE_ITEMS } from '../../views/field/constants'
+import { LICENSE_COLORS, LICENSE_ITEMS } from './constants'
 
 export function LicenseTimeline() {
   return (

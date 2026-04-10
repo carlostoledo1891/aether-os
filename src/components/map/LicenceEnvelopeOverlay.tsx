@@ -1,12 +1,12 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import envelopeUrl from '../../data/geojson/caldeira-licence-envelope.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export const LICENCE_ENVELOPE_FILL_LAYER_ID = 'licence-envelope-fill'
 
 export function LicenceEnvelopeOverlay() {
-  const data = useGeoJsonFeatureCollection(envelopeUrl)
+  const data = useGeoJsonFeatureCollection(GEO.envelope.url)
   if (!data) return null
 
   return (

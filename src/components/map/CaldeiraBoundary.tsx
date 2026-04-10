@@ -1,7 +1,7 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import caldeiraBoundaryUrl from '../../data/geojson/caldeira-boundary.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-line'
 
@@ -15,7 +15,7 @@ export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-line'
  * Rendered first inside <MapBase> so it sits below all node/edge overlays.
  */
 export function CaldeiraBoundary() {
-  const data = useGeoJsonFeatureCollection(caldeiraBoundaryUrl)
+  const data = useGeoJsonFeatureCollection(GEO.boundary.url)
   if (!data) return null
 
   return (

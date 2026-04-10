@@ -4,11 +4,11 @@ import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
 import { PilotPlantCard } from '../components/plant/PilotPlantCard'
 import { ControlRoom } from '../components/plant/ControlRoom'
+import { HydroStation } from './field/HydroStation'
 import { MapBase, CALDEIRA_BBOX } from '../components/map/MapBase'
-import type { MapLayerMouseEvent } from '../components/map/MapBase'
-import { PlantOverlay, PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../components/map/PlantOverlay'
+import { PlantOverlay, PLANT_NODE_LAYER_ID } from '../components/map/PlantOverlay'
 import type { PlantOverlayNodeDetail } from '../components/map/PlantOverlay'
-import { HydroOverlay, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID, toHydroNodeDetail, toSpringDetail } from '../components/map/HydroOverlay'
+import { HydroOverlay, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from '../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../components/map/HydroOverlay'
 import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from '../components/map/CaldeiraBoundary'
 import {
@@ -18,13 +18,11 @@ import {
   ENV_MONITORING_FILL_LAYER_ID,
   ENV_URBAN_FILL_LAYER_ID,
   ENV_URBAN_CENTROID_CORE_LAYER_ID,
-  UDC_REFERENCE_LAYER_ID,
-  parseEnvMapFeature,
 } from '../components/map/EnvironmentalOverlay'
-import { LicenseOverlay, LICENSE_LAYER_ID, toLicenseDetail } from '../components/map/LicenseOverlay'
-import { DepositOverlay, DEPOSIT_LAYER_ID, toDepositDetail } from '../components/map/DepositOverlay'
-import { DrillHoleOverlay, DRILL_LAYER_ID, toDrillHoleDetail, parseLithologyIntervals } from '../components/map/DrillHoleOverlay'
-import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID, toPfsEngineeringDetail } from '../components/map/PfsEngineeringOverlay'
+import { LicenseOverlay, LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
+import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverlay'
+import { DrillHoleOverlay, DRILL_LAYER_ID } from '../components/map/DrillHoleOverlay'
+import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID } from '../components/map/PfsEngineeringOverlay'
 import { InfraOverlay, INFRA_POINT_CORE_LAYER_ID } from '../components/map/InfraOverlay'
 import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from '../components/map/OpsPlantSitesOverlay'
 import { AccessRoutesOverlay, ACCESS_ROUTE_LINE_LAYER_ID } from '../components/map/AccessRoutesOverlay'
@@ -32,7 +30,6 @@ import { LicenceEnvelopeOverlay, LICENCE_ENVELOPE_FILL_LAYER_ID } from '../compo
 import { NeighborOverlay } from '../components/map/NeighborOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPicker } from '../components/map/MapLayerPicker'
-import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import { W } from '../app/canvas/canvasTheme'
 import { useMapCamera } from '../contexts/MapCameraContext'
 import { useMap } from 'react-map-gl/maplibre'
@@ -46,62 +43,18 @@ import { OperationsPanel } from './field/OperationsPanel'
 import { EnvironmentPanel } from './field/EnvironmentPanel'
 import { FieldBottomMetrics } from './field/FieldBottomMetrics'
 import { FieldPinnedAssetCard } from './field/FieldPinnedAssetCard'
-// FieldMapGeoInspector content merged into FieldPinnedAssetCard
 import {
   DEFAULT_FIELD_ENV_LAYERS,
   DEFAULT_FIELD_OPS_LAYERS,
   type FieldEnvMapLayers,
   type FieldOpsMapLayers,
 } from './field/fieldMapLayers'
-import {
-  type FieldMapGeoSelection,
-  toAccessRouteDetail,
-  toLicenceEnvelopeDetail,
-} from './field/fieldMapGeoSelection'
+import { useMapInteraction } from './field/useMapInteraction'
 import fieldChrome from './field/FieldMapChrome.module.css'
 const TAB_ITEMS: { id: MapTab; label: string; icon: typeof Settings; color: string }[] = [
   { id: 'operations',  label: 'Operations', icon: Settings,    color: W.violet },
   { id: 'environment', label: 'Hydro Twin', icon: Layers,      color: W.cyan   },
 ]
-
-const OPS_LAYER_PRIORITY = [
-  OPS_PLANT_SITE_CORE_LAYER_ID,
-  PLANT_NODE_LAYER_ID,
-  INFRA_POINT_CORE_LAYER_ID,
-  ACCESS_ROUTE_LINE_LAYER_ID,
-  DRILL_LAYER_ID,
-  PFS_ENGINEERING_FILL_LAYER_ID,
-  LICENSE_LAYER_ID,
-  DEPOSIT_LAYER_ID,
-  LICENCE_ENVELOPE_FILL_LAYER_ID,
-] as const
-
-const ENV_LAYER_PRIORITY = [
-  HYDRO_SPRING_LAYER_ID,
-  HYDRO_NODE_LAYER_ID,
-  UDC_REFERENCE_LAYER_ID,
-  'env-udc-label',
-  ENV_URBAN_CENTROID_CORE_LAYER_ID,
-  ENV_URBAN_FILL_LAYER_ID,
-  'env-urban-label',
-  'env-urban-centroid-label',
-  ENV_APA_FILL_LAYER_ID,
-  'env-apa-label',
-  ENV_BUFFER_FILL_LAYER_ID,
-  ENV_MONITORING_FILL_LAYER_ID,
-] as const
-
-function pickFeatureByPriority(
-  feats: MapLayerMouseEvent['features'] | undefined,
-  order: readonly string[],
-) {
-  if (!feats?.length) return undefined
-  for (const lid of order) {
-    const f = feats.find((x) => x.layer?.id === lid)
-    if (f) return f
-  }
-  return undefined
-}
 
 interface FieldViewProps {
   highlightFeatureId?: string | null
@@ -154,14 +107,26 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
   const [controlRoomOpen, setControlRoomOpen] = useState(false)
-  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
-  const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
-  const [selectedPlantNode, setSelectedPlantNode] = useState<PlantOverlayNodeDetail | null>(null)
-  const [selectedHydroNode, setSelectedHydroNode] = useState<HydroOverlayNodeDetail | null>(null)
-  const [geoSelection, setGeoSelection] = useState<FieldMapGeoSelection | null>(null)
+  const [hydroStationOpen, setHydroStationOpen] = useState(false)
   const [opsMapLayers, setOpsMapLayers] = useState<FieldOpsMapLayers>(DEFAULT_FIELD_OPS_LAYERS)
   const [envMapLayers, setEnvMapLayers] = useState<FieldEnvMapLayers>(DEFAULT_FIELD_ENV_LAYERS)
-  const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
+
+  const {
+    hoveredNodeId,
+    setHoveredNodeId,
+    mapHoverHint,
+    setMapHoverHint,
+    popupData,
+    selectedPlantNode,
+    setSelectedPlantNode,
+    selectedHydroNode,
+    setSelectedHydroNode,
+    geoSelection,
+    setGeoSelection,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleMapClick,
+  } = useMapInteraction({ mapTab, opsMapLayers, springsRef })
 
   const interactiveLayerIds = useMemo(() => {
     if (mapTab === 'operations') {
@@ -179,7 +144,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
       ids.push(CALDEIRA_BOUNDARY_LAYER_ID)
       return ids
     }
-    const e: string[] = [HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID]
+    const e: string[] = [HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID, LICENSE_LAYER_ID]
     if (envMapLayers.apa) e.push(ENV_APA_FILL_LAYER_ID, 'env-apa-label')
     if (envMapLayers.buffer) e.push(ENV_BUFFER_FILL_LAYER_ID)
     if (envMapLayers.monitoring) e.push(ENV_MONITORING_FILL_LAYER_ID)
@@ -191,328 +156,14 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
         'env-urban-label',
       )
     }
-    if (envMapLayers.udc) e.push(UDC_REFERENCE_LAYER_ID, 'env-udc-label')
     e.push(CALDEIRA_BOUNDARY_LAYER_ID)
     return e
   }, [mapTab, opsMapLayers, envMapLayers])
 
-  const handleMouseEnter = useCallback(
-    (e: MapLayerMouseEvent) => {
-      // Prefer specific features over broad area layers (boundary fill/line)
-      const feat = e.features && e.features.length > 1
-        ? e.features.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID) ?? e.features[0]
-        : e.features?.[0]
-      const layerId = feat?.layer?.id
-      const props = feat?.properties as Record<string, unknown> | undefined
-      const id = props?.id
-      const px = e.point
-      if (
-        (layerId === PLANT_NODE_LAYER_ID || layerId === OPS_PLANT_SITE_CORE_LAYER_ID) &&
-        typeof id === 'string'
-      ) {
-        setHoveredNodeId(id)
-        setMapHoverHint(null)
-        setPopupData(null)
-        return
-      }
-      if (mapTab === 'environment' && (layerId === HYDRO_NODE_LAYER_ID || layerId === HYDRO_SPRING_LAYER_ID) && typeof id === 'string') {
-        setHoveredNodeId(id)
-        setMapHoverHint(null)
-        setPopupData(null)
-        return
-      }
-
-      if (layerId === DRILL_LAYER_ID && typeof id === 'string') {
-        setHoveredNodeId(id)
-        setMapHoverHint(null)
-        const lithIntervals = parseLithologyIntervals(props?.lithology_intervals)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(id),
-            accentColor: W.violetSoft,
-            rows: [
-              { label: 'TREO', value: `${Number(props?.treo_ppm ?? 0)} ppm` },
-              { label: 'Depth', value: `${Number(props?.depth_m ?? 0)} m` },
-              { label: 'Deposit', value: String(props?.deposit ?? '—') },
-              { label: 'Type', value: String(props?.hole_type ?? '—') },
-            ],
-            lithologyIntervals: lithIntervals,
-          },
-        })
-        return
-      }
-      if (layerId === DEPOSIT_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.name ?? props.id ?? ''),
-            accentColor: W.cyan,
-            rows: [
-              { label: 'Status', value: String(props.status ?? '—') },
-              { label: 'TREO', value: `${Number(props.treo_ppm ?? 0)} ppm` },
-              { label: 'Tonnage', value: `${Number(props.tonnage_mt ?? 0)} Mt` },
-            ],
-          },
-        })
-        return
-      }
-      if (layerId === PFS_ENGINEERING_FILL_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.label ?? props.id ?? ''),
-            accentColor: W.amber,
-            rows: [
-              { label: 'Type', value: String(props.engineering_kind ?? '—') },
-              ...(props.note ? [{ label: 'Note', value: String(props.note) }] : []),
-            ],
-          },
-        })
-        return
-      }
-      if (layerId === INFRA_POINT_CORE_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.label ?? props.id ?? ''),
-            accentColor: W.green,
-            rows: [
-              { label: 'Kind', value: String(props.kind ?? '—') },
-              ...(props.sublabel ? [{ label: 'Detail', value: String(props.sublabel) }] : []),
-            ],
-          },
-        })
-        return
-      }
-      if (layerId === LICENSE_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.name ?? props.id ?? ''),
-            accentColor: W.violet,
-            rows: [
-              { label: 'Status', value: String(props.status ?? '—') },
-              { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
-            ],
-          },
-        })
-        return
-      }
-
-      if (layerId === CALDEIRA_BOUNDARY_LAYER_ID) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: 'Caldeira Alkaline Complex',
-            accentColor: W.violet,
-            rows: [
-              { label: 'Area', value: '~193 km²' },
-              { label: 'Type', value: 'Alkaline intrusion' },
-              { label: 'Age', value: '~80 Ma (Cretaceous)' },
-            ],
-          },
-        })
-        return
-      }
-
-      setHoveredNodeId(null)
-      setPopupData(null)
-      const label = props?.label ?? props?.name ?? props?.id
-      if (typeof label === 'string') setMapHoverHint(label)
-    },
-    [mapTab],
-  )
-
-  const handleMouseLeave = useCallback(() => {
-    setHoveredNodeId(null)
-    setMapHoverHint(null)
-    setPopupData(null)
-  }, [])
-
-  const handleMapClick = useCallback(
-    (e: MapLayerMouseEvent) => {
-      const feats = e.features
-
-      // Check if ONLY the boundary was hit (no more specific features)
-      const nonBoundaryFeat = feats?.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID)
-      const boundaryFeat = feats?.find(f => f.layer?.id === CALDEIRA_BOUNDARY_LAYER_ID)
-      if (boundaryFeat && !nonBoundaryFeat) {
-        setSelectedPlantNode(null)
-        setSelectedHydroNode(null)
-        setGeoSelection((g) =>
-          g?.kind === 'boundary'
-            ? null
-            : {
-                kind: 'boundary',
-                detail: {
-                  name: 'Caldeira Alkaline Complex',
-                  area_km2: 193,
-                  type: 'Alkaline intrusion',
-                  age: '~80 Ma (Cretaceous)',
-                  geology: 'Phonolite-tinguaite-nepheline syenite complex with laterite cap',
-                },
-              },
-        )
-        return
-      }
-
-      if (mapTab === 'operations') {
-        const feat = pickFeatureByPriority(feats, OPS_LAYER_PRIORITY as unknown as string[])
-        if (!feat?.properties) return
-        const layerId = feat.layer?.id
-        const props = feat.properties as Record<string, unknown>
-        const id = props.id
-        if (typeof id !== 'string') return
-
-        if (layerId === PLANT_NODE_LAYER_ID && opsMapLayers.plantSchematic) {
-          setGeoSelection(null)
-          const coords = (feat.geometry as { coordinates?: [number, number] }).coordinates
-          if (selectedPlantNode?.id === id) {
-            setSelectedPlantNode(null)
-            return
-          }
-          setSelectedPlantNode(toPlantNodeDetail(props, coords))
-          return
-        }
-
-        if (layerId === OPS_PLANT_SITE_CORE_LAYER_ID && opsMapLayers.plantSites) {
-          setSelectedPlantNode(null)
-          setGeoSelection((g) =>
-            g?.kind === 'infra' && g.id === id
-              ? null
-              : {
-                  kind: 'infra',
-                  id,
-                  label: String(props.label ?? ''),
-                  sublabel: String(props.sublabel ?? ''),
-                  infraKind: String(props.kind ?? 'plant'),
-                  details: props.details ? String(props.details) : undefined,
-                  source_ref: props.source_ref ? String(props.source_ref) : undefined,
-                  as_of: props.as_of ? String(props.as_of) : undefined,
-                  confidence: props.confidence ? String(props.confidence) : undefined,
-                },
-          )
-          return
-        }
-
-        setSelectedPlantNode(null)
-
-        if (layerId === ACCESS_ROUTE_LINE_LAYER_ID && opsMapLayers.accessRoutes) {
-          const d = toAccessRouteDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'route' && g.detail.id === id ? null : { kind: 'route', detail: d }))
-          return
-        }
-
-        if (layerId === LICENCE_ENVELOPE_FILL_LAYER_ID && opsMapLayers.licenceEnvelope) {
-          const d = toLicenceEnvelopeDetail(props)
-          if (d) {
-            setGeoSelection((g) =>
-              g?.kind === 'licenceEnvelope' && g.detail.id === id ? null : { kind: 'licenceEnvelope', detail: d },
-            )
-          }
-          return
-        }
-
-        if (layerId === LICENSE_LAYER_ID && opsMapLayers.tenements) {
-          const d = toLicenseDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'license' && g.detail.id === id ? null : { kind: 'license', detail: d }))
-          return
-        }
-        if (layerId === DRILL_LAYER_ID && opsMapLayers.drillHoles) {
-          const d = toDrillHoleDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'drill' && g.detail.id === id ? null : { kind: 'drill', detail: d }))
-          return
-        }
-        if (layerId === DEPOSIT_LAYER_ID && opsMapLayers.deposits) {
-          const d = toDepositDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'deposit' && g.detail.id === id ? null : { kind: 'deposit', detail: d }))
-          return
-        }
-        if (layerId === PFS_ENGINEERING_FILL_LAYER_ID && opsMapLayers.pfsEngineering) {
-          const d = toPfsEngineeringDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'pfs' && g.detail.id === id ? null : { kind: 'pfs', detail: d }))
-          return
-        }
-        if (layerId === INFRA_POINT_CORE_LAYER_ID && opsMapLayers.infra) {
-          setGeoSelection((g) =>
-            g?.kind === 'infra' && g.id === id
-              ? null
-              : {
-                  kind: 'infra',
-                  id,
-                  label: String(props.label ?? ''),
-                  sublabel: String(props.sublabel ?? ''),
-                  infraKind: String(props.kind ?? ''),
-                  details: props.details ? String(props.details) : undefined,
-                  source_ref: props.source_ref ? String(props.source_ref) : undefined,
-                  as_of: props.as_of ? String(props.as_of) : undefined,
-                  confidence: props.confidence ? String(props.confidence) : undefined,
-                },
-          )
-          return
-        }
-        return
-      }
-
-      /* environment tab */
-      const feat = pickFeatureByPriority(feats, ENV_LAYER_PRIORITY as unknown as string[])
-      if (!feat?.properties) return
-      const layerId = feat.layer?.id
-      const props = feat.properties as Record<string, unknown>
-      const id = props.id
-      if (typeof id !== 'string') return
-
-      if (layerId === HYDRO_SPRING_LAYER_ID || layerId === HYDRO_NODE_LAYER_ID) {
-        setGeoSelection(null)
-        const coords = (feat.geometry as { coordinates?: [number, number] }).coordinates
-        if (selectedHydroNode?.id === id) {
-          setSelectedHydroNode(null)
-          return
-        }
-        const springTelem = layerId === HYDRO_SPRING_LAYER_ID ? springsRef.current.find((s) => s.id === id) : undefined
-        const detail =
-          layerId === HYDRO_SPRING_LAYER_ID
-            ? toSpringDetail(props, coords, springTelem)
-            : toHydroNodeDetail(props, coords)
-        if (detail) setSelectedHydroNode(detail)
-        return
-      }
-
-      setSelectedHydroNode(null)
-      const envDetail = parseEnvMapFeature(props)
-      if (envDetail) {
-        setGeoSelection((g) => (g?.kind === 'env' && g.detail.id === id ? null : { kind: 'env', detail: envDetail }))
-      }
-    },
-    [
-      mapTab,
-      opsMapLayers.tenements,
-      opsMapLayers.deposits,
-      opsMapLayers.drillHoles,
-      opsMapLayers.pfsEngineering,
-      opsMapLayers.plantSites,
-      opsMapLayers.infra,
-      opsMapLayers.plantSchematic,
-      opsMapLayers.accessRoutes,
-      opsMapLayers.licenceEnvelope,
-      selectedPlantNode,
-      selectedHydroNode,
-    ],
-  )
-
   const switchTab = useCallback((tab: MapTab) => {
     setMapTab(tab)
+    setControlRoomOpen(false)
+    setHydroStationOpen(false)
     setHoveredNodeId(null)
     setMapHoverHint(null)
     setGeoSelection(null)
@@ -562,7 +213,6 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
       { id: 'buffer', label: 'APA buffer ring', checked: envMapLayers.buffer },
       { id: 'monitoring', label: 'Monitoring / cumulative zone', checked: envMapLayers.monitoring },
       { id: 'urban', label: 'Urban context (OSM-style)', checked: envMapLayers.urban },
-      { id: 'udc', label: 'UDC / reference footprint', checked: envMapLayers.udc },
     ]
   }, [mapTab, opsMapLayers, envMapLayers])
 
@@ -637,8 +287,9 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               <CaldeiraBoundary />
               {mapTab === 'operations' && (
                 <>
-                  {opsMapLayers.neighbors && <NeighborOverlay />}
+                  {/* Polygons (renderOrder 1-9) — painted first, below everything */}
                   {opsMapLayers.licenceEnvelope && <LicenceEnvelopeOverlay />}
+                  {opsMapLayers.neighbors && <NeighborOverlay />}
                   {opsMapLayers.deposits && (
                     <DepositOverlay hoveredDepositId={null} selectedDepositId={null} />
                   )}
@@ -648,7 +299,12 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                   {opsMapLayers.pfsEngineering && (
                     <PfsEngineeringOverlay hoveredId={null} selectedId={null} />
                   )}
+                  {opsMapLayers.apa && (
+                    <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} />
+                  )}
+                  {/* Lines (renderOrder 20+) */}
                   {opsMapLayers.accessRoutes && <AccessRoutesOverlay />}
+                  {/* Points (renderOrder 30+) — painted last, on top */}
                   {opsMapLayers.drillHoles && (
                     <DrillHoleOverlay
                       hoveredHoleId={hoveredNodeId}
@@ -667,9 +323,6 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                     />
                   )}
                   {opsMapLayers.infra && <InfraOverlay showRoute={false} mapId="aetherField" />}
-                  {opsMapLayers.apa && (
-                    <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} showUdc={false} />
-                  )}
                   {opsMapLayers.plantSchematic && (
                     <PlantOverlay
                       plant={plant}
@@ -682,18 +335,21 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               )}
               {mapTab === 'environment' && (
                 <>
+                  {/* Polygons first — licenses + environmental areas below points */}
+                  <LicenseOverlay hoveredLicenseId={null} selectedLicenseId={null} />
                   <EnvironmentalOverlay
                     showApa={envMapLayers.apa}
                     showBuffer={envMapLayers.buffer}
                     showMonitoring={envMapLayers.monitoring}
                     showUrban={envMapLayers.urban}
-                    showUdc={envMapLayers.udc}
                   />
+                  {/* Points on top */}
                   <HydroOverlay
                     env={env}
                     hoveredNodeId={hoveredNodeId}
                     selectedNodeId={selectedHydroNode?.id ?? null}
                     weatherStrip={hydroWeatherStrip}
+                    onOpenStation={() => setHydroStationOpen(true)}
                   />
                 </>
               )}
@@ -735,8 +391,13 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               )}
             </AnimatePresence>
             <AnimatePresence>
-              {controlRoomOpen && (
+              {controlRoomOpen && mapTab === 'operations' && (
                 <ControlRoom onClose={() => setControlRoomOpen(false)} />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {hydroStationOpen && mapTab === 'environment' && (
+                <HydroStation onClose={() => setHydroStationOpen(false)} />
               )}
             </AnimatePresence>
             {mapTab === 'operations' && (
@@ -757,15 +418,15 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               }}>
                 <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 9 }}>Legend</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.green }} />
                   <span>TREO ≥ 2.0%</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#eab308' }} />
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.amber }} />
                   <span>TREO 1.0–2.0%</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444' }} />
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: W.red }} />
                   <span>TREO &lt; 1.0%</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -773,7 +434,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                   <span>Licence area</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ width: 8, height: 3, borderRadius: 1, background: '#fff3', border: '1px dashed #fff6' }} />
+                  <span style={{ width: 8, height: 3, borderRadius: 1, background: W.glass04, border: `1px dashed ${W.glass08}` }} />
                   <span>Caldeira boundary</span>
                 </div>
               </div>

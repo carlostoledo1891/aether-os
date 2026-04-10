@@ -108,7 +108,7 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
         <div className={css.passportRow}>
           <div className={css.qrGrid}>
             {Array.from({ length: 36 }, (_, i) => (
-              <span key={i} className={css.qrCell} style={{ background: (i * 7) % 5 > 1 ? 'rgba(157,128,255,0.8)' : 'transparent' }} />
+              <span key={i} className={css.qrCell} style={{ background: (i * 7) % 5 > 1 ? W.violet : 'transparent' }} />
             ))}
           </div>
           <div className={css.passportInfo}>

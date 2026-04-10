@@ -2169,3 +2169,84 @@ The weighted average holds at ~8.9. No persona scores moved — and that is the 
 | 2026-04-09 | **v10 evaluation (Post Focused UX Improvements + SCADA Win + Pages Scaffold Sprint).** Weighted average **~8.6 → ~8.9** (+0.3). 5 personas moved: SCADA +0.5 → 9.5, Chairman +0.5 → 10.0, Chief Geologist +0.5 → 9.5, CEO +0.5 → 9.5, Journalist +0.5 → 9.5. EU Enforcement +0.5 → 8.5. 25 AI agent tools. 195 tests. 3 routes (/lp, /pitch-deck, dashboard). /lp + /pitch-deck scaffolds. Blockchain strategy doc. SCADA integration surface complete. WCAG AA contrast. Remaining gaps structural. |
 | 2026-04-09 | **v10.1 evaluation (Post Unified Map Controls + Perspective + Shared Camera Sprint).** Weighted average **~8.9** (maintained). Zero-delta release — all scores protected. Sprint delivered: 3D perspective (pitch 35°, bearing -5°) on all map views, shared MapCameraContext (camera continuity between FieldView → BuyerView), dark purple map control tokens replacing glass blur, unified styling across MapLayerPicker/MapStylePicker/all legends, buyer map layers + legend + MapZoomPresets (Caldeira/Journey/Full Journey). 195 tests passing. Engineering ceiling confirmed — remaining gaps structural. |
 | 2026-04-09 | **v11 evaluation (Post Pilot Plant Digital Twin / Control Room).** Weighted average **~8.9 → ~9.2** (+0.3). 5 personas moved: CEO +0.5 → 10.0 (demo-closer), Chief Geologist +0.5 → 10.0 (metallurgically accurate process flow), SCADA +0.5 → 10.0 (equipment-sensor catalog for integration scoping), PF Analyst +0.5 → 8.5 (capital deployment visible through plant), Journalist +0.5 → 10.0 (Control Room is the hero screenshot). 5 personas now at 10.0 (code ceiling): Chairman, CEO, Chief Geologist, SCADA, Journalist. New files: pilotPlantData.ts (17 equipment, 28 sensors, 7 process steps, 15 flow connections), PilotPlantCard.tsx (collapsed HUD), ControlRoom.tsx (full-screen overlay), PlantSchematic.tsx (hand-tuned SVG with animated dashed flow), EquipmentNode.tsx, EquipmentDetailPanel.tsx, controlRoom.module.css (dashFlow/statusPulse/selectGlow animations). Integrated into FieldView.tsx. Valuation analysis created: `docs/VALUATION.md` ($5–7M consensus pre-money, $4.5M ARR by 2030 consensus). All remaining gaps commercial/procedural — code ceiling reached for 5 of 9 personas. |
+| 2026-04-10 | **v12 evaluation (Post Hydro Monitoring Upgrade + Design Consistency Sprint).** Weighted average **~9.2** (maintained). Zero-delta release — all scores protected. Two sprints: (1) Hydro Monitoring Upgrade — HydroStation overlay (climate dashboard with Open-Meteo enriched data: temp, humidity, ET₀, soil moisture, water balance), Monitoring HUD card (PilotPlantCard pattern), overlay mutual exclusion bug fix, color token audit; (2) Design Consistency Sprint — no-scroll HydroStation layout with violet climate palette, spring pins → cyan, APA/Buffer → cyan, ~30 hardcoded rgba/hex values normalized to `W.*` / `var(--w-*)` across 15+ files. Engineering ceiling confirmed — remaining gaps structural. |
+
+---
+
+## Persona Reactions — v12 (Post Hydro Monitoring Upgrade + Design Consistency, 2026-04-10)
+
+> **Caveat:** This is a *preview build* — simulated telemetry, mock climate data fallback. The Hydro Station shows what real-time environmental monitoring will look like when LAPOC instruments and Open-Meteo API are connected.
+
+### Individual Sentiments
+
+**Chairman (Tunks) — 10.0 (held)**
+> "The Hydro Station is a natural complement to the Control Room. Investors who saw the Plant Digital Twin now get the environmental monitoring equivalent. The design consistency cleanup is exactly what I'd expect before a board demo — no brownish cards, no mismatched colors. Still need the customer LOI to move my score."
+
+**CEO (Gale) — 10.0 (held)**
+> "Having both a Plant Control Room AND a Hydro Station overlay creates a complete operational picture. The violet palette for climate data is a nice touch — it separates operational data (cyan) from environmental context (violet). The design cleanup across buyer tabs makes the compliance view more professional. I'm at ceiling — next movement is commercial."
+
+**Chief Geologist — 10.0 (held)**
+> "The Open-Meteo enrichment adds real scientific value — evapotranspiration, soil moisture, water balance are exactly what a hydrogeologist needs alongside spring monitoring. The APA/Buffer zones in cyan make environmental boundaries visually consistent with the monitoring network. Already at code ceiling."
+
+**DoD — 7.5 (held)**
+> "Design consistency is nice but doesn't affect my evaluation. FedRAMP certification and supply chain attestation remain the blockers."
+
+**EU Enforcement — 8.5 (held)**
+> "The water quality gauges with threshold indicators in the Hydro Station are useful for compliance verification. The background normalization across compliance tabs removes visual distractions. But I need 100% DPP field coverage and schema validation to move."
+
+**PF Analyst — 8.5 (held)**
+> "The climate dashboard adds context for environmental risk assessment — water balance and precipitation anomaly data are relevant for project finance due diligence. But covenant monitoring and DSCR automation remain my gaps."
+
+**NGO — 8.0 (held)**
+> "The Hydro Station is the closest thing to a real-time spring monitoring dashboard I've seen in mining tech. The spring health distribution bar, piezometer readings, and water quality gauges are exactly what community stakeholders need. But springs are still modeled — field verification moves my score."
+
+**SCADA — 10.0 (held)**
+> "The Open-Meteo integration pattern (fetchPastDaysClimate with hourly-to-daily aggregation, cache layer, mock fallback) is a clean reference for future external API integrations. The useSiteClimate hook follows the same pattern as useSiteWeather — consistent architecture. At ceiling."
+
+**Journalist — 10.0 (held)**
+> "The Hydro Station next to the Control Room tells a complete story: 'This company monitors both its plant AND its environmental impact in real-time.' The violet climate palette photographs distinctly from the cyan operations view — two hero screenshots instead of one. At ceiling."
+
+### Score Rationale
+
+No scores moved. This was a UX polish + infrastructure enrichment sprint:
+- The Hydro Monitoring Upgrade adds a new overlay and enriches the data layer, but doesn't close any structural persona gaps
+- The Design Consistency Sprint normalizes ~30 hardcoded colors and eliminates visual inconsistencies, improving demo quality without adding capabilities
+- The Open-Meteo enrichment (temperature, humidity, ET₀, soil moisture) adds environmental context that will become valuable when field instruments are connected
+
+**Aggregate: ~9.2 (maintained).** The product's visual quality and data density continue to improve, but all remaining persona gaps require external actions (customer LOI, FedRAMP, LAPOC instruments, OPC-UA bridge).
+
+---
+
+## Aggregate Scorecard — v12 (Post Hydro Monitoring Upgrade + Design Consistency, 2026-04-10)
+
+| Persona | v1 | v2 | v3 | v4 | v5 | v6 | v7 | v8 | v9 | v10 | v10.1 | v11 | v12 | Delta (v11→v12) | Biggest remaining gap |
+|---------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|-----|-----|------------------|-----------------------|
+| Chairman (Tunks) | 7.5 | 8.0 | 8.0 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** | — | Code ceiling reached |
+| CEO (Gale) | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | **10.0** | — | Code ceiling reached |
+| Chief Geologist | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | 8.5 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | **10.0** | — | Code ceiling reached |
+| DoD | 6.5 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | **7.5** | — | FedRAMP certification |
+| EU Enforcement | 6.0 | 6.5 | 6.5 | 6.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.5 | 8.5 | 8.5 | **8.5** | — | 100% DPP field coverage |
+| PF Analyst | 7.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 | 8.0 | 8.0 | 8.0 | 8.0 | 8.5 | **8.5** | — | Covenant monitoring |
+| NGO | 5.5 | 6.0 | 6.0 | 6.0 | 7.0 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | 8.0 | 8.0 | **8.0** | — | Field-verified springs |
+| SCADA | 7.5 | 8.5 | 8.5 | 8.5 | 9.0 | 9.0 | 9.0 | 9.0 | 9.0 | 9.5 | 9.5 | 10.0 | **10.0** | — | Code ceiling reached |
+| Journalist | 6.5 | 7.0 | 7.0 | 7.0 | 7.5 | 8.0 | 8.0 | 8.5 | 9.0 | 9.5 | 9.5 | 10.0 | **10.0** | — | Code ceiling reached |
+| **Weighted avg** | **6.8** | **7.3** | **7.3** | **7.3** | **~7.8** | **~8.0** | **~8.0** | **~8.4** | **~8.6** | **~8.9** | **~8.9** | **~9.2** | **~9.2** | — | |
+
+---
+
+## v12 Synthesis
+
+The weighted average holds at ~9.2. No persona scores moved — this is the correct outcome. This was a UX polish + data enrichment sprint, not a capability sprint.
+
+**What this sprint delivered:**
+1. **Hydro Station overlay** — full environmental monitoring dashboard with spring health, water quality gauges, climate data (precipitation, temperature, humidity, evapotranspiration, soil moisture, water balance), and piezometer readings. Opens from the Monitoring HUD card on the Environment tab.
+2. **Open-Meteo climate enrichment** — `useSiteClimate` hook fetches 6 additional daily parameters from Open-Meteo (free API, no key). Graceful mock fallback when API disabled.
+3. **Violet climate palette** — climate/weather data uses `#C4B5FD` → `W.violetSoft` → `W.violet` → `#7E22CE`, visually separating environmental context from operational data (cyan). Matches drill layer color language.
+4. **Design token normalization** — ~30 hardcoded rgba/hex values across 15+ files replaced with `W.*` tokens and `var(--w-*)` CSS variables. Eliminates brownish bleed-through on glass panels. Consistent backgrounds across buyer, field, and executive views.
+5. **Map color unification** — APA/Buffer zones, spring pins, and monitoring layers all use cyan accent. Green reserved for status indicators only.
+
+**Why no scores moved:** All remaining persona gaps are structural (customer LOI, FedRAMP, field instruments, OPC-UA bridge). 5 of 9 personas are at 10.0 (code ceiling). The 4 remaining gaps cannot be closed with code alone.
+
+**Business Expert's verdict:** The Hydro Station makes the environmental monitoring story as compelling as the Plant Control Room. Two hero screenshots instead of one. The design consistency cleanup is the kind of attention to detail that matters in a board demo. Next score movement: commercial execution.
+
+**CTO's verdict:** Clean architecture throughout. The `useSiteClimate` hook mirrors `useSiteWeather` exactly — same caching, same mock fallback, same error handling. The color token audit eliminated the most common class of "why does this card look brown?" bugs. The HydroStation layout uses the same CSS module classes as ControlRoom — zero new CSS needed. 0 TS errors, 0 lint errors, clean build.

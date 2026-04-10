@@ -84,10 +84,10 @@ export const MapZoomPresets = memo(function MapZoomPresets({ mapId, timeline }: 
             letterSpacing: '0.04em',
             color: active === p.id ? W.violetSoft : W.text3,
             background: active === p.id
-              ? 'rgba(38, 22, 78, 0.96)'
+              ? W.overlay88
               : W.mapControlBg,
             border: active === p.id
-              ? '1px solid rgba(124, 92, 252, 0.30)'
+              ? W.mapControlBorder
               : W.mapControlBorder,
             borderRadius: 4,
             cursor: 'pointer',

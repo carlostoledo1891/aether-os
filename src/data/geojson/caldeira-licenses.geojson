@@ -4,15 +4,15 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "LIC-CDM-01",
-        "name": "Capão do Mel License",
-        "label": "Capão do Mel License",
+        "id": "LIC-FIG-01",
+        "name": "Figueira License",
+        "label": "Figueira License",
         "status": "lp_approved",
-        "area_km2": 10,
+        "area_km2": 4,
         "license_count": 1,
-        "note": "Measured 11 Mt clay @ 3888 ppm · Indicated 74 Mt @ 2908 ppm · Inferred clay 32 Mt @ 1791 ppm + transition 25 Mt @ 1752 ppm · ASX 02933327 Table 1",
-        "resource_category": "Measured & Indicated",
-        "total_mt": 85,
+        "note": "Indicated 138 Mt @ 2844 ppm · Inferred clay 9 Mt @ 3105 ppm + transition 24 Mt @ 2174 ppm · ASX 02933327 Table 1",
+        "resource_category": "Indicated",
+        "total_mt": 138,
         "source_ref": "asx_02933327",
         "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
@@ -21,26 +21,11 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.55891041405843,
-              -21.876230486788245
-            ],
-            [
-              -46.55511039634715,
-              -21.879784699108423
-            ],
-            [
-              -46.52768906038376,
-              -21.88493935533784
-            ],
-            [
-              -46.55244231995744,
-              -21.871653087356783
-            ],
-            [
-              -46.55891041405843,
-              -21.876230486788245
-            ]
+            [-46.54390594195414, -21.934189701602975],
+            [-46.52925847749404, -21.934189701602975],
+            [-46.52925847749404, -21.958903292707333],
+            [-46.54390594195414, -21.958903292707333],
+            [-46.54390594195414, -21.934189701602975]
           ]
         ]
       }
@@ -65,26 +50,16 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.52,
-              -21.835
-            ],
-            [
-              -46.495,
-              -21.835
-            ],
-            [
-              -46.495,
-              -21.865
-            ],
-            [
-              -46.52,
-              -21.865
-            ],
-            [
-              -46.52,
-              -21.835
-            ]
+            [-46.4730599, -21.9866593],
+            [-46.4603936, -21.9868534],
+            [-46.4600795, -21.9704481],
+            [-46.4377454, -21.9698657],
+            [-46.4380493, -21.9585892],
+            [-46.4646471, -21.9587302],
+            [-46.465103, -21.9677514],
+            [-46.4734623, -21.9673286],
+            [-46.4733103, -21.9673286],
+            [-46.4730599, -21.9866593]
           ]
         ]
       }
@@ -92,15 +67,15 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "LIC-FIG-01",
-        "name": "Figueira License",
-        "label": "Figueira License",
+        "id": "LIC-CDM-01",
+        "name": "Capão do Mel License",
+        "label": "Capão do Mel License",
         "status": "lp_approved",
-        "area_km2": 4,
+        "area_km2": 10,
         "license_count": 1,
-        "note": "Indicated 138 Mt @ 2844 ppm · Inferred clay 9 Mt @ 3105 ppm + transition 24 Mt @ 2174 ppm · ASX 02933327 Table 1",
-        "resource_category": "Indicated",
-        "total_mt": 138,
+        "note": "Measured 11 Mt clay @ 3888 ppm · Indicated 74 Mt @ 2908 ppm · Inferred clay 32 Mt @ 1791 ppm + transition 25 Mt @ 1752 ppm · ASX 02933327 Table 1",
+        "resource_category": "Measured & Indicated",
+        "total_mt": 85,
         "source_ref": "asx_02933327",
         "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
@@ -109,26 +84,11 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.49,
-              -21.8
-            ],
-            [
-              -46.475,
-              -21.8
-            ],
-            [
-              -46.475,
-              -21.825
-            ],
-            [
-              -46.49,
-              -21.825
-            ],
-            [
-              -46.49,
-              -21.8
-            ]
+            [-46.502239502494376, -21.987883895707085],
+            [-46.46896256246768, -21.987883895707085],
+            [-46.46896256246768, -21.99952159328822],
+            [-46.502239502494376, -21.99952159328822],
+            [-46.502239502494376, -21.987883895707085]
           ]
         ]
       }
@@ -153,26 +113,17 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.5,
-              -21.75
-            ],
-            [
-              -46.48,
-              -21.75
-            ],
-            [
-              -46.48,
-              -21.78
-            ],
-            [
-              -46.5,
-              -21.78
-            ],
-            [
-              -46.5,
-              -21.75
-            ]
+            [-46.5405263, -21.8794252],
+            [-46.52543, -21.8797587],
+            [-46.52543, -21.8870965],
+            [-46.4945185, -21.8907653],
+            [-46.4937996, -21.9084407],
+            [-46.5257894, -21.9087742],
+            [-46.5265083, -21.8934334],
+            [-46.5376508, -21.8870965],
+            [-46.5401669, -21.8840947],
+            [-46.5408857, -21.8830941],
+            [-46.5405263, -21.8794252]
           ]
         ]
       }
@@ -180,14 +131,14 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "LIC-CVS-01",
-        "name": "Cupim Vermelho Sul License",
-        "label": "Cupim Vermelho Sul License",
-        "status": "lp_approved",
-        "area_km2": 7,
+        "id": "LIC-DM2-01",
+        "name": "Dona Maria 2 License",
+        "label": "Dona Maria 2 License",
+        "status": "inferred",
+        "area_km2": 1.2,
         "license_count": 1,
-        "note": "Exploration / Inferred — ultra-high-grade intercepts CVSDD0001 CVSDD0004 (not split per licence in 02933327 Table 1)",
-        "resource_category": "Exploration / Inferred",
+        "note": "Inferred — narrow high-grade corridor, part of Dona Maria 1 & 2 combined 226 Mt @ 2100 ppm TREO",
+        "resource_category": "Inferred",
         "source_ref": "asx_02933327",
         "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
@@ -196,26 +147,16 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.525,
-              -21.84
-            ],
-            [
-              -46.5,
-              -21.84
-            ],
-            [
-              -46.5,
-              -21.865
-            ],
-            [
-              -46.525,
-              -21.865
-            ],
-            [
-              -46.525,
-              -21.84
-            ]
+            [-46.5613929, -21.8752285],
+            [-46.5609223, -21.8831986],
+            [-46.548451, -21.8837445],
+            [-46.5479803, -21.874355],
+            [-46.5502158, -21.8728265],
+            [-46.5499805, -21.8640915],
+            [-46.5549219, -21.8640915],
+            [-46.5557455, -21.8754469],
+            [-46.5560985, -21.8753377],
+            [-46.5613929, -21.8752285]
           ]
         ]
       }
@@ -223,15 +164,14 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "LIC-BDP-01",
-        "name": "Barra do Pacu License",
-        "label": "Barra do Pacu License",
-        "status": "li_pending",
-        "area_km2": 10,
+        "id": "LIC-DM1-01",
+        "name": "Dona Maria 1 License",
+        "label": "Dona Maria 1 License",
+        "status": "inferred",
+        "area_km2": 1.2,
         "license_count": 1,
-        "note": "Indicated & Inferred 389 Mt @ 2204 ppm (prior ASX Barra do Pacu MRE) — verify against latest issuer table",
-        "resource_category": "Indicated & Inferred",
-        "total_mt": 389,
+        "note": "Inferred — narrow high-grade corridor, part of Dona Maria 1 & 2 combined 226 Mt @ 2100 ppm TREO",
+        "resource_category": "Inferred",
         "source_ref": "asx_02933327",
         "as_of": "2025-04-07",
         "confidence": "georeferenced_figure"
@@ -240,69 +180,16 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              -46.66,
-              -21.82
-            ],
-            [
-              -46.63,
-              -21.82
-            ],
-            [
-              -46.63,
-              -21.85
-            ],
-            [
-              -46.66,
-              -21.85
-            ],
-            [
-              -46.66,
-              -21.82
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "LIC-AGO-01",
-        "name": "Agostinho License",
-        "label": "Agostinho License",
-        "status": "exploration",
-        "area_km2": 5,
-        "license_count": 1,
-        "note": "Exploration — high-grade Agostinho AC grid ASX 02909601 — no MRE row in 02933327 Table 1",
-        "resource_category": "Exploration",
-        "source_ref": "asx_02933327",
-        "as_of": "2025-04-07",
-        "confidence": "georeferenced_figure"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -46.62,
-              -21.87
-            ],
-            [
-              -46.6,
-              -21.87
-            ],
-            [
-              -46.6,
-              -21.89
-            ],
-            [
-              -46.62,
-              -21.89
-            ],
-            [
-              -46.62,
-              -21.87
-            ]
+            [-46.5720044, -21.8614274],
+            [-46.5726297, -21.8778703],
+            [-46.583469, -21.8774834],
+            [-46.5840943, -21.8873483],
+            [-46.5613736, -21.8879285],
+            [-46.5603313, -21.8778703],
+            [-46.5647087, -21.8778703],
+            [-46.5642918, -21.8614274],
+            [-46.5642918, -21.8612339],
+            [-46.5720044, -21.8614274]
           ]
         ]
       }

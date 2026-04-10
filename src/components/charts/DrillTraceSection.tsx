@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { AlertTriangle, ChevronDown } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { LITH_COLORS, LITH_LABELS, LITH_ORDER } from './lithologyPalette'
-import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 const DEFAULT_VISIBLE = 20
 const COL_WIDTH = 20
@@ -135,7 +135,7 @@ export function DrillTraceSection() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    fetch(drillholesUrl)
+    fetch(GEO.drillholes.url)
       .then(r => r.json())
       .then((geojson: { features: Array<{ properties: DrillHoleEntry }> }) => {
         setAllHoles(

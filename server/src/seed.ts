@@ -2,6 +2,12 @@
  * Seeds the SQLite database with the same static data that the frontend's
  * mockDataService uses. This ensures the backend serves identical data on
  * first boot while the engine generates live telemetry.
+ *
+ * TODO: The canonical domain data now lives in src/data/domain/.
+ * This file duplicates that data because the server tsconfig (rootDir: ./src)
+ * cannot reach the frontend source tree. When the server package gains a
+ * shared-data dependency or monorepo path alias, replace inline literals
+ * with imports from the domain modules.
  */
 import { getDb, setDomainState, getDomainState } from './store/db.js'
 import { appendAuditEvent } from './store/auditChain.js'

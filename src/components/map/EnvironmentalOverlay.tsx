@@ -1,11 +1,7 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import apaUrl from '../../data/geojson/caldeira-apa-pedra-branca.geojson?url'
-import bufferUrl from '../../data/geojson/caldeira-apa-buffer.geojson?url'
-import monitoringUrl from '../../data/geojson/caldeira-environmental.geojson?url'
-import urbanUrl from '../../data/geojson/caldeira-urban-context.geojson?url'
-import udcUrl from '../../data/geojson/caldeira-reference-udc.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export const ENV_APA_FILL_LAYER_ID = 'env-apa-fill'
 export const ENV_BUFFER_FILL_LAYER_ID = 'env-buffer-fill'
@@ -13,14 +9,12 @@ export const ENV_MONITORING_FILL_LAYER_ID = 'env-monitoring-fill'
 export const ENV_URBAN_FILL_LAYER_ID = 'env-urban-fill'
 /** City centroid (Point) — interactive on Hydro tab when urban layer on */
 export const ENV_URBAN_CENTROID_CORE_LAYER_ID = 'env-urban-centroid-core'
-export const UDC_REFERENCE_LAYER_ID = 'env-udc-reference'
 
 export interface EnvironmentalOverlayProps {
   showApa?: boolean
   showBuffer?: boolean
   showMonitoring?: boolean
   showUrban?: boolean
-  showUdc?: boolean
 }
 
 export function EnvironmentalOverlay({
@@ -28,13 +22,11 @@ export function EnvironmentalOverlay({
   showBuffer = true,
   showMonitoring = true,
   showUrban = false,
-  showUdc = false,
 }: EnvironmentalOverlayProps) {
-  const apa = useGeoJsonFeatureCollection(apaUrl)
-  const buffer = useGeoJsonFeatureCollection(bufferUrl)
-  const monitoring = useGeoJsonFeatureCollection(monitoringUrl)
-  const urban = useGeoJsonFeatureCollection(urbanUrl)
-  const udc = useGeoJsonFeatureCollection(udcUrl)
+  const apa = useGeoJsonFeatureCollection(GEO.apa.url)
+  const buffer = useGeoJsonFeatureCollection(GEO.buffer.url)
+  const monitoring = useGeoJsonFeatureCollection(GEO.monitoring.url)
+  const urban = useGeoJsonFeatureCollection(GEO.urban.url)
 
   return (
     <>
@@ -44,14 +36,14 @@ export function EnvironmentalOverlay({
             id={ENV_APA_FILL_LAYER_ID}
             type="fill"
             filter={['==', ['get', 'kind'], 'protected-area']}
-            paint={{ 'fill-color': W.green, 'fill-opacity': 0.06 }}
+            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
           />
           <Layer
             id="env-apa-line"
             type="line"
             filter={['==', ['get', 'kind'], 'protected-area']}
             paint={{
-              'line-color': W.green,
+              'line-color': W.cyan,
               'line-width': 1,
               'line-opacity': 0.55,
             }}
@@ -67,7 +59,7 @@ export function EnvironmentalOverlay({
               'text-allow-overlap': true,
             }}
             paint={{
-              'text-color': 'rgba(34,214,138,0.75)',
+              'text-color': 'rgba(0,212,200,0.75)',
               'text-halo-color': 'rgba(6,6,16,0.95)',
               'text-halo-width': 1.2,
             }}
@@ -81,14 +73,14 @@ export function EnvironmentalOverlay({
             id={ENV_BUFFER_FILL_LAYER_ID}
             type="fill"
             filter={['==', ['get', 'kind'], 'buffer-zone']}
-            paint={{ 'fill-color': W.green, 'fill-opacity': 0.03 }}
+            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.03 }}
           />
           <Layer
             id="env-buffer-line"
             type="line"
             filter={['==', ['get', 'kind'], 'buffer-zone']}
             paint={{
-              'line-color': W.green,
+              'line-color': W.cyan,
               'line-width': 1,
               'line-opacity': 0.35,
               'line-dasharray': [4, 4],
@@ -193,42 +185,11 @@ export function EnvironmentalOverlay({
           />
         </Source>
       )}
-
-      {showUdc && udc && (
-        <Source id="caldeira-env-udc" type="geojson" data={udc}>
-          <Layer
-            id={UDC_REFERENCE_LAYER_ID}
-            type="circle"
-            paint={{
-              'circle-radius': 7,
-              'circle-color': W.red,
-              'circle-opacity': 0.35,
-              'circle-stroke-color': W.red,
-              'circle-stroke-width': 1.5,
-            }}
-          />
-          <Layer
-            id="env-udc-label"
-            type="symbol"
-            layout={{
-              'text-field': ['get', 'label'],
-              'text-size': 9,
-              'text-offset': [0, 1.2],
-              'text-font': ['Open Sans Regular'],
-            }}
-            paint={{
-              'text-color': 'rgba(255,77,77,0.85)',
-              'text-halo-color': W.mapHalo,
-              'text-halo-width': 1.2,
-            }}
-          />
-        </Source>
-      )}
     </>
   )
 }
 
-/** Parse GeoJSON feature props for map inspector (APA, buffer, monitoring, urban, UDC). */
+/** Parse GeoJSON feature props for map inspector (APA, buffer, monitoring, urban). */
 export function parseEnvMapFeature(properties: Record<string, unknown>): {
   id: string
   label: string

@@ -42,7 +42,6 @@ export interface FieldEnvMapLayers {
   buffer: boolean
   monitoring: boolean
   urban: boolean
-  udc: boolean
 }
 
 export const DEFAULT_FIELD_ENV_LAYERS: FieldEnvMapLayers = {
@@ -50,5 +49,4 @@ export const DEFAULT_FIELD_ENV_LAYERS: FieldEnvMapLayers = {
   buffer: true,
   monitoring: true,
   urban: false,
-  udc: false,
 }

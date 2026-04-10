@@ -44,6 +44,8 @@ export function phVariant(ph: number): 'green' | 'amber' | 'red' {
   return 'amber'
 }
 
+// TODO: LICENSE_ZONES and LICENSE_ITEMS should eventually be derived from the
+// regulatory GeoJSON / data service rather than maintained as static constants.
 export const LICENSE_ZONES = [
   { id: 'southern-lp', name: 'Southern LP Zone', label: 'Capão do Mel · Soberbo · Figueira', status: 'lp_approved' as const, area: 67, count: 21, note: 'LP approved Dec 2025 without restriction. Allows progression to LI application.' },
   { id: 'southern-acquired', name: 'Acquired Licences', label: '21 new licences · consolidated south', status: 'li_pending' as const, area: 49, count: 21, note: 'Acquired Dec 2025. Consolidates 67 km² contiguous area. Barra do Pacu included.' },

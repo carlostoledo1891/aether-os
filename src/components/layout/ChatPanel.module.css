@@ -42,8 +42,8 @@
   max-width: 85%;
   padding: 8px 12px;
   border-radius: var(--w-radius-md);
-  background: var(--w-violet-subtle, rgba(121, 99, 227, 0.12));
-  border: 1px solid var(--w-violet-border, rgba(121, 99, 227, 0.2));
+  background: var(--w-violet-subtle, rgba(124, 92, 252, 0.13));
+  border: 1px solid var(--w-violet-border, rgba(124, 92, 252, 0.2));
   font-size: 11px;
   line-height: 1.5;
   color: var(--w-text1);
@@ -67,7 +67,7 @@
 .msgAssistant code {
   font-family: var(--font-mono);
   font-size: 10px;
-  background: var(--w-glass08);
+  background: var(--w-glass-08);
   padding: 1px 4px;
   border-radius: 3px;
 }
@@ -155,22 +155,22 @@
 }
 
 .provenanceVero {
-  background: rgba(121, 99, 227, 0.15);
-  color: var(--w-violet, #7963E3);
-  border: 1px solid rgba(121, 99, 227, 0.25);
+  background: var(--w-violet-subtle);
+  color: var(--w-violet);
+  border: 1px solid rgba(124, 92, 252, 0.25);
 }
 
 .provenanceExternal {
-  background: rgba(64, 209, 169, 0.15);
-  color: var(--w-cyan, #40D1A9);
-  border: 1px solid rgba(64, 209, 169, 0.25);
+  background: var(--w-cyan-subtle);
+  color: var(--w-cyan);
+  border: 1px solid rgba(0, 212, 200, 0.25);
 }
 
 /* Provenance (tool-call sources) */
 .provenanceSection {
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid var(--w-glass08, rgba(255 255 255 / 0.04));
+  border-top: 1px solid var(--w-glass-08, rgba(255 255 255 / 0.08));
 }
 
 .provenanceToggle {

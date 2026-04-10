@@ -9,7 +9,7 @@ import {
   type PointGeometry,
   type LineStringGeometry,
 } from './geojson'
-import infraUrl from '../../data/geojson/caldeira-infrastructure.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 type InfraKind = 'plant' | 'office' | 'power' | 'port' | 'road' | 'supply-chain'
 
@@ -122,7 +122,7 @@ interface InfraOverlayProps {
 }
 
 export function InfraOverlay({ showRoute = false, mapId = 'aetherField', highlightId = null }: InfraOverlayProps) {
-  const raw = useGeoJsonFeatureCollection(infraUrl)
+  const raw = useGeoJsonFeatureCollection(GEO.infra.url)
 
   const points = useMemo(() => {
     if (!raw) return null

@@ -14,8 +14,7 @@ import {
   type LineStringGeometry,
   type PointGeometry,
 } from './geojson'
-import plantEdgesUrl from '../../data/geojson/plant-edges.geojson?url'
-import plantNodesUrl from '../../data/geojson/plant-nodes.geojson?url'
+import { GEO } from '../../data/geo/registry'
 import { MAP_STACKING } from './mapStacking'
 
 type Domain = 'extraction' | 'processing' | 'compliance' | 'monitor' | 'transport' | 'external'
@@ -219,8 +218,8 @@ interface PlantOverlayProps {
 
 export function PlantOverlay({ plant, env, hoveredNodeId, selectedNodeId }: PlantOverlayProps) {
   const { current: mapRef } = useMap()
-  const staticNodes = useGeoJsonFeatureCollection<PlantNodeFeature>(plantNodesUrl)
-  const staticEdges = useGeoJsonFeatureCollection<PlantEdgeFeature>(plantEdgesUrl)
+  const staticNodes = useGeoJsonFeatureCollection<PlantNodeFeature>(GEO.plantNodes.url)
+  const staticEdges = useGeoJsonFeatureCollection<PlantEdgeFeature>(GEO.plantEdges.url)
 
   const nodeStatus = useMemo((): Record<string, NodeStatus> => {
     const ph = plant.leaching_circuit.ph_level

@@ -56,7 +56,7 @@
   padding: 4px 8px;
   border-radius: 6px;
   background: var(--w-map-hud-wq-warn);
-  border: 1px solid rgba(245, 166, 35, 0.35);
+  border: var(--w-map-hud-border-amber);
   font-size: 8px;
   font-weight: 700;
   color: var(--w-amber);
@@ -95,8 +95,8 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  background: rgba(18, 10, 40, 0.94);
-  border: 1px solid rgba(124, 92, 252, 0.15);
+  background: var(--w-map-control-bg);
+  border: var(--w-map-control-border);
   border-radius: 8px;
   padding: 5px 10px;
   pointer-events: none;

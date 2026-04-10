@@ -8,9 +8,9 @@ import {
   type FeatureProperties,
   type PolygonGeometry,
 } from './geojson'
-import licensesUrl from '../../data/geojson/caldeira-licenses.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
-type LicenseStatus = 'lp_approved' | 'li_pending' | 'exploration'
+type LicenseStatus = 'lp_approved' | 'li_pending' | 'exploration' | 'inferred'
 
 interface LicenseProperties extends FeatureProperties {
   id: string
@@ -62,13 +62,7 @@ export function toLicenseDetail(
   }
 }
 
-function statusColors(status: LicenseStatus): { fill: string; line: string } {
-  switch (status) {
-    case 'lp_approved': return { fill: W.green, line: W.green }
-    case 'li_pending':  return { fill: W.amber, line: W.amber }
-    case 'exploration': return { fill: W.violet, line: W.violetSoft }
-  }
-}
+const LICENSE_COLORS = { fill: W.violet, line: W.violetSoft } as const
 
 interface LicenseOverlayProps {
   hoveredLicenseId?: string | null
@@ -79,25 +73,23 @@ export function LicenseOverlay({
   hoveredLicenseId = null,
   selectedLicenseId = null,
 }: LicenseOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<LicenseFeature>(licensesUrl)
+  const raw = useGeoJsonFeatureCollection<LicenseFeature>(GEO.licenses.url)
 
   const data = useMemo<FeatureCollection<LicenseFeature> | null>(() => {
     if (!raw) return null
     return {
       type: 'FeatureCollection',
       features: raw.features.map(f => {
-        const { fill, line } = statusColors(f.properties.status)
         const isHovered = f.properties.id === hoveredLicenseId
         const isSelected = f.properties.id === selectedLicenseId
         return {
           ...f,
           properties: {
             ...f.properties,
-            fillColor: fill,
+            fillColor: LICENSE_COLORS.fill,
             fillOpacity: isSelected ? 0.16 : isHovered ? 0.12 : 0.07,
-            lineColor: line,
+            lineColor: LICENSE_COLORS.line,
             lineWidth: isSelected ? 2.5 : isHovered ? 2 : 1.5,
-            lineSolid: f.properties.status === 'lp_approved' ? 1 : 0,
           },
         }
       }),
@@ -123,12 +115,6 @@ export function LicenseOverlay({
           'line-color': ['get', 'lineColor'],
           'line-width': ['get', 'lineWidth'],
           'line-opacity': 0.70,
-          'line-dasharray': [
-            'case',
-            ['==', ['get', 'lineSolid'], 1],
-            ['literal', [1, 0]],
-            ['literal', [6, 3]],
-          ],
         }}
       />
       <Layer

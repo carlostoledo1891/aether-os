@@ -7,7 +7,7 @@ import {
   type FeatureCollection,
   type PointGeometry,
 } from './geojson'
-import drillholesUrl from '../../data/geojson/caldeira-drillholes.geojson?url'
+import { GEO } from '../../data/geo/registry'
 import { HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX } from './springPinStyle'
 
 export type DrillCampaign =
@@ -111,7 +111,7 @@ export function DrillHoleOverlay({
   depositFilter = null,
   holeTypeFilter = 'all',
 }: DrillHoleOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<DrillHoleFeature>(drillholesUrl)
+  const raw = useGeoJsonFeatureCollection<DrillHoleFeature>(GEO.drillholes.url)
 
   const data = useMemo<FeatureCollection<DrillHoleFeature> | null>(() => {
     if (!raw) return null

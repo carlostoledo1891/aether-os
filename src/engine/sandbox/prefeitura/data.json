@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "updated": "2026-04-09",
+    "partner": "Prefeitura Municipal de Poços de Caldas",
+    "project": "Caldeira Rare Earths Project"
+  },
+  "economia": {
+    "empregos_diretos": 340,
+    "empregos_indiretos": 680,
+    "iss_anual_brl": 2100000,
+    "investimento_local_brl": 45000000,
+    "royalties_cfem_brl": 3200000,
+    "pib_contribuicao_pct": 1.8
+  },
+  "social": {
+    "programas_ativos": 12,
+    "jovem_aprendiz_vagas": 48,
+    "fundo_comunitario_brl": 500000,
+    "treinamentos_realizados": 156,
+    "familias_beneficiadas": 2800,
+    "bolsas_estudo": 24,
+    "parcerias_senai": 3
+  },
+  "ambiental": {
+    "nascentes_preservadas": 1092,
+    "nascentes_total": 1092,
+    "recirculacao_hidrica_pct": 95,
+    "co2_por_tonelada": 3.2,
+    "media_industria_co2": 11.0,
+    "disposicao": "Dry-stack",
+    "area_recuperada_ha": 12.4,
+    "estacoes_monitoramento": 47,
+    "energia_renovavel_pct": 100
+  },
+  "operacao": {
+    "producao_ndpr_tpa": 3250,
+    "treo_tpa": 18000,
+    "lom_anos": 25,
+    "recurso_mt": 1270,
+    "teor_medio_ppm": 2630,
+    "licencas_areas": 6,
+    "area_total_km2": 193
+  }
+}

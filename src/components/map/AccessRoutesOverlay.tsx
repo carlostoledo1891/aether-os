@@ -1,12 +1,12 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import routesUrl from '../../data/geojson/caldeira-access-routes.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export const ACCESS_ROUTE_LINE_LAYER_ID = 'access-route-line'
 
 export function AccessRoutesOverlay() {
-  const data = useGeoJsonFeatureCollection(routesUrl)
+  const data = useGeoJsonFeatureCollection(GEO.routes.url)
   if (!data) return null
 
   return (

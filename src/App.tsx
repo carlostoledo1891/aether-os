@@ -18,6 +18,7 @@ import shell from './AppShell.module.css'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'))
 const PitchDeck = lazy(() => import('./pages/PitchDeck'))
+const ViewEnginePage = lazy(() => import('./engine/ViewEnginePage').then(m => ({ default: m.ViewEnginePage })))
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
 
@@ -168,11 +169,26 @@ function DashboardShell() {
   )
 }
 
+function ViewEngineShell() {
+  const service = useMemo(() => createDataService(), [])
+
+  return (
+    <ErrorBoundary>
+      <DataServiceProvider service={service}>
+        <Suspense fallback={<PageFallback />}>
+          <ViewEnginePage />
+        </Suspense>
+      </DataServiceProvider>
+    </ErrorBoundary>
+  )
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/lp" element={<Suspense fallback={<PageFallback />}><LandingPage /></Suspense>} />
       <Route path="/pitch-deck" element={<Suspense fallback={<PageFallback />}><PitchDeck /></Suspense>} />
+      <Route path="/view/:manifestId" element={<ViewEngineShell />} />
       <Route path="/*" element={<DashboardShell />} />
     </Routes>
   )

@@ -42,7 +42,7 @@ export function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
     maxWidth: 240,
     fontSize: 10,
     lineHeight: 1.5,
-    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+    boxShadow: `0 4px 12px ${W.scrim}`,
     display: 'flex',
     gap: 8,
   }

@@ -8,7 +8,7 @@ import {
   type FeatureProperties,
   type PolygonGeometry,
 } from './geojson'
-import pfsUrl from '../../data/geojson/caldeira-pfs-engineering.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export type EngineeringKind = 'pfs-pit' | 'processing-plant' | 'spent-clay'
 
@@ -70,7 +70,7 @@ export function PfsEngineeringOverlay({
   hoveredId = null,
   selectedId = null,
 }: PfsEngineeringOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<PfsFeature>(pfsUrl)
+  const raw = useGeoJsonFeatureCollection<PfsFeature>(GEO.pfs.url)
 
   const data = useMemo<FeatureCollection<PfsFeature> | null>(() => {
     if (!raw) return null

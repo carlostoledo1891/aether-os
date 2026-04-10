@@ -1,13 +1,13 @@
 import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
-import { AlertTriangle, ChevronDown, Droplets, FileCheck, Globe, Layers, Phone, RadioTower } from 'lucide-react'
+import { AlertTriangle, ChevronDown, Droplets, FileCheck, Globe, Phone, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { MetricDisplay } from '../../components/ui/MetricDisplay'
 import { SparkLine } from '../../components/charts/SparkLine'
 import { TimeRangeSelector } from '../../components/ui/TimeRangeSelector'
-import { LicenseTimeline } from '../../components/ui/LicenseTimeline'
+import { LicenseTimeline } from './LicenseTimeline'
 import { SectionLabel } from '../../components/ui/SectionLabel'
 import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
@@ -18,6 +18,11 @@ import { ErrorFallback } from '../../components/ui/ErrorFallback'
 import type { TimeRangeKey } from '../../services/dataService'
 import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
+import { PredictiveModelingCard } from './PredictiveModelingCard'
+import { LIReadinessCard } from './LIReadinessCard'
+import { AquiferCard } from './AquiferCard'
+import { WaterQualityCard } from './WaterQualityCard'
+import { SpringsCard } from './SpringsCard'
 import { COMMUNITY_STRINGS, type CommunityLang } from '../../data/communityTranslations'
 import css from './EnvironmentPanel.module.css'
 
@@ -47,8 +52,6 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
   const envHistory = history?.envHistory ?? []
   const precipMmSeries = history?.precipMmSeries ?? []
   const precipDays = range === '30d' ? 30 : range === '7d' ? 7 : 7
-  const sulfateOk   = env.water_quality.sulfate_ppm < 250
-  const nitrateOk   = env.water_quality.nitrate_ppm < 50
   const radOk       = env.legacy_infrastructure.radiation_usv_h < 0.18
   const sulfateData = envHistory.map(h => h.water_quality.sulfate_ppm)
   const nitrateData = envHistory.map(h => h.water_quality.nitrate_ppm)
@@ -136,173 +139,30 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
         currentScenario={currentScenario}
       />
 
-      {/* Predictive Cumulative Modeling (6.0 Mtpa → 2030-2050) */}
-      <GlassCard animate={false} glow="cyan" className={css.cardBody}>
-        <div className={css.sectionHead} style={{ marginBottom: 4 }}>
-          <GlowingIcon icon={Layers} color="cyan" size={11}/>
-          <SectionLabel>Predictive Cumulative Modeling</SectionLabel>
-        </div>
-        <div className={css.mono10} style={{ color: W.cyan, marginBottom: 8 }}>
-          6.0 Mtpa commercial scale-up · 2030–2050 drought forecast · {SPRING_COUNT} local springs
-        </div>
-        <div className={css.grid3} style={{ gap: 7, marginBottom: 8 }}>
-          {PREDICTIVE_HYDROLOGY_SCENARIOS.map((scenario) => {
-            const statusColor = scenario.status === 'stable' ? W.green : scenario.status === 'watch' ? W.amber : W.red
-            return (
-              <div key={scenario.horizon} className={css.scenarioCell} style={{ borderRadius: W.radius.sm, background: `${statusColor}0F`, border: `1px solid ${statusColor}25` }}>
-                <div className={css.labelUpper} style={{ color: W.text4, letterSpacing: '0.04em' }}>Modeled · {scenario.horizon}</div>
-                <div className={css.monoValueLg} style={{ color: statusColor }}>
-                  {scenario.spring_preservation_pct}%
-                </div>
-                <div style={{ fontSize: 10, color: W.text4 }}>spring preservation</div>
-                <div style={{ fontSize: 10, color: W.text4, marginTop: 2 }}>
-                  DI: {scenario.drought_index.toFixed(2)} · {scenario.active_springs}/{SPRING_COUNT}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-        <div className={css.grid2} style={{ marginBottom: 6, gap: 6 }}>
-          <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
-            <div className={css.labelUpper} style={{ color: W.text4 }}>Data Ingestion</div>
-            <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Target: piezometers + Open-Meteo/INMET class precip (demo: optional API + mock)</div>
-          </div>
-          <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: 'rgba(0,212,200,0.06)', border: '1px solid rgba(0,212,200,0.18)' }}>
-            <div className={css.labelUpper} style={{ color: W.text4 }}>Output</div>
-            <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Simulated hydrological digital twin (commercial-case model)</div>
-          </div>
-        </div>
-        <p className={css.bodyText} style={{ color: W.text3, marginBottom: 6 }}>
-          Modeled case: <span style={{ color: W.text1, fontWeight: 700 }}>{currentScenario.horizon}</span> with
-          {' '}<span style={{ color: W.text2 }}>{currentScenario.active_springs} active springs</span>,
-          {' '}<span style={{ color: W.text2 }}>{currentScenario.recirculation_pct.toFixed(1)}% recirculation</span>, and
-          {' '}<span style={{ color: W.text2 }}>{currentScenario.sulfate_guardband_ppm} ppm guardband</span>.
-          Dry-stacking + 95% recirculation mathematically proves zero suppression of {SPRING_COUNT} local springs.
-        </p>
-        <div className={css.barTrack} style={{ height: 5, background: W.glass05, borderRadius: W.radius.xs }}>
-          <div style={{
-            width: `${currentScenario.spring_preservation_pct}%`,
-            height: '100%',
-            background: `linear-gradient(90deg, ${W.cyan}80, ${W.green})`,
-            borderRadius: W.radius.xs,
-            boxShadow: `0 0 6px ${W.cyan}60`,
-          }}/>
-        </div>
-      </GlassCard>
+      <PredictiveModelingCard
+        scenarios={PREDICTIVE_HYDROLOGY_SCENARIOS}
+        currentScenario={currentScenario}
+        springCount={SPRING_COUNT}
+      />
 
-      {/* LI hearing readiness */}
-      <GlassCard animate={false} glow={currentScenarioStatus === 'action' ? 'red' : 'amber'} className={css.cardBody}>
-        <div className={css.sectionHeadBetween} style={{ marginBottom: 7 }}>
-          <div className={css.sectionHead}>
-            <GlowingIcon icon={AlertTriangle} color="amber" size={11}/>
-            <SectionLabel>LI Hearing Readiness</SectionLabel>
-          </div>
-          <StatusChip
-            label={currentScenario.permitting_signal}
-            variant={currentScenarioStatus === 'stable' ? 'green' : currentScenarioStatus === 'watch' ? 'amber' : 'red'}
-            size="sm"
-          />
-        </div>
-        <p className={css.bodyText} style={{ color: W.text3, marginBottom: 6 }}>
-          {currentScenario.recommendation}
-        </p>
-        <div className={css.grid2} style={{ gap: 7 }}>
-          <div className={css.statCell} style={{ borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
-            <div className={css.labelUpper} style={{ color: W.text4 }}>Digital coverage</div>
-            <div className={css.monoValue} style={{ color: W.text1 }}>
-              {SCALE_UP_PATHWAY.current_digital_coverage_pct}%
-            </div>
-          </div>
-          <div className={css.statCell} style={{ borderRadius: W.radius.sm, background: W.glass03, border: W.hairlineBorder }}>
-            <div className={css.labelUpper} style={{ color: W.text4 }}>Springs monitored</div>
-            <div className={css.monoValue} style={{ color: W.text1 }}>
-              {SCALE_UP_PATHWAY.springs_monitored}
-            </div>
-          </div>
-        </div>
-      </GlassCard>
+      <LIReadinessCard
+        permittingSignal={currentScenario.permitting_signal}
+        recommendation={currentScenario.recommendation}
+        status={currentScenarioStatus}
+        digitalCoveragePct={SCALE_UP_PATHWAY.current_digital_coverage_pct}
+        springsMonitored={SCALE_UP_PATHWAY.springs_monitored}
+      />
 
-      {/* Aquifer depths */}
-      <GlassCard animate={false} className={css.cardBody}>
-        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
-          <GlowingIcon icon={Droplets} color="cyan" size={11}/>
-          <SectionLabel>Aquifer Depths</SectionLabel>
-        </div>
-        <div className={css.flexCol} style={{ gap: 5 }}>
-          {env.aquifer.sensors.map(s => {
-            const c = s.status === 'Normal' ? W.cyan : s.status === 'Warning' ? W.amber : W.red
-            const delta = s.depth_meters - s.baseline_meters
-            const pct = Math.min(100, (s.depth_meters / 35) * 100)
-            return (
-              <div key={s.sensor_id} className={css.sensorRow} style={{
-                background: W.glass02, borderRadius: W.radius.sm, border: `1px solid ${c}18`,
-              }}>
-                <span className={css.sensorId} style={{ color: c }}>
-                  {s.sensor_id}
-                </span>
-                <div className={css.sensorBar} style={{ background: W.glass05, borderRadius: W.radius.xs }}>
-                  <motion.div animate={{ width: `${pct}%` }} transition={{ duration: 0.5 }}
-                    style={{ height: '100%', background: c, borderRadius: W.radius.xs, boxShadow: `0 0 4px ${c}60` }}/>
-                </div>
-                <span className={css.sensorDepth} style={{ color: c }}>
-                  {s.depth_meters.toFixed(1)} m
-                </span>
-                <span className={css.sensorDelta} style={{ color: delta > 0.5 ? W.amber : W.text4 }}>
-                  {delta >= 0 ? '+' : ''}{delta.toFixed(1)}
-                </span>
-              </div>
-            )
-          })}
-        </div>
-      </GlassCard>
+      <AquiferCard sensors={env.aquifer.sensors} />
 
-      {/* Water quality */}
-      <GlassCard animate={false} glow={(!sulfateOk || !nitrateOk) ? 'amber' : 'none'} className={css.cardBody}>
-        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
-          <GlowingIcon icon={Droplets} color={(!sulfateOk || !nitrateOk) ? 'amber' : 'green'} size={11}/>
-            <SectionLabel>Water Quality</SectionLabel>
-        </div>
-        <div className={css.grid2} style={{ gap: 8 }}>
-          <div>
-            <div className={css.sectionHeadBetween} style={{ marginBottom: 3 }}>
-              <span style={{ fontSize: 10, color: W.text3 }}>Sulfate</span>
-              {!sulfateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
-            </div>
-            <MetricDisplay value={env.water_quality.sulfate_ppm} unit="ppm" decimals={0} size="sm" color={sulfateOk ? 'green' : 'amber'}/>
-            <SparkLine
-              data={sulfateData}
-              color={sulfateOk ? W.green : W.amber}
-              thresholdHigh={250}
-              height={28}
-              unit=" ppm"
-              rangeLabel={range}
-              secondaryData={precipMmSeries}
-              secondaryColor={W.cyan}
-              secondaryUnit=" mm"
-            />
-            <p className={css.mono10} style={{ color: W.text4, margin: '2px 0 0' }}>limit: 250 ppm · dashed: demo precip (mm)</p>
-          </div>
-          <div>
-            <div className={css.sectionHeadBetween} style={{ marginBottom: 3 }}>
-              <span style={{ fontSize: 10, color: W.text3 }}>Nitrate</span>
-              {!nitrateOk && <StatusChip label="⚠" variant="red" size="sm"/>}
-            </div>
-            <MetricDisplay value={env.water_quality.nitrate_ppm} unit="ppm" decimals={0} size="sm" color={nitrateOk ? 'green' : 'amber'}/>
-            <SparkLine
-              data={nitrateData}
-              color={nitrateOk ? W.green : W.amber}
-              thresholdHigh={50}
-              height={28}
-              unit=" ppm"
-              rangeLabel={range}
-              secondaryData={precipMmSeries}
-              secondaryColor={W.cyan}
-              secondaryUnit=" mm"
-            />
-            <p className={css.mono10} style={{ color: W.text4, margin: '2px 0 0' }}>limit: 50 ppm · dashed: demo precip (mm)</p>
-          </div>
-        </div>
-      </GlassCard>
+      <WaterQualityCard
+        sulfatePpm={env.water_quality.sulfate_ppm}
+        nitratePpm={env.water_quality.nitrate_ppm}
+        sulfateData={sulfateData}
+        nitrateData={nitrateData}
+        precipMmSeries={precipMmSeries}
+        range={range}
+      />
 
       {/* Radiation */}
       <GlassCard animate={false} glow={radOk ? 'none' : 'red'} className={css.cardBody}>
@@ -318,36 +178,7 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
         <p className={css.mono10} style={{ color: W.text4, margin: '3px 0 0' }}>normal background ~0.14 μSv/h</p>
       </GlassCard>
 
-      {/* Springs */}
-      <GlassCard animate={false} className={css.cardBody}>
-        <div className={css.sectionHead} style={{ marginBottom: 8 }}>
-          <GlowingIcon icon={Droplets} color="cyan" size={11}/>
-          <SectionLabel>Water Springs</SectionLabel>
-          <span style={{ fontSize: 10, color: W.text4 }}>{SPRING_COUNT} monitored</span>
-        </div>
-        <div className={css.springCounters} style={{ marginBottom: 8 }}>
-          {[
-            { count: counts.active,     label: 'Active',     color: W.green },
-            { count: counts.reduced,    label: 'Reduced',    color: W.amber },
-            { count: counts.suppressed, label: 'Suppressed', color: W.red   },
-          ].map(({ count, label, color }) => (
-            <div key={label} className={css.springCounter}>
-              <span className={css.monoCounterLg} style={{ color }}>{count}</span>
-              <span className={css.labelUpper} style={{ color: W.text4, letterSpacing: '0.04em' }}>{label}</span>
-            </div>
-          ))}
-        </div>
-        <div className={css.barTrack} style={{ height: 6, background: W.glass05, borderRadius: W.radius.xs, display: 'flex' }}>
-          {SPRING_COUNT > 0 && <>
-            <div style={{ width: `${(counts.active / SPRING_COUNT) * 100}%`, background: W.green, opacity: 0.75 }} />
-            <div style={{ width: `${(counts.reduced / SPRING_COUNT) * 100}%`, background: W.amber, opacity: 0.85 }} />
-            <div style={{ width: `${(counts.suppressed / SPRING_COUNT) * 100}%`, background: W.red, opacity: 0.9 }} />
-          </>}
-        </div>
-        <div className={css.preservationRate} style={{ color: W.text4 }}>
-          {((counts.active / SPRING_COUNT) * 100).toFixed(1)}% preservation rate · FBDS/IDE-SISEMA verified
-        </div>
-      </GlassCard>
+      <SpringsCard springCount={SPRING_COUNT} counts={counts} />
 
       {/* License timeline */}
       <GlassCard animate={false} className={css.cardBody}>

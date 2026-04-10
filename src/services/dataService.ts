@@ -1,5 +1,5 @@
 import type { PlantTelemetry, EnvTelemetry, EsgScore, AlertItem, ComplianceLedger, SpringEvent } from '../types/telemetry'
-import type { DepositRecord, DepositStatus } from '../data/mockData'
+import type { DepositRecord, DepositStatus } from '../data/domain/deposits'
 import type { IssuerSnapshot } from '../data/caldeira/issuerSnapshot'
 
 export type { DepositRecord, DepositStatus }

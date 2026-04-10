@@ -1,10 +1,10 @@
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { W } from '../../app/canvas/canvasTheme'
 import { useGeoJsonFeatureCollection } from './geojson'
-import neighborsUrl from '../../data/geojson/caldeira-neighbors.geojson?url'
+import { GEO } from '../../data/geo/registry'
 
 export function NeighborOverlay() {
-  const data = useGeoJsonFeatureCollection(neighborsUrl)
+  const data = useGeoJsonFeatureCollection(GEO.neighbors.url)
   if (!data) return null
 
   return (

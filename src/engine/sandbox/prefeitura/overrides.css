@@ -1,0 +1,10 @@
+/**
+ * Sandbox theme overrides for Prefeitura de Poços de Caldas dashboard.
+ * Import this file in the sandbox entry to apply custom branding.
+ */
+
+:root {
+  --sandbox-accent: #7C5CFC;
+  --sandbox-bg: #060610;
+  --sandbox-text: #e8e8f0;
+}

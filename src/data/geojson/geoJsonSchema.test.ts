@@ -82,7 +82,6 @@ describe('Caldeira GeoJSON schema', () => {
       'caldeira-apa-pedra-branca.geojson',
       'caldeira-apa-buffer.geojson',
       'caldeira-pfs-engineering.geojson',
-      'caldeira-reference-udc.geojson',
       'caldeira-urban-context.geojson',
       'caldeira-boundary.geojson',
       'caldeira-ops-plant-sites.geojson',
