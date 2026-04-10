@@ -416,7 +416,7 @@ export default function FoundersDeck() {
                 { label: 'Operations', y: 148 },
                 { label: 'Environmental', y: 188 },
                 { label: 'Market', y: 228 },
-              ].map((t, i) => (
+              ].map((t) => (
                 <g key={t.label}>
                   <rect x="580" y={t.y} width="110" height="28" rx="6" fill={W.glass04} stroke={`${V}15`} strokeWidth="0.8" />
                   <text x="635" y={t.y + 18} textAnchor="middle" fill={W.text2} fontSize="9" fontFamily="var(--font-mono)">{t.label}</text>
