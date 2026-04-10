@@ -2,8 +2,8 @@
 
 **Purpose:** Define how Vero reaches each stakeholder segment — who we target, what we lead with, how we close, and what we charge. This is the operational companion to [`branding.md`](branding.md) (brand identity) and [`Personas.md`](Personas.md) (stakeholder profiles).
 
-**Last updated:** 2026-04-10 (post v16 — Juliano + Guilherme Final Sprint)  
-**Cross-references:** [`VALUATION.md`](VALUATION.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`branding.md`](branding.md)
+**Last updated:** 2026-04-09 (v18 — Pre-Pitch Final Sprint)  
+**Cross-references:** [`VALUATION.md`](VALUATION.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`branding.md`](branding.md), [`PITCH_STRATEGY.md`](PITCH_STRATEGY.md)
 
 ---
 
@@ -300,12 +300,14 @@ Body: Direct calendar link. No pitch, just demo offer.
 
 ---
 
-## 11. Meteoric Pitch Plan (Apr 14 Demo)
+## 11. Meteoric Pitch Plan (Apr 15)
+
+**See also:** [`PITCH_STRATEGY.md`](PITCH_STRATEGY.md) for full email copy, timeline, and per-recipient playbook.
 
 **Who's in the room:**
-- **Nick Gale (CEO)** — Needs execution credibility for capital raises. Digital twin is his demo-closer.
+- **Stuart Gale (CEO)** — Needs execution credibility for capital raises. Digital twin is his demo-closer.
 - **Dr. De Carvalho (Chief Geologist)** — Needs defensible QP-grade data with JORC badges. Will test the AI agent.
-- **Nick Tunks (Chairman)** — Needs one coherent field-to-filing-to-market story. Executive Overview is his slide.
+- **Dr. Tunks (Chairman)** — Needs one coherent field-to-filing-to-market story. Executive Overview is his slide.
 
 **The ask:** Growth tier pilot — $102k/yr annual contract.
 

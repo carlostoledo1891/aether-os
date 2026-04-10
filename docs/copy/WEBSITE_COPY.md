@@ -252,9 +252,7 @@ Use for landing page or deck appendix:
 
 **Carlos Toledo** — Founder, Product & Technical Lead. Born and raised in Poços de Caldas, inside the Caldeira. Air Force pilot, full-stack developer, Product Design degree. Built the entire stack solo — 310 tests, enterprise security hardening, 27 AI agent tools, pilot plant digital twin (17 equipment, 28 sensors), real SHA-256 audit chain, production deployment gate, accessibility-hardened. 40 years of local context that no outside team can replicate.
 
-**Dr. Heber Caponi** — Chief Scientific Officer. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
-
-**Thiago A.** — CEO. Brazilian and international law, enterprise operations, commercial execution.
+**Dr. Heber Caponi** — Scientific Advisor. Decades of active Caldeira field research through LAPOC. The scientific bridge from simulated data to field-verified instrument channels.
 
 Vero is built from inside the Caldeira, not about it — and validated by the scientist who has studied it for decades.
 

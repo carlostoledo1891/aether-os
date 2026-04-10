@@ -97,7 +97,7 @@ const QUALITY = [
 
 const TEAM = [
   { name: 'Carlos Toledo', role: 'Founder & Product Lead', desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — 310 tests, 27 AI tools. Domain expert with decades of field context.' },
-  { name: 'Dr. Heber Caponi', role: 'Chief Scientific Officer', desc: 'Field researcher with decades of active geological and hydrological work. The bridge from simulated to field-verified data.' },
+  { name: 'Dr. Heber Caponi', role: 'Scientific Advisor', desc: 'Field researcher with decades of active geological and hydrological work. The bridge from simulated to field-verified data.' },
 ]
 
 const AI_TOOLS = [
@@ -579,12 +579,11 @@ export default function LandingPage() {
             See Vero in action
           </h2>
           <p style={{ ...body, margin: '0 auto 36px', textAlign: 'center' }}>
-            Explore the live platform, review the investor deck, or request a pilot deployment.
+            Explore the live platform, review the founders deck, or request a pilot deployment.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/" style={{ background: V, color: '#fff', padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>Open Platform</a>
             <a href="/founders-deck" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>Founders Deck</a>
-            <a href="/pitch-deck" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 28px', borderRadius: 8, fontSize: 14, textDecoration: 'none', background: 'transparent' }}>Investor Deck</a>
           </div>
         </div>
       </S>

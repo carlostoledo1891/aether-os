@@ -801,9 +801,9 @@ Nine stakeholder personas have been evaluated against the current release (see `
 | Member | Role | Strategic value |
 |--------|------|----------------|
 | **Carlos Toledo** | Founder, Product & Technical Lead | Pocos native, Air Force pilot, full-stack dev, Product Design. Builds the product. |
-| **Dr. Heber Caponi** | Chief Scientific Officer (LAPOC) | Decades of active Caldeira field research. **Most strategic member** — converts "simulated" into "field-verified." LAPOC instruments are the first live data channel. |
-| **Thiago A.** | CEO (designated) | Brazilian/international law, enterprise ops, dev team management. Business, legal, and commercial execution. |
-| **Full-Stack Developer** | Engineering (designated) | Ready at pilot. Codebase architected for immediate second-developer productivity. |
+| **Guilherme Bonifácio** | Co-founder, Commercial Strategy | iFood co-founder. Kanoa Capital. 110+ angel investments. GTM, investor pipeline, revenue strategy. |
+| **Juliano Dutra** | Co-founder, Technical Advisor | iFood co-founder. Gringo CTO. 20+ angel investments. Architecture review, hiring bar, scaling guidance. |
+| **Dr. Heber Caponi** | Scientific Advisor (LAPOC) | Decades of active Caldeira field research. **Most strategic member** — converts "simulated" into "field-verified." LAPOC instruments are the first live data channel. |
 
 **Why Dr. Caponi is the most strategic:** Every persona gap in the aggregate scorecard (~8.0/10 weighted avg, v6) improves when LAPOC field data flows through `AetherDataService`. He is the person who turns disclaimer labels into instrument-backed labels. See `docs/Personas.md` Part 0 for the full team analysis.
 
@@ -2631,7 +2631,7 @@ CTO + Business Strategist sprint pairing with Juliano Dutra (CTO lens — iFood 
 
 ### Context
 
-CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive scaling, color discipline, architecture SVG diagrams, map pin hover fix, and plant twin flow line alignment; (2) Team restructure — Dr. Caponi promoted from "Chief Scientific Advisor" to "Chief Scientific Officer", 2 new FoundersDeck slides ("Why You?" and "Why I Need You") for Juliano/Guilherme advisory pitch.
+CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive scaling, color discipline, architecture SVG diagrams, map pin hover fix, and plant twin flow line alignment; (2) Team restructure — Dr. Caponi promoted from "Chief Scientific Advisor" to "Scientific Advisor", 2 new FoundersDeck slides ("Why You?" and "Why I Need You") for Juliano/Guilherme advisory pitch.
 
 ### What was built
 
@@ -2653,7 +2653,7 @@ CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive s
 
 #### Phase 2: Team Restructure
 
-6. **Dr. Caponi title change** — "Chief Scientific Advisor" → "Chief Scientific Officer" across FoundersDeck, LandingPage, PitchDeck, PITCH_DECK_COPY.md, WEBSITE_COPY.md, HANDOFF.md team table.
+6. **Dr. Caponi title change** — "Chief Scientific Advisor" → "Scientific Advisor" across FoundersDeck, LandingPage, PitchDeck, PITCH_DECK_COPY.md, WEBSITE_COPY.md, HANDOFF.md team table.
 
 7. **2 new FoundersDeck slides (28 total):**
    - **Slide 21 — Why You?** — Pragmatic advisory pitch. Juliano (CTO lens: tech mentorship, architecture validation, hiring bar) and Guilherme (Business lens: commercial execution, GTM, investor pipeline). "Not asking for time — asking for leverage."
@@ -2674,3 +2674,74 @@ CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive s
 - 0 TypeScript compilation errors (strict mode)
 - All deck routes verified: `/pitch-deck`, `/meteoric-deck`, `/founders-deck`, `/lp`
 - FoundersDeck: 28 slides (was 26)
+
+---
+
+## Session v18 — Pre-Pitch Final Sprint
+
+Pre-pitch sprint preparing all assets for the April 9-15 pitch sequence: Founders (Apr 9), Dr. Caponi (Apr 13), Meteoric (Apr 15).
+
+### What Changed
+
+1. **PitchDeck deleted** — Removed `src/pages/PitchDeck.tsx`, route from `App.tsx`, and "Investor Deck" button from LandingPage. No longer needed — replaced by targeted pages.
+
+2. **TechPage created** (`/tech`) — CTO-grade deep dive for Juliano: architecture (3-process topology, trust zone, security boundaries), code quality (310 tests, 0 TS errors), service layer (AetherDataService mock/live swap), AI integration (27 tools, hallucination fence), sensor/SCADA integration surface, digital twin, DPP/blockchain pipeline, data layer (19 GeoJSON), modularity. Website-style (dark, scrollable, glass cards, motion animations).
+
+3. **BusinessPage created** (`/business`) — Business case for Guilherme: market sizing (TAM/SAM/SOM with animated bars), regulatory catalyst (EU DPP, US FEOC, CEN/CENELEC), competitive landscape, revenue model (Starter/Growth/Enterprise), 5-tier expansion playbook, traction signals, timing thesis. Website-style.
+
+4. **MeteoricDeck revamped** — Expanded from 11 to 15 slides:
+   - **New: Geology & Data Integrity** — 19 GeoJSON, JORC classification, geology/hydro firewall (tailored for De Carvalho)
+   - **New: Executive & Capital Intelligence** — 9 tabs, 3 scenarios, $443M CAPEX tracking (tailored for Gale)
+   - **New: Governance & Disclosure Safety** — Data honesty modes, screenshot safety (tailored for Tunks)
+   - **New: Team slide** — Full team: Carlos + Guilherme + Juliano + Dr. Caponi (advisor)
+   - **Revised CTA** — Removed `/lp` link, email changed to carlos@vero.supply, added co-founder bullet
+
+5. **Deck font sizes bumped** — Body text minimum raised from 9-10px to 11-12px across FoundersDeck. Uppercase labels stay at 11px. SVG diagram annotations unchanged. Improves readability on all screen sizes.
+
+6. **Dr. Caponi repositioned as "Scientific Advisor"** — Reverted from "Chief Scientific Officer" to "Scientific Advisor" across all pages and docs. Avoids LAPOC/CNEN noise. Website and FoundersDeck show Carlos + Caponi only. MeteoricDeck shows full team.
+
+7. **FoundersDeck team slide trimmed** — Now shows only Carlos + Caponi (was 4 cards including "Full-Stack Dev" and "Strategic Advisor"). Consistent with "just me and Caponi" positioning for founders pitch.
+
+8. **FoundersDeck "Why I Need You" links** — Each responsibility card (Carlos/Juliano/Guilherme) now links to the relevant deep-dive page: `/` (platform), `/tech`, `/business`.
+
+9. **PITCH_STRATEGY.md created** — Full pitch playbook: timeline (Apr 9/13/15), email copy for all 4 recipients (Juliano, Guilherme, Dr. Caponi in Portuguese, Dr. De Carvalho), success criteria, fallback plans, talking points per recipient, post-pitch protocol.
+
+10. **Thiago A. removed from WEBSITE_COPY** — Team is now Carlos + Caponi on all public-facing pages.
+
+### Team Positioning Summary
+
+| Context | Team shown |
+|---------|------------|
+| Website (`/lp`) | Carlos + Dr. Caponi (Scientific Advisor) |
+| FoundersDeck | Carlos + Dr. Caponi (Scientific Advisor) |
+| MeteoricDeck | Carlos + Guilherme + Juliano + Dr. Caponi (Scientific Advisor) |
+| TechPage / BusinessPage | No team section (deep-dive content pages) |
+
+### Routes (updated)
+
+| Route | Page |
+|-------|------|
+| `/lp` | LandingPage |
+| `/founders-deck` | FoundersDeck (28 slides) |
+| `/meteoric-deck` | MeteoricDeck (15 slides) |
+| `/tech` | TechPage (Juliano deep-dive) |
+| `/business` | BusinessPage (Guilherme deep-dive) |
+| `/` | Platform (FieldView / BuyerView / ExecutiveView) |
+| ~~`/pitch-deck`~~ | **Deleted** |
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Deleted** | `src/pages/PitchDeck.tsx` |
+| **Created** | `src/pages/TechPage.tsx`, `src/pages/BusinessPage.tsx`, `docs/PITCH_STRATEGY.md` |
+| **Routing** | `src/App.tsx` |
+| **Deck pages** | `src/pages/MeteoricDeck.tsx`, `src/pages/FoundersDeck.tsx` |
+| **Website** | `src/pages/LandingPage.tsx` |
+| **Docs** | `docs/copy/PITCH_DECK_COPY.md`, `docs/copy/WEBSITE_COPY.md`, `docs/copy/METEORIC_DECK_COPY.md`, `HANDOFF.md` |
+
+### Quality Gate
+- 0 TypeScript compilation errors (strict mode)
+- Routes verified: `/meteoric-deck`, `/founders-deck`, `/tech`, `/business`, `/lp`
+- MeteoricDeck: 15 slides (was 11)
+- FoundersDeck: 28 slides (unchanged)

@@ -224,7 +224,7 @@ Wire **historian / SCADA** (read-only / unidirectional gateway) or lab LIMS for 
 - **Brazilian Air Force Academy** (pilot) — systems discipline, operational rigor.
 - **Full-stack developer + Product Design degree** — built the entire stack solo: three-process production architecture, 310 tests across 3 packages, 27 AI agent tools, pilot plant digital twin with 17 equipment and 28 sensors, 19 GeoJSON datasets, 14 overlay layers, real SHA-256 audit chain, enterprise security hardening, CSP + rate limiting, deployment gate, accessibility-hardened, 4 external API enrichers live.
 
-**Dr. Heber Caponi** — Chief Scientific Officer (LAPOC)
+**Dr. Heber Caponi** — Scientific Advisor (LAPOC)
 - **Decades of active field research** on the Caldeira alkaline complex. Still conducting fieldwork today.
 - The scientific authority who converts Vero's "simulated" labels into **"field-verified"** labels.
 - LAPOC instrument data is the **first live data channel** — the bridge from demo to product.
@@ -418,7 +418,7 @@ Mining major (BHP/Rio Tinto), ERP vendor (SAP/Oracle/Palantir), ECA (IFC/BNDES).
 *Talk track: Guilherme — three exit categories, named acquirers, implied EV at consensus ARR. DFS → Construction → Production creates the acquisition window.*
 
 **Slide 20 — Team** ⚪ (UPDATED)  
-Carlos Toledo, Dr. Caponi (Chief Scientific Officer), Full-Stack Dev (activating), Strategic Advisor (open seat).  
+Carlos Toledo, Dr. Caponi (Scientific Advisor), Full-Stack Dev (activating), Strategic Advisor (open seat).  
 *Talk track: Core team. Dr. Caponi is not advisory — he is the scientific authority inside Vero. The dev seat and advisor seat are explicit invitations.*
 
 **Slide 21 — Why You?** ⚪ (NEW)  

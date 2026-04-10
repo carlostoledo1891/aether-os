@@ -2,9 +2,11 @@
 
 **Purpose:** Slide-ready narrative blocks for the Meteoric-specific implementation pitch. This deck is designed to show Meteoric leadership exactly what Vero delivers, how it connects to their live data, and why signing now creates competitive advantage.
 
-**Audience:** Stuart Gale (CEO), Dr. Andrew Tunks (Chairman), Dr. Marcelo De Carvalho (Chief Geologist)
+**Audience:** Dr. Marcelo De Carvalho (Chief Geologist), Dr. Andrew Tunks (Chairman), Stuart Gale (CEO)
 
-**Last synced:** 2026-04-10
+**Slides:** 15 (route: `/meteoric-deck`, file: `src/pages/MeteoricDeck.tsx`)
+
+**Last synced:** 2026-04-09 (v18 — Pre-Pitch Final Sprint)
 
 ---
 
@@ -20,178 +22,148 @@
 
 ## Slide 2 — What's Already Built
 
-**Title:** Your project. Already digitized.
+**Title:** Already Built on Your Data
 
-We didn't build Vero as a demo — we built it on the Caldeira Project. Every feature was stress-tested against 9 named stakeholder personas before a single line of marketing was written.
+Stats: 17 Equipment (Metso · Andritz · GEA), 28 Sensors, 19 GeoJSON, 27 AI Tools.
 
-**Stats:**
-- 17 equipment items mapped (Metso, Andritz, GEA, Outotec)
-- 28 sensor channels pre-configured
-- 19 GeoJSON datasets integrated (drill collars, springs, licences, deposits)
-- 7 process steps from ROM ore to MREC product
-- 27 AI tools grounded in Caldeira data
+*Talk track: We didn't build Vero as a demo. We built it on the Caldeira Project. Every feature was stress-tested against 9 named stakeholder personas.*
 
 ---
 
 ## Slide 3 — Three Views, One Platform
 
-**Title:** Every stakeholder sees their truth.
+**Title:** Three Views, One Platform
 
 | View | Audience | What they see |
 |------|----------|---------------|
 | Field Operations | Geologists, operators | 3D terrain, drill collars, pilot plant twin, hydro monitoring |
-| Compliance & Traceability | Buyers, auditors, regulators | FEOC tracking, DPP export, SHA-256 audit chain |
-| Executive Overview | Board, investors, ECAs | Financial scenarios, risk register, capital tracker, ESG |
+| Compliance | Buyers, auditors | FEOC tracking, DPP export, SHA-256 audit chain |
+| Executive | Board, investors, ECAs | Financial scenarios, risk register, capital tracker |
 
 ---
 
-## Slide 4 — Ready for Live Data
+## Slide 4 — Geology & Data Integrity (NEW — for De Carvalho)
 
-**Title:** From simulation to production in one integration.
+**Title:** Geology & Data Integrity
 
-The platform already runs on simulated telemetry with the same architecture that will process live SCADA data. The switch is an integration — not a rebuild.
+Stats: 19 GeoJSON Datasets (schema-tested), JORC Classification, 100% Source Labels, Geology ≠ Hydro Firewall.
 
-**Integration surface:**
-- REST API with OpenAPI spec at `/api/docs`
-- WebSocket channels for sub-second telemetry
-- MQTT / OPC-UA connector surface for SCADA
-- CSV / Excel batch upload for historical data
-- GeoJSON ingestion for new spatial datasets
+**Geological Layers:** Drill collars with trace metadata, deposit polygons with ASX source refs, resource classification (JORC Table 1), lithology domains and grade distribution, Competent Person–safe labeling.
 
-**What changes when live data connects:**
-- "Simulated" labels become "Field-verified"
-- Dr. Caponi's LAPOC instruments = first live data channel
-- Every sensor reading carries provenance metadata
-- Audit chain timestamps move from simulation clock to UTC
+**Hydrological Layers:** Spring monitoring network (modeled), piezometer locations, water quality parameters, FEAM/IGAM compliance zones, community card with bilingual contacts.
+
+*Talk track: Geology and hydrology are visually separated — the digital twin never pretends to prove the deposit. Every number links to its methodology and primary data class.*
 
 ---
 
-## Slide 5 — Custom Views & DataViz
+## Slide 5 — Executive & Capital Intelligence (NEW — for Gale)
 
-**Title:** Any data. Any visualization. JSON-driven.
+**Title:** Executive & Capital Intelligence
 
-Vero doesn't lock you into pre-built dashboards. The Mini Engine renders custom views from a single JSON configuration:
+Stats: 9 Dashboard Tabs, 3 Financial Scenarios (Bear/Consensus/Bull), $443M CAPEX Tracked.
 
-**Visualization capabilities:**
-- 3D terrain maps with custom GeoJSON overlays
-- Process flow digital twins with animated connections
-- Time series charts (Recharts) with live data binding
-- Gauge dashboards for sensor monitoring
-- Bar / line / area charts for financial scenarios
-- Heatmaps and contour overlays for geological data
-- Custom overlay layers (14 types available)
-- Bilingual community dashboards (PT/EN)
+Tabs: Financials, Capital, Risk Register, Assets, ESG, Pipeline — each maps to a board agenda item.
 
-**Already deployed:** Prefeitura de Poços de Caldas public dashboard at `/view/prefeitura-pocos`
+*Talk track: Every tab maps to a board agenda item. One narrative, zero contradictions. Your next raise closes faster when every diligence question has a dashboard answer.*
 
 ---
 
-## Slide 6 — AI-Powered Cross-Data Analysis
+## Slide 6 — Governance & Disclosure Safety (NEW — for Tunks)
 
-**Title:** 27 AI tools. Grounded in your data.
+**Title:** Governance & Disclosure Safety
 
-Every AI tool is domain-grounded — it answers questions using Caldeira project data, not generic training. No hallucination about your deposit.
+**Data Honesty Modes:** Mock (development), Presentation (demo with visible "illustrative" banners), Disclosure (market-safe, hides sensitive figures), Live (production with provenance metadata).
 
-**Tool categories:**
-- Geology: lithology analysis, resource classification, drill log interpretation
-- Financial: scenario modeling, NPV sensitivity, CAPEX tracking
-- Compliance: DPP field validation, FEOC origin verification, audit chain queries
-- Environmental: water quality assessment, spring status interpretation
-- Operational: equipment performance, process flow optimization
+**Screenshot Safety:** Every screen carries a visible data honesty banner. Disclosure mode hides board-sensitive figures automatically. Simulated data is always labeled — no screenshot can imply attestation. SHA-256 audit trail on every event.
 
-**Cross-data capability:**
-- "Compare pH trends across all springs against rainfall data"
-- "Which equipment items have the highest maintenance risk based on sensor drift?"
-- "Generate a compliance evidence package for the Ucore offtake audit"
+*Talk track: No screenshot from Vero can be misread as certification or attestation. Continuous disclosure safety is built into every mode. Field-to-filing-to-market: one coherent narrative.*
 
 ---
 
-## Slide 7 — Security & Enterprise Readiness
+## Slide 7 — Ready for Live Data
 
-**Title:** Infrastructure that survives due diligence.
+**Title:** Ready for Live Data
 
-**Stats:**
-- 310 automated tests (260 frontend + 50 server)
-- 0 TypeScript errors (strict mode, both packages)
-- CSP headers, CORS lockdown, rate limiting (120 req/min)
-- API key authentication on sensitive routes — fail-closed
-- SHA-256 append-only audit chain with programmatic verification
-- React.memo on all 14 map overlays — zero unnecessary re-renders
-- ARIA labels on every interactive control
+Integration surface: REST API, WebSocket, SCADA/OPC-UA connector surface. Terminal code snippets showing each.
 
-**Persona score movement from engineering sprint alone:**
-- DoD Program Officer: 7.5 → 8.0
-- Project Finance Analyst: 8.5 → 9.0
+*Talk track: When live data connects, "Simulated" labels become "Field-verified." Every reading carries provenance metadata.*
 
 ---
 
-## Slide 8 — Why Sign Now
+## Slide 8 — Any Data. Any Visualization.
 
-**Title:** Five reasons to sign this quarter.
+**Title:** Any Data. Any Visualization.
 
-1. **DFS mid-2026 — the dashboard should be live when the DFS drops.** Institutional investors will see a project with operational visibility, not just a PDF.
-
-2. **Vero becomes the market standard.** EU Digital Product Passport enforcement (Feb 2027) means every REE project will need this. Meteoric gets it 18 months early — and shapes the standard.
-
-3. **Competitive signaling.** An interactive digital twin in your investor presentations is something Lynas, MP Materials, and Iluka don't have. Institutional investors notice.
-
-4. **Due diligence speed.** Every question about your project has a dashboard answer. Capital raises close faster when diligence is self-serve.
-
-5. **Community trust.** The Prefeitura dashboard is already built. Poços de Caldas sees transparent environmental monitoring — in Portuguese — before the first production.
+8 capability items. Prefeitura dashboard already live.
 
 ---
 
-## Slide 9 — Implementation Timeline
+## Slide 9 — 27 AI Tools
 
-**Title:** 90 days to live data.
+**Title:** 27 AI Tools, Grounded in Caldeira
 
-| Week | Milestone |
-|------|-----------|
-| 0–2 | Contract signed · API keys provisioned · LAPOC instrument mapping |
-| 2–4 | First live sensor data flowing through platform |
-| 4–6 | Custom views configured for DFS presentation |
-| 6–8 | Community dashboard reviewed with Prefeitura |
-| 8–12 | Full production deployment · Board presentation ready |
-
-**Cost:** $102,000 / year (Growth tier). That's 0.013% of your $821M consensus NPV.
+Categories: Geology, Financial, Compliance, Environmental. Example cross-data queries.
 
 ---
 
-## Slide 10 — Vero Becomes Market Standard
+## Slide 10 — Security & Enterprise Readiness
 
-**Title:** The platform the industry will need.
+**Title:** Security & Enterprise Readiness
 
-| Regulatory driver | Date | Vero readiness |
-|-------------------|------|----------------|
-| EU Battery Passport | Feb 2027 | 22 / 37 mandatory fields mapped |
-| US FEOC requirements | Active | Origin tracking + audit chain |
-| Australian ESG reporting | 2025+ | ESG frameworks integrated |
-| CEN/CENELEC DPP schema | In progress | Schema-validated JSON export |
-
-**First-mover advantage:**
-- Meteoric shapes the DPP schema with us — not after the standard is set
-- FEOC compliance evidence ready before DoD procurement cycles hit
-- Every new REE project that signs Vero sees Meteoric as the reference deployment
+Stats: 310 Tests, 0 TS Errors, CSP Headers, 120 Rate Limit.
 
 ---
 
-## Slide 11 — The Ask
+## Slide 11 — Why Sign This Quarter
 
-**Title:** Let's make it official.
+**Title:** Why Sign This Quarter
 
-**Pilot contract:** $102,000 / year (Growth tier)
-- Full platform access: 3 views + Mini Engine + AI tools
-- Live telemetry integration within 90 days
-- Custom DFS presentation views
-- Community dashboard deployment
-- API access for investor presentations
+5 numbered reasons: DFS timing, market standard, competitive signaling, diligence speed, community trust.
 
-**What you get that no vendor can offer:**
-- A founder who grew up in the Caldeira — 40 years of local context
-- A chief scientific advisor (Dr. Caponi) with decades of LAPOC field work on your deposit
-- A platform already built on your data — not a generic template
+---
 
-**Next step:** 15-minute technical walkthrough → contract → live data in 2 weeks.
+## Slide 12 — 90 Days to Live Data
+
+**Title:** 90 Days to Live Data
+
+Timeline: W0-2 through W8-12. Cost: $102k/yr (0.013% of NPV).
+
+---
+
+## Slide 13 — Vero Becomes Market Standard
+
+**Title:** Vero Becomes Market Standard
+
+Regulatory table: EU Battery Passport, US FEOC, Australian ESG, CEN/CENELEC DPP.
+
+---
+
+## Slide 14 — The Team Behind Vero (NEW)
+
+**Title:** The Team Behind Vero
+
+| Member | Role | Background |
+|--------|------|------------|
+| Carlos Toledo | Founder · Product & Technical Lead | Air Force pilot, full-stack engineer, product designer. Born in the Caldeira. 310 tests, 27 AI tools. |
+| Guilherme Bonifácio | Co-founder · Commercial Strategy | iFood co-founder. Kanoa Capital. 110+ angel investments. FEA-USP Economics. |
+| Juliano Dutra | Co-founder · Technical Advisor | iFood co-founder. Gringo CTO. 20+ angel investments. Unicamp CS. |
+| Dr. Heber Caponi | Scientific Advisor · LAPOC | Decades of active Caldeira field research through LAPOC (CNEN). Bridge from simulated to field-verified. |
+
+*Talk track: The founder built the platform inside the Caldeira. The co-founders bring iFood-scale experience in technology and commercial execution. The scientific advisor has studied this deposit for decades.*
+
+---
+
+## Slide 15 — CTA
+
+**Title:** Let's Make It Official
+
+GlassRow: Growth Tier $102k/yr, Live Data 90 days, Views 3 + Mini.
+
+Bullets: Full platform, live telemetry in 90 days, founder from the Caldeira, co-founders with iFood experience, Dr. Caponi (LAPOC).
+
+Links: Open Platform (`/`), carlos@vero.supply.
+
+*Talk track: $102k/yr — 0.013% of your NPV. 90 days to live data. The team is real, the product is real, the timing is now.*
 
 ---
 

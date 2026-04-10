@@ -17,9 +17,10 @@ import { ChatPanel } from './components/layout/ChatPanel'
 import shell from './AppShell.module.css'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'))
-const PitchDeck = lazy(() => import('./pages/PitchDeck'))
 const MeteoricDeck = lazy(() => import('./pages/MeteoricDeck'))
 const FoundersDeck = lazy(() => import('./pages/FoundersDeck'))
+const TechPage = lazy(() => import('./pages/TechPage'))
+const BusinessPage = lazy(() => import('./pages/BusinessPage'))
 const ViewEnginePage = lazy(() => import('./engine/ViewEnginePage').then(m => ({ default: m.ViewEnginePage })))
 const ReportViewer = lazy(() => import('./components/reports/ReportViewer').then(m => ({ default: m.ReportViewer })))
 
@@ -200,9 +201,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
-      <Route path="/pitch-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PitchDeck /></Suspense></ErrorBoundary>} />
       <Route path="/meteoric-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
       <Route path="/founders-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
+      <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
+      <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
       <Route path="/view/:manifestId" element={<ViewEngineShell />} />
       <Route path="/*" element={<DashboardShell />} />
     </Routes>

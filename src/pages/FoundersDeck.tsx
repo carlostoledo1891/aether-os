@@ -118,7 +118,7 @@ export default function FoundersDeck() {
               { label: 'Overlays', value: '14' },
               { label: 'Equipment', value: '17' },
             ]} />
-            <div style={{ marginTop: 20, fontSize: 10, color: W.text4, letterSpacing: '0.04em' }}>
+            <div style={{ marginTop: 20, fontSize: 12, color: W.text4, letterSpacing: '0.04em' }}>
               Solo founder · TypeScript strict · Zero compilation errors · Production architecture
             </div>
           </>)}
@@ -151,8 +151,8 @@ export default function FoundersDeck() {
                       style={{ height: '100%', borderRadius: 3, background: `linear-gradient(90deg, ${V}, ${V}80)` }} />
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
-                    <span style={{ fontSize: 11, color: W.text3 }}>{m.desc}{m.cagr !== 'Bottom-up' ? ` · ${m.cagr} CAGR` : ''}</span>
-                    <span style={{ fontSize: 10, color: W.text4, fontFamily: 'var(--font-mono)' }}>{m.src}</span>
+                    <span style={{ fontSize: 12, color: W.text3 }}>{m.desc}{m.cagr !== 'Bottom-up' ? ` · ${m.cagr} CAGR` : ''}</span>
+                    <span style={{ fontSize: 11, color: W.text4, fontFamily: 'var(--font-mono)' }}>{m.src}</span>
                   </div>
                 </div>
               ))}
@@ -171,8 +171,8 @@ export default function FoundersDeck() {
               ].map(r => (
                 <div key={r.driver} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '20px 16px', textAlign: 'left' }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: W.text1, marginBottom: 4 }}>{r.driver}</div>
-                  <div style={{ fontSize: 11, color: r.color, fontWeight: 600, marginBottom: 8, fontFamily: 'var(--font-mono)' }}>{r.date}</div>
-                  <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, margin: 0 }}>{r.status}</p>
+                  <div style={{ fontSize: 12, color: r.color, fontWeight: 600, marginBottom: 8, fontFamily: 'var(--font-mono)' }}>{r.date}</div>
+                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{r.status}</p>
                 </div>
               ))}
             </div>
@@ -195,8 +195,8 @@ export default function FoundersDeck() {
                 <div key={v.view} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '20px 16px', textAlign: 'left' }}>
                   <div style={{ fontSize: 20, marginBottom: 8 }}>{v.icon}</div>
                   <div style={{ fontSize: 15, fontWeight: 700, color: v.accent, marginBottom: 4 }}>{v.view}</div>
-                  <div style={{ fontSize: 10, color: W.text4, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{v.who}</div>
-                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{v.what}</p>
+                  <div style={{ fontSize: 11, color: W.text4, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{v.who}</div>
+                  <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.5, margin: 0 }}>{v.what}</p>
                 </div>
               ))}
             </div>
@@ -316,7 +316,7 @@ export default function FoundersDeck() {
             </Terminal>
             <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
               {['React.memo × 14 overlays', 'Lazy-loaded views', 'ErrorBoundary on every route', 'CI: lint + test + build', 'Docker Compose deploy'].map(n => (
-                <div key={n} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 8, padding: '5px 12px', fontSize: 10, color: W.text2 }}>{n}</div>
+                <div key={n} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 8, padding: '5px 12px', fontSize: 11, color: W.text2 }}>{n}</div>
               ))}
             </div>
           </>)}
@@ -512,7 +512,7 @@ export default function FoundersDeck() {
               {'}'})
             </Terminal>
             <div style={{ marginTop: 16, maxWidth: 600, textAlign: 'center' }}>
-              <p style={{ fontSize: 12, color: W.text2 }}><strong style={{ color: V }}>Dr. Heber Caponi</strong> — Chief Scientific Officer. Decades of Caldeira research.</p>
+              <p style={{ fontSize: 12, color: W.text2 }}><strong style={{ color: V }}>Dr. Heber Caponi</strong> — Scientific Advisor. Decades of Caldeira research.</p>
               <p style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>LAPOC instruments are the first live data channel. The scientist who studied this deposit validates every field reading.</p>
             </div>
           </>)}
@@ -731,18 +731,16 @@ export default function FoundersDeck() {
           {/* ── 20. Team (UPDATED) ─────────────────────────────── */}
           {slide.type === 'team' && (<>
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 32 }}>{slide.title}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, maxWidth: 900, width: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 700, width: '100%' }}>
               {[
-                { name: 'Carlos Toledo', role: 'Founder · Product & Tech', bg: 'Air Force pilot → Product Design → Full-stack dev. Born inside the Caldeira. 40 years of local context.', accent: V },
-                { name: 'Dr. Heber Caponi', role: 'Chief Scientific Officer', bg: 'Decades of active field research on the Caldeira alkaline complex. Bridges simulated → field-verified. LAPOC instruments.', accent: V },
-                { name: 'Full-Stack Dev', role: 'Engineering (activating)', bg: 'Codebase architected for immediate onboarding — HANDOFF.md, design tokens, test coverage, clean service boundaries.', accent: V },
-                { name: 'Strategic Advisor', role: 'Open seat', bg: 'Operator experience + capital network. This role shapes GTM, pipeline, and commercial execution. The seat is open.', accent: W.amber },
+                { name: 'Carlos Toledo', role: 'Founder · Product & Tech', bg: 'Air Force pilot → Product Design → Full-stack dev. Born inside the Caldeira. 40 years of local context. Built the entire platform solo — 310 tests, 27 AI tools, pilot plant digital twin.', accent: V },
+                { name: 'Dr. Heber Caponi', role: 'Scientific Advisor · LAPOC', bg: 'Decades of active field research on the Caldeira alkaline complex through LAPOC (CNEN). The bridge from simulated to field-verified data. Piezometers, water quality, geological sampling.', accent: W.amber },
               ].map(t => (
-                <div key={t.name} style={{ background: W.glass04, border: `1px solid ${t.name === 'Strategic Advisor' ? `${W.amber}40` : W.glass06}`, borderRadius: 14, padding: '20px 16px', textAlign: 'left' }}>
+                <div key={t.name} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '20px 16px', textAlign: 'left' }}>
                   <div style={{ width: 8, height: 2, background: t.accent, borderRadius: 1, marginBottom: 12 }} />
-                  <div style={{ fontSize: 14, fontWeight: 700, color: W.text1, marginBottom: 2 }}>{t.name}</div>
-                  <div style={{ fontSize: 10, color: t.accent, fontWeight: 600, marginBottom: 8 }}>{t.role}</div>
-                  <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, margin: 0 }}>{t.bg}</p>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: W.text1, marginBottom: 4 }}>{t.name}</div>
+                  <div style={{ fontSize: 12, color: t.accent, fontWeight: 600, marginBottom: 10 }}>{t.role}</div>
+                  <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.55, margin: 0 }}>{t.bg}</p>
                 </div>
               ))}
             </div>
@@ -756,21 +754,21 @@ export default function FoundersDeck() {
               <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'left' }}>
                 <div style={{ width: 8, height: 2, background: V, borderRadius: 1, marginBottom: 14 }} />
                 <div style={{ fontSize: 15, fontWeight: 700, color: W.text1, marginBottom: 2 }}>Juliano Dutra</div>
-                <div style={{ fontSize: 10, color: V, fontWeight: 600, marginBottom: 12 }}>CTO Lens</div>
+                <div style={{ fontSize: 11, color: V, fontWeight: 600, marginBottom: 12 }}>CTO Lens</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. Gringo CTO. 20+ angel investments. Unicamp CS.</p>
-                  <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>I need a technical mentor for scaling from solo-founder architecture to a team. The dev hire reports to someone who has shipped at scale.</p>
-                  <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>Code review authority. Architecture validation. Hiring bar.</p>
+                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. Gringo CTO. 20+ angel investments. Unicamp CS.</p>
+                  <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>I need a technical mentor for scaling from solo-founder architecture to a team. The dev hire reports to someone who has shipped at scale.</p>
+                  <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Code review authority. Architecture validation. Hiring bar.</p>
                 </div>
               </div>
               <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'left' }}>
                 <div style={{ width: 8, height: 2, background: V, borderRadius: 1, marginBottom: 14 }} />
                 <div style={{ fontSize: 15, fontWeight: 700, color: W.text1, marginBottom: 2 }}>Guilherme Bonifácio</div>
-                <div style={{ fontSize: 10, color: V, fontWeight: 600, marginBottom: 12 }}>Business Lens</div>
+                <div style={{ fontSize: 11, color: V, fontWeight: 600, marginBottom: 12 }}>Business Lens</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. 110+ angel investments. Kanoa Capital. FEA-USP Economics.</p>
-                  <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>I need a commercial execution partner. Pipeline, GTM, pricing validation. The commercial hire reports to someone who has built revenue engines.</p>
-                  <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>Fundraising strategy. Term sheet structuring. Investor network.</p>
+                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. 110+ angel investments. Kanoa Capital. FEA-USP Economics.</p>
+                  <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>I need a commercial execution partner. Pipeline, GTM, pricing validation. The commercial hire reports to someone who has built revenue engines.</p>
+                  <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Fundraising strategy. Term sheet structuring. Investor network.</p>
                 </div>
               </div>
             </div>
@@ -787,7 +785,7 @@ export default function FoundersDeck() {
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 24, maxWidth: 900, width: '100%', marginBottom: 24 }}>
               <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I need to focus on</div>
+                <div style={{ fontSize: 11, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I need to focus on</div>
                 {[
                   'Caldeira pilot — Meteoric demo, field integration, LAPOC instruments',
                   'Dev pipeline — new features, regulatory datasets, DPP compliance fields',
@@ -796,13 +794,13 @@ export default function FoundersDeck() {
                 ].map(item => (
                   <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: V, marginTop: 6, flexShrink: 0 }} />
-                    <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>{item}</p>
+                    <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>{item}</p>
                   </div>
                 ))}
               </div>
               <div style={{ background: W.glass08, width: 1 }} />
               <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 10, color: W.text4, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I cannot do simultaneously</div>
+                <div style={{ fontSize: 11, color: W.text4, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I cannot do simultaneously</div>
                 {[
                   'GTM strategy and commercial negotiations',
                   'Investor pipeline and fundraising execution',
@@ -812,25 +810,26 @@ export default function FoundersDeck() {
                 ].map(item => (
                   <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: `${W.text4}60`, marginTop: 6, flexShrink: 0 }} />
-                    <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, margin: 0 }}>{item}</p>
+                    <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{item}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, maxWidth: 800, width: '100%', marginBottom: 16 }}>
               {[
-                { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC' },
-                { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
-                { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
+                { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC', href: '/' },
+                { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance', href: '/tech' },
+                { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy', href: '/business' },
               ].map(p => (
-                <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
+                <a key={p.who} href={p.href} onClick={e => e.stopPropagation()} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', textDecoration: 'none', color: 'inherit', display: 'block' }}>
                   <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: W.text1, marginTop: 4 }}>{p.lane}</div>
-                  <div style={{ fontSize: 10, color: W.text3, marginTop: 4 }}>{p.detail}</div>
-                </div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: W.text1, marginTop: 4 }}>{p.lane}</div>
+                  <div style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>{p.detail}</div>
+                  <div style={{ fontSize: 10, color: V, fontFamily: 'var(--font-mono)', marginTop: 6, opacity: 0.7 }}>{p.href === '/' ? 'Platform →' : `vero.supply${p.href} →`}</div>
+                </a>
               ))}
             </div>
-            <p style={{ fontSize: 11, color: W.text4, maxWidth: 600 }}>
+            <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
               Today I work with 2 US-based frontier AI companies. I see the regulations creating the market. The perfect storm is forming for rare earth minerals tech. Seed money lets me go 100% on Vero — you handle the front.
             </p>
           </>)}

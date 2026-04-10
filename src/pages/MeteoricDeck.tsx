@@ -1,13 +1,16 @@
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
-import { DeckShell, Terminal, StatCard, Bullet, GlassRow } from '../components/deck'
+import { DeckShell, Terminal, StatCard, Bullet, GlassRow, Tag } from '../components/deck'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet
 
 /* ── Slides ──────────────────────────────────────────────────────── */
 
-type SlideType = 'cover' | 'stats' | 'bullets' | 'code' | 'dataviz' | 'timeline' | 'reasons' | 'standard' | 'cta'
+type SlideType =
+  | 'cover' | 'stats' | 'bullets' | 'code' | 'dataviz'
+  | 'geology' | 'executive' | 'governance'
+  | 'timeline' | 'reasons' | 'standard' | 'team' | 'cta'
 
 interface SlideData { type: SlideType; title: string; subtitle?: string }
 
@@ -15,6 +18,9 @@ const SLIDES: SlideData[] = [
   { type: 'cover', title: 'Vero for Caldeira', subtitle: 'Your digital twin is already built.\nNow connect it to live data.' },
   { type: 'stats', title: 'Already Built on Your Data', subtitle: 'built' },
   { type: 'bullets', title: 'Three Views, One Platform', subtitle: 'views' },
+  { type: 'geology', title: 'Geology & Data Integrity' },
+  { type: 'executive', title: 'Executive & Capital Intelligence' },
+  { type: 'governance', title: 'Governance & Disclosure Safety' },
   { type: 'code', title: 'Ready for Live Data', subtitle: 'integration' },
   { type: 'dataviz', title: 'Any Data. Any Visualization.' },
   { type: 'bullets', title: '27 AI Tools, Grounded in Caldeira', subtitle: 'ai' },
@@ -22,6 +28,7 @@ const SLIDES: SlideData[] = [
   { type: 'reasons', title: 'Why Sign This Quarter' },
   { type: 'timeline', title: '90 Days to Live Data' },
   { type: 'standard', title: 'Vero Becomes Market Standard' },
+  { type: 'team', title: 'The Team Behind Vero' },
   { type: 'cta', title: 'Let\'s Make It Official' },
 ]
 
@@ -73,6 +80,13 @@ const DATAVIZ_ITEMS = [
   'Bilingual community dashboards (PT/EN)',
 ]
 
+const TEAM_MEMBERS = [
+  { name: 'Carlos Toledo', role: 'Founder · Product & Technical Lead', bg: 'Air Force pilot, full-stack engineer, product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: 310 tests, 27 AI tools, pilot plant digital twin.', accent: V },
+  { name: 'Guilherme Bonifácio', role: 'Co-founder · Commercial Strategy', bg: 'iFood co-founder. Kanoa Capital. 110+ angel investments. FEA-USP Economics. Leads GTM, investor pipeline, revenue strategy, and commercial execution.', accent: V },
+  { name: 'Juliano Dutra', role: 'Co-founder · Technical Advisor', bg: 'iFood co-founder. Gringo CTO. 20+ angel investments. Unicamp CS. Architecture review, engineering mentorship, hiring bar, and scaling guidance.', accent: V },
+  { name: 'Dr. Heber Caponi', role: 'Scientific Advisor · LAPOC', bg: 'Decades of active Caldeira field research through LAPOC (CNEN). The bridge from simulated to field-verified data. Piezometers, water quality, geological sampling.', accent: W.amber },
+]
+
 /* ── Component ───────────────────────────────────────────────────── */
 
 export default function MeteoricDeck() {
@@ -121,7 +135,7 @@ export default function MeteoricDeck() {
                     </div>
                     <div style={{ fontSize: 14, fontWeight: 700, color: W.text1, marginBottom: 4 }}>{v.view}</div>
                     <div style={{ fontSize: 11, color: V, fontWeight: 600, marginBottom: 8 }}>{v.who}</div>
-                    <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{v.what}</p>
+                    <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.5, margin: 0 }}>{v.what}</p>
                   </div>
                 ))}
               </div>
@@ -134,7 +148,7 @@ export default function MeteoricDeck() {
                 <Bullet>Environmental: water quality assessment, spring status interpretation</Bullet>
                 <div style={{ marginTop: 12, background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 20px', textAlign: 'left' }}>
                   <div style={{ fontSize: 10, color: W.text4, fontFamily: 'var(--font-mono)', marginBottom: 8 }}>Example cross-data queries</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: W.text2, lineHeight: 1.7 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: W.text2, lineHeight: 1.7 }}>
                     <span style={{ color: V }}>&gt;</span> "Compare pH trends across springs vs rainfall"<br />
                     <span style={{ color: V }}>&gt;</span> "Which equipment has highest maintenance risk?"<br />
                     <span style={{ color: V }}>&gt;</span> "Generate compliance package for Ucore audit"
@@ -142,6 +156,110 @@ export default function MeteoricDeck() {
                 </div>
               </div>
             )}
+          </>)}
+
+          {/* ── Geology & Data Integrity ────────────────────────── */}
+          {slide.type === 'geology' && (<>
+            <div style={{ marginBottom: 16 }}><Tag>Data Integrity</Tag></div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 24 }}>{slide.title}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, maxWidth: 880, width: '100%', marginBottom: 20 }}>
+              <StatCard value="19" label="GeoJSON Datasets" sub="Schema-tested" />
+              <StatCard value="JORC" label="Classification" sub="Resource hierarchy" />
+              <StatCard value="100%" label="Source Labels" sub="Modeled / public / field" />
+              <StatCard value="Firewall" label="Geo ≠ Hydro" sub="Visual separation" />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, maxWidth: 880, width: '100%', marginBottom: 16 }}>
+              <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '18px 16px', textAlign: 'left' }}>
+                <div style={{ fontSize: 11, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>Geological Layers</div>
+                {['Drill collars with trace metadata', 'Deposit polygons with ASX source refs', 'Resource classification (JORC Table 1)', 'Lithology domains and grade distribution', 'Competent Person–safe labeling'].map(item => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: V, marginTop: 6, flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, color: W.text2, lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '18px 16px', textAlign: 'left' }}>
+                <div style={{ fontSize: 11, color: W.cyan, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>Hydrological Layers</div>
+                {['Spring monitoring network (modeled)', 'Piezometer locations and readings', 'Water quality parameters (pH, conductivity)', 'FEAM / IGAM compliance zones', 'Community card with bilingual contacts'].map(item => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: W.cyan, marginTop: 6, flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, color: W.text2, lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
+              Geology and hydrology are visually separated — the digital twin never pretends to prove the deposit. Every number links to its methodology and primary data class.
+            </p>
+          </>)}
+
+          {/* ── Executive & Capital ─────────────────────────────── */}
+          {slide.type === 'executive' && (<>
+            <div style={{ marginBottom: 16 }}><Tag>Executive Overview</Tag></div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 24 }}>{slide.title}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, maxWidth: 880, width: '100%', marginBottom: 20 }}>
+              <StatCard value="9" label="Dashboard Tabs" sub="Synchronized to board rhythm" />
+              <StatCard value="3" label="Financial Scenarios" sub="Bear / Consensus / Bull" />
+              <StatCard value="$443M" label="CAPEX Tracked" sub="One-click answer" />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, maxWidth: 880, width: '100%', marginBottom: 16 }}>
+              {[
+                { tab: 'Financials', desc: 'NPV sensitivity, IRR, DSCR, CAPEX breakdown, C1/AISC costs' },
+                { tab: 'Capital', desc: 'DFS milestone bars, CPs, funding tracker, construction loan status' },
+                { tab: 'Risk Register', desc: 'Top-decile risks with owners, mitigations, last-reviewed cadence' },
+                { tab: 'Assets', desc: 'Resource overview, deposit geometry, issuer snapshot with ASX links' },
+                { tab: 'ESG', desc: 'Environmental metrics, community engagement, regulatory compliance status' },
+                { tab: 'Pipeline', desc: 'Offtake tracker with binding vs LOI labels, counterparty status' },
+              ].map(t => (
+                <div key={t.tab} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 10, padding: '14px 12px', textAlign: 'left' }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: V, marginBottom: 4 }}>{t.tab}</div>
+                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{t.desc}</p>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
+              Every tab maps to a board agenda item. One narrative, zero contradictions. Your next raise closes faster when every diligence question has a dashboard answer.
+            </p>
+          </>)}
+
+          {/* ── Governance & Disclosure ─────────────────────────── */}
+          {slide.type === 'governance' && (<>
+            <div style={{ marginBottom: 16 }}><Tag>Governance</Tag></div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 24 }}>{slide.title}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, maxWidth: 880, width: '100%', marginBottom: 20 }}>
+              <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '18px 16px', textAlign: 'left' }}>
+                <div style={{ fontSize: 11, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Data Honesty Modes</div>
+                {[
+                  { mode: 'Mock', desc: 'Development and testing — clearly labeled, no confusion with production data' },
+                  { mode: 'Presentation', desc: 'Demo mode — realistic scenarios with visible "illustrative" banners' },
+                  { mode: 'Disclosure', desc: 'Market-safe mode — hides sensitive figures, shows only public information' },
+                  { mode: 'Live', desc: 'Production — field-verified data with provenance metadata on every reading' },
+                ].map(m => (
+                  <div key={m.mode} style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: V, fontFamily: 'var(--font-mono)', minWidth: 80 }}>{m.mode}</div>
+                    <span style={{ fontSize: 12, color: W.text2, lineHeight: 1.5 }}>{m.desc}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '18px 16px', textAlign: 'left' }}>
+                <div style={{ fontSize: 11, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Screenshot Safety</div>
+                {[
+                  'Every screen carries a visible data honesty banner',
+                  'Disclosure mode hides board-sensitive figures automatically',
+                  'Simulated data is always labeled — no screenshot can imply attestation',
+                  'Field-to-filing-to-market: one coherent narrative, zero contradictions',
+                  'SHA-256 audit trail — every event hashed and timestamped',
+                ].map(item => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: W.green, marginTop: 6, flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, color: W.text2, lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
+              No screenshot from Vero can be misread as certification or attestation. Continuous disclosure safety is built into every mode.
+            </p>
           </>)}
 
           {/* ── Code / Integration ──────────────────────────────── */}
@@ -169,7 +287,7 @@ export default function MeteoricDeck() {
                 {'})'}
               </Terminal>
             </div>
-            <p style={{ fontSize: 12, color: W.text4, marginTop: 20, maxWidth: 500 }}>
+            <p style={{ fontSize: 13, color: W.text4, marginTop: 20, maxWidth: 500 }}>
               When live data connects: "Simulated" labels become "Field-verified." Every reading carries provenance metadata.
             </p>
           </>)}
@@ -181,11 +299,11 @@ export default function MeteoricDeck() {
               {DATAVIZ_ITEMS.map(item => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 10, padding: '12px 16px', textAlign: 'left' }}>
                   <div style={{ width: 5, height: 5, borderRadius: '50%', background: V, flexShrink: 0, boxShadow: `0 0 6px ${V}40` }} />
-                  <span style={{ fontSize: 12, color: W.text2 }}>{item}</span>
+                  <span style={{ fontSize: 13, color: W.text2 }}>{item}</span>
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: 11, color: W.text4, marginTop: 20 }}>
+            <p style={{ fontSize: 12, color: W.text4, marginTop: 20 }}>
               Prefeitura de Poços de Caldas dashboard already live at <span style={{ color: V, fontFamily: 'var(--font-mono)' }}>/view/prefeitura-pocos</span>
             </p>
           </>)}
@@ -199,7 +317,7 @@ export default function MeteoricDeck() {
                   <div style={{ width: 28, height: 28, borderRadius: 8, background: W.glass04, border: `1px solid ${W.glass06}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, color: V, fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
                     {i + 1}
                   </div>
-                  <p style={{ fontSize: 'clamp(13px, 1.4vw, 15px)', color: W.text2, lineHeight: 1.6, margin: 0 }}>{r}</p>
+                  <p style={{ fontSize: 14, color: W.text2, lineHeight: 1.6, margin: 0 }}>{r}</p>
                 </div>
               ))}
             </div>
@@ -236,7 +354,7 @@ export default function MeteoricDeck() {
                     <div style={{ fontSize: 14, fontWeight: 600, color: W.text1 }}>{s.driver}</div>
                     <div style={{ fontSize: 11, color: W.text4, marginTop: 2 }}>{s.date}</div>
                   </div>
-                  <div style={{ fontSize: 12, color: V, fontWeight: 600, fontFamily: 'var(--font-mono)', textAlign: 'right' }}>{s.status}</div>
+                  <div style={{ fontSize: 13, color: V, fontWeight: 600, fontFamily: 'var(--font-mono)', textAlign: 'right' }}>{s.status}</div>
                 </div>
               ))}
             </div>
@@ -244,6 +362,22 @@ export default function MeteoricDeck() {
               <Bullet>Meteoric shapes the DPP schema with us — not after the standard is set</Bullet>
               <div style={{ height: 8 }} />
               <Bullet>Every new REE project that signs Vero sees Meteoric as the reference deployment</Bullet>
+            </div>
+          </>)}
+
+          {/* ── Team ───────────────────────────────────────────── */}
+          {slide.type === 'team' && (<>
+            <div style={{ marginBottom: 16 }}><Tag>Team</Tag></div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, maxWidth: 960, width: '100%' }}>
+              {TEAM_MEMBERS.map(m => (
+                <div key={m.name} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '18px 16px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: m.accent, borderRadius: '14px 14px 0 0' }} />
+                  <div style={{ fontSize: 15, fontWeight: 700, color: W.text1, marginBottom: 4 }}>{m.name}</div>
+                  <div style={{ fontSize: 11, color: m.accent, fontWeight: 600, marginBottom: 10 }}>{m.role}</div>
+                  <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.55, margin: 0 }}>{m.bg}</p>
+                </div>
+              ))}
             </div>
           </>)}
 
@@ -259,17 +393,15 @@ export default function MeteoricDeck() {
               <Bullet>Full platform: 3 views + Mini Engine + 27 AI tools</Bullet>
               <Bullet>Live telemetry integration within 90 days</Bullet>
               <Bullet>A founder from the Caldeira — 40 years of local context</Bullet>
-              <Bullet>Dr. Caponi (LAPOC) — decades of field work on your deposit</Bullet>
+              <Bullet>Co-founders with iFood-scale experience in tech and commercial execution</Bullet>
+              <Bullet>Dr. Caponi (LAPOC) — decades of field research on your deposit</Bullet>
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
               <a href="/" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
                 Open Platform
               </a>
-              <a href="/lp" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>
-                Website
-              </a>
-              <a href="mailto:contact@meteoric.tech" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, textDecoration: 'none', background: 'transparent' }}>
-                contact@meteoric.tech
+              <a href="mailto:carlos@vero.supply" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>
+                carlos@vero.supply
               </a>
             </div>
           </>)}
