@@ -16,7 +16,7 @@ function WidgetRenderer({ config, index }: { config: WidgetConfig; index: number
     config.dataQuery ? `engine:${config.dataQuery}` : `engine:noop:${index}`,
     (service) => {
       if (!config.dataQuery) return undefined
-      const method = (service as Record<string, unknown>)[config.dataQuery]
+      const method = (service as unknown as Record<string, unknown>)[config.dataQuery]
       if (typeof method !== 'function') return undefined
       return method.call(service)
     },

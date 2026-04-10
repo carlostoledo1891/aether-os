@@ -54,7 +54,7 @@ export const ViewEnginePage = memo(function ViewEnginePage() {
     return (
       <div style={{
         minHeight: '100vh',
-        background: W.bg0,
+        background: W.bg,
         color: W.text1,
         display: 'flex',
         flexDirection: 'column',
@@ -92,7 +92,7 @@ export const ViewEnginePage = memo(function ViewEnginePage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      style={{ minHeight: '100vh', background: W.bg0, position: 'relative' }}
+      style={{ minHeight: '100vh', background: W.bg, position: 'relative' }}
     >
       <Link
         to="/"

@@ -17,7 +17,7 @@ interface Scenario {
 }
 
 export interface PredictiveModelingCardProps {
-  scenarios: Scenario[]
+  scenarios: readonly Scenario[]
   currentScenario: Scenario
   springCount: number
 }

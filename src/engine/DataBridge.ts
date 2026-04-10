@@ -8,7 +8,7 @@ export async function resolveQuery(
   service: AetherDataService,
   queryName: string,
 ): Promise<unknown> {
-  const method = (service as Record<string, unknown>)[queryName]
+  const method = (service as unknown as Record<string, unknown>)[queryName]
   if (typeof method !== 'function') {
     console.warn(`DataBridge: unknown query "${queryName}"`)
     return undefined

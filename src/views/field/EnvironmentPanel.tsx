@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
-import { AlertTriangle, ChevronDown, Droplets, FileCheck, Globe, Phone, RadioTower } from 'lucide-react'
+import { AlertTriangle, ChevronDown, FileCheck, Globe, Phone, RadioTower } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'

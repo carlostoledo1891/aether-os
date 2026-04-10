@@ -7,7 +7,7 @@ const PRESETS: Record<string, ViewManifest> = {
 
 const sandboxCache = new Map<string, ViewManifest>()
 
-const SANDBOX_LOADERS: Record<string, () => Promise<{ default: ViewManifest }>> = {
+const SANDBOX_LOADERS: Record<string, () => Promise<{ default: unknown }>> = {
   'prefeitura-pocos': () => import('../sandbox/prefeitura/manifest.json'),
 }
 

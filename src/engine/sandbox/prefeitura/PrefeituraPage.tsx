@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { motion } from 'motion/react'
 import { MapProvider } from 'react-map-gl/maplibre'
-import { MapBase, CALDEIRA_BBOX } from '../../../components/map/MapBase'
+import { MapBase } from '../../../components/map/MapBase'
 import { CaldeiraBoundary } from '../../../components/map/CaldeiraBoundary'
 import { LicenseOverlay } from '../../../components/map/LicenseOverlay'
 import { OpsPlantSitesOverlay } from '../../../components/map/OpsPlantSitesOverlay'
