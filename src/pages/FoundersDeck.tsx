@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
 import { DeckShell, Terminal, StatCard, Bullet, GlassRow, Tag, Kw, Str, Num, Cmt, Fn } from '../components/deck'
+import { PRODUCT_ROADMAP } from '../data/domain/roadmap'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet
@@ -11,7 +12,7 @@ const V = W.violet
 type SlideType = 'disclaimer' | 'cover' | 'problem' | 'market' | 'regulatory' | 'platform' |
   'caldeira' | 'architecture' | 'codeQuality' | 'dataService' | 'aiAgent' |
   'digitalTwin' | 'lapoc' | 'reports' | 'personas' | 'moat' | 'revenue' | 'valuation' |
-  'risk' | 'exit' | 'team' | 'whyYou' | 'whyINeedYou' | 'ask' | 'mondayPlay' | 'whyBeforeMonday' | 'timeline' | 'close'
+  'risk' | 'exit' | 'team' | 'whyYou' | 'whyINeedYou' | 'ask' | 'meteoricPlay' | 'whyBeforeMeteoric' | 'roadmap' | 'timeline' | 'close'
 
 interface SlideData { type: SlideType; title: string }
 
@@ -40,8 +41,9 @@ const SLIDES: SlideData[] = [
   { type: 'whyYou', title: 'Why You?' },
   { type: 'whyINeedYou', title: 'Why I Need You' },
   { type: 'ask', title: 'The Ask' },
-  { type: 'mondayPlay', title: 'The Monday Play' },
-  { type: 'whyBeforeMonday', title: 'Why Before Monday' },
+  { type: 'meteoricPlay', title: 'The Meteoric Play' },
+  { type: 'whyBeforeMeteoric', title: 'Why Before Meteoric' },
+  { type: 'roadmap', title: 'Product Roadmap' },
   { type: 'timeline', title: 'What Happens Next' },
   { type: 'close', title: 'The product is better than the pitch.' },
 ]
@@ -391,9 +393,9 @@ export default function FoundersDeck() {
               <rect x="178" y="68" width="160" height="152" rx="12" fill="none" stroke={`${W.amber}30`} strokeWidth="1" strokeDasharray="5 3" />
               <text x="258" y="86" textAnchor="middle" fill={`${W.amber}60`} fontSize="8" fontFamily="var(--font-mono)" letterSpacing="0.05em">HALLUCINATION FENCE</text>
 
-              {/* Gemini Gateway */}
+              {/* LLM Gateway */}
               <rect x="198" y="104" width="120" height="44" rx="8" fill={`${V}10`} stroke={`${V}30`} strokeWidth="1" />
-              <text x="258" y="124" textAnchor="middle" fill={V} fontSize="10" fontWeight="700" fontFamily="var(--font-mono)">Gemini 2.5</text>
+              <text x="258" y="124" textAnchor="middle" fill={V} fontSize="10" fontWeight="700" fontFamily="var(--font-mono)">LLM Gateway</text>
               <text x="258" y="138" textAnchor="middle" fill={W.text4} fontSize="8">streamText() · AI SDK</text>
               <line x1="140" y1="144" x2="194" y2="128" stroke={V} strokeWidth="1" markerEnd="url(#aiArrow)" />
 
@@ -688,7 +690,7 @@ export default function FoundersDeck() {
             <div style={{ maxWidth: 880, width: '100%' }}>
               {[
                 { risk: 'Solo founder risk', mitigation: 'HANDOFF.md (2,500 lines) + 107 design tokens + 310 tests = day-1 onboarding for any senior dev' },
-                { risk: 'Zero revenue', mitigation: 'Monday Meteoric demo → pilot by June. Named anchor client, not cold pipeline.' },
+                { risk: 'Zero revenue', mitigation: 'Apr 15 Meteoric pitch → pilot by June. Named anchor client, not cold pipeline.' },
                 { risk: 'Single customer dependency', mitigation: '15 REE projects identified (ASX/TSX). OEM pipeline via ERP/ECA channels.' },
                 { risk: 'EU DPP delay', mitigation: 'IRA/FEOC active now. Australian ESG 2025+. Regulatory diversification across 3 jurisdictions.' },
                 { risk: 'NdPr price volatility', mitigation: '0.03% of client revenue. Price-insensitive tier — less than one day of CAPEX interest.' },
@@ -849,11 +851,11 @@ export default function FoundersDeck() {
             </div>
           </>)}
 
-          {/* ── 22. The Monday Play (NEW) ──────────────────────── */}
-          {slide.type === 'mondayPlay' && (<>
+          {/* ── 22. The Meteoric Play ──────────────────────────── */}
+          {slide.type === 'meteoricPlay' && (<>
             <div style={{ marginBottom: 16 }}><Tag>Insider Timing</Tag></div>
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
-            <p style={{ fontSize: 13, color: W.text3, marginBottom: 24, maxWidth: 500 }}>Monday April 14 — Vero demos live to Meteoric Resources leadership.</p>
+            <p style={{ fontSize: 13, color: W.text3, marginBottom: 24, maxWidth: 500 }}>Tuesday April 15 — Vero pitches live to Meteoric Resources leadership.</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, maxWidth: 860, width: '100%', marginBottom: 20 }}>
               {[
                 { who: 'Nick Gale', role: 'CEO', needs: 'Execution credibility for capital raises. Digital twin is his demo-closer.', accent: V },
@@ -870,8 +872,8 @@ export default function FoundersDeck() {
             <GlassRow items={[{ label: 'The Ask', value: '$102k/yr' }, { label: 'Tier', value: 'Growth' }, { label: '% of Revenue', value: '0.03%' }, { label: 'Integration', value: '90 days' }]} />
           </>)}
 
-          {/* ── 23. Why Before Monday (NEW) ──────────────────── */}
-          {slide.type === 'whyBeforeMonday' && (<>
+          {/* ── 23. Why Before Meteoric ──────────────────────── */}
+          {slide.type === 'whyBeforeMeteoric' && (<>
             <div style={{ marginBottom: 16 }}><Tag>Timing Arbitrage</Tag></div>
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20, maxWidth: 740, width: '100%', marginBottom: 24 }}>
@@ -900,28 +902,55 @@ export default function FoundersDeck() {
             </div>
           </>)}
 
-          {/* ── 24. Timeline ────────────────────────────────────── */}
+          {/* ── Roadmap ─────────────────────────────────────────── */}
+          {slide.type === 'roadmap' && (<>
+            <div style={{ marginBottom: 16 }}><Tag>Roadmap</Tag></div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, maxWidth: 960, width: '100%' }}>
+              {PRODUCT_ROADMAP.map(phase => {
+                const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text4
+                return (
+                  <div key={phase.id} style={{ background: W.glass04, border: `1px solid ${phase.status === 'active' ? V : W.glass06}`, borderRadius: 14, padding: '16px 14px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
+                    {phase.status === 'active' && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: V }} />}
+                    <div style={{ fontSize: 10, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)', marginBottom: 4 }}>{phase.quarter}</div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: accent, marginBottom: 10 }}>{phase.title}</div>
+                    {phase.items.slice(0, 4).map(item => (
+                      <div key={item.title} style={{ marginBottom: 6 }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, color: W.text2 }}>{item.title}</div>
+                      </div>
+                    ))}
+                    <span style={{
+                      fontSize: 8, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '2px 6px', borderRadius: 3, marginTop: 6, display: 'inline-block',
+                      background: phase.status === 'active' ? `${V}20` : W.glass04, color: accent,
+                    }}>{phase.status}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </>)}
+
+          {/* ── Timeline ──────────────────────────────────────────── */}
           {slide.type === 'timeline' && (<>
             <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>{slide.title}</h2>
-            <div style={{ maxWidth: 720, width: '100%', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: 19, top: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, ${V}60, ${V}10)` }} />
-              {[
-                { date: 'Apr 14', label: 'Demo to Meteoric Resources (Gale, De Carvalho, Tunks)', status: 'next' },
-                { date: 'Apr 18', label: 'Term sheet signed with angel investors', status: 'next' },
-                { date: 'May', label: 'LAPOC instruments connected — "simulated" → "field-verified"', status: 'pending' },
-                { date: 'Jun', label: 'Meteoric pilot signed — $102k/yr · First revenue', status: 'pending' },
-                { date: 'Jul-Sep', label: 'Seed round $1-2M · Dev + commercial hire · 3 pilots', status: 'pending' },
-                { date: 'Feb 2027', label: 'EU DPP enforcement — market expands 3x', status: 'pending' },
-              ].map((t, i) => (
-                <div key={t.date} style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginBottom: 20, position: 'relative' }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: t.status === 'next' ? `${V}20` : W.glass04, border: `1px solid ${t.status === 'next' ? V : W.glass06}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: t.status === 'next' ? V : W.text4, fontFamily: 'var(--font-mono)' }}>{t.date}</span>
+            <div style={{ maxWidth: 900, width: '100%', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 19, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${V}60, ${V}10)` }} />
+              <div style={{ display: 'flex', gap: 0 }}>
+                {[
+                  { date: 'Apr 15', label: 'Pitch to Meteoric Resources', status: 'next' },
+                  { date: 'Apr 21', label: 'Term sheet with angel investors', status: 'next' },
+                  { date: 'May', label: 'LAPOC connected — field-verified', status: 'pending' },
+                  { date: 'Jun', label: 'Meteoric pilot — $102k/yr', status: 'pending' },
+                  { date: 'Jul-Sep', label: 'Seed $1-2M · 3 pilots', status: 'pending' },
+                  { date: 'Feb 27', label: 'EU DPP — market 3x', status: 'pending' },
+                ].map((t, i) => (
+                  <div key={t.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: t.status === 'next' ? `${V}20` : W.glass04, border: `1px solid ${t.status === 'next' ? V : W.glass06}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: t.status === 'next' ? V : W.text4, fontFamily: 'var(--font-mono)' }}>{t.date}</span>
+                    </div>
+                    <p style={{ fontSize: 11, color: i === 0 ? W.text1 : W.text2, lineHeight: 1.4, margin: '10px 0 0', fontWeight: i === 0 ? 700 : 400, textAlign: 'center', padding: '0 4px' }}>{t.label}</p>
                   </div>
-                  <div style={{ textAlign: 'left', paddingTop: 8 }}>
-                    <p style={{ fontSize: 13, color: i === 0 ? W.text1 : W.text2, lineHeight: 1.5, margin: 0, fontWeight: i === 0 ? 700 : 400 }}>{t.label}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </>)}
 
@@ -938,8 +967,8 @@ export default function FoundersDeck() {
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
               <a href="/" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>Open Platform</a>
               <a href="/lp" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>Website</a>
-              <a href="mailto:carlos@vero.supply" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, textDecoration: 'none', background: 'transparent' }}>carlos@vero.supply</a>
             </div>
+            <p style={{ fontSize: 12, color: W.text4, marginTop: 16 }}>carlos@vero.supply</p>
           </>)}
         </>)
       }}

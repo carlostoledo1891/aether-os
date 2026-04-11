@@ -2,7 +2,7 @@
 
 **Purpose:** Operational playbook for the April 2026 pitch sequence. Timeline, email copy, per-recipient strategy, success criteria, and fallbacks.
 
-**Last updated:** 2026-04-09  
+**Last updated:** 2026-04-11  
 **Cross-references:** [`strategy.md`](strategy.md), [`branding.md`](branding.md), [`Personas.md`](Personas.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/METEORIC_DECK_COPY.md`](copy/METEORIC_DECK_COPY.md)
 
 ---
@@ -11,21 +11,22 @@
 
 | Date | Milestone | Recipients | Assets Sent |
 |------|-----------|------------|-------------|
-| **Apr 9** | Founders pitch (joint email) | Juliano Dutra + Guilherme Bonifácio (both on the same thread) | FoundersDeck, Tech page, Business page, Website, Platform demo |
+| **Apr 13** | Founders pitch (joint email) | Juliano Dutra + Guilherme Bonifácio (both on the same thread) | FoundersDeck, Tech page, Business page, Website, Platform demo |
 | **Apr 13** | Science validation | Dr. Heber Caponi (LAPOC) | Warm personal email — no deck, conversation opener |
-| **Apr 15** | Meteoric pitch | Dr. Marcelo De Carvalho (+ forwarded to Gale, Tunks) | MeteoricDeck, Platform demo |
+| **Apr 15** | Meteoric pitch (separate emails) | Dr. Marcelo De Carvalho · Dr. Andrew Tunks | MeteoricDeck, Platform demo |
 
 ### Dependency Chain
 
 ```
-Founders (Apr 9) ──→ Co-founders onboarded by word
-                              ↓
+Founders (Apr 13) ──→ Co-founders onboarded by word (48h response window)
 Dr. Caponi (Apr 13) ──→ Advisor validated, LAPOC data conversation opened
                               ↓
 Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credible
+  ├─ Dr. De Carvalho — geology-focused email (separate)
+  └─ Dr. Tunks — governance-focused email (separate)
 ```
 
-**Critical path:** By Apr 15, the MeteoricDeck shows Carlos + Guilherme + Juliano + Dr. Caponi. Ideally, Juliano and Guilherme have confirmed interest (even informally) before the Meteoric email goes out.
+**Critical path:** By Apr 15, the MeteoricDeck shows Carlos + Guilherme + Juliano + Dr. Caponi. Co-founders have 48h to respond before Meteoric emails go out. Ideally, at least informal interest confirmed.
 
 ---
 
@@ -76,22 +77,37 @@ Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credibl
 
 | Asset | URL | Purpose |
 |-------|-----|---------|
-| Meteoric Deck | `/meteoric-deck` | 15-slide deck tailored to Meteoric leadership — geology, executive, governance, team, timeline, pricing |
+| Meteoric Deck | `/meteoric-deck` | 18-slide immersive deck — live satellite map, geology flyTo, hydro story, traceability flow, AI demo, countdown, roadmap |
 | Platform Demo | `/` | Live platform with Caldeira data — drill collars, deposit polygons, hydro monitoring, Control Room |
 
-**Key hooks for De Carvalho (and by extension Gale and Tunks):**
+**Key hooks for De Carvalho:**
 - 19 GeoJSON datasets, JORC-safe classification
 - Geology/hydrology firewall — never conflates
-- Data honesty modes — screenshot-safe
-- Executive Overview with 9 synchronized tabs
+- Drill trace visualization with lithological intervals
+- LAPOC pipeline — simulated → field-verified
 - Full team: Carlos + Guilherme (commercial) + Juliano (tech) + Caponi (science advisor)
 - $102k/yr = 0.013% of NPV
+
+### Dr. Andrew Tunks (Meteoric Executive Chairman)
+
+| Asset | URL | Purpose |
+|-------|-----|---------|
+| Meteoric Deck | `/meteoric-deck` | Same 18-slide immersive deck — governance, data honesty, and disclosure narrative resonate with chairman lens |
+| Platform Demo | `/` | Executive Overview with 9 synchronized tabs, disclosure mode, audit trail, build verification stamp |
+
+**Key hooks for Tunks:**
+- Data honesty banner on every screen — provenance labeling (modeled / public / simulated)
+- Disclosure mode for IR-sensitive sessions
+- Build verification stamp (git SHA + date)
+- AI agent with hallucination fence (11 tests, "refuses lithium")
+- Screenshot-safe architecture — nothing on screen contradicts ASX releases
+- Full team with iFood-scale co-founders validates commercial maturity
 
 ---
 
 ## 3. Email Copy
 
-### Email 1: To Juliano Dutra + Guilherme Bonifácio (together) — Apr 9
+### Email 1: To Juliano Dutra + Guilherme Bonifácio (together) — Apr 13
 
 **To:** Juliano, Guilherme  
 **Subject:** Vero — quero mostrar pra vocês e pedir opinião honesta
@@ -102,7 +118,7 @@ Juliano, Guilherme,
 
 Quero mostrar pra vocês algo que construí sozinho nos últimos meses — e pedir a opinião honesta de vocês dois.
 
-**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 27 AI tools (Gemini 2.5), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
+**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 27 AI tools (frontier LLM, model-agnostic), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
 
 The platform runs on real data from the Caldeira Project (Meteoric Resources — ASX: MEI, $821M NPV). On April 15, I'm pitching Meteoric for a $102k/yr pilot contract — 0.03% of their annual revenue.
 
@@ -185,14 +201,41 @@ carlos@vero.supply
 
 ---
 
+### Email 4: To Dr. Andrew Tunks — Apr 15
+
+**Subject:** Vero — digital governance for the Caldeira Project
+
+**Body:**
+
+Dr. Tunks,
+
+My name is Carlos Toledo. I'm from Poços de Caldas — I grew up inside the Caldeira — and over the past several months I've built a platform called **Vero**, a critical mineral operations and compliance system.
+
+Vero was built entirely on Caldeira Project data. What I'd like to show you is the governance architecture: every screen carries a data honesty banner (modeled / public / simulated), the AI agent has an 11-test hallucination fence that refuses off-domain queries, and the platform includes a disclosure mode for IR-sensitive sessions — screenshot-safe by design.
+
+The executive overview synchronizes geology, hydrology, compliance, and market data in one view. Nothing on screen contradicts ASX filings.
+
+The team: myself (product and technical lead), Guilherme Bonifácio (iFood co-founder, commercial strategy), Juliano Dutra (iFood co-founder, technical advisor), and Dr. Heber Caponi (LAPOC, scientific advisor).
+
+I'd welcome the opportunity to walk you through the platform and discuss how it fits the Caldeira's compliance and reporting needs.
+
+- **Meteoric Deck:** https://aether-os.vercel.app/meteoric-deck
+- **Live Platform:** https://aether-os.vercel.app
+
+Carlos Toledo
+carlos@vero.supply
+
+---
+
 ## 4. Success Criteria
 
 | Touchpoint | Minimum Success | Ideal Outcome |
 |------------|-----------------|---------------|
-| Juliano (Apr 9) | Responds positively, agrees to review | Confirms advisory interest, opens architecture discussion |
-| Guilherme (Apr 9) | Responds positively, engages with business case | Confirms advisory interest, offers GTM input |
+| Juliano (Apr 13) | Responds positively, agrees to review | Confirms advisory interest, opens architecture discussion |
+| Guilherme (Apr 13) | Responds positively, engages with business case | Confirms advisory interest, offers GTM input |
 | Dr. Caponi (Apr 13) | Responds warmly, open to conversation | Shares LAPOC data possibilities, agrees to formal advisor role |
-| Dr. De Carvalho (Apr 15) | Opens the deck and platform | Forwards to Gale/Tunks, schedules demo meeting |
+| Dr. De Carvalho (Apr 15) | Opens the deck and platform | Schedules demo meeting |
+| Dr. Tunks (Apr 15) | Opens the deck and platform | Engages on governance, forwards internally |
 
 ---
 
@@ -200,11 +243,12 @@ carlos@vero.supply
 
 | Scenario | Response |
 |----------|----------|
-| Juliano doesn't respond by Apr 12 | Follow up with brief WhatsApp: "Hey, sent you something — would love your honest take" |
-| Guilherme doesn't respond by Apr 12 | Same WhatsApp follow-up |
-| Neither co-founder confirms before Apr 15 | Send Meteoric deck anyway — it still has strong team narrative. Add co-founder profiles after confirmation |
+| Juliano doesn't respond by Apr 14 evening | Follow up with brief WhatsApp: "Hey, sent you something — would love your honest take" |
+| Guilherme doesn't respond by Apr 14 evening | Same WhatsApp follow-up |
+| Neither co-founder confirms before Apr 15 | Send Meteoric emails anyway — team slide still has strong narrative. Add co-founder profiles after confirmation |
 | Dr. Caponi declines or doesn't respond | Proceed with advisor framing but mark as "pending formalization" internally |
 | Dr. De Carvalho doesn't respond by Apr 20 | Follow up via email with one-line nudge: "Happy to do a 15-minute walkthrough at your convenience" |
+| Dr. Tunks doesn't respond by Apr 20 | Follow up with governance-focused nudge: "The disclosure mode was built with ASX compliance in mind — happy to show you" |
 | Meteoric requests changes before meeting | Treat as engagement signal — iterate deck and platform per feedback |
 
 ---
@@ -235,15 +279,25 @@ carlos@vero.supply
 ### Dr. De Carvalho
 - Every number links to JORC table and methodology
 - Geology and hydrology are separate — no visual conflation
-- Data honesty modes protect screenshot risk
+- Drill trace visualization with lithological intervals
+- LAPOC pipeline takes data from "simulated" to "field-verified"
 - Full team with iFood-scale co-founders validates commercial viability
 - $102k/yr is immaterial relative to project value
+
+### Dr. Tunks
+- Data honesty banner on every screen — no hidden disclaimers
+- Disclosure mode exists specifically for IR/compliance sessions
+- AI agent refuses off-domain (lithium) queries — tested and verified
+- Build verification stamp (git SHA + date) for audit trail
+- Screenshot-safe — nothing contradicts ASX/JORC releases
+- Executive Overview is one view across all 9 data domains
+- $102k/yr at 0.013% of NPV is immaterial for the governance it delivers
 
 ---
 
 ## 7. Post-Pitch Protocol
 
-### After Founders Response (Apr 9-12)
+### After Founders Response (Apr 13-14)
 - [ ] Acknowledge response within 2 hours
 - [ ] Schedule 20-min call if interested
 - [ ] Prepare advisory term sheet outline (equity 0.5-1%, 2yr vesting, quarterly cadence)
@@ -255,10 +309,16 @@ carlos@vero.supply
 - [ ] If data access possible: document requirements and timeline
 - [ ] Update strategy.md section 12
 
-### After Meteoric Contact (Apr 15-20)
+### After De Carvalho Contact (Apr 15-20)
 - [ ] Track whether deck was opened (if analytics available)
 - [ ] Follow up on Apr 20 if no response
 - [ ] If demo requested: prepare 45-min walkthrough per demo playbook in strategy.md
+- [ ] Update HANDOFF.md pitch status
+
+### After Tunks Contact (Apr 15-20)
+- [ ] Same tracking as De Carvalho
+- [ ] If he engages on governance: prepare deep-dive on disclosure mode + audit trail
+- [ ] If he forwards to Gale: treat as positive signal — follow up with CEO-framed summary
 - [ ] Update HANDOFF.md pitch status
 
 ---

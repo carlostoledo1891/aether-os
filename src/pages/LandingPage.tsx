@@ -2,6 +2,7 @@ import { type ReactNode, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
 import { Terminal as TerminalBase, Kw, Str, Num, Cmt, Fn } from '../components/deck'
+import { PRODUCT_ROADMAP } from '../data/domain/roadmap'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet
@@ -155,6 +156,8 @@ export default function LandingPage() {
             <a key={n.id} href={`#${n.id}`} onClick={e => { e.preventDefault(); scrollTo(n.id) }}
               style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>{n.l}</a>
           ))}
+          <a href="/tech" style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>Tech</a>
+          <a href="/business" style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>Business</a>
           <a href="/founders-deck" style={{ background: V, color: '#fff', padding: '8px 18px', borderRadius: 7, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
             Founders Deck
           </a>
@@ -421,7 +424,7 @@ export default function LandingPage() {
             <div style={label}>AI Agent</div>
             <h2 style={heading}>27 domain tools. Grounded in truth.</h2>
             <p style={{ ...body, margin: '0 auto' }}>
-              Gemini 2.5 Flash with 27 domain-specific tools. 10 hallucination tests.
+              Frontier LLM with 27 domain-specific tools. 10 hallucination tests. Model-agnostic via AI SDK.
               Every response carries visible provenance — the agent refuses to speculate.
             </p>
           </div>
@@ -545,6 +548,57 @@ export default function LandingPage() {
               <Kw>export const</Kw> <Fn>WL</Fn> = {'{'} bg: <Str>'#FFFFFF'</Str>, panel: <Str>'#F5F5FA'</Str>, text1: <Str>'#1A1A2E'</Str>, violet: <Str>'#7C5CFC'</Str> {'}'} <Kw>as const</Kw><br />
               <Cmt>{'// Same structure as W — swap the token, swap the theme'}</Cmt>
             </Terminal>
+          </div>
+        </div>
+      </S>
+
+      {/* ── Roadmap ─────────────────────────────────────────────── */}
+      <S id="roadmap" style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={glow} />
+        <div style={{ ...wrap, position: 'relative' }}>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <div style={label}>Roadmap</div>
+            <h2 style={heading}>Planned Releases</h2>
+            <p style={{ ...body, margin: '0 auto', textAlign: 'center' }}>
+              From pilot-ready to platform standard — a clear path to full DPP compliance and multi-commodity support.
+            </p>
+          </div>
+          <div style={{ position: 'relative', maxWidth: 800, margin: '0 auto' }}>
+            <div style={{ position: 'absolute', left: 19, top: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, ${V}60, ${V}10)` }} />
+            {PRODUCT_ROADMAP.map((phase, i) => {
+              const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text4
+              return (
+                <Stagger key={phase.id} i={i}>
+                  <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginBottom: 32, position: 'relative' }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 10, flexShrink: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: phase.status === 'active' ? `${V}20` : W.glass04, border: `1px solid ${phase.status === 'active' ? V : W.glass06}`,
+                    }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)' }}>{phase.quarter}</span>
+                    </div>
+                    <div style={{ ...glass, flex: 1, padding: '20px 24px' }}>
+                      <div style={glow} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, position: 'relative' }}>
+                        <h3 style={{ fontSize: 17, fontWeight: 700, margin: 0, color: accent }}>{phase.title}</h3>
+                        <span style={{
+                          fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+                          background: phase.status === 'active' ? `${V}20` : phase.status === 'shipped' ? `${W.green}20` : W.glass04,
+                          color: accent,
+                        }}>{phase.status}</span>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8, position: 'relative' }}>
+                        {phase.items.map(item => (
+                          <div key={item.title} style={{ padding: '6px 0' }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: W.text1 }}>{item.title}</div>
+                            <div style={{ fontSize: 11, color: W.text3, lineHeight: 1.5, marginTop: 2 }}>{item.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Stagger>
+              )
+            })}
           </div>
         </div>
       </S>

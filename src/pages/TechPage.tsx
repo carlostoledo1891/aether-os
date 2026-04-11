@@ -2,6 +2,7 @@ import { type ReactNode, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
 import { Terminal as TerminalBase, Kw, Str, Num, Cmt, Fn } from '../components/deck'
+import { PRODUCT_ROADMAP } from '../data/domain/roadmap'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet
@@ -83,6 +84,7 @@ export default function TechPage() {
             <a key={n.id} href={`#${n.id}`} onClick={e => { e.preventDefault(); scrollTo(n.id) }}
               style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>{n.l}</a>
           ))}
+          <a href="/business" style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>Business</a>
           <a href="/lp" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '7px 16px', borderRadius: 7, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
             Website
           </a>
@@ -260,7 +262,7 @@ export default function TechPage() {
           <p style={label}>AI Architecture</p>
           <h2 style={heading}>27 Domain Tools. 10 Guardrails. Zero Hallucination.</h2>
           <p style={{ ...body, marginBottom: 40 }}>
-            Gemini 2.5 via Vercel AI SDK with function calling. Every response is grounded in tool output — the AI cannot invent data. 10 system-prompt honesty rules enforce factual boundaries.
+            Frontier LLM via Vercel AI SDK with function calling — model-agnostic, swap providers without code changes. Every response is grounded in tool output — the AI cannot invent data. 10 system-prompt honesty rules enforce factual boundaries.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
@@ -555,6 +557,51 @@ export default function TechPage() {
         </div>
       </S>
 
+      {/* ── Technical Roadmap ────────────────────────────────────── */}
+      <S id="roadmap" style={{ padding: '80px 0' }}>
+        <div style={wrap}>
+          <p style={label}>Technical Roadmap</p>
+          <h2 style={heading}>Integration Evolution</h2>
+          <p style={{ ...body, marginBottom: 40 }}>
+            From LAPOC instruments to full blockchain anchoring — the technical path from pilot to enterprise.
+          </p>
+          <div style={{ display: 'grid', gap: 16 }}>
+            {PRODUCT_ROADMAP.filter(p => p.items.some(it => it.tag === 'tech' || it.tag === 'infra' || it.tag === 'compliance')).map((phase, i) => {
+              const accent = phase.status === 'active' ? V : W.text4
+              const techItems = phase.items.filter(it => it.tag === 'tech' || it.tag === 'infra' || it.tag === 'compliance')
+              return (
+                <Stagger key={phase.id} i={i}>
+                  <div style={glass}>
+                    <div style={glow} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, position: 'relative' }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)' }}>{phase.quarter}</span>
+                      <span style={{ fontSize: 15, fontWeight: 700, color: W.text1 }}>{phase.title}</span>
+                      <span style={{
+                        fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+                        background: phase.status === 'active' ? `${V}20` : W.glass04, color: accent, marginLeft: 'auto',
+                      }}>{phase.status}</span>
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                      <Terminal title={`${phase.id}.integration.ts`}>
+                        {techItems.map((item, j) => (
+                          <span key={item.title}>
+                            <Kw>export</Kw> <Kw>const</Kw> <Fn>{item.title.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase()}</Fn> = {'{'}<br />
+                            {'  '}name: <Str>'{item.title}'</Str>,<br />
+                            {'  '}status: <Str>'{phase.status}'</Str>,<br />
+                            {'  '}desc: <Str>'{item.description.slice(0, 60)}…'</Str>,<br />
+                            {'}'}{j < techItems.length - 1 ? <><br /><br /></> : null}
+                          </span>
+                        ))}
+                      </Terminal>
+                    </div>
+                  </div>
+                </Stagger>
+              )
+            })}
+          </div>
+        </div>
+      </S>
+
       {/* ── CTA ────────────────────────────────────────────────── */}
       <S style={{ padding: '80px 0 60px', textAlign: 'center' }}>
         <div style={wrap}>
@@ -572,7 +619,7 @@ export default function TechPage() {
       {/* ── Footer ─────────────────────────────────────────────── */}
       <footer style={{ padding: '32px 24px', textAlign: 'center', borderTop: `1px solid ${W.glass06}` }}>
         <p style={{ color: W.text4, fontSize: 11, margin: 0, lineHeight: 1.5, maxWidth: 600, marginInline: 'auto' }}>
-          © 2026 Vero Platform. Built with TypeScript, React 19, Fastify, SQLite, MapLibre GL, and Gemini 2.5.
+          © 2026 Vero Platform. Built with TypeScript, React 19, Fastify, SQLite, MapLibre GL, and Vercel AI SDK.
           Demo environment uses public-reference data, disclosure-aligned scenarios, and simulated time series.
         </p>
       </footer>

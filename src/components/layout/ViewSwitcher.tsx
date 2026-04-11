@@ -13,7 +13,7 @@ interface ViewSwitcherProps {
 
 const VIEWS: { id: ViewMode; label: string; icon: typeof Map; color: string }[] = [
   { id: 'operator',  label: 'Field Operations',              icon: Map,         color: W.violet },
-  { id: 'buyer',     label: 'Compliance & Traceability',     icon: ShieldCheck, color: W.green },
+  { id: 'buyer',     label: 'Traceability & Compliance',     icon: ShieldCheck, color: W.green },
   { id: 'executive', label: 'Executive Overview',            icon: BarChart3,   color: W.amber },
 ]
 

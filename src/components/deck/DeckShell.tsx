@@ -48,12 +48,16 @@ export function DeckShell({ count, children, exitPath = '/', padding = '48px 56p
   }, [next, prev])
 
   return (
-    <div onClick={next} onTouchStart={onTS} onTouchEnd={onTE}
-      style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden', background: W.bg, color: W.text1, fontFamily: 'var(--font-sans)', cursor: 'pointer', userSelect: 'none' }}>
+    <div onTouchStart={onTS} onTouchEnd={onTE}
+      style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden', background: W.bg, color: W.text1, fontFamily: 'var(--font-sans)', userSelect: 'none' }}>
 
       {/* Background glow */}
       <motion.div animate={{ opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         style={{ position: 'absolute', width: '50vw', height: '50vw', borderRadius: '50%', background: `radial-gradient(circle, ${V}10, transparent 70%)`, top: '-10vw', left: '25vw', filter: 'blur(80px)', pointerEvents: 'none' }} />
+
+      {/* Click zones behind content — prev (left) / next (right) */}
+      <div onClick={prev} style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
+      <div onClick={next} style={{ position: 'absolute', right: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
 
       {/* Progress bar */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, zIndex: 10 }}>
@@ -68,7 +72,7 @@ export function DeckShell({ count, children, exitPath = '/', padding = '48px 56p
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: dir * -80, scale: 0.98 }}
           transition={{ duration: 0.4, ease }}
-          style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding, overflow: 'auto', width: '100%', maxWidth: '100vw' }}>
+          style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding, overflow: 'auto', width: '100%', maxWidth: '100vw', zIndex: 5 }}>
           {children(idx)}
         </motion.div>
       </AnimatePresence>

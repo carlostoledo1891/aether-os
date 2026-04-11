@@ -1,6 +1,7 @@
 import { type ReactNode, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../app/canvas/canvasTheme'
+import { PRODUCT_ROADMAP } from '../data/domain/roadmap'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet
@@ -95,6 +96,7 @@ export default function BusinessPage() {
             <a key={n.id} href={`#${n.id}`} onClick={e => { e.preventDefault(); scrollTo(n.id) }}
               style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>{n.l}</a>
           ))}
+          <a href="/tech" style={{ color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>Tech</a>
           <a href="/lp" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '7px 16px', borderRadius: 7, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
             Website
           </a>
@@ -418,6 +420,47 @@ export default function BusinessPage() {
                 </div>
               </Stagger>
             ))}
+          </div>
+        </div>
+      </S>
+
+      {/* ── Growth Roadmap ──────────────────────────────────────── */}
+      <S id="roadmap" style={{ padding: '80px 0' }}>
+        <div style={wrap}>
+          <p style={label}>Growth Roadmap</p>
+          <h2 style={heading}>Expansion Trajectory</h2>
+          <p style={{ ...body, marginBottom: 40 }}>
+            From single-commodity pilot to multi-industry platform standard — each phase unlocks new revenue streams.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+            {PRODUCT_ROADMAP.map((phase, i) => {
+              const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text4
+              const bizItems = phase.items.filter(it => it.tag === 'business' || it.tag === 'compliance')
+              const allItems = bizItems.length > 0 ? bizItems : phase.items.slice(0, 2)
+              return (
+                <Stagger key={phase.id} i={i}>
+                  <div style={{ ...glass, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div style={glow} />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)' }}>{phase.quarter}</span>
+                      <h3 style={{ fontSize: 17, fontWeight: 700, margin: '4px 0 12px', color: accent }}>{phase.title}</h3>
+                      {allItems.map(item => (
+                        <div key={item.title} style={{ marginBottom: 10 }}>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: W.text1 }}>{item.title}</div>
+                          <div style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, marginTop: 2 }}>{item.description}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ marginTop: 12, position: 'relative' }}>
+                      <span style={{
+                        fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '3px 10px', borderRadius: 4,
+                        background: phase.status === 'active' ? `${V}20` : W.glass04, color: accent,
+                      }}>{phase.status}</span>
+                    </div>
+                  </div>
+                </Stagger>
+              )
+            })}
           </div>
         </div>
       </S>

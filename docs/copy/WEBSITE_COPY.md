@@ -293,7 +293,7 @@ Hero CTA updated to link to `/founders-deck` alongside `/` (platform).
 
 **AI Agent section** (new)  
 - Headline: "27 domain tools. Grounded in truth."
-- Copy: "Gemini 2.5 Flash with 27 domain-specific tools. 10 hallucination tests. Every response carries visible provenance — the agent refuses to speculate."
+- Copy: "Frontier LLM with 27 domain-specific tools. 10 hallucination tests. Model-agnostic via AI SDK. Every response carries visible provenance — the agent refuses to speculate."
 - Terminal block: Hallucination test suite showing the "refuses lithium" test
 - Tool categories card: Geology, Financial, Compliance, Operations, Environmental, Market
 - Provenance note: "Provenance UI on every response · Sources collapsible"

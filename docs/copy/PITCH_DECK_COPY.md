@@ -378,7 +378,7 @@ NPV $821M, CAPEX $443M, Revenue $315M, IRR 28%, Resource 1.54Bt, Mine Life 20 yr
 *Talk track: Juliano — clean service boundary. Swap implementation, zero refactoring.*
 
 **Slide 10 — AI Agent** 🔵  
-27 tools, 6 categories, Gemini 2.5 Flash. Hallucination tests — "refuses lithium" shown.  
+27 tools, 6 categories, frontier LLM via AI SDK. Hallucination tests — "refuses lithium" shown.  
 *Talk track: Juliano — 10 honesty tests, 100% pass required. Not GPT-wrapper territory.*
 
 **Slide 11 — Digital Twin** ⚪  
@@ -434,7 +434,7 @@ $500k-1M · $5-7M pre-money · 18 months. Hiring plan + milestone targets.
 *Talk track: 3 pilots by Month 6, seed round by Month 9.*
 
 **Slide 24 — The Monday Play** ⚪ (NEW)  
-Monday April 14: Gale (CEO), De Carvalho (Chief Geologist), Tunks (Chairman). Per-persona needs. $102k/yr Growth tier. 0.03% framing.  
+Tuesday April 15: De Carvalho (Chief Geologist), Tunks (Chairman). Per-persona needs. $102k/yr Growth tier. 0.03% framing.  
 *Talk track: This is the catalyst event. Each person in the room has a specific need. The demo is tailored to each. The ask is $102k/yr — 0.03% of their revenue.*
 
 **Slide 25 — Why Before Monday** ⚪ (NEW)  
@@ -442,7 +442,7 @@ Pre-money $5-7M today → $7M+ post-pilot. ~$2M equity value creation. 30-40% pa
 *Talk track: Your investment creates the runway that closes the pilot. The pilot closes the valuation gap. Join before the catalyst, not after. This is the timing arbitrage.*
 
 **Slide 26 — Timeline** ⚪  
-Apr 14 → Meteoric demo. Apr 18 → Term sheet. May → LAPOC. Jun → First revenue. Jul-Sep → Seed. Feb 2027 → EU DPP.  
+Apr 15 → Meteoric pitch. Apr 21 → Term sheet. May → LAPOC. Jun → First revenue. Jul-Sep → Seed. Feb 2027 → EU DPP.  
 *Talk track: Monday is live. EU DPP in 10 months. The window is now.*
 
 **Slide 27 — Close** ⚪  

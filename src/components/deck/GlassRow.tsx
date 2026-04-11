@@ -14,7 +14,7 @@ export function GlassRow({ items }: GlassRowProps) {
     }}>
       {items.map((it, i) => (
         <div key={it.label} style={{
-          textAlign: 'center', flex: 1, padding: '0 14px', minWidth: 80,
+          textAlign: 'center', flex: 1, padding: '0 14px', minWidth: 100,
           borderLeft: i > 0 ? `1px solid ${W.glass06}` : 'none',
         }}>
           <div style={{ fontSize: 'clamp(17px, 1.2vw, 22px)', fontWeight: 800, color: V, fontFamily: 'var(--font-mono)' }}>{it.value}</div>

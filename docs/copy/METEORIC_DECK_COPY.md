@@ -4,9 +4,9 @@
 
 **Audience:** Dr. Marcelo De Carvalho (Chief Geologist), Dr. Andrew Tunks (Chairman), Stuart Gale (CEO)
 
-**Slides:** 15 (route: `/meteoric-deck`, file: `src/pages/MeteoricDeck.tsx`)
+**Slides:** 18 (route: `/meteoric-deck`, file: `src/pages/MeteoricDeck.tsx`)
 
-**Last synced:** 2026-04-09 (v18 — Pre-Pitch Final Sprint)
+**Last synced:** 2026-04-11 (v19 — Timeline + Backlog + Deck Magic Sprint)
 
 ---
 

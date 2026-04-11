@@ -229,7 +229,7 @@ export function seedIfNeeded() {
     ],
     cost_components: [
       { component: 'Hosting (Vercel + Railway)', est_mo: 340, notes: 'Pro tiers, scales with traffic' },
-      { component: 'AI tokens (Google Gemini)', est_mo: 280, notes: '~40k queries × $7/M tokens' },
+      { component: 'AI tokens (LLM provider)', est_mo: 280, notes: '~40k queries × $7/M tokens' },
       { component: 'Map tiles (MapTiler)', est_mo: 120, notes: 'Satellite + topo layers, usage-based' },
       { component: 'Data integration (API + enrichers)', est_mo: 0, notes: 'Included in platform; LAPOC/OPC-UA custom' },
       { component: 'Support & maintenance', est_mo: 500, notes: 'Prorated across customer base' },

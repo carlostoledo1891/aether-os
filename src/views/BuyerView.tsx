@@ -17,7 +17,6 @@ import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverl
 import { InfraOverlay } from '../components/map/InfraOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPicker } from '../components/map/MapLayerPicker'
-import { MapZoomPresets } from '../components/map/MapZoomPresets'
 import type { MapPopupData } from '../components/map/MapFeaturePopup'
 import type { ComplianceLedger } from '../types/telemetry'
 import { useServiceQuery } from '../hooks/useServiceQuery'
@@ -52,7 +51,17 @@ function BatchFitBounds({ mapId, batchId, timeline, skipInitialFit }: {
       hasInitialFit.current = true
       prevBatchId.current = batchId
       if (skipInitialFit) return
-      mapRef.fitBounds(CALDEIRA_BBOX, { padding: 60, duration: 1000, pitch: 35, bearing: 0 })
+      const activeCoords = timeline.filter(s => s.coordinates && (s.status === 'verified' || s.status === 'active')).map(s => s.coordinates!)
+      if (activeCoords.length >= 2) {
+        const lngs = activeCoords.map(c => c.lng)
+        const lats = activeCoords.map(c => c.lat)
+        mapRef.fitBounds(
+          [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]],
+          { padding: 80, duration: 1200, pitch: 35, bearing: 0 },
+        )
+      } else {
+        mapRef.fitBounds(CALDEIRA_BBOX, { padding: 60, duration: 1000, pitch: 35, bearing: 0 })
+      }
       return
     }
 
@@ -75,8 +84,8 @@ function BatchFitBounds({ mapId, batchId, timeline, skipInitialFit }: {
 type BuyerTab = 'compliance' | 'traceability'
 
 const TAB_ITEMS: { id: BuyerTab; label: string; icon: typeof ShieldCheck; color: string }[] = [
-  { id: 'compliance',   label: 'Compliance',    icon: ShieldCheck,  color: W.green },
   { id: 'traceability', label: 'Traceability',  icon: FileText,     color: W.cyan },
+  { id: 'compliance',   label: 'Compliance',    icon: ShieldCheck,  color: W.green },
 ]
 
 const TAB_COLOR: Record<BuyerTab, string> = {
@@ -123,7 +132,7 @@ export function BuyerView() {
   const [batchIndex, setBatchIndex] = useState(0)
   const [batchDropdownOpen, setBatchDropdownOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [activeTab, setActiveTab] = useState<BuyerTab>('compliance')
+  const [activeTab, setActiveTab] = useState<BuyerTab>('traceability')
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
 
   const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
@@ -274,7 +283,6 @@ export function BuyerView() {
             </MapBase>
             <MapFeaturePopup data={popupData?.data ?? null} x={popupData?.x ?? 0} y={popupData?.y ?? 0} />
             <MapLayerPicker layers={buyerLayerToggles} onToggle={handleBuyerLayerToggle} />
-            <MapZoomPresets mapId="buyerField" timeline={batch.molecular_timeline} />
 
             {/* Batch legend */}
             <div style={{

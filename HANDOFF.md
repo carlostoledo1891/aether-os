@@ -719,7 +719,7 @@ Scale parameter: `1×` for 24h (live), `2.5×` for 7d synthetic, `5×` for 30d s
 | Mobile layout | Low | Currently optimized for 1440px+; 16:9 pitch screens |
 | Expand test coverage | Low | 310 tests (260 frontend + 50 server). Run `npm run test:run` (frontend) and `cd server && npm test` (server). Add integration test for live mode + production smoke test. |
 | Overlay throttle optimization | Low | Throttle `tick` updates with `requestAnimationFrame` for smoother panning |
-| ~~AI Agent (read-only analyst)~~ | ~~High~~ | ✅ Done — `POST /api/chat` streaming endpoint with Gemini 2.5 Flash, 17 domain tools + web search. Frontend `ChatPanel.tsx` with file upload. |
+| ~~AI Agent (read-only analyst)~~ | ~~High~~ | ✅ Done — `POST /api/chat` streaming endpoint via Vercel AI SDK (model-agnostic), 17 domain tools + web search. Frontend `ChatPanel.tsx` with file upload. |
 | ~~Pilot Plant Mirror~~ | ~~Medium~~ | ✅ Done — `data/caldeira/pilot-plant-mirror.json` structured catalog, JSON Schema, link audit, PDF extraction. |
 | ~~DrillTraceSection regression~~ | ~~High~~ | ✅ Done — deposit filter dropdown, top 20 cap by TREO, updated disclaimer. |
 | ~~IR Disclosure Mode~~ | ~~Done~~ | ✅ `VITE_DISCLOSURE_MODE=1` — hides simulated panels, violet banner, DISCLOSURE badge in header |
@@ -1417,7 +1417,7 @@ Post-deployment bugfix and geolocation accuracy pass. Updated three critical map
 
 ### Phase 2 — AI Agent: Read-Only Analyst
 10. **Server dependencies** — Installed `ai` v6 + `@ai-sdk/google` in `server/`. Added `GOOGLE_GENERATIVE_AI_API_KEY` + `AI_MODEL` to `.env.example`.
-11. **Chat route** — `server/src/routes/chat.ts`: `POST /api/chat` streaming endpoint using `streamText()` with Gemini 2.5 Flash. System prompt with 10 data-honesty rules + two-tier citation format. **17 domain tools** via function calling: `queryFinancials`, `queryRisks`, `queryBatches`, `queryESG`, `queryAudit`, `queryTelemetry`, `queryHistory`, `queryDeposits`, `queryResources`, `queryProvenance`, `queryRegulatory`, `queryWeather`, `queryMarket`, `queryPilotPlant`, `queryDPP`, `queryIssuer`, `webSearch`.
+11. **Chat route** — `server/src/routes/chat.ts`: `POST /api/chat` streaming endpoint using `streamText()` via Vercel AI SDK (model-agnostic, currently Gemini). System prompt with 10 data-honesty rules + two-tier citation format. **17 domain tools** via function calling: `queryFinancials`, `queryRisks`, `queryBatches`, `queryESG`, `queryAudit`, `queryTelemetry`, `queryHistory`, `queryDeposits`, `queryResources`, `queryProvenance`, `queryRegulatory`, `queryWeather`, `queryMarket`, `queryPilotPlant`, `queryDPP`, `queryIssuer`, `webSearch`.
 12. **Chat panel** — `src/components/layout/ChatPanel.tsx` + `ChatPanel.module.css`: sliding drawer (AlertPanel pattern), `useChat` hook from `@ai-sdk/react`, message list with user/assistant styling, loading dots animation, empty state, provenance badges.
 13. **Header wiring** — `MessageSquare` icon button in HeaderStrip with violet dot indicator. `chatOpen` state in App.tsx with mutual exclusion against AlertPanel.
 
@@ -2004,7 +2004,7 @@ CTO + Business Expert paired sprint focused on closing the highest-impact person
 
 ### Quality Gate
 - **0 TypeScript errors**
-- **45/45 server tests passing** (excluding AI hallucination tests — Gemini API rate-limited, pre-existing)
+- **45/45 server tests passing** (excluding AI hallucination tests — LLM API rate-limited, pre-existing)
 - **0 lint errors** on modified files
 
 ### Files Changed
@@ -2644,7 +2644,7 @@ CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive s
 3. **Architecture SVG diagrams** — Replaced 3 Terminal-heavy slides with inline SVG diagrams:
    - Architecture slide: system topology with trust boundary, 3 process boxes, 4 enrichers, SQLite, security badges
    - Data Service slide: class diagram (AetherDataService interface, Mock/Live implementations, useServiceQuery hook)
-   - AI Agent slide: trust boundary with Gemini gateway, hallucination fence, tool router → 6 domain categories
+   - AI Agent slide: trust boundary with LLM gateway, hallucination fence, tool router → 6 domain categories
    - Digital Twin slide: simplified 5-node AMSUL process flow with sensor dots
 
 4. **Map pin hover fix** — Added `handleMouseMove` with RAF throttle to `useMapInteraction.ts`, wired through `FieldView.tsx` → `MapBase` via `onMouseMove`. Fixes missing hover on pins over polygons.
@@ -2679,7 +2679,7 @@ CTO + UI Expert sprint. Two phases: (1) UI Polish Sprint addressing responsive s
 
 ## Session v18 — Pre-Pitch Final Sprint
 
-Pre-pitch sprint preparing all assets for the April 9-15 pitch sequence: Founders (Apr 9), Dr. Caponi (Apr 13), Meteoric (Apr 15).
+Pre-pitch sprint preparing all assets for the April 13-15 pitch sequence: Founders (Apr 13), Dr. Caponi (Apr 13), Meteoric (Apr 15).
 
 ### What Changed
 
@@ -2704,7 +2704,7 @@ Pre-pitch sprint preparing all assets for the April 9-15 pitch sequence: Founder
 
 8. **FoundersDeck "Why I Need You" links** — Each responsibility card (Carlos/Juliano/Guilherme) now links to the relevant deep-dive page: `/` (platform), `/tech`, `/business`.
 
-9. **PITCH_STRATEGY.md created** — Full pitch playbook: timeline (Apr 9/13/15), email copy for all 4 recipients (Juliano, Guilherme, Dr. Caponi in Portuguese, Dr. De Carvalho), success criteria, fallback plans, talking points per recipient, post-pitch protocol.
+9. **PITCH_STRATEGY.md created** — Full pitch playbook: timeline (Apr 13/13/15), email copy for all recipients (Juliano + Guilherme joint, Dr. Caponi in Portuguese, Dr. De Carvalho, Dr. Tunks), success criteria, fallback plans, talking points per recipient, post-pitch protocol.
 
 10. **Thiago A. removed from WEBSITE_COPY** — Team is now Carlos + Caponi on all public-facing pages.
 
@@ -2745,3 +2745,101 @@ Pre-pitch sprint preparing all assets for the April 9-15 pitch sequence: Founder
 - Routes verified: `/meteoric-deck`, `/founders-deck`, `/tech`, `/business`, `/lp`
 - MeteoricDeck: 15 slides (was 11)
 - FoundersDeck: 28 slides (unchanged)
+
+---
+
+## Session v19 — Timeline + Backlog + Meteoric Deck Magic Sprint (2026-04-11)
+
+### Summary
+Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across website and decks. MeteoricDeck transformed into an immersive 18-slide storytelling experience with embedded satellite maps, animated stats, AI demo, live API ping, countdown, and stagger animations.
+
+### Changes
+
+1. **Timeline update** — All references shifted: Founders + Caponi emails move to Apr 13 (same day), Meteoric to Apr 15. Co-founder response window is 48h. `mondayPlay`/`whyBeforeMonday` renamed to `meteoricPlay`/`whyBeforeMeteoric` in FoundersDeck.
+
+2. **Dr. Tunks email** — Added as separate Email 4 in PITCH_STRATEGY.md with governance-focused framing (data honesty, disclosure mode, screenshot safety). Separate talking points, fallback plan, and post-pitch protocol.
+
+3. **Product roadmap** — Created `src/data/domain/roadmap.ts` with `PRODUCT_ROADMAP` constant (4 phases: Pilot Ready → Enterprise Grade → Market Expansion → Platform Standard). Items sourced from persona gap analysis.
+
+4. **Roadmap on website** — "Planned Releases" section added to LandingPage (vertical timeline), TechPage (Terminal integration evolution), BusinessPage (expansion cards).
+
+5. **Roadmap on decks** — New `roadmap` slide added to FoundersDeck (4-column layout) and MeteoricDeck (Meteoric-tailored items).
+
+6. **MeteoricDeck magic** — Transformed from 15 to 18 slides:
+   - **Cover**: Background satellite MiniMap (Caldeira, 3D tilt, opacity 0.25) behind glass content
+   - **Geology**: Split layout with embedded MiniMap + flyTo animation + AnimatedStat counters
+   - **Executive**: AnimatedStat (counting up from 0) for dashboard tabs, scenarios, CAPEX
+   - **Code**: Live API ping badge (`/api/health` check → green/offline indicator)
+   - **AI Tools**: Split layout with FakeChat (typed Q&A with provenance badge)
+   - **Why Sign**: DeckCountdown (live countdown to Feb 2027 EU DPP)
+   - **Timeline**: Animated SVG progress line + stagger entrance for each milestone
+   - **Hydro Story** (NEW): MiniMap with environmental context + AnimatedStat (1,092 springs) + LAPOC pipeline narrative
+   - **Traceability** (NEW): 6-step supply chain flow (Caldeira → Toyota) + global MiniMap with route pins + SHA-256/DPP/FEOC stats
+   - **Roadmap** (NEW): 4-phase roadmap tailored to Meteoric priorities
+   - **Team**: Stagger entrance animations on all cards
+   - **CTA**: DeckCountdown + updated pricing row
+
+7. **New components** — `src/pages/meteoric/`:
+   - `MiniMap.tsx` — Non-interactive MapBase wrapper with flyTo support
+   - `DeckCountdown.tsx` — Live countdown with violet mono-font segments
+   - `AnimatedStat.tsx` — Count-up animation using `useInView` + `requestAnimationFrame`
+   - `FakeChat.tsx` — Typed Q&A sequence with provenance badge
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Created** | `src/data/domain/roadmap.ts`, `src/pages/meteoric/MiniMap.tsx`, `src/pages/meteoric/DeckCountdown.tsx`, `src/pages/meteoric/AnimatedStat.tsx`, `src/pages/meteoric/FakeChat.tsx` |
+| **Deck pages** | `src/pages/MeteoricDeck.tsx`, `src/pages/FoundersDeck.tsx` |
+| **Website** | `src/pages/LandingPage.tsx`, `src/pages/TechPage.tsx`, `src/pages/BusinessPage.tsx` |
+| **Docs** | `docs/PITCH_STRATEGY.md`, `docs/strategy.md`, `docs/copy/PITCH_DECK_COPY.md`, `docs/copy/METEORIC_DECK_COPY.md`, `HANDOFF.md` |
+
+### Quality Gate
+- 0 TypeScript compilation errors (strict mode)
+- Production build succeeds (536ms)
+- MeteoricDeck: 18 slides (was 15)
+- FoundersDeck: 29 slides (was 28, added roadmap)
+
+---
+
+## Session v21 — Platform + Deck Polish Sprint (2026-04-09)
+
+### What Changed
+
+1. **Platform: BuyerView** — Renamed to "Traceability & Compliance" everywhere, reordered tabs (Traceability first, default), removed `MapZoomPresets`, initial `fitBounds` now targets the active journey coordinates instead of the full Caldeira bbox.
+
+2. **DeckShell: Click zones** — Removed full-screen `onClick={next}` from root div. Added left/right transparent click zones at `zIndex: 1` behind slide content at `zIndex: 5`. Interactive elements (maps, links, FakeChat) now receive clicks naturally without `stopPropagation` hacks.
+
+3. **Horizontal timelines** — Converted both FoundersDeck and MeteoricDeck timelines from vertical stacked layouts to horizontal flex rows. MeteoricDeck retains animated SVG progress line (rotated to horizontal) with stagger entrance from below.
+
+4. **Email demoted** — On both FoundersDeck and MeteoricDeck CTA slides, the `mailto:` button was removed. Email address now appears as a small text line below the action buttons.
+
+5. **Meteoric Slide 2** — Added data source context note: "Built from a mix of public datasets, government data, Meteoric ASX announcements, live APIs (weather, seismic, PTAX), and independent research."
+
+6. **Map slides overhaul (Slides 4, 13, 14)** — Full-bleed interactive map backgrounds with floating glass UI overlays:
+   - **Geology (4)**: Full-screen MiniMap with `CaldeiraBoundary` + `LicenseOverlay` rendered as real MapLibre layers. Floating glass panel with stats and layer lists. Interactive drag/rotate enabled.
+   - **Hydro (13)**: Full-screen MiniMap with `EnvironmentalOverlay` (APA, buffer, monitoring) + `CaldeiraBoundary`. Floating glass panel with AnimatedStat (1,092 springs), environmental layers, and LAPOC pipeline narrative.
+   - **Traceability (14)**: Full-screen global MiniMap. Supply chain flow and stats rendered as glass overlay centered on the map.
+
+7. **MiniMap.tsx** — Added `interactive` prop (default false) and `children` prop. When interactive, removes pointer-events shield and enables `dragPan`/`dragRotate`.
+
+8. **Slide 8 (DataViz)** — Added 9th card with dashed violet border and "+" icon: "Connect any dataset, API, or sensor feed to extend the platform for your project."
+
+9. **Slide 9 (AI Tools)** — Title changed to "27 AI Tools — and Growing". Added expandability note: "AI workflows are project-specific. Best-in-class models, swappable per use case via Vercel AI SDK."
+
+10. **Slide 18 (CTA) fixes** — DeckCountdown segments: changed `minWidth: 64` to `width: 72` for uniform sizing. GlassRow: increased `minWidth` from 80 to 100 to prevent "$102k/yr" line breaks.
+
+### Files Changed
+
+| Category | Files |
+|----------|-------|
+| **Platform** | `src/components/layout/ViewSwitcher.tsx`, `src/views/BuyerView.tsx` |
+| **Deck shell** | `src/components/deck/DeckShell.tsx`, `src/components/deck/GlassRow.tsx` |
+| **Deck pages** | `src/pages/MeteoricDeck.tsx`, `src/pages/FoundersDeck.tsx` |
+| **Deck components** | `src/pages/meteoric/MiniMap.tsx`, `src/pages/meteoric/DeckCountdown.tsx` |
+| **Docs** | `HANDOFF.md` |
+
+### Quality Gate
+- 0 TypeScript compilation errors (strict mode)
+- MeteoricDeck: 18 slides (map slides now full-bleed interactive)
+- FoundersDeck: 29 slides (timeline horizontal)
