@@ -71,6 +71,8 @@ export const W = {
   chromeHeaderBg: 'rgba(13,13,28,0.95)',
   /** Full modal overlay */
   scrim:          'rgba(0,0,0,0.5)',
+  /** Marketing page nav bar (blurred fixed header) */
+  navScrim:       'rgba(7,7,14,0.88)',
   /** Panel seams, tab bars */
   hairlineBorder: '1px solid rgba(255,255,255,0.06)',
   /** Glass cards, icon buttons, inputs */

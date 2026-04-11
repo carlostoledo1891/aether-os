@@ -1,13 +1,15 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { CheckCircle, Circle, Clock, MapPin, Copy, Check } from 'lucide-react'
+import { CheckCircle, Circle, Clock, MapPin, Copy, Check, FileText } from 'lucide-react'
 import type { ComplianceLedger } from '../types/telemetry'
 import { W } from '../app/canvas/canvasTheme'
+import { BlockchainReceiptModal } from './ui/BlockchainReceiptModal'
 
 interface BlockchainTimelineProps {
   timeline: ComplianceLedger['molecular_timeline']
   selectedStepIndex?: number | null
   onStepClick?: (index: number) => void
+  batchId?: string
 }
 
 const statusConfig = {
@@ -24,8 +26,9 @@ function formatTime(ts: string): string {
   })
 }
 
-export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }: BlockchainTimelineProps) {
+export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick, batchId }: BlockchainTimelineProps) {
   const [copiedHash, setCopiedHash] = useState<string | null>(null)
+  const [receiptStepIndex, setReceiptStepIndex] = useState<number | null>(null)
 
   const handleCopyHash = useCallback(async (hash: string, e: React.MouseEvent) => {
     e.stopPropagation()
@@ -125,29 +128,47 @@ export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }:
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {step.hash && (
-                    <span
-                      title="Click to copy full hash"
-                      role="button"
-                      tabIndex={0}
-                      onClick={(e) => handleCopyHash(step.hash!, e)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); handleCopyHash(step.hash!, e as unknown as React.MouseEvent) } }}
-                      style={{
-                        fontSize: 9, color: copiedHash === step.hash ? W.green : color,
-                        fontFamily: 'var(--font-mono)',
-                        background: copiedHash === step.hash ? `${W.green}1F` : bg,
-                        border: `1px solid ${copiedHash === step.hash ? `${W.green}4D` : border}`,
-                        padding: '1px 6px', borderRadius: W.radius.xs,
-                        maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4,
-                        cursor: 'pointer', transition: 'all 0.2s',
-                      }}
-                    >
-                      {copiedHash === step.hash ? (
-                        <><Check size={8} /> Copied!</>
-                      ) : (
-                        <><Copy size={8} /> {step.hash}</>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span
+                        title="Click to copy full hash"
+                        role="button"
+                        tabIndex={0}
+                        onClick={(e) => handleCopyHash(step.hash!, e)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); handleCopyHash(step.hash!, e as unknown as React.MouseEvent) } }}
+                        style={{
+                          fontSize: 9, color: copiedHash === step.hash ? W.green : color,
+                          fontFamily: 'var(--font-mono)',
+                          background: copiedHash === step.hash ? `${W.green}1F` : bg,
+                          border: `1px solid ${copiedHash === step.hash ? `${W.green}4D` : border}`,
+                          padding: '1px 6px', borderRadius: W.radius.xs,
+                          maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4,
+                          cursor: 'pointer', transition: 'all 0.2s',
+                        }}
+                      >
+                        {copiedHash === step.hash ? (
+                          <><Check size={8} /> Copied!</>
+                        ) : (
+                          <><Copy size={8} /> {step.hash}</>
+                        )}
+                      </span>
+                      {step.status === 'verified' && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setReceiptStepIndex(i) }}
+                          style={{
+                            background: W.glass04, border: `1px solid ${W.glass08}`,
+                            color: W.text2, fontSize: 9, padding: '2px 6px',
+                            borderRadius: W.radius.xs, cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', gap: 4,
+                            transition: 'background 0.2s, color 0.2s'
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = W.glass08; e.currentTarget.style.color = W.text1 }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = W.glass04; e.currentTarget.style.color = W.text2 }}
+                        >
+                          <FileText size={8} /> View Proof
+                        </button>
                       )}
-                    </span>
+                    </div>
                   )}
                   {step.coordinates && (
                     <span style={{
@@ -165,6 +186,13 @@ export function BlockchainTimeline({ timeline, selectedStepIndex, onStepClick }:
           )
         })}
       </AnimatePresence>
+
+      <BlockchainReceiptModal
+        isOpen={receiptStepIndex !== null}
+        onClose={() => setReceiptStepIndex(null)}
+        batchId={batchId ?? 'UNKNOWN'}
+        step={receiptStepIndex !== null ? timeline[receiptStepIndex] : null}
+      />
     </div>
   )
 }

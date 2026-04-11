@@ -12,7 +12,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ErrorFallback } from '../../components/ui/ErrorFallback'
-import type { DepositDetail } from '../../components/map/DepositOverlay'
+import type { DepositDetail } from '../../data/mockData'
 
 const EXPLORATION_HIGHLIGHTS = [
   { id: 'CVSDD001', name: 'Cupim Vermelho Sul', result: '149.5m @ 8,912 ppm TREO', note: 'Highest-grade exploration intercept' },

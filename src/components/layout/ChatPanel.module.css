@@ -101,7 +101,7 @@
 }
 
 .inputField::placeholder { color: var(--w-text4); }
-.inputField:focus { border-color: var(--w-violet, #7963E3); }
+.inputField:focus { border-color: var(--w-violet, #7C5CFC); }
 
 .sendBtn {
   width: 32px;
@@ -109,7 +109,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--w-violet, #7963E3);
+  background: var(--w-violet, #7C5CFC);
   border: none;
   border-radius: var(--w-radius-sm);
   cursor: pointer;

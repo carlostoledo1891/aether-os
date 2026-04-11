@@ -3,7 +3,7 @@
 **Purpose:** Operational playbook for the April 2026 pitch sequence. Timeline, email copy, per-recipient strategy, success criteria, and fallbacks.
 
 **Last updated:** 2026-04-11  
-**Cross-references:** [`strategy.md`](strategy.md), [`branding.md`](branding.md), [`Personas.md`](Personas.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/METEORIC_DECK_COPY.md`](copy/METEORIC_DECK_COPY.md)
+**Cross-references:** [`strategy.md`](strategy.md), [`branding.md`](branding.md), [`personas/core-personas.md`](personas/core-personas.md), [`messaging-strategy.md`](messaging-strategy.md)
 
 ---
 
@@ -44,9 +44,10 @@ Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credibl
 **Key hooks for Juliano:**
 - 310 tests, 0 TS errors, strict mode
 - `AetherDataService` interface pattern (mock/live swap)
+- Yield-to-real-data ingestion architecture and lean MapBase spatial engine
 - 27 AI tools with hallucination fence
 - Solo-founder codebase ready for team scaling
-- HANDOFF.md — 2,600+ lines of documentation
+- AGENT.md + modular docs — AI-ready codebase documentation
 
 ### Guilherme Bonifácio (Business Lens)
 
@@ -272,6 +273,7 @@ carlos@vero.supply
 ### Dr. Caponi
 - Deep respect for LAPOC and decades of field work
 - No overclaiming — the platform labels everything honestly
+- Platform now actively parses and stores real LAPOC CSV data with automated UI provenance upgrades
 - Simulated → field-verified is the single highest-value technical milestone
 - Asking for scientific opinion first, not commitment
 - Portuguese — the entire email should feel like a colleague reaching out
@@ -301,7 +303,7 @@ carlos@vero.supply
 - [ ] Acknowledge response within 2 hours
 - [ ] Schedule 20-min call if interested
 - [ ] Prepare advisory term sheet outline (equity 0.5-1%, 2yr vesting, quarterly cadence)
-- [ ] Update HANDOFF.md with response status
+- [ ] Update AGENT.md with response status
 
 ### After Caponi Response (Apr 13-14)
 - [ ] Thank personally
@@ -313,13 +315,13 @@ carlos@vero.supply
 - [ ] Track whether deck was opened (if analytics available)
 - [ ] Follow up on Apr 20 if no response
 - [ ] If demo requested: prepare 45-min walkthrough per demo playbook in strategy.md
-- [ ] Update HANDOFF.md pitch status
+- [ ] Update AGENT.md pitch status
 
 ### After Tunks Contact (Apr 15-20)
 - [ ] Same tracking as De Carvalho
 - [ ] If he engages on governance: prepare deep-dive on disclosure mode + audit trail
 - [ ] If he forwards to Gale: treat as positive signal — follow up with CEO-framed summary
-- [ ] Update HANDOFF.md pitch status
+- [ ] Update AGENT.md pitch status
 
 ---
 

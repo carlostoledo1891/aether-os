@@ -104,12 +104,15 @@ interface DrillHoleOverlayProps {
   depositFilter?: string | null
   /** Filter by collar type */
   holeTypeFilter?: DrillHoleType | 'all'
+  /** Filter by exact hole IDs */
+  drillIds?: string[] | null
 }
 
 export const DrillHoleOverlay = memo(function DrillHoleOverlay({
   hoveredHoleId = null,
   depositFilter = null,
   holeTypeFilter = 'all',
+  drillIds = null,
 }: DrillHoleOverlayProps) {
   const raw = useGeoJsonFeatureCollection<DrillHoleFeature>(GEO.drillholes.url)
 
@@ -118,6 +121,7 @@ export const DrillHoleOverlay = memo(function DrillHoleOverlay({
     const features = raw.features
       .filter(f => !depositFilter || f.properties.deposit === depositFilter)
       .filter(f => holeTypeFilter === 'all' || f.properties.hole_type === holeTypeFilter)
+      .filter(f => !drillIds || drillIds.length === 0 || drillIds.includes(f.properties.id))
       .map(f => {
         const treo = f.properties.treo_ppm
         const isHovered = f.properties.id === hoveredHoleId
@@ -132,7 +136,7 @@ export const DrillHoleOverlay = memo(function DrillHoleOverlay({
         }
       })
     return { type: 'FeatureCollection', features }
-  }, [raw, hoveredHoleId, depositFilter, holeTypeFilter])
+  }, [raw, hoveredHoleId, depositFilter, holeTypeFilter, drillIds])
 
   if (!data) return null
 

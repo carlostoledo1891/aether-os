@@ -43,26 +43,10 @@ function getInitialStyle(): MapStyleId {
 
 /** Default framing: Poços de Caldas Alkaline Complex centroid.
  *  Latitude shifted south to compensate for pitch-induced visual center shift. */
-export const FIELD_VIEW_STATE = {
+export const CALDEIRA_VIEW_STATE = {
   longitude: -46.555,
   latitude:  -21.88,
   zoom:       10.98,
-  pitch:      35,
-  bearing:    0,
-}
-
-export const BUYER_VIEW_STATE = {
-  longitude: -46.555,
-  latitude:  -21.88,
-  zoom:       10.5,
-  pitch:      35,
-  bearing:    0,
-}
-
-export const EXEC_VIEW_STATE = {
-  longitude: -46.565,
-  latitude:  -21.84,
-  zoom:       10.8,
   pitch:      35,
   bearing:    0,
 }
@@ -72,17 +56,60 @@ export const CALDEIRA_BBOX: [[number, number], [number, number]] = [
   [-46.39, -21.75],
 ]
 
+export interface FlyToTarget {
+  center: [number, number]
+  zoom: number
+  pitch?: number
+  bearing?: number
+  duration?: number
+}
+
 interface MapBaseProps {
   id?: string
-  initialViewState?: typeof FIELD_VIEW_STATE
+  initialViewState?: typeof CALDEIRA_VIEW_STATE
   children?: React.ReactNode
   interactiveLayerIds?: string[]
   cursor?: string
   highlightWater?: boolean
+  interactive?: boolean
+  disableZoomControls?: boolean
+  hideControls?: boolean
+  containerStyle?: React.CSSProperties
+  flyTo?: FlyToTarget
+  forceStyle?: MapStyleId
   onMouseEnter?: (e: MapLayerMouseEvent) => void
   onMouseLeave?: (e: MapLayerMouseEvent) => void
   onMouseMove?: (e: MapLayerMouseEvent) => void
   onClick?: (e: MapLayerMouseEvent) => void
+}
+
+function FlyToController({ mapId, target }: { mapId: string; target: FlyToTarget }) {
+  const maps = useMap()
+  const fired = useRef(false)
+
+  useEffect(() => {
+    if (fired.current) return
+    const mapRef = maps[mapId as keyof typeof maps] ?? maps.current
+    if (!mapRef) return
+    const map = (mapRef as { getMap: () => maplibregl.Map }).getMap()
+
+    const run = () => {
+      fired.current = true
+      map.flyTo({
+        center: target.center,
+        zoom: target.zoom,
+        pitch: target.pitch ?? map.getPitch(),
+        bearing: target.bearing ?? map.getBearing(),
+        duration: target.duration ?? 3000,
+        essential: true,
+      })
+    }
+
+    if (map.isStyleLoaded()) run()
+    else map.once('load', run)
+  }, [maps, mapId, target])
+
+  return null
 }
 
 const WATER_LAYER_IDS = ['water', 'water_shadow'] as const
@@ -262,11 +289,17 @@ function MapStylePicker({
 
 export function MapBase({
   id = 'aetherField',
-  initialViewState = FIELD_VIEW_STATE,
+  initialViewState = CALDEIRA_VIEW_STATE,
   children,
   interactiveLayerIds,
   cursor,
   highlightWater = false,
+  interactive = true,
+  disableZoomControls = false,
+  hideControls = false,
+  containerStyle,
+  flyTo,
+  forceStyle,
   onMouseEnter,
   onMouseLeave,
   onMouseMove,
@@ -274,48 +307,63 @@ export function MapBase({
 }: MapBaseProps) {
   const [styleId, setStyleId] = useState<MapStyleId>(getInitialStyle)
 
-  const styleUrl = MAP_STYLE_DEFS.find(d => d.id === styleId)?.url ?? MAP_STYLE_DEFS[0].url
+  const activeStyleId = forceStyle ?? styleId
+  const styleUrl = MAP_STYLE_DEFS.find(d => d.id === activeStyleId)?.url ?? MAP_STYLE_DEFS[0].url
 
   const handleStyleChange = useCallback((id: MapStyleId) => {
+    if (forceStyle) return
     setStyleId(id)
     try { localStorage.setItem(STORAGE_KEY, id) } catch { /* noop */ }
-  }, [])
+  }, [forceStyle])
 
   return (
-    <div style={{ position: 'absolute', inset: 0 }}>
+    <div style={{ position: 'absolute', inset: 0, ...containerStyle }}>
+      {!interactive && <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2 }} />}
       <Map
         id={id}
         initialViewState={initialViewState}
         mapStyle={styleUrl}
         style={{ width: '100%', height: '100%' }}
         attributionControl={false}
-        logoPosition="bottom-right"
-        interactiveLayerIds={interactiveLayerIds}
+        logoPosition={hideControls ? undefined : "bottom-right"}
+        interactive={interactive}
+        dragPan={interactive}
+        dragRotate={interactive}
+        scrollZoom={!disableZoomControls}
+        doubleClickZoom={!disableZoomControls}
+        touchZoomRotate={!disableZoomControls}
+        keyboard={!disableZoomControls}
+        interactiveLayerIds={interactive ? interactiveLayerIds : undefined}
         cursor={cursor}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onMouseMove={onMouseMove}
-        onClick={onClick}
+        onMouseEnter={interactive ? onMouseEnter : undefined}
+        onMouseLeave={interactive ? onMouseLeave : undefined}
+        onMouseMove={interactive ? onMouseMove : undefined}
+        onClick={interactive ? onClick : undefined}
       >
-        <StyleController maptilerKey={MAPTILER_KEY} mapId={id} highlightWater={highlightWater} activeStyleId={styleId} />
-        <NavigationControl
-          position="top-right"
-          showCompass
-          showZoom
-          visualizePitch
-        />
+        <StyleController maptilerKey={MAPTILER_KEY} mapId={id} highlightWater={highlightWater} activeStyleId={activeStyleId} />
+        {flyTo && <FlyToController mapId={id} target={flyTo} />}
+        {!hideControls && (
+          <NavigationControl
+            position="top-right"
+            showCompass
+            showZoom
+            visualizePitch
+          />
+        )}
         {children}
       </Map>
 
-      <MapStylePicker active={styleId} onChange={handleStyleChange} />
+      {!hideControls && <MapStylePicker active={activeStyleId} onChange={handleStyleChange} />}
 
-      <div style={{
-        position: 'absolute', bottom: 4, right: 8,
-        fontSize: 9, color: 'rgba(255,255,255,0.18)',
-        fontFamily: 'var(--font-mono)', pointerEvents: 'none', zIndex: Z.tabIndicator,
-      }}>
-        © MapTiler · OpenStreetMap contributors
-      </div>
+      {!hideControls && (
+        <div style={{
+          position: 'absolute', bottom: 4, right: 8,
+          fontSize: 9, color: 'rgba(255,255,255,0.18)',
+          fontFamily: 'var(--font-mono)', pointerEvents: 'none', zIndex: Z.tabIndicator,
+        }}>
+          © MapTiler · OpenStreetMap contributors
+        </div>
+      )}
     </div>
   )
 }

@@ -1,40 +1,22 @@
+import { useSyncExternalStore } from 'react'
 import type { DrillHoleType } from '../../components/map/DrillHoleOverlay'
 
 export interface FieldOpsMapLayers {
   tenements: boolean
-  deposits: boolean
   drillHoles: boolean
   holeTypeFilter: DrillHoleType | 'all'
   pfsEngineering: boolean
-  /** Pilot + commercial plant collars (terrain-accurate GeoJSON) */
   plantSites: boolean
-  /** Full logistics mesh: roads, ports, supply-chain art in caldeira-infrastructure.geojson */
   infra: boolean
-  /** Pilot schematic nodes/edges (telemetry-linked rehearsal) */
-  plantSchematic: boolean
-  /** Access road polyline from ultimate_v1 merge */
-  accessRoutes: boolean
-  /** 193 km² Caldeira licence union — context behind per-concession polygons */
-  licenceEnvelope: boolean
-  /** Adjacent tenement (Axel REE Caldas) — district geology context */
-  neighbors: boolean
-  /** APA Pedra Branca protected area boundary */
-  apa: boolean
 }
 
 export const DEFAULT_FIELD_OPS_LAYERS: FieldOpsMapLayers = {
   tenements: true,
-  deposits: false,
   drillHoles: true,
   holeTypeFilter: 'all',
   pfsEngineering: true,
   plantSites: true,
   infra: false,
-  plantSchematic: false,
-  accessRoutes: true,
-  licenceEnvelope: false,
-  neighbors: false,
-  apa: true,
 }
 
 export interface FieldEnvMapLayers {
@@ -50,3 +32,44 @@ export const DEFAULT_FIELD_ENV_LAYERS: FieldEnvMapLayers = {
   monitoring: true,
   urban: false,
 }
+
+let currentOpsLayers = DEFAULT_FIELD_OPS_LAYERS
+let currentEnvLayers = DEFAULT_FIELD_ENV_LAYERS
+
+const listeners = new Set<() => void>()
+
+function emit() {
+  for (const listener of listeners) {
+    listener()
+  }
+}
+
+export const sharedLayerStore = {
+  getOps: () => currentOpsLayers,
+  getEnv: () => currentEnvLayers,
+  setOps: (updater: (prev: FieldOpsMapLayers) => FieldOpsMapLayers) => {
+    currentOpsLayers = updater(currentOpsLayers)
+    emit()
+  },
+  setEnv: (updater: (prev: FieldEnvMapLayers) => FieldEnvMapLayers) => {
+    currentEnvLayers = updater(currentEnvLayers)
+    emit()
+  },
+  subscribe: (listener: () => void) => {
+    listeners.add(listener)
+    return () => listeners.delete(listener)
+  }
+}
+
+export function useSharedMapLayers() {
+  const opsMapLayers = useSyncExternalStore(sharedLayerStore.subscribe, sharedLayerStore.getOps)
+  const envMapLayers = useSyncExternalStore(sharedLayerStore.subscribe, sharedLayerStore.getEnv)
+
+  return {
+    opsMapLayers,
+    envMapLayers,
+    setOpsMapLayers: sharedLayerStore.setOps,
+    setEnvMapLayers: sharedLayerStore.setEnv,
+  }
+}
+

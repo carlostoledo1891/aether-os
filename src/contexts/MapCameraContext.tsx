@@ -36,6 +36,7 @@ export function MapCameraProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useMapCamera(): MapCameraContextValue {
   const ctx = useContext(Ctx)
   if (!ctx) throw new Error('useMapCamera must be used within MapCameraProvider')

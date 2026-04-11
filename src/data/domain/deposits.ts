@@ -17,6 +17,8 @@ export interface DepositRecord {
   center: [number, number]
 }
 
+export type DepositDetail = DepositRecord
+
 export const DEPOSIT_DATA: DepositRecord[] = [
   {
     id: 'capao-do-mel',

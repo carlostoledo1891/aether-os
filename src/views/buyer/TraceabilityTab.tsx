@@ -42,7 +42,7 @@ export function TraceabilityTab({ batch, selectedStepIndex, onStepClick }: Trace
             {batch.batch_id} · {batch.tonnage_kg} kg MREC
           </span>
         </div>
-        <BlockchainTimeline timeline={batch.molecular_timeline} selectedStepIndex={selectedStepIndex} onStepClick={onStepClick} />
+        <BlockchainTimeline timeline={batch.molecular_timeline} selectedStepIndex={selectedStepIndex} onStepClick={onStepClick} batchId={batch.batch_id} />
       </GlassCard>
 
       {/* Scope 3 Reagent Provenance */}

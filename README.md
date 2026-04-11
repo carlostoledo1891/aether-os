@@ -61,9 +61,8 @@ Near-black indigo glass palette, violet primary, cyan hydrology accent — autho
 
 | Doc | Purpose |
 |-----|---------|
-| [HANDOFF.md](HANDOFF.md) | Architecture, data model, components, handoff checklist |
+| [AGENT.md](AGENT.md) | AI agent bootstrap — project overview, run instructions, doc map |
 | [docs/STYLING.md](docs/STYLING.md) | Design tokens (`W` vs CSS vars), primitives |
 | [docs/data/caldeira/DATA_SOURCES.md](docs/data/caldeira/DATA_SOURCES.md) | GeoJSON / dataset registry + key URLs |
 | [docs/data/caldeira/GLOSSARY.md](docs/data/caldeira/GLOSSARY.md) | Permitting & project terms |
-| [docs/copy/WEBSITE_COPY.md](docs/copy/WEBSITE_COPY.md) | Marketing & in-product copy — iterate here, then sync UI |
-| [docs/copy/PITCH_DECK_COPY.md](docs/copy/PITCH_DECK_COPY.md) | Slide-style narrative for decks |
+| [docs/messaging-strategy.md](docs/messaging-strategy.md) | Brand messaging, copy guidelines |

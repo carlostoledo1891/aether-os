@@ -7,7 +7,7 @@
  *
  * Run locally:  GOOGLE_GENERATIVE_AI_API_KEY=<key> npm test -- chat-hallucination
  */
-import { describe, it, expect, afterAll, beforeEach } from 'vitest'
+import { describe, it, expect, afterAll } from 'vitest'
 import { createTestApp } from './helpers.js'
 
 const API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY

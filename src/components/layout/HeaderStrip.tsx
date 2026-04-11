@@ -4,6 +4,7 @@ import { EsgScoreRing } from '../EsgScoreRing'
 import { ViewSwitcher } from './ViewSwitcher'
 import { W } from '../../app/canvas/canvasTheme'
 import { Z } from '../map/mapStacking'
+import { useDataService } from '../../services/DataServiceProvider'
 
 interface HeaderStripProps {
   esg: EsgScore
@@ -13,7 +14,6 @@ interface HeaderStripProps {
   view: ViewMode
   onViewChange: (v: ViewMode) => void
   onReportOpen?: (type: ReportType) => void
-  disclosureMode?: boolean
   onChatOpen?: () => void
 }
 
@@ -21,9 +21,11 @@ export function HeaderStrip({
   esg,
   alertCount, fieldAlertCount, onAlertOpen,
   view, onViewChange, onReportOpen,
-  disclosureMode,
   onChatOpen,
 }: HeaderStripProps) {
+  const { service } = useDataService()
+  const dataContext = service.getDataContext()
+
   return (
     <header style={{
       display: 'flex',
@@ -54,7 +56,7 @@ export function HeaderStrip({
             Vero
           </div>
         </div>
-        {disclosureMode && (
+        {dataContext.disclosureMode && (
           <span style={{
             fontSize: 9,
             fontWeight: 700,

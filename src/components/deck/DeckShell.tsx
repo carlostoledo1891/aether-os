@@ -44,7 +44,10 @@ export function DeckShell({ count, children, exitPath = '/', padding = '48px 56p
   const onTE = useCallback((e: TouchEvent) => {
     const dx = e.changedTouches[0].clientX - touchRef.current.x
     const dy = e.changedTouches[0].clientY - touchRef.current.y
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) { dx < 0 ? next() : prev() }
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) next()
+      else prev()
+    }
   }, [next, prev])
 
   return (
@@ -56,8 +59,8 @@ export function DeckShell({ count, children, exitPath = '/', padding = '48px 56p
         style={{ position: 'absolute', width: '50vw', height: '50vw', borderRadius: '50%', background: `radial-gradient(circle, ${V}10, transparent 70%)`, top: '-10vw', left: '25vw', filter: 'blur(80px)', pointerEvents: 'none' }} />
 
       {/* Click zones behind content — prev (left) / next (right) */}
-      <div onClick={prev} style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
-      <div onClick={next} style={{ position: 'absolute', right: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
+      <div role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') prev() }} onClick={prev} style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
+      <div role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') next() }} onClick={next} style={{ position: 'absolute', right: 0, top: 0, width: '50%', height: '100%', zIndex: 1, cursor: 'pointer' }} />
 
       {/* Progress bar */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, zIndex: 10 }}>

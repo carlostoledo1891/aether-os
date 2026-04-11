@@ -11,11 +11,6 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.LICENSE_LAYER_ID).toBe('license-fill')
   })
 
-  it('DepositOverlay exports DEPOSIT_LAYER_ID', async () => {
-    const mod = await import('../DepositOverlay')
-    expect(mod.DEPOSIT_LAYER_ID).toBe('deposit-fill')
-  })
-
   it('DrillHoleOverlay exports DRILL_LAYER_ID', async () => {
     const mod = await import('../DrillHoleOverlay')
     expect(mod.DRILL_LAYER_ID).toBe('drill-hole-core')
@@ -51,35 +46,16 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.PFS_ENGINEERING_FILL_LAYER_ID).toBe('pfs-engineering-fill')
   })
 
-  it('AccessRoutesOverlay exports ACCESS_ROUTE_LINE_LAYER_ID', async () => {
-    const mod = await import('../AccessRoutesOverlay')
-    expect(mod.ACCESS_ROUTE_LINE_LAYER_ID).toBe('access-route-line')
-  })
-
-  it('LicenceEnvelopeOverlay exports LICENCE_ENVELOPE_FILL_LAYER_ID', async () => {
-    const mod = await import('../LicenceEnvelopeOverlay')
-    expect(mod.LICENCE_ENVELOPE_FILL_LAYER_ID).toBe('licence-envelope-fill')
-  })
-
-  it('PlantOverlay exports PLANT_NODE_LAYER_ID', async () => {
-    const mod = await import('../PlantOverlay')
-    expect(mod.PLANT_NODE_LAYER_ID).toBe('plant-node-core')
-  })
-
   it('all overlays export a component (function or memo object)', async () => {
     const overlays = [
       () => import('../CaldeiraBoundary'),
       () => import('../LicenseOverlay'),
-      () => import('../DepositOverlay'),
       () => import('../DrillHoleOverlay'),
       () => import('../EnvironmentalOverlay'),
       () => import('../HydroOverlay'),
       () => import('../InfraOverlay'),
       () => import('../OpsPlantSitesOverlay'),
       () => import('../PfsEngineeringOverlay'),
-      () => import('../AccessRoutesOverlay'),
-      () => import('../LicenceEnvelopeOverlay'),
-      () => import('../PlantOverlay'),
     ]
 
     for (const load of overlays) {

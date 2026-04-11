@@ -85,8 +85,6 @@ describe('Caldeira GeoJSON schema', () => {
       'caldeira-urban-context.geojson',
       'caldeira-boundary.geojson',
       'caldeira-ops-plant-sites.geojson',
-      'caldeira-access-routes.geojson',
-      'caldeira-licence-envelope.geojson',
     ]) {
       const fc = loadJson(file) as { type: string; features: unknown[] }
       expect(fc.type).toBe('FeatureCollection')
@@ -105,12 +103,5 @@ describe('Caldeira GeoJSON schema', () => {
       expect(typeof f.properties.label).toBe('string')
       expect(typeof f.properties.kind).toBe('string')
     }
-  })
-
-  it('caldeira-access-routes is LineString', () => {
-    const fc = loadJson('caldeira-access-routes.geojson') as {
-      features: { geometry: { type: string } }[]
-    }
-    expect(fc.features[0].geometry.type).toBe('LineString')
   })
 })

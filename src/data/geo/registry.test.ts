@@ -51,7 +51,7 @@ describe('GEO registry', () => {
     })
   })
 
-  it('has at least 15 entries', () => {
-    expect(entries.length).toBeGreaterThanOrEqual(15)
+  it('has at least 10 entries', () => {
+    expect(entries.length).toBeGreaterThanOrEqual(10)
   })
 })

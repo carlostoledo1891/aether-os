@@ -23,7 +23,7 @@ export function getDb(): Database.Database {
   return db
 }
 
-const SCHEMA_VERSION = 2
+const SCHEMA_VERSION = 3
 
 const MIGRATIONS: Array<(d: Database.Database) => void> = [
   // v0 → v1: initial schema
@@ -112,6 +112,49 @@ const MIGRATIONS: Array<(d: Database.Database) => void> = [
 
     CREATE INDEX IF NOT EXISTS idx_audit_type ON audit_events(type);
     CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_events(timestamp);
+  `)
+  },
+
+  // v2 → v3: lapoc telemetry tables
+  (d) => {
+    d.exec(`
+    CREATE TABLE IF NOT EXISTS lapoc_piezometer (
+      sensor_id TEXT NOT NULL,
+      timestamp TEXT NOT NULL,
+      depth_meters REAL NOT NULL,
+      temperature_c REAL NOT NULL,
+      conductivity_us_cm REAL NOT NULL,
+      PRIMARY KEY (sensor_id, timestamp)
+    );
+
+    CREATE TABLE IF NOT EXISTS lapoc_water_quality (
+      sample_id TEXT PRIMARY KEY,
+      timestamp TEXT NOT NULL,
+      location TEXT NOT NULL,
+      ph REAL NOT NULL,
+      sulfate_ppm REAL NOT NULL,
+      nitrate_ppm REAL NOT NULL,
+      iron_ppm REAL NOT NULL,
+      manganese_ppm REAL NOT NULL,
+      turbidity_ntu REAL NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS lapoc_field_observations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      observer TEXT NOT NULL,
+      timestamp TEXT NOT NULL,
+      spring_id TEXT NOT NULL,
+      flow_status TEXT NOT NULL,
+      photo_ref TEXT,
+      notes TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS lapoc_ingest_latest (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      source TEXT NOT NULL,
+      provenance TEXT NOT NULL,
+      timestamp TEXT NOT NULL
+    );
   `)
   },
 ]
@@ -317,6 +360,77 @@ export function getRecentSeismic(limit = 20) {
     id: string; magnitude: number; place: string; event_time: string
     latitude: number; longitude: number; depth_km: number; source: string
   }>
+}
+
+/* ─── LAPOC ─────────────────────────────────────────────────────────────── */
+
+export interface LapocIngestPayload {
+  source: string
+  provenance: string
+  timestamp: string
+  piezometer_readings: Array<{
+    sensor_id: string; timestamp: string; depth_meters: number
+    temperature_c: number; conductivity_us_cm: number
+  }>
+  water_quality_samples: Array<{
+    sample_id: string; timestamp: string; location: string
+    ph: number; sulfate_ppm: number; nitrate_ppm: number
+    iron_ppm: number; manganese_ppm: number; turbidity_ntu: number
+  }>
+  field_observations: Array<{
+    observer: string; timestamp: string; spring_id: string
+    flow_status: string; photo_ref?: string; notes: string
+  }>
+}
+
+export function upsertLapoc(payload: LapocIngestPayload) {
+  const d = getDb()
+  const txn = d.transaction(() => {
+    d.prepare(`
+      INSERT INTO lapoc_ingest_latest (id, source, provenance, timestamp)
+      VALUES (1, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        source = excluded.source, provenance = excluded.provenance, timestamp = excluded.timestamp
+    `).run(payload.source, payload.provenance, payload.timestamp)
+
+    if (payload.piezometer_readings?.length > 0) {
+      const piezoStmt = d.prepare(`
+        INSERT OR REPLACE INTO lapoc_piezometer (sensor_id, timestamp, depth_meters, temperature_c, conductivity_us_cm)
+        VALUES (?, ?, ?, ?, ?)
+      `)
+      for (const p of payload.piezometer_readings) {
+        piezoStmt.run(p.sensor_id, p.timestamp, p.depth_meters, p.temperature_c, p.conductivity_us_cm)
+      }
+    }
+
+    if (payload.water_quality_samples?.length > 0) {
+      const wqStmt = d.prepare(`
+        INSERT OR REPLACE INTO lapoc_water_quality (sample_id, timestamp, location, ph, sulfate_ppm, nitrate_ppm, iron_ppm, manganese_ppm, turbidity_ntu)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      for (const w of payload.water_quality_samples) {
+        wqStmt.run(w.sample_id, w.timestamp, w.location, w.ph, w.sulfate_ppm, w.nitrate_ppm, w.iron_ppm, w.manganese_ppm, w.turbidity_ntu)
+      }
+    }
+
+    if (payload.field_observations?.length > 0) {
+      const obsStmt = d.prepare(`
+        INSERT INTO lapoc_field_observations (observer, timestamp, spring_id, flow_status, photo_ref, notes)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `)
+      for (const o of payload.field_observations) {
+        obsStmt.run(o.observer, o.timestamp, o.spring_id, o.flow_status, o.photo_ref ?? null, o.notes)
+      }
+    }
+  })
+  txn()
+}
+
+export function getLatestLapocIngest() {
+  const row = getDb().prepare('SELECT * FROM lapoc_ingest_latest WHERE id = 1').get() as {
+    source: string; provenance: string; timestamp: string
+  } | undefined
+  return row ?? null
 }
 
 /* ─── Alert operations ──────────────────────────────────────────────────── */

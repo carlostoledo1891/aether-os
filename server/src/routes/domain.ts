@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import {
   getDomainState, getLatestWeather, getMarketData, getRecentSeismic,
-  dismissAlert, dismissAllAlerts,
+  getLatestLapocIngest, dismissAlert, dismissAllAlerts,
 } from '../store/db.js'
 import { getAuditTrail, getAuditEvent, verifyChain } from '../store/auditChain.js'
 
@@ -154,11 +154,13 @@ export async function domainRoutes(app: FastifyInstance) {
     const weather = getLatestWeather()
     const fx = getMarketData('BRL/USD')
     const seismic = getRecentSeismic(1)
+    const lapoc = getLatestLapocIngest()
 
     const sources: string[] = ['Engine']
     if (weather) sources.push('Open-Meteo')
     if (fx) sources.push('BCB')
     if (seismic.length > 0) sources.push('USGS')
+    if (lapoc && lapoc.provenance === 'verified_real') sources.push('LAPOC')
 
     return {
       ...base,
@@ -172,6 +174,7 @@ export async function domainRoutes(app: FastifyInstance) {
 
     const weather = getLatestWeather()
     const fx = getMarketData('BRL/USD')
+    const lapoc = getLatestLapocIngest()
 
     const sections = { ...base.sections }
     if (weather) {
@@ -180,6 +183,10 @@ export async function domainRoutes(app: FastifyInstance) {
     }
     if (fx) {
       sections['fx_rate'] = { kind: 'verified_real', hint: `BCB PTAX rate (updated ${fx.updatedAt})` }
+    }
+    if (lapoc && lapoc.provenance === 'verified_real') {
+      sections['hydro_spring_status'] = { kind: 'verified_real', hint: `LAPOC Field instruments (updated ${lapoc.timestamp})` }
+      sections['water_quality'] = { kind: 'verified_real', hint: `LAPOC Lab results (updated ${lapoc.timestamp})` }
     }
 
     return { ...base, sections }

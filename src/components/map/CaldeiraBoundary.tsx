@@ -21,13 +21,13 @@ export const CaldeiraBoundary = memo(function CaldeiraBoundary() {
 
   return (
     <Source id="caldeira-boundary" type="geojson" data={data}>
-      {/* Subtle fill */}
+      {/* Subtle fill — low enough to avoid masking small pins/circles */}
       <Layer
         id="caldeira-boundary-fill"
         type="fill"
         paint={{
           'fill-color': W.violet,
-          'fill-opacity': 0.04,
+          'fill-opacity': 0.02,
         }}
       />
 

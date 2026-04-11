@@ -3,7 +3,7 @@
 **Purpose:** Single source of truth for all brand decisions — identity, voice, visual system, and usage rules. Every piece of external-facing communication (website, deck, demos, PDFs, emails) must align with this document.
 
 **Last updated:** 2026-04-10  
-**Cross-references:** [`STYLING.md`](STYLING.md) (technical token contract), [`strategy.md`](strategy.md) (GTM), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`Personas.md`](Personas.md)
+**Cross-references:** [`STYLING.md`](STYLING.md) (technical token contract), [`strategy.md`](strategy.md) (GTM), [`messaging-strategy.md`](messaging-strategy.md), [`personas/core-personas.md`](personas/core-personas.md)
 
 ---
 

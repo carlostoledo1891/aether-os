@@ -1,5 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import Database from 'better-sqlite3'
+import { describe, it, expect, afterAll } from 'vitest'
 import { createHash } from 'node:crypto'
 
 /**

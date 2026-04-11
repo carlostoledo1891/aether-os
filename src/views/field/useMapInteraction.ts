@@ -1,7 +1,5 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import type { MapLayerMouseEvent } from '../../components/map/MapBase'
-import { PLANT_NODE_LAYER_ID, toPlantNodeDetail } from '../../components/map/PlantOverlay'
-import type { PlantOverlayNodeDetail } from '../../components/map/PlantOverlay'
 import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID, toHydroNodeDetail, toSpringDetail } from '../../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../../components/map/HydroOverlay'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../components/map/CaldeiraBoundary'
@@ -14,34 +12,25 @@ import {
   parseEnvMapFeature,
 } from '../../components/map/EnvironmentalOverlay'
 import { LICENSE_LAYER_ID, toLicenseDetail } from '../../components/map/LicenseOverlay'
-import { DEPOSIT_LAYER_ID, toDepositDetail } from '../../components/map/DepositOverlay'
 import { DRILL_LAYER_ID, toDrillHoleDetail, parseLithologyIntervals } from '../../components/map/DrillHoleOverlay'
 import { PFS_ENGINEERING_FILL_LAYER_ID, toPfsEngineeringDetail } from '../../components/map/PfsEngineeringOverlay'
 import { INFRA_POINT_CORE_LAYER_ID } from '../../components/map/InfraOverlay'
 import { OPS_PLANT_SITE_CORE_LAYER_ID } from '../../components/map/OpsPlantSitesOverlay'
-import { ACCESS_ROUTE_LINE_LAYER_ID } from '../../components/map/AccessRoutesOverlay'
-import { LICENCE_ENVELOPE_FILL_LAYER_ID } from '../../components/map/LicenceEnvelopeOverlay'
 import type { MapPopupData } from '../../components/map/MapFeaturePopup'
 import { W } from '../../app/canvas/canvasTheme'
 import type { MapTab } from './constants'
 import type { FieldOpsMapLayers } from './fieldMapLayers'
 import {
   type FieldMapGeoSelection,
-  toAccessRouteDetail,
-  toLicenceEnvelopeDetail,
 } from './fieldMapGeoSelection'
 import type { SpringTelemetry } from '../../types/telemetry'
 
 const OPS_LAYER_PRIORITY = [
   OPS_PLANT_SITE_CORE_LAYER_ID,
-  PLANT_NODE_LAYER_ID,
   INFRA_POINT_CORE_LAYER_ID,
-  ACCESS_ROUTE_LINE_LAYER_ID,
   DRILL_LAYER_ID,
   PFS_ENGINEERING_FILL_LAYER_ID,
   LICENSE_LAYER_ID,
-  DEPOSIT_LAYER_ID,
-  LICENCE_ENVELOPE_FILL_LAYER_ID,
   ENV_APA_FILL_LAYER_ID,
 ] as const
 
@@ -84,8 +73,6 @@ export interface UseMapInteractionReturn {
   setMapHoverHint: React.Dispatch<React.SetStateAction<string | null>>
   popupData: { data: MapPopupData; x: number; y: number } | null
   setPopupData: React.Dispatch<React.SetStateAction<{ data: MapPopupData; x: number; y: number } | null>>
-  selectedPlantNode: PlantOverlayNodeDetail | null
-  setSelectedPlantNode: React.Dispatch<React.SetStateAction<PlantOverlayNodeDetail | null>>
   selectedHydroNode: HydroOverlayNodeDetail | null
   setSelectedHydroNode: React.Dispatch<React.SetStateAction<HydroOverlayNodeDetail | null>>
   geoSelection: FieldMapGeoSelection | null
@@ -104,7 +91,6 @@ export function useMapInteraction({
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
   const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
-  const [selectedPlantNode, setSelectedPlantNode] = useState<PlantOverlayNodeDetail | null>(null)
   const [selectedHydroNode, setSelectedHydroNode] = useState<HydroOverlayNodeDetail | null>(null)
   const [geoSelection, setGeoSelection] = useState<FieldMapGeoSelection | null>(null)
 
@@ -120,10 +106,7 @@ export function useMapInteraction({
       const props = feat?.properties as Record<string, unknown> | undefined
       const id = props?.id
       const px = e.point
-      if (
-        (layerId === PLANT_NODE_LAYER_ID || layerId === OPS_PLANT_SITE_CORE_LAYER_ID) &&
-        typeof id === 'string'
-      ) {
+      if (layerId === OPS_PLANT_SITE_CORE_LAYER_ID && typeof id === 'string') {
         setHoveredNodeId(id)
         setMapHoverHint(null)
         setPopupData(null)
@@ -144,31 +127,13 @@ export function useMapInteraction({
           x: px.x, y: px.y,
           data: {
             title: String(id),
+            subtitle: `${props?.hole_type ?? 'DD'} · ${props?.treo_ppm ?? 0} ppm TREO · ${props?.depth_m ?? 0} m`,
             accentColor: W.violetSoft,
             rows: [
-              { label: 'TREO', value: `${Number(props?.treo_ppm ?? 0)} ppm` },
-              { label: 'Depth', value: `${Number(props?.depth_m ?? 0)} m` },
               { label: 'Deposit', value: String(props?.deposit ?? '—') },
-              { label: 'Type', value: String(props?.hole_type ?? '—') },
             ],
+            footer: props?.source_ref ? `${props.source_ref}${props.as_of ? ` · ${props.as_of}` : ''}` : undefined,
             lithologyIntervals: lithIntervals,
-          },
-        })
-        return
-      }
-      if (layerId === DEPOSIT_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.name ?? props.id ?? ''),
-            accentColor: W.cyan,
-            rows: [
-              { label: 'Status', value: String(props.status ?? '—') },
-              { label: 'TREO', value: `${Number(props.treo_ppm ?? 0)} ppm` },
-              { label: 'Tonnage', value: `${Number(props.tonnage_mt ?? 0)} Mt` },
-            ],
           },
         })
         return
@@ -248,14 +213,9 @@ export function useMapInteraction({
     [mapTab],
   )
 
-  const rafRef = useRef(0)
   const handleMouseMove = useCallback(
     (e: MapLayerMouseEvent) => {
-      if (rafRef.current) return
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = 0
-        handleMouseEnter(e)
-      })
+      handleMouseEnter(e)
     },
     [handleMouseEnter],
   )
@@ -332,22 +292,6 @@ export function useMapInteraction({
 
         setSelectedPlantNode(null)
 
-        if (layerId === ACCESS_ROUTE_LINE_LAYER_ID && opsMapLayers.accessRoutes) {
-          const d = toAccessRouteDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'route' && g.detail.id === id ? null : { kind: 'route', detail: d }))
-          return
-        }
-
-        if (layerId === LICENCE_ENVELOPE_FILL_LAYER_ID && opsMapLayers.licenceEnvelope) {
-          const d = toLicenceEnvelopeDetail(props)
-          if (d) {
-            setGeoSelection((g) =>
-              g?.kind === 'licenceEnvelope' && g.detail.id === id ? null : { kind: 'licenceEnvelope', detail: d },
-            )
-          }
-          return
-        }
-
         if (layerId === LICENSE_LAYER_ID && opsMapLayers.tenements) {
           const d = toLicenseDetail(props)
           if (d) setGeoSelection((g) => (g?.kind === 'license' && g.detail.id === id ? null : { kind: 'license', detail: d }))
@@ -356,11 +300,6 @@ export function useMapInteraction({
         if (layerId === DRILL_LAYER_ID && opsMapLayers.drillHoles) {
           const d = toDrillHoleDetail(props)
           if (d) setGeoSelection((g) => (g?.kind === 'drill' && g.detail.id === id ? null : { kind: 'drill', detail: d }))
-          return
-        }
-        if (layerId === DEPOSIT_LAYER_ID && opsMapLayers.deposits) {
-          const d = toDepositDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'deposit' && g.detail.id === id ? null : { kind: 'deposit', detail: d }))
           return
         }
         if (layerId === PFS_ENGINEERING_FILL_LAYER_ID && opsMapLayers.pfsEngineering) {
@@ -428,14 +367,11 @@ export function useMapInteraction({
     [
       mapTab,
       opsMapLayers.tenements,
-      opsMapLayers.deposits,
       opsMapLayers.drillHoles,
       opsMapLayers.pfsEngineering,
       opsMapLayers.plantSites,
       opsMapLayers.infra,
       opsMapLayers.plantSchematic,
-      opsMapLayers.accessRoutes,
-      opsMapLayers.licenceEnvelope,
       springsRef,
     ],
   )
@@ -447,8 +383,6 @@ export function useMapInteraction({
     setMapHoverHint,
     popupData,
     setPopupData,
-    selectedPlantNode,
-    setSelectedPlantNode,
     selectedHydroNode,
     setSelectedHydroNode,
     geoSelection,

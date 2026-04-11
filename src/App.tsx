@@ -14,15 +14,31 @@ import { HeaderStrip } from './components/layout/HeaderStrip'
 import { DataModeBanner } from './components/layout/DataModeBanner'
 import { AlertPanel } from './components/layout/AlertPanel'
 import { ChatPanel } from './components/layout/ChatPanel'
+import { DeckRunner } from './components/deck/DeckRunner'
+import type { DeckManifest } from './components/deck/types'
 import shell from './AppShell.module.css'
 
-const LandingPage = lazy(() => import('./pages/LandingPage'))
-const MeteoricDeck = lazy(() => import('./pages/MeteoricDeck'))
-const FoundersDeck = lazy(() => import('./pages/FoundersDeck'))
-const TechPage = lazy(() => import('./pages/TechPage'))
-const BusinessPage = lazy(() => import('./pages/BusinessPage'))
-const ViewEnginePage = lazy(() => import('./engine/ViewEnginePage').then(m => ({ default: m.ViewEnginePage })))
-const ReportViewer = lazy(() => import('./components/reports/ReportViewer').then(m => ({ default: m.ReportViewer })))
+const LandingPage = lazy(() => import('./pages/marketing/LandingPage'))
+const TechPage = lazy(() => import('./pages/marketing/TechPage'))
+const BusinessPage = lazy(() => import('./pages/marketing/BusinessPage'))
+
+const FoundersDeck = lazy(() => import('./pages/decks/founders/FoundersDeck'))
+const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
+const InvestorsDeck = lazy(() => import('./pages/decks/investors/InvestorsDeck'))
+
+const PrefeituraPage = lazy(() => import('./pages/views/prefeitura/PrefeituraPage').then(m => ({ default: m.PrefeituraPage })))
+const CaldeiraExecDeck = lazy(() => import('./pages/views/caldeira-exec/CaldeiraExecDeck'))
+const ComplianceSnapshotDeck = lazy(() => import('./pages/views/compliance-snapshot/ComplianceSnapshotDeck'))
+
+const EnvironmentReport = lazy(() => import('./components/reports/EnvironmentReport'))
+const OperationsReport = lazy(() => import('./components/reports/OperationsReport'))
+const DrillTestsReport = lazy(() => import('./components/reports/DrillTestsReport'))
+
+const REPORT_MANIFESTS: Record<string, DeckManifest> = {
+  environment:   { id: 'report-environment',  title: 'Environmental & Community Report', subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <EnvironmentReport range={range} /> },
+  operations:    { id: 'report-operations',   title: 'Operations Report',                subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <OperationsReport range={range} /> },
+  'drill-tests': { id: 'report-drill-tests', title: 'Drill Tests & Resource Report',   subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <DrillTestsReport range={range} /> },
+}
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
 
@@ -79,7 +95,6 @@ function AppShell() {
         view={view}
         onViewChange={setView}
         onReportOpen={handleReportOpen}
-        disclosureMode={dataContext.disclosureMode}
       />
       <DataModeBanner context={dataContext} />
 
@@ -154,7 +169,10 @@ function AppShell() {
 
       {reportOpen && (
         <Suspense fallback={null}>
-          <ReportViewer type={reportOpen} onClose={handleReportClose} />
+          <DeckRunner
+            manifest={REPORT_MANIFESTS[reportOpen]}
+            onClose={handleReportClose}
+          />
         </Suspense>
       )}
     </div>
@@ -167,46 +185,31 @@ const PageFallback = () => (
   </div>
 )
 
-function DashboardShell() {
-  const service = useMemo(() => createDataService(), [])
-
-  return (
-    <ErrorBoundary>
-      <DataServiceProvider service={service}>
-        <MapProvider>
-          <MapCameraProvider>
-            <AppShell />
-          </MapCameraProvider>
-        </MapProvider>
-      </DataServiceProvider>
-    </ErrorBoundary>
-  )
-}
-
-function ViewEngineShell() {
-  const service = useMemo(() => createDataService(), [])
-
-  return (
-    <ErrorBoundary>
-      <DataServiceProvider service={service}>
-        <Suspense fallback={<PageFallback />}>
-          <ViewEnginePage />
-        </Suspense>
-      </DataServiceProvider>
-    </ErrorBoundary>
-  )
-}
-
 export default function App() {
+  const service = useMemo(() => createDataService(), [])
+
   return (
-    <Routes>
-      <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
-      <Route path="/meteoric-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
-      <Route path="/founders-deck" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
-      <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
-      <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
-      <Route path="/view/:manifestId" element={<ViewEngineShell />} />
-      <Route path="/*" element={<DashboardShell />} />
-    </Routes>
+    <DataServiceProvider service={service}>
+      <MapProvider>
+        <MapCameraProvider>
+          <Routes>
+            <Route path="/" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
+            <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+            <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
+            <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
+            
+            <Route path="/deck/founders" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
+            <Route path="/deck/meteoric" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
+            <Route path="/deck/Investors" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><InvestorsDeck /></Suspense></ErrorBoundary>} />
+            
+            <Route path="/views/prefeitura" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PrefeituraPage /></Suspense></ErrorBoundary>} />
+            <Route path="/views/caldeira-exec" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><CaldeiraExecDeck /></Suspense></ErrorBoundary>} />
+            <Route path="/views/compliance-snapshot" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><ComplianceSnapshotDeck /></Suspense></ErrorBoundary>} />
+            
+            <Route path="/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
+          </Routes>
+        </MapCameraProvider>
+      </MapProvider>
+    </DataServiceProvider>
   )
 }

@@ -3,7 +3,7 @@ import type { PlantTelemetry, EnvTelemetry, SpringTelemetry, SpringEvent } from 
 /* ─── Re-exports from domain modules (single source of truth) ──────────── */
 export { SPRING_COUNT, THRESHOLDS } from './domain/thresholds'
 export { DEPOSIT_DATA, RESOURCE_CLASSIFICATION } from './domain/deposits'
-export type { DepositRecord, DepositStatus } from './domain/deposits'
+export type { DepositRecord, DepositStatus, DepositDetail } from './domain/deposits'
 export { PROJECT_FINANCIALS, MARKET_PRICES, PROJECT_TIMELINE } from './domain/financials'
 export { PREDICTIVE_HYDROLOGY_SCENARIOS, SCALE_UP_PATHWAY } from './domain/hydrology'
 export { BATCHES } from './domain/compliance'

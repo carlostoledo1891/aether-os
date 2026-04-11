@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useMapInteraction } from '../useMapInteraction'
-import { PLANT_NODE_LAYER_ID } from '../../../components/map/PlantOverlay'
 import { OPS_PLANT_SITE_CORE_LAYER_ID } from '../../../components/map/OpsPlantSitesOverlay'
 import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from '../../../components/map/hydroLayerIds'
-import { DEPOSIT_LAYER_ID } from '../../../components/map/DepositOverlay'
+import { DRILL_LAYER_ID } from '../../../components/map/DrillHoleOverlay'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../components/map/CaldeiraBoundary'
+import { LICENSE_LAYER_ID } from '../../../components/map/LicenseOverlay'
 import type { MapTab } from '../constants'
 
 vi.mock('react-map-gl/maplibre', () => ({
@@ -21,7 +21,6 @@ const DEFAULT_LAYERS = {
   drillHoles: true,
   holeTypeFilter: 'all' as const,
   plantSites: true,
-  plantSchematic: true,
   tenements: true,
   pfsEngineering: true,
   infra: true,
@@ -61,7 +60,6 @@ describe('useMapInteraction', () => {
     expect(result.current.hoveredNodeId).toBeNull()
     expect(result.current.mapHoverHint).toBeNull()
     expect(result.current.popupData).toBeNull()
-    expect(result.current.selectedPlantNode).toBeNull()
     expect(result.current.selectedHydroNode).toBeNull()
     expect(result.current.geoSelection).toBeNull()
   })
@@ -78,8 +76,8 @@ describe('useMapInteraction', () => {
     act(() => {
       result.current.handleMouseEnter(
         makeEvent([
-          makeFeat(DEPOSIT_LAYER_ID, 'deposit-1'),
-          makeFeat(PLANT_NODE_LAYER_ID, 'plant-1'),
+          makeFeat(LICENSE_LAYER_ID, 'license-1'),
+          makeFeat(OPS_PLANT_SITE_CORE_LAYER_ID, 'plant-1'),
         ]) as never,
       )
     })
@@ -153,7 +151,7 @@ describe('useMapInteraction', () => {
     expect(result.current.hoveredNodeId).toBe('ops-site')
   })
 
-  it('shows deposit popup on hover', () => {
+  it('handles mouse move and sets hover state immediately', () => {
     const { result } = renderHook(() =>
       useMapInteraction({
         mapTab: 'operations' as MapTab,
@@ -163,12 +161,12 @@ describe('useMapInteraction', () => {
     )
 
     act(() => {
-      result.current.handleMouseEnter(
-        makeEvent([makeFeat(DEPOSIT_LAYER_ID, 'deposit-1')]) as never,
+      result.current.handleMouseMove(
+        makeEvent([makeFeat(DRILL_LAYER_ID, 'drill-1')]) as never,
       )
     })
 
     expect(result.current.popupData).not.toBeNull()
-    expect(result.current.popupData?.data.title).toContain('deposit-1')
+    expect(result.current.popupData?.data.title).toContain('drill-1')
   })
 })

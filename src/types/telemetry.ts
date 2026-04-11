@@ -95,6 +95,8 @@ export interface ComplianceLedger {
     status: 'verified' | 'active' | 'pending'
     coordinates?: { lat: number; lng: number }
     hash?: string
+    linked_drills?: string[]
+    entity?: string
   }>
   offtake_destination: string
   certificates: string[]

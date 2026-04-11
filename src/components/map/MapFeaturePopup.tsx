@@ -11,7 +11,9 @@ export interface LithologyBarInterval {
 
 export interface MapPopupData {
   title: string
+  subtitle?: string
   rows: { label: string; value: string }[]
+  footer?: string
   accentColor?: string
   lithologyIntervals?: LithologyBarInterval[]
 }
@@ -68,15 +70,30 @@ export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: Map
 
       {/* Content (right) */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 700, color: data.accentColor ?? W.violet, marginBottom: 2, fontSize: 11 }}>
+        <div style={{ fontWeight: 700, color: data.accentColor ?? W.violet, marginBottom: data.subtitle ? 2 : 4, fontSize: 11 }}>
           {data.title}
         </div>
-        {data.rows.map((r, i) => (
-          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-            <span style={{ color: W.text4 }}>{r.label}</span>
-            <span style={{ color: W.text2, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{r.value}</span>
+        {data.subtitle && (
+          <div style={{ fontSize: 9, color: W.text3, marginBottom: 6, fontWeight: 500 }}>
+            {data.subtitle}
           </div>
-        ))}
+        )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {data.rows.map((r, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+              <span style={{ color: W.text4 }}>{r.label}</span>
+              <span style={{ color: W.text2, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{r.value}</span>
+            </div>
+          ))}
+        </div>
+        {data.footer && (
+          <div style={{ 
+            marginTop: 6, paddingTop: 4, borderTop: `1px solid ${W.glass08}`,
+            fontSize: 9, color: W.text4, fontFamily: 'var(--font-mono)' 
+          }}>
+            {data.footer}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -1,0 +1,160 @@
+import { motion } from 'motion/react'
+import { W } from '../../app/canvas/canvasTheme'
+import { ScrollSection as S, Stagger, SectionHeader } from './MarketingPrimitives'
+import { marketingStyles } from './MarketingShared'
+
+const V = W.violet
+const { wrap, glass, glow } = marketingStyles
+
+const TOPICS = [
+  {
+    title: 'The Problem',
+    tag: 'Hallucinated Compliance',
+    desc: 'Traditional ESG reporting is the equivalent of an AI hallucination — it provides an output without a transparent audit trail of the inputs. Just as AI requires "Observability" to trace reasoning, physical mining requires "Field Observability".',
+  },
+  {
+    title: 'Observe',
+    tag: 'The Ground Truth',
+    desc: 'Geology is probabilistic; operations are absolute. We separate the predictive model (JORC resources) from the verified reality (LAPOC instrument data). Telemetry acts as the foundational "training data".',
+  },
+  {
+    title: 'Trace',
+    tag: 'Zero-Trust Extraction',
+    desc: 'Implementing a Zero-Trust architecture for the physical supply chain. Every movement of ore — from extraction coordinate to the processing plant to the final batch of MREC — is logged in a cryptographic audit chain.',
+  },
+  {
+    title: 'Verify',
+    tag: 'Commercial Arbitrage',
+    desc: '"White Box" observability de-risks the asset, enabling access to strategic capital. It generates an instantaneous, mathematically provable Digital Product Passport (DPP), turning compliance into a competitive moat.',
+  },
+]
+
+function OrganogramNode({ x, y, label, sub, delay }: { x: number, y: number, label: string, sub: string, delay: number }) {
+  return (
+    <motion.g
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+    >
+      <rect x={x - 80} y={y - 30} width={160} height={60} rx={12} fill={`${W.glass04}`} stroke={`${W.glass12}`} strokeWidth={1} />
+      <text x={x} y={y - 2} textAnchor="middle" fill={W.text1} fontSize={13} fontWeight={700} fontFamily="var(--font-sans)">{label}</text>
+      <text x={x} y={y + 14} textAnchor="middle" fill={V} fontSize={10} fontWeight={600} fontFamily="var(--font-mono)">{sub}</text>
+    </motion.g>
+  )
+}
+
+function OrganogramEdge({ x1, y1, x2, y2, delay }: { x1: number, y1: number, x2: number, y2: number, delay: number }) {
+  const path = `M ${x1} ${y1} C ${x1} ${(y1 + y2) / 2}, ${x2} ${(y1 + y2) / 2}, ${x2} ${y2}`
+  
+  return (
+    <>
+      <path d={path} fill="none" stroke={`${W.glass08}`} strokeWidth={2} />
+      <motion.path
+        d={path}
+        fill="none"
+        stroke={V}
+        strokeWidth={2}
+        strokeDasharray="4 8"
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 0.6 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, delay, ease: 'easeInOut' }}
+      />
+      <motion.circle
+        r={3}
+        fill={V}
+        style={{ filter: `drop-shadow(0 0 6px ${V})` }}
+        initial={{ offsetDistance: '0%' }}
+        animate={{ offsetDistance: '100%' }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay }}
+        style={{ offsetPath: `path('${path}')` } as any}
+      />
+    </>
+  )
+}
+
+export function MarketingObservability() {
+  return (
+    <S id="observability" style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden' }}>
+      <div style={glow} />
+      <div style={{ ...wrap, position: 'relative' }}>
+        <SectionHeader
+          label="The White Box Mine"
+          heading="From Probabilistic to Provable"
+          body="Applying the principles of AI Observability and Zero-Trust Architecture to critical mineral supply chains."
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 48, alignItems: 'center' }}>
+          {/* Left Column: Text Content */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {TOPICS.map((t, i) => (
+              <Stagger key={t.title} i={i}>
+                <div style={{ ...glass, padding: '24px 28px' }}>
+                  <div style={glow} />
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <h3 style={{ fontSize: 18, fontWeight: 800, color: W.text1, margin: 0 }}>{t.title}</h3>
+                    <span style={{ fontSize: 11, color: V, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{t.tag}</span>
+                  </div>
+                  <p style={{ fontSize: 14, color: W.text3, lineHeight: 1.6, margin: 0 }}>{t.desc}</p>
+                </div>
+              </Stagger>
+            ))}
+          </div>
+
+          {/* Right Column: Animated Organogram */}
+          <div style={{ ...glass, height: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={glow} />
+            <svg width="100%" height="100%" viewBox="0 0 400 500" style={{ overflow: 'visible' }}>
+              <defs>
+                <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor={V} stopOpacity={0.2} />
+                  <stop offset="100%" stopColor={V} stopOpacity={0} />
+                </radialGradient>
+              </defs>
+              
+              {/* Background glows */}
+              <circle cx={200} cy={100} r={80} fill="url(#nodeGlow)" />
+              <circle cx={200} cy={200} r={80} fill="url(#nodeGlow)" />
+              <circle cx={200} cy={300} r={80} fill="url(#nodeGlow)" />
+              <circle cx={200} cy={400} r={80} fill="url(#nodeGlow)" />
+
+              {/* Edges */}
+              <OrganogramEdge x1={200} y1={130} x2={200} y2={170} delay={0.6} />
+              <OrganogramEdge x1={200} y1={230} x2={200} y2={270} delay={1.2} />
+              <OrganogramEdge x1={200} y1={330} x2={200} y2={370} delay={1.8} />
+
+              {/* Nodes */}
+              <OrganogramNode x={200} y={100} label="Sensors" sub="Physical Ground Truth" delay={0.2} />
+              <OrganogramNode x={200} y={200} label="Ingestion" sub="Nervous System" delay={0.8} />
+              <OrganogramNode x={200} y={300} label="Trace" sub="Blockchain / DPP" delay={1.4} />
+              <OrganogramNode x={200} y={400} label="Verify" sub="Capital & Compliance" delay={2.0} />
+
+              {/* Loop Edge */}
+              <motion.path
+                d="M 120 400 C 40 400, 40 100, 120 100"
+                fill="none"
+                stroke={W.green}
+                strokeWidth={2}
+                strokeDasharray="4 8"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 0.4 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2, delay: 2.6, ease: 'easeInOut' }}
+              />
+              <motion.circle
+                r={3}
+                fill={W.green}
+                style={{ filter: `drop-shadow(0 0 6px ${W.green})` }}
+                initial={{ offsetDistance: '0%' }}
+                animate={{ offsetDistance: '100%' }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear', delay: 2.6 }}
+                style={{ offsetPath: `path('M 120 400 C 40 400, 40 100, 120 100')` } as any}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </S>
+  )
+}

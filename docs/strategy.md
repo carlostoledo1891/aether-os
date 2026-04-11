@@ -1,9 +1,9 @@
 # Vero — Go-to-Market Strategy
 
-**Purpose:** Define how Vero reaches each stakeholder segment — who we target, what we lead with, how we close, and what we charge. This is the operational companion to [`branding.md`](branding.md) (brand identity) and [`Personas.md`](Personas.md) (stakeholder profiles).
+**Purpose:** Define how Vero reaches each stakeholder segment — who we target, what we lead with, how we close, and what we charge. This is the operational companion to [`branding.md`](branding.md) (brand identity) and [`personas/core-personas.md`](personas/core-personas.md) (stakeholder profiles).
 
 **Last updated:** 2026-04-09 (v18 — Pre-Pitch Final Sprint)  
-**Cross-references:** [`VALUATION.md`](VALUATION.md), [`copy/PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`copy/WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`branding.md`](branding.md), [`PITCH_STRATEGY.md`](PITCH_STRATEGY.md)
+**Cross-references:** [`VALUATION.md`](VALUATION.md), [`messaging-strategy.md`](messaging-strategy.md), [`branding.md`](branding.md), [`PITCH_STRATEGY.md`](PITCH_STRATEGY.md)
 
 ---
 
@@ -98,7 +98,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 **Strategy:** Public dashboard via Mini Engine. Local employment, fiscal contribution, and environmental monitoring in Portuguese. Vero as the bridge between mining operator and community trust.
 
 **Approach:**
-1. Deploy Prefeitura dashboard (already live at `/view/prefeitura-pocos`)
+1. Deploy Prefeitura dashboard (already live at `/deck/prefeitura`)
 2. Present to Prefeitura de Poços de Caldas as partnership showcase
 3. Use bilingual community card and grievance path as evidence of good faith
 4. Position for state-level replication (FEAM partnership potential)
@@ -114,7 +114,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 - [ ] Confirm data mode (mock/live) — know which banner will show
 - [ ] Prepare persona-specific talking points (see Section 2)
 - [ ] Test all 3 views + Prefeitura page load successfully
-- [ ] Have PITCH_DECK_COPY.md open for reference numbers
+- [ ] Have messaging-strategy.md open for reference numbers
 
 ### Demo Flow (45 minutes)
 

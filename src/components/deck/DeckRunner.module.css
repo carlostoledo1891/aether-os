@@ -1,0 +1,45 @@
+/* ─── Print / PDF export styles for report mode ──────────────────── */
+
+@media print {
+  body > *:not([data-report-portal]) {
+    display: none !important;
+  }
+
+  .reportLightbox {
+    position: static !important;
+    inset: unset !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .reportScroll {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .reportClose {
+    display: none !important;
+  }
+
+  .reportToolbar button {
+    display: none !important;
+  }
+
+  .reportToolbar {
+    border-bottom: 1px solid #d8d8e8 !important;
+  }
+
+  .reportBackdrop {
+    display: none !important;
+  }
+}
+
+/* Light-mode overrides for glass cards inside reports */
+.reportLightbox :global(.glass-card),
+.reportLightbox [data-glass] {
+  --w-glass-card-bg: rgba(0, 0, 0, 0.025);
+  --w-glass-card-blur: 0px;
+  --w-glass-card-border: 1px solid rgba(0, 0, 0, 0.08);
+}

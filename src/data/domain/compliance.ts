@@ -2,6 +2,22 @@ import type { ComplianceLedger } from '../../types/telemetry'
 import type { BenchmarkOperator, AuditEvent, ESGFramework } from '../../services/dataService'
 import { SPRING_COUNT } from './thresholds'
 
+export const BATCH_LICENSE_MAP: Record<string, string> = {
+  'BATCH-MREC-8X9': 'LIC-CDM-01',
+  'BATCH-MREC-7W2': 'LIC-SOB-01',
+  'BATCH-MREC-4K1': 'LIC-CDM-01',
+  'BATCH-MREC-2A7': 'LIC-CDM-01',
+}
+
+export const LICENSE_DEPOSIT_MAP: Record<string, string> = {
+  'LIC-CDM-01': 'capao-do-mel',
+  'LIC-SOB-01': 'soberbo',
+  'LIC-CVN-01': 'cupim-vermelho-norte',
+  'LIC-FIG-01': 'figueira',
+  'LIC-DM1-01': 'dona-maria-1',
+  'LIC-DM2-01': 'dona-maria-2',
+}
+
 export const BATCHES: ComplianceLedger[] = [
   {
     batch_id: 'BATCH-MREC-8X9',
@@ -21,8 +37,9 @@ export const BATCHES: ComplianceLedger[] = [
         description: 'IAC ore excavated — Caldeira Site, Block 14-C, Poços de Caldas, MG, Brazil',
         timestamp: '2026-04-05T06:12:00Z',
         status: 'verified',
-        coordinates: { lat: -21.795, lng: -46.567 },
+        coordinates: { lat: -21.992, lng: -46.483 },
         hash: '0x4f3a7c91b28e6d054a1f8c93d720eb4561cf9da8b53e271094f6a8d2e3c0d92c',
+        linked_drills: ['CDMDD0007', 'CDMDD0005', 'CDMDD0008'],
       },
       {
         step: 'Leaching',
@@ -92,7 +109,6 @@ export const BATCHES: ComplianceLedger[] = [
         description: 'IAC ore excavated — Caldeira Site, Block 12-A',
         timestamp: '2026-04-03T07:00:00Z',
         status: 'verified',
-        coordinates: { lat: -21.793, lng: -46.565 },
         hash: '0x5e2a8b6c4d1f937028e4a9c1d3b7f06542ae8d1c9f3b7042e6d5a81b94c3b11c',
       },
       {
@@ -156,10 +172,10 @@ export const BATCHES: ComplianceLedger[] = [
       vs_chinese_baseline: 77,
     },
     molecular_timeline: [
-      { step: 'Production', description: 'NdPr Oxide produced — Caldeira Plant, MG', timestamp: '2026-03-10T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xa3c9f17e8b2d4605913c8a4f7e2b0d96341ef5c8a2b9d7604e1f3a8c5d2be742' },
-      { step: 'Quality Certified', description: 'Inline XRF + ICP-MS analysis. NdPr oxide grade certified.', timestamp: '2026-03-11T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xb7d2e84c1f9a730582e4d1b6a3c8f05927de1a4b8c9f370641e5d2a8c4b39f31' },
-      { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-03-12T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 }, hash: '0xc1a4b67e2d8f930541e3c9a8d5f2b074163ea8c5b2d9f71034e4a1c7b6f82d85' },
-      { step: 'In Transit', description: 'Pacific crossing — container vessel en route to Japan.', timestamp: '2026-03-18T00:00:00Z', status: 'active', coordinates: { lat: 5.0, lng: -160.0 }, hash: '0xd9e7c34a1b8f620593e2d4c1a7f0b835264ea9c1b5d8f4071e3a2c9d6b854a12' },
+      { step: 'Production', description: 'NdPr Oxide produced — Caldeira Plant, MG', timestamp: '2026-03-10T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 } },
+      { step: 'Quality Certified', description: 'Inline XRF + ICP-MS analysis. NdPr oxide grade certified.', timestamp: '2026-03-11T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 } },
+      { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-03-12T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 } },
+      { step: 'In Transit', description: 'Pacific crossing — container vessel en route to Japan.', timestamp: '2026-03-18T00:00:00Z', status: 'active', coordinates: { lat: 5.0, lng: -160.0 } },
       { step: 'ETA Destination', description: 'Shin-Etsu Chemical — Takefu, Japan. Final delivery.', timestamp: '2026-04-28T00:00:00Z', status: 'pending', coordinates: { lat: 35.90, lng: 136.17 } },
     ],
     offtake_destination: 'Shin-Etsu Chemical — Takefu, Japan',
@@ -178,11 +194,11 @@ export const BATCHES: ComplianceLedger[] = [
       vs_chinese_baseline: 75,
     },
     molecular_timeline: [
-      { step: 'Production', description: 'Mixed REO produced — Caldeira Plant, MG', timestamp: '2026-02-03T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xe5f8a27c1d4b930682e1c9a3f7d2b06845ea1f8c2b9d47036e5a4c1d8b321b73' },
-      { step: 'Quality Certified', description: 'Inline XRF analysis. Mixed REO grade certified.', timestamp: '2026-02-04T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 }, hash: '0xf2c9d74e1a3b860592e4c1d8a7f0b25736ea5c1b9d8f42071e3a4c2d6b978e46' },
-      { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-02-05T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 }, hash: '0xa8b1e47c2d9f530641e3c8a1d5f4b073862ea9c4b1d7f80531e2a3c9d6f85c29' },
-      { step: 'Customs Cleared', description: 'Long Beach, CA — US customs clearance completed.', timestamp: '2026-02-20T12:00:00Z', status: 'verified', coordinates: { lat: 33.76, lng: -118.19 }, hash: '0xb3d6f91e4a7c820563e2d1c8a9f0b47531ea4c2b5d8f71093e1a3c4d6b297a51' },
-      { step: 'Delivered', description: 'MP Materials — Mountain Pass, NV. Delivery confirmed.', timestamp: '2026-02-28T14:00:00Z', status: 'verified', coordinates: { lat: 35.47, lng: -115.53 }, hash: '0xc7e2a84b1d9f630582e3c4a1d7f0b96435ea1c8b2d5f49071e4a2c3d8b563d64' },
+      { step: 'Production', description: 'Mixed REO produced — Caldeira Plant, MG', timestamp: '2026-02-03T08:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 } },
+      { step: 'Quality Certified', description: 'Inline XRF analysis. Mixed REO grade certified.', timestamp: '2026-02-04T10:00:00Z', status: 'verified', coordinates: { lat: -21.08, lng: -46.43 } },
+      { step: 'Export Cleared', description: 'Santos Port — export documentation filed and cleared.', timestamp: '2026-02-05T06:00:00Z', status: 'verified', coordinates: { lat: -23.95, lng: -46.33 } },
+      { step: 'Customs Cleared', description: 'Long Beach, CA — US customs clearance completed.', timestamp: '2026-02-20T12:00:00Z', status: 'verified', coordinates: { lat: 33.76, lng: -118.19 } },
+      { step: 'Delivered', description: 'MP Materials — Mountain Pass, NV. Delivery confirmed.', timestamp: '2026-02-28T14:00:00Z', status: 'verified', coordinates: { lat: 35.47, lng: -115.53 } },
     ],
     offtake_destination: 'MP Materials — Mountain Pass, USA',
     certificates: ['ISO 14001:2015', 'REIA-PCR-001', 'OECD-GRE Compliant', 'IRA Rule-of-Origin Certified'],
@@ -196,7 +212,7 @@ export const BENCHMARKS: BenchmarkOperator[] = [
   { name: 'Chinese Hard-Rock Avg', carbon_intensity: 13.4, water_l_per_t: 850, feoc_pct: 100, cost_per_kg: 7.20, location: 'China' },
 ]
 
-function sha256Stub(input: string): string {
+export function sha256Stub(input: string): string {
   let h0 = 0x6a09e667, h1 = 0xbb67ae85, h2 = 0x3c6ef372, h3 = 0xa54ff53a
   let h4 = 0x510e527f, h5 = 0x9b05688c, h6 = 0x1f83d9ab, h7 = 0x5be0cd19
   for (let i = 0; i < input.length; i++) {

@@ -67,11 +67,13 @@ const LICENSE_COLORS = { fill: W.violet, line: W.violetSoft } as const
 interface LicenseOverlayProps {
   hoveredLicenseId?: string | null
   selectedLicenseId?: string | null
+  highlightId?: string | null
 }
 
 export const LicenseOverlay = memo(function LicenseOverlay({
   hoveredLicenseId = null,
   selectedLicenseId = null,
+  highlightId = null,
 }: LicenseOverlayProps) {
   const raw = useGeoJsonFeatureCollection<LicenseFeature>(GEO.licenses.url)
 
@@ -82,19 +84,20 @@ export const LicenseOverlay = memo(function LicenseOverlay({
       features: raw.features.map(f => {
         const isHovered = f.properties.id === hoveredLicenseId
         const isSelected = f.properties.id === selectedLicenseId
+        const isHighlighted = highlightId ? f.properties.id === highlightId : true
         return {
           ...f,
           properties: {
             ...f.properties,
             fillColor: LICENSE_COLORS.fill,
-            fillOpacity: isSelected ? 0.16 : isHovered ? 0.12 : 0.07,
+            fillOpacity: isSelected ? 0.16 : isHovered ? 0.12 : isHighlighted ? 0.07 : 0.02,
             lineColor: LICENSE_COLORS.line,
             lineWidth: isSelected ? 2.5 : isHovered ? 2 : 1.5,
           },
         }
       }),
     }
-  }, [raw, hoveredLicenseId, selectedLicenseId])
+  }, [raw, hoveredLicenseId, selectedLicenseId, highlightId])
 
   if (!data) return null
 

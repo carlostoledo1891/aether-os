@@ -146,7 +146,7 @@ export function EsgTab() {
       <div className="rounded-lg px-4 py-3" style={{ background: W.glass04, border: W.chromeBorder }}>
         <p className={`${ty.body} m-0 text-[var(--w-text3)]`}>
           Vero captures operational data that directly maps to 5 major ESG reporting frameworks. This
-          dashboard-to-disclosure pipeline reduces manual reporting effort by 80% and ensures continuous audit readiness for GRI,
+          dashboard-to-disclosure pipeline reduces manual reporting effort by 80% and supports continuous audit readiness for GRI,
           SASB, TCFD, and ISSB submissions.
         </p>
       </div>

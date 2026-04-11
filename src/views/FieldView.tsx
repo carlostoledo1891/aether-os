@@ -1,14 +1,9 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import type maplibregl from 'maplibre-gl'
 import { motion, AnimatePresence } from 'motion/react'
 import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
-import { PilotPlantCard } from '../components/plant/PilotPlantCard'
-import { ControlRoom } from '../components/plant/ControlRoom'
 import { HydroStation } from './field/HydroStation'
-import { MapBase, CALDEIRA_BBOX } from '../components/map/MapBase'
-import { PlantOverlay, PLANT_NODE_LAYER_ID } from '../components/map/PlantOverlay'
-import type { PlantOverlayNodeDetail } from '../components/map/PlantOverlay'
+import { MapBase } from '../components/map/MapBase'
 import { HydroOverlay, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from '../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../components/map/HydroOverlay'
 import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from '../components/map/CaldeiraBoundary'
@@ -21,20 +16,15 @@ import {
   ENV_URBAN_CENTROID_CORE_LAYER_ID,
 } from '../components/map/EnvironmentalOverlay'
 import { LicenseOverlay, LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
-import { DepositOverlay, DEPOSIT_LAYER_ID } from '../components/map/DepositOverlay'
 import { DrillHoleOverlay, DRILL_LAYER_ID } from '../components/map/DrillHoleOverlay'
 import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID } from '../components/map/PfsEngineeringOverlay'
 import { InfraOverlay, INFRA_POINT_CORE_LAYER_ID } from '../components/map/InfraOverlay'
 import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from '../components/map/OpsPlantSitesOverlay'
-import { AccessRoutesOverlay, ACCESS_ROUTE_LINE_LAYER_ID } from '../components/map/AccessRoutesOverlay'
-import { LicenceEnvelopeOverlay, LICENCE_ENVELOPE_FILL_LAYER_ID } from '../components/map/LicenceEnvelopeOverlay'
-import { NeighborOverlay } from '../components/map/NeighborOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPicker } from '../components/map/MapLayerPicker'
 import { W } from '../app/canvas/canvasTheme'
 import { Z } from '../components/map/mapStacking'
-import { useMapCamera } from '../contexts/MapCameraContext'
-import { useMap } from 'react-map-gl/maplibre'
+import { useMapCameraRestore } from '../hooks/useMapCameraRestore'
 import { useTelemetry } from '../services/DataServiceProvider'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { useSiteWeather } from '../hooks/useSiteWeather'
@@ -46,10 +36,9 @@ import { EnvironmentPanel } from './field/EnvironmentPanel'
 import { FieldBottomMetrics } from './field/FieldBottomMetrics'
 import { FieldPinnedAssetCard } from './field/FieldPinnedAssetCard'
 import {
-  DEFAULT_FIELD_ENV_LAYERS,
-  DEFAULT_FIELD_OPS_LAYERS,
   type FieldEnvMapLayers,
   type FieldOpsMapLayers,
+  useSharedMapLayers,
 } from './field/fieldMapLayers'
 import { useMapInteraction } from './field/useMapInteraction'
 import fieldChrome from './field/FieldMapChrome.module.css'
@@ -63,55 +52,19 @@ interface FieldViewProps {
 }
 
 export function FieldView({ highlightFeatureId }: FieldViewProps) {
-  const { saveCamera, getCamera, clearCamera } = useMapCamera()
-  const maps = useMap()
+  const initialCamera = useMapCameraRestore('aetherField')
   const { plant, env } = useTelemetry()
   const springsRef = useRef(env.springs)
-  springsRef.current = env.springs
-
-  const [initialCamera] = useState(() => {
-    const saved = getCamera()
-    if (saved) {
-      clearCamera()
-      return saved
-    }
-    return null
-  })
-
-  const didInitialFit = useRef(false)
   useEffect(() => {
-    if (initialCamera || didInitialFit.current) return
-    const mapRef = maps['aetherField' as keyof typeof maps] ?? maps.current
-    if (!mapRef) return
-    didInitialFit.current = true
-    mapRef.fitBounds(CALDEIRA_BBOX, { padding: 60, duration: 1000, pitch: 35, bearing: 0 })
-  }, [maps, initialCamera])
-
-  useEffect(() => {
-    return () => {
-      const mapRef = maps['aetherField' as keyof typeof maps] ?? maps.current
-      if (!mapRef) return
-      const map = (mapRef as unknown as { getMap?: () => maplibregl.Map | undefined }).getMap?.()
-      if (!map) return
-      const center = map.getCenter()
-      saveCamera({
-        longitude: center.lng,
-        latitude: center.lat,
-        zoom: map.getZoom(),
-        pitch: map.getPitch(),
-        bearing: map.getBearing(),
-      })
-    }
-  }, [maps, saveCamera])
+    springsRef.current = env.springs
+  }, [env.springs])
 
   const { data: PROJECT_FINANCIALS } = useServiceQuery('project-financials', s => s.getProjectFinancials())
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
-  const [controlRoomOpen, setControlRoomOpen] = useState(false)
   const [hydroStationOpen, setHydroStationOpen] = useState(false)
-  const [opsMapLayers, setOpsMapLayers] = useState<FieldOpsMapLayers>(DEFAULT_FIELD_OPS_LAYERS)
-  const [envMapLayers, setEnvMapLayers] = useState<FieldEnvMapLayers>(DEFAULT_FIELD_ENV_LAYERS)
+  const { opsMapLayers, envMapLayers, setOpsMapLayers, setEnvMapLayers } = useSharedMapLayers()
 
   const {
     hoveredNodeId,
@@ -119,8 +72,6 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     mapHoverHint,
     setMapHoverHint,
     popupData,
-    selectedPlantNode,
-    setSelectedPlantNode,
     selectedHydroNode,
     setSelectedHydroNode,
     geoSelection,
@@ -134,16 +85,11 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const interactiveLayerIds = useMemo(() => {
     if (mapTab === 'operations') {
       const ids: string[] = []
-      if (opsMapLayers.deposits) ids.push(DEPOSIT_LAYER_ID)
       if (opsMapLayers.tenements) ids.push(LICENSE_LAYER_ID)
       if (opsMapLayers.drillHoles) ids.push(DRILL_LAYER_ID)
       if (opsMapLayers.pfsEngineering) ids.push(PFS_ENGINEERING_FILL_LAYER_ID)
       if (opsMapLayers.plantSites) ids.push(OPS_PLANT_SITE_CORE_LAYER_ID)
       if (opsMapLayers.infra) ids.push(INFRA_POINT_CORE_LAYER_ID)
-      if (opsMapLayers.plantSchematic) ids.push(PLANT_NODE_LAYER_ID)
-      if (opsMapLayers.accessRoutes) ids.push(ACCESS_ROUTE_LINE_LAYER_ID)
-      if (opsMapLayers.licenceEnvelope) ids.push(LICENCE_ENVELOPE_FILL_LAYER_ID)
-      if (opsMapLayers.apa) ids.push(ENV_APA_FILL_LAYER_ID, 'env-apa-label')
       ids.push(CALDEIRA_BOUNDARY_LAYER_ID)
       return ids
     }
@@ -165,19 +111,17 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
 
   const switchTab = useCallback((tab: MapTab) => {
     setMapTab(tab)
-    setControlRoomOpen(false)
     setHydroStationOpen(false)
     setHoveredNodeId(null)
     setMapHoverHint(null)
     setGeoSelection(null)
-  }, [])
+  }, [setHoveredNodeId, setMapHoverHint, setGeoSelection])
 
-  const handleClearGeoSelection = useCallback(() => setGeoSelection(null), [])
+  const handleClearGeoSelection = useCallback(() => setGeoSelection(null), [setGeoSelection])
 
   const clearPinnedNode = useCallback(() => {
-    if (mapTab === 'operations') setSelectedPlantNode(null)
-    else setSelectedHydroNode(null)
-  }, [mapTab])
+    if (mapTab === 'environment') setSelectedHydroNode(null)
+  }, [mapTab, setSelectedHydroNode])
 
   const currentScenario = PREDICTIVE_HYDROLOGY_SCENARIOS?.[1] ?? PREDICTIVE_HYDROLOGY_SCENARIOS?.[0]
 
@@ -199,20 +143,14 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     if (mapTab === 'operations') {
       return [
         { id: 'plantSites', label: 'Pilot + commercial plant sites', checked: opsMapLayers.plantSites },
-        { id: 'tenements', label: 'Mining licences (per block)', checked: opsMapLayers.tenements },
+        { id: 'tenements', label: 'Mining licences', checked: opsMapLayers.tenements },
         { id: 'pfsEngineering', label: 'PFS starter pit + spent clay', checked: opsMapLayers.pfsEngineering },
         { id: 'drillHoles', label: 'Named drill collars', checked: opsMapLayers.drillHoles },
-        { id: 'accessRoutes', label: 'Access road (concept)', checked: opsMapLayers.accessRoutes },
-        { id: 'licenceEnvelope', label: 'Caldeira 193 km² envelope', checked: opsMapLayers.licenceEnvelope },
-        { id: 'apa', label: 'APA Pedra Branca (protected area)', checked: opsMapLayers.apa },
-        { id: 'deposits', label: 'Deposit shell polygons', checked: opsMapLayers.deposits },
         { id: 'infra', label: 'Logistics mesh', checked: opsMapLayers.infra },
-        { id: 'plantSchematic', label: 'Pilot flow schematic', checked: opsMapLayers.plantSchematic },
-        { id: 'neighbors', label: 'Adjacent tenement', checked: opsMapLayers.neighbors },
       ]
     }
     return [
-      { id: 'apa', label: 'APA Pedra Branca (core)', checked: envMapLayers.apa },
+      { id: 'apa', label: 'APA Pedra Branca', checked: envMapLayers.apa },
       { id: 'buffer', label: 'APA buffer ring', checked: envMapLayers.buffer },
       { id: 'monitoring', label: 'Monitoring / cumulative zone', checked: envMapLayers.monitoring },
       { id: 'urban', label: 'Urban context (OSM-style)', checked: envMapLayers.urban },
@@ -227,8 +165,8 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     }
   }, [mapTab, setOpsMapLayers, setEnvMapLayers])
 
-  const activeNode: PlantOverlayNodeDetail | HydroOverlayNodeDetail | null =
-    mapTab === 'operations' ? selectedPlantNode : mapTab === 'environment' ? selectedHydroNode : null
+  const activeNode: HydroOverlayNodeDetail | null =
+    mapTab === 'environment' ? selectedHydroNode : null
   const isPinned = activeNode !== null
   const isHovering = hoveredNodeId !== null || mapHoverHint !== null
 
@@ -292,22 +230,13 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               {mapTab === 'operations' && (
                 <>
                   {/* Polygons (renderOrder 1-9) — painted first, below everything */}
-                  {opsMapLayers.licenceEnvelope && <LicenceEnvelopeOverlay />}
-                  {opsMapLayers.neighbors && <NeighborOverlay />}
-                  {opsMapLayers.deposits && (
-                    <DepositOverlay hoveredDepositId={null} selectedDepositId={null} />
-                  )}
                   {opsMapLayers.tenements && (
                     <LicenseOverlay hoveredLicenseId={null} selectedLicenseId={null} />
                   )}
                   {opsMapLayers.pfsEngineering && (
                     <PfsEngineeringOverlay hoveredId={null} selectedId={null} />
                   )}
-                  {opsMapLayers.apa && (
-                    <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} />
-                  )}
                   {/* Lines (renderOrder 20+) */}
-                  {opsMapLayers.accessRoutes && <AccessRoutesOverlay />}
                   {/* Points (renderOrder 30+) — painted last, on top */}
                   {opsMapLayers.drillHoles && (
                     <DrillHoleOverlay
@@ -326,15 +255,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                       }
                     />
                   )}
-                  {opsMapLayers.infra && <InfraOverlay showRoute={false} mapId="aetherField" />}
-                  {opsMapLayers.plantSchematic && (
-                    <PlantOverlay
-                      plant={plant}
-                      env={env}
-                      hoveredNodeId={hoveredNodeId}
-                      selectedNodeId={selectedPlantNode?.id ?? null}
-                    />
-                  )}
+                  {opsMapLayers.infra && <InfraOverlay highlightId={null} />}
                 </>
               )}
               {mapTab === 'environment' && (
@@ -389,16 +310,6 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               )}
             </AnimatePresence>
             <MapLayerPicker layers={layerToggles} onToggle={handleLayerToggle} />
-            <AnimatePresence>
-              {mapTab === 'operations' && !controlRoomOpen && (
-                <PilotPlantCard onOpen={() => setControlRoomOpen(true)} />
-              )}
-            </AnimatePresence>
-            <AnimatePresence>
-              {controlRoomOpen && mapTab === 'operations' && (
-                <ControlRoom onClose={() => setControlRoomOpen(false)} />
-              )}
-            </AnimatePresence>
             <AnimatePresence>
               {hydroStationOpen && mapTab === 'environment' && (
                 <HydroStation onClose={() => setHydroStationOpen(false)} />

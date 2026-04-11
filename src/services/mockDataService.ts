@@ -14,6 +14,7 @@ import {
 import {
   SPRING_COUNT, THRESHOLDS,
   BATCHES, BENCHMARKS, AUDIT_TRAIL, ESG_FRAMEWORKS,
+  BATCH_LICENSE_MAP, LICENSE_DEPOSIT_MAP, sha256Stub,
   PROJECT_FINANCIALS, MARKET_PRICES, PROJECT_TIMELINE,
   SCENARIOS, SENSITIVITY_TABLE,
   DEPOSIT_DATA,
@@ -24,6 +25,7 @@ import {
   DSCR_PROJECTIONS, DRAWDOWN_SCHEDULE, DFS_WORKSTREAMS, REGULATORY_LOG,
   STAKEHOLDER_REGISTER,
 } from '../data/domain'
+import drillholesUrl from '../data/geojson/caldeira-drillholes.geojson?url'
 import { CALDEIRA_ISSUER_SNAPSHOT } from '../data/caldeira/issuerSnapshot'
 import { SPATIAL_INSIGHTS, getSpatialInsightsSummary } from '../data/caldeira/spatialInsights'
 import { getDataMode, getPresentationMode, getDisclosureMode } from '../config/env'
@@ -152,6 +154,68 @@ function generateSyntheticHistory(length: number, range: TimeRangeKey) {
   return { plantHistory, envHistory, precipMmSeries }
 }
 
+/* ─── Extraction Step Enrichment ────────────────────────────────────────── */
+
+type DrillFeature = { properties: { id: string; deposit: string } }
+let drillFeatures: DrillFeature[] | null = null
+let drillFetchPromise: Promise<void> | null = null
+
+function loadDrillFeatures(): Promise<void> {
+  if (drillFeatures) return Promise.resolve()
+  if (!drillFetchPromise) {
+    drillFetchPromise = fetch(drillholesUrl)
+      .then(r => r.json())
+      .then((geo: { features: DrillFeature[] }) => { drillFeatures = geo.features })
+      .catch(() => { drillFeatures = [] })
+  }
+  return drillFetchPromise
+}
+
+// Kick off fetch immediately so it's ready by the time the UI needs batches
+loadDrillFeatures()
+
+function pickRandomDrills(depositId: string, count: number): string[] {
+  if (!drillFeatures) return []
+  const pool = drillFeatures.filter(f => f.properties.deposit === depositId)
+  if (pool.length === 0) return []
+  const shuffled = [...pool].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, Math.min(count, pool.length)).map(f => f.properties.id)
+}
+
+function enrichBatch(batch: ComplianceLedger): ComplianceLedger {
+  const licenseId = BATCH_LICENSE_MAP[batch.batch_id]
+  const depositId = licenseId ? LICENSE_DEPOSIT_MAP[licenseId] : undefined
+  const deposit = depositId ? DEPOSIT_DATA.find(d => d.id === depositId) : undefined
+
+  const timeline = batch.molecular_timeline.map(step => {
+    let stepCoordinates = step.coordinates
+    let stepLinkedDrills = step.linked_drills
+
+    if (step.step === 'Extraction' && deposit) {
+      stepCoordinates = stepCoordinates ?? { lng: deposit.center[0], lat: deposit.center[1] }
+      stepLinkedDrills = stepLinkedDrills ?? pickRandomDrills(deposit.id, 3 + Math.floor(Math.random() * 2))
+    }
+
+    let hash = step.hash
+    if (step.status === 'verified' || step.status === 'active') {
+      hash = '0x' + sha256Stub(`${batch.batch_id}-${step.step}-${step.timestamp}`)
+    }
+
+    return {
+      ...step,
+      coordinates: stepCoordinates,
+      linked_drills: stepLinkedDrills,
+      hash,
+    }
+  })
+
+  return { ...batch, molecular_timeline: timeline }
+}
+
+function getEnrichedBatches(): ComplianceLedger[] {
+  return BATCHES.map(enrichBatch)
+}
+
 /* ─── Mock Service Implementation ───────────────────────────────────────── */
 export function createMockDataService(): AetherDataService {
   let plant = INITIAL_PLANT_TELEMETRY
@@ -219,8 +283,8 @@ export function createMockDataService(): AetherDataService {
       return histories[range]
     },
 
-    getBatches(): ComplianceLedger[] { return BATCHES },
-    getBatch(id: string) { return BATCHES.find(b => b.batch_id === id) },
+    getBatches(): ComplianceLedger[] { return getEnrichedBatches() },
+    getBatch(id: string) { return getEnrichedBatches().find(b => b.batch_id === id) },
 
     getFinancialScenario(key: ScenarioKey) { return SCENARIOS[key] },
     getSensitivityTable() { return SENSITIVITY_TABLE },

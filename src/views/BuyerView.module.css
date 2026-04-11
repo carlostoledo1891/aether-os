@@ -66,3 +66,44 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.exportBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  height: 100%;
+  background: var(--w-glass04);
+  border: 1px solid var(--w-glass12);
+  border-radius: var(--w-radius-md);
+  cursor: pointer;
+  outline: none;
+  color: var(--w-text2);
+  font-size: 10px;
+  font-weight: 600;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.exportBtn[data-exporting="true"] {
+  background: rgba(34, 197, 94, 0.15); /* W.green 26 hex approx */
+  border-color: rgba(34, 197, 94, 0.4); /* W.green 66 hex approx */
+  color: var(--w-green);
+}
+
+.countdownStrip {
+  padding: 10px 14px !important;
+  flex-shrink: 0;
+}
+
+.countdownInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.countdownDivider {
+  width: 1px;
+  height: 36px;
+  background: var(--w-glass08);
+}

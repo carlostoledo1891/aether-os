@@ -70,4 +70,4 @@ Tailwind 4 is loaded from `theme.css` (`@theme inline` maps core `--w-*` colors)
 
 Do **not** sprinkle `prefers-color-scheme` until semantic tokens and `data-theme` are in place.
 
-See also: [`HANDOFF.md`](../HANDOFF.md) (narrative and architecture context).
+See also: [`AGENT.md`](../AGENT.md) (project overview and documentation map).

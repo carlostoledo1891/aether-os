@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
 import { GeologyPanel } from './field/GeologyPanel'
 import { LicensesPanel } from './field/LicensesPanel'
-import type { DepositDetail } from '../components/map/DepositOverlay'
+import type { DepositDetail } from '../data/mockData'
 import type { LicenseDetail } from '../components/map/LicenseOverlay'
 
 import type { ExecTab } from './executive/constants'

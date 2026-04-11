@@ -1,7 +1,6 @@
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { memo, useMemo } from 'react'
 import { W } from '../../app/canvas/canvasTheme'
-import type { Map } from 'maplibre-gl'
-import { Layer, Source, useMap } from 'react-map-gl/maplibre'
+import { Layer, Source } from 'react-map-gl/maplibre'
 import {
   useGeoJsonFeatureCollection,
   type Feature,
@@ -44,84 +43,17 @@ function kindRadius(kind: InfraKind): number {
   }
 }
 
-/**
- * Even-length line-dasharray; dash grows / gap shrinks monotonically then loops
- * (forward flow only — no symmetric ping-pong).
- */
-const SUPPLY_DASH_SEQUENCE: [number, number][] = [
-  [0.25, 4.75],
-  [0.5, 4.5],
-  [0.75, 4.25],
-  [1, 4],
-  [1.25, 3.75],
-  [1.5, 3.5],
-  [1.75, 3.25],
-  [2, 3],
-  [2.25, 2.75],
-  [2.5, 2.5],
-  [2.75, 2.25],
-  [3, 2],
-  [3.25, 1.75],
-  [3.5, 1.5],
-  [3.75, 1.25],
-  [4, 1],
-  [4.25, 0.75],
-  [4.5, 0.5],
-]
-
-const SUPPLY_DASH_LAYER_ID = 'infra-supply-line-dash'
-
 /** Interactive hit target for infrastructure points (pilot, office, etc.) */
 export const INFRA_POINT_CORE_LAYER_ID = 'infra-point-core'
 
-function SupplyRouteDashAnimator({
-  mapId,
-  enabled,
-}: {
-  mapId: string
-  enabled: boolean
-}) {
-  const maps = useMap()
-  const mapRef = maps[mapId as keyof typeof maps] ?? maps.current
-  const stepRef = useRef(0)
-
-  useEffect(() => {
-    if (!enabled || !mapRef) return
-    const map = (mapRef as { getMap: () => Map }).getMap()
-    let raf = 0
-
-    const tick = (t: number) => {
-      const step = Math.floor(t / 48) % SUPPLY_DASH_SEQUENCE.length
-      if (step !== stepRef.current) {
-        stepRef.current = step
-        try {
-          if (map.getLayer(SUPPLY_DASH_LAYER_ID)) {
-            map.setPaintProperty(SUPPLY_DASH_LAYER_ID, 'line-dasharray', SUPPLY_DASH_SEQUENCE[step])
-          }
-        } catch {
-          /* style swapping / layer not ready */
-        }
-      }
-      raf = requestAnimationFrame(tick)
-    }
-
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [mapRef, enabled])
-
-  return null
-}
-
 interface InfraOverlayProps {
-  /** Show the full supply-chain route (for BuyerView) */
-  showRoute?: boolean
-  /** `Map` id from MapBase — required for supply-route dash animation when `showRoute` */
+  /** `Map` id from MapBase */
   mapId?: string
   /** Highlight a specific infrastructure point */
   highlightId?: string | null
 }
 
-export const InfraOverlay = memo(function InfraOverlay({ showRoute = false, mapId = 'aetherField', highlightId = null }: InfraOverlayProps) {
+export const InfraOverlay = memo(function InfraOverlay({ highlightId = null }: InfraOverlayProps) {
   const raw = useGeoJsonFeatureCollection(GEO.infra.url)
 
   const points = useMemo(() => {
@@ -143,22 +75,18 @@ export const InfraOverlay = memo(function InfraOverlay({ showRoute = false, mapI
   const lines = useMemo(() => {
     if (!raw) return null
     const features = (raw.features as Feature<InfraProperties, LineStringGeometry>[])
-      .filter(f => {
-        if (f.geometry.type !== 'LineString') return false
-        if (f.properties.kind === 'supply-chain') return showRoute
-        return true
-      })
+      .filter(f => f.geometry.type === 'LineString' && f.properties.kind !== 'supply-chain')
       .map(f => ({
         ...f,
         properties: {
           ...f.properties,
           lineColor: kindColor(f.properties.kind as InfraKind),
-          lineWidth: f.properties.kind === 'supply-chain' ? 2 : 1.5,
-          lineDash: f.properties.kind === 'supply-chain' ? 1 : (f.properties.status === 'planned' ? 1 : 0),
+          lineWidth: 1.5,
+          lineDash: f.properties.status === 'planned' ? 1 : 0,
         },
       }))
     return { type: 'FeatureCollection' as const, features }
-  }, [raw, showRoute])
+  }, [raw])
 
   const pilotPulse = useMemo(() => {
     if (!raw) return null
@@ -169,14 +97,12 @@ export const InfraOverlay = memo(function InfraOverlay({ showRoute = false, mapI
 
   return (
     <>
-      {showRoute && <SupplyRouteDashAnimator mapId={mapId} enabled />}
       {lines && (
         <Source id="infra-lines-source" type="geojson" data={lines}>
-          {/* Roads & mine access — excludes export corridor (drawn below when showRoute) */}
+          {/* Roads & mine access */}
           <Layer
             id="infra-line"
             type="line"
-            filter={showRoute ? ['!=', ['get', 'kind'], 'supply-chain'] : undefined}
             layout={{ 'line-cap': 'round', 'line-join': 'round' }}
             paint={{
               'line-color': ['get', 'lineColor'],
@@ -190,34 +116,6 @@ export const InfraOverlay = memo(function InfraOverlay({ showRoute = false, mapI
               ],
             }}
           />
-          {/* Must be direct children of Source (no Fragment): react-map-gl injects `source` via cloneElement */}
-          {showRoute ? (
-            <Layer
-              id="infra-supply-line-base"
-              type="line"
-              filter={['==', ['get', 'kind'], 'supply-chain']}
-              layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-              paint={{
-                'line-color': ['get', 'lineColor'],
-                'line-width': 3,
-                'line-opacity': 0.28,
-              }}
-            />
-          ) : null}
-          {showRoute ? (
-            <Layer
-              id={SUPPLY_DASH_LAYER_ID}
-              type="line"
-              filter={['==', ['get', 'kind'], 'supply-chain']}
-              layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-              paint={{
-                'line-color': ['get', 'lineColor'],
-                'line-width': 2,
-                'line-opacity': 0.88,
-                  'line-dasharray': [0.25, 4.75],
-              }}
-            />
-          ) : null}
         </Source>
       )}
 

@@ -4,7 +4,7 @@
 
 **Last updated:** 2026-04-09 (post v11 — Pilot Plant Digital Twin / Control Room)  
 **Prepared by:** Business Expert persona  
-**Cross-references:** [`PITCH_DECK_COPY.md`](copy/PITCH_DECK_COPY.md), [`WEBSITE_COPY.md`](copy/WEBSITE_COPY.md), [`Personas.md`](Personas.md), [`HANDOFF.md`](../HANDOFF.md)
+**Cross-references:** [`messaging-strategy.md`](messaging-strategy.md), [`personas/core-personas.md`](personas/core-personas.md), [`AGENT.md`](../AGENT.md)
 
 ---
 

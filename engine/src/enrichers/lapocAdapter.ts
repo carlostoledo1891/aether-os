@@ -121,6 +121,20 @@ export function startLapocSimulator() {
 
   const run = async () => {
     try {
+      try {
+        const checkRes = await fetch(`${ENGINE_CONFIG.apiBaseUrl}/api/lapoc/latest`)
+        if (checkRes.ok) {
+          const latest = await checkRes.json()
+          if (latest && latest.provenance === 'verified_real') {
+            const ageMs = Date.now() - new Date(latest.timestamp).getTime()
+            if (ageMs < 24 * 60 * 60 * 1000) {
+              console.log(`[lapoc] Yielding to real LAPOC data (age: ${Math.round(ageMs / 60000)}m)`)
+              return
+            }
+          }
+        }
+      } catch { /* ignore check errors */ }
+
       const payload = generateSyntheticLapoc()
       await ingestLapocPayload(payload)
       console.log(`[lapoc] Ingested ${payload.piezometer_readings.length} piezo + ${payload.water_quality_samples.length} WQ samples`)

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { FIELD_VIEW_STATE } from '../components/map/MapBase'
+import { CALDEIRA_VIEW_STATE } from '../components/map/MapBase'
 import {
   fetchPastDaysDailyPrecip,
   fetchPastDaysClimate,
@@ -47,8 +47,8 @@ function weatherEnabled(): boolean {
 }
 
 function siteCoordinates(): { lat: number; lng: number } {
-  const lat = Number(import.meta.env.VITE_WEATHER_LAT ?? FIELD_VIEW_STATE.latitude)
-  const lng = Number(import.meta.env.VITE_WEATHER_LNG ?? FIELD_VIEW_STATE.longitude)
+  const lat = Number(import.meta.env.VITE_WEATHER_LAT ?? CALDEIRA_VIEW_STATE.latitude)
+  const lng = Number(import.meta.env.VITE_WEATHER_LNG ?? CALDEIRA_VIEW_STATE.longitude)
   return { lat, lng }
 }
 

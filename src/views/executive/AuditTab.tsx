@@ -14,8 +14,9 @@ function ChainIntegrityBadge({ isLive }: { isLive: boolean }) {
   const [status, setStatus] = useState<'loading' | 'valid' | 'invalid' | 'unavailable'>('loading')
   const [chainLength, setChainLength] = useState(0)
 
+  const isUnavailable = !isLive
   useEffect(() => {
-    if (!isLive) { setStatus('unavailable'); return }
+    if (isUnavailable) return
     fetch('/api/audit/verify-chain')
       .then(r => r.json())
       .then((data: { valid: boolean; length: number }) => {
@@ -23,10 +24,10 @@ function ChainIntegrityBadge({ isLive }: { isLive: boolean }) {
         setStatus(data.valid ? 'valid' : 'invalid')
       })
       .catch(() => setStatus('unavailable'))
-  }, [isLive])
+  }, [isUnavailable])
 
   if (status === 'loading') return null
-  if (status === 'unavailable') return null
+  if (isUnavailable || status === 'unavailable') return null
 
   const color = status === 'valid' ? W.green : W.amber
   const label = status === 'valid' ? `Chain verified — ${chainLength} events` : 'Chain integrity error'
