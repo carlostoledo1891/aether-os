@@ -17,9 +17,9 @@ const CANNOT_ITEMS = [
 ]
 
 const LANES = [
-  { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC', href: '/' },
-  { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance', href: '/tech' },
-  { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy', href: '/business' },
+  { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC' },
+  { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
+  { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
 ]
 
 export default function WhyINeedYouSlide() {
@@ -47,18 +47,17 @@ export default function WhyINeedYouSlide() {
         ))}
       </div>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, maxWidth: 800, width: '100%', marginBottom: 16 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, maxWidth: 800, width: '100%', marginBottom: 20 }}>
       {LANES.map(p => (
-        <a key={p.who} href={p.href} onClick={e => e.stopPropagation()} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', textDecoration: 'none', color: 'inherit', display: 'block' }}>
+        <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>
           <div style={{ fontSize: 12, fontWeight: 600, color: W.text1, marginTop: 4 }}>{p.lane}</div>
           <div style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>{p.detail}</div>
-          <div style={{ fontSize: 10, color: V, fontFamily: 'var(--font-mono)', marginTop: 6, opacity: 0.7 }}>{p.href === '/' ? 'Platform →' : `vero.supply${p.href} →`}</div>
-        </a>
+        </div>
       ))}
     </div>
-    <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
-      Today I work with 2 US-based frontier AI companies. I see the regulations creating the market. The perfect storm is forming for rare earth minerals tech. Seed money lets me go 100% on Vero — you handle the front.
+    <p style={{ fontSize: 13, color: W.text3, maxWidth: 700, lineHeight: 1.6 }}>
+      I am currently balancing Vero with roles at two US-based frontier AI companies. The regulatory storm for critical minerals is forming right now. Seed capital allows me to go 100% full-time on Vero while you provide the strategic leverage to win.
     </p>
   </>)
 }

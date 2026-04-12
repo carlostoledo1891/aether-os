@@ -140,7 +140,7 @@ body {
 }
 
 .maplibregl-ctrl-group button:hover {
-  background: rgba(124,92,252,0.15) !important;
+  background: var(--w-glass-hover) !important;
 }
 
 .maplibregl-ctrl-group button + button {

@@ -87,7 +87,8 @@
   padding: 8px 20px;
   flex-shrink: 0;
   border-bottom: var(--w-border-hairline);
-  background: rgba(13, 13, 28, 0.6);
+  background: var(--w-chrome-header-bg);
+  backdrop-filter: blur(12px);
 }
 
 .titleText {
@@ -137,9 +138,8 @@
   position: relative;
   overflow: hidden;
   border-radius: var(--w-radius-lg);
-  border: 1px solid rgba(124, 92, 252, 0.2);
-  box-shadow: 0 0 22px var(--w-violet-subtle);
-  transition: border-color 0.4s, box-shadow 0.4s;
+  border: var(--w-border2);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
 }
 
 /* ── Map Highlight Overlay ───────────────────────────────────────────── */

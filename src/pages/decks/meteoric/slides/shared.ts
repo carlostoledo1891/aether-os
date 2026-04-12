@@ -1,4 +1,4 @@
-import { W } from '../../../../../app/canvas/canvasTheme'
+import { W } from '../../../../app/canvas/canvasTheme'
 
 export { W }
 export const V = W.violet

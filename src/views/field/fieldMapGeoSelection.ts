@@ -1,6 +1,5 @@
 import type { LicenseDetail } from '../../components/map/LicenseOverlay'
 import type { DrillHoleDetail } from '../../components/map/DrillHoleOverlay'
-import type { DepositDetail } from '../../components/map/DepositOverlay'
 import type { PfsEngineeringDetail } from '../../components/map/PfsEngineeringOverlay'
 
 export interface EnvMapFeatureDetail {
@@ -78,7 +77,6 @@ export function toLicenceEnvelopeDetail(props: Record<string, unknown>): Licence
 export type FieldMapGeoSelection =
   | { kind: 'license'; detail: LicenseDetail }
   | { kind: 'drill'; detail: DrillHoleDetail }
-  | { kind: 'deposit'; detail: DepositDetail }
   | { kind: 'pfs'; detail: PfsEngineeringDetail }
   | {
       kind: 'infra'

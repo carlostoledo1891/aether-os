@@ -7,6 +7,7 @@ import { LicenseOverlay, LICENSE_LAYER_ID } from '../../../../components/map/Lic
 import { DrillHoleOverlay, DRILL_LAYER_ID, parseLithologyIntervals } from '../../../../components/map/DrillHoleOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
+import { PilotPlantCard } from '../../../../components/plant/PilotPlantCard'
 import { W, V, CALDEIRA_CENTER } from './shared'
 
 const AnimatedStat = lazy(() => import('../AnimatedStat'))
@@ -101,8 +102,8 @@ export default function GeologySlide() {
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           flyTo={{ center: CAPAO_DO_MEL, zoom: 13, pitch: 45, duration: 4000 }}
-          disableZoomControls={true}
-          hideControls={true}
+          disableZoomControls={false}
+          hideControls={false}
           forceStyle="satellite"
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >
@@ -111,6 +112,7 @@ export default function GeologySlide() {
           <DrillHoleOverlay />
         </MapBase>
       </Suspense>
+      <PilotPlantCard />
       <MapFeaturePopup data={popup?.data ?? null} x={popup?.x ?? 0} y={popup?.y ?? 0} />
 
       <div style={{ position: 'absolute', top: 40, right: 24, width: 320, display: 'flex', flexDirection: 'column', gap: 10, zIndex: 6, pointerEvents: 'auto' }}>

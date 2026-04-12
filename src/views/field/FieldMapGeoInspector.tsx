@@ -149,17 +149,6 @@ export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
         </div>
       )}
 
-      {selection.kind === 'deposit' && (
-        <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
-          <div className="font-bold text-[var(--w-text1)]">{selection.detail.name}</div>
-          <div>
-            {selection.detail.tonnage_mt} Mt · {selection.detail.treo_ppm} ppm · MREO{' '}
-            {selection.detail.mreo_pct}%
-          </div>
-          <div style={{ color: W.text4 }}>{selection.detail.resource_note}</div>
-        </div>
-      )}
-
       {selection.kind === 'pfs' && (
         <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
           <div className="font-bold text-[var(--w-text1)]">{selection.detail.label}</div>

@@ -81,7 +81,7 @@ function EnvironmentReport({ range: _range }: Props) {
       {/* Hero */}
       <div style={{
         padding: '48px 40px 32px',
-        background: `linear-gradient(135deg, ${WL.cyan}08, ${WL.green}06)`,
+        background: WL.surfaceHigh,
         borderBottom: `1px solid ${WL.border}`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>

@@ -44,9 +44,8 @@ export function MapPageLayout({
             position: 'relative',
             overflow: 'hidden',
             borderRadius: W.radius.lg,
-            border: `1px solid ${edge}30`,
-            boxShadow: `0 0 22px ${edge}14`,
-            transition: 'border-color 0.4s, box-shadow 0.4s',
+            border: `1px solid ${W.border2}`,
+            boxShadow: `0 4px 24px rgba(0,0,0,0.5)`,
           }}
         >
           {mapContent}

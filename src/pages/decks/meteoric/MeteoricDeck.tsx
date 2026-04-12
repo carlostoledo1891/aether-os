@@ -1,27 +1,28 @@
 import { lazy } from 'react'
-import { DeckRunner } from '../../components/deck/DeckRunner'
-import type { DeckManifest, LazySlide } from '../../components/deck/types'
+import { DeckRunner } from '../../../components/deck/DeckRunner'
+import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
 const slides: LazySlide[] = [
-  lazy(() => import('./meteoric/slides/CoverSlide')),
-  lazy(() => import('../components/deck/slides/WhiteBoxSlide')),
-  lazy(() => import('./meteoric/slides/BuiltStatsSlide')),
-  lazy(() => import('./meteoric/slides/ThreeViewsSlide')),
-  lazy(() => import('./meteoric/slides/GeologySlide')),
-  lazy(() => import('./meteoric/slides/ExecutiveSlide')),
-  lazy(() => import('./meteoric/slides/GovernanceSlide')),
-  lazy(() => import('./meteoric/slides/IntegrationSlide')),
-  lazy(() => import('./meteoric/slides/DataVizSlide')),
-  lazy(() => import('./meteoric/slides/AiToolsSlide')),
-  lazy(() => import('./meteoric/slides/SecurityStatsSlide')),
-  lazy(() => import('./meteoric/slides/ReasonsSlide')),
-  lazy(() => import('./meteoric/slides/TimelineSlide')),
-  lazy(() => import('./meteoric/slides/HydroSlide')),
-  lazy(() => import('./meteoric/slides/TraceabilitySlide')),
-  lazy(() => import('./meteoric/slides/RoadmapSlide')),
-  lazy(() => import('./meteoric/slides/StandardSlide')),
-  lazy(() => import('./meteoric/slides/TeamSlide')),
-  lazy(() => import('./meteoric/slides/CtaSlide')),
+  lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Dr. de Carvalho, Dr. Tunks & Mr. Gale" /> }))),
+  lazy(() => import('./slides/CoverSlide')),
+  lazy(() => import('../../../components/deck/slides/WhiteBoxSlide')),
+  lazy(() => import('./slides/BuiltStatsSlide')),
+  lazy(() => import('./slides/ThreeViewsSlide')),
+  lazy(() => import('./slides/GeologySlide')),
+  lazy(() => import('./slides/HydroSlide')),
+  lazy(() => import('./slides/TraceabilitySlide')),
+  lazy(() => import('./slides/GovernanceSlide')),
+  lazy(() => import('./slides/ExecutiveSlide')),
+  lazy(() => import('./slides/IntegrationSlide')),
+  lazy(() => import('./slides/DataVizSlide')),
+  lazy(() => import('./slides/AiToolsSlide')),
+  lazy(() => import('./slides/SecurityStatsSlide')),
+  lazy(() => import('./slides/ReasonsSlide')),
+  lazy(() => import('./slides/StandardSlide')),
+  lazy(() => import('./slides/RoadmapSlide')),
+  lazy(() => import('./slides/TimelineSlide')),
+  lazy(() => import('./slides/TeamSlide')),
+  lazy(() => import('./slides/CtaSlide')),
 ]
 
 const MANIFEST: DeckManifest = {

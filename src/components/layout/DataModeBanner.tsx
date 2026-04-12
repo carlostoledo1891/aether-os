@@ -36,13 +36,7 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
   const isOffline = connStatus === 'offline'
 
   const isDisclosure = context.disclosureMode
-  const bannerBg = isOffline
-    ? `${W.red}1A`
-    : isDegraded
-      ? `${W.amber}1A`
-      : isDisclosure
-        ? `${W.violet}14`
-        : context.mode === 'live' ? W.bannerBgLive : W.bannerBgMock
+  const bannerBg = W.chromeHeaderBg
   const bannerBorder = isOffline
     ? `${W.red}4D`
     : isDegraded

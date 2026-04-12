@@ -22,18 +22,37 @@ export default function TraceabilitySlide() {
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
   
   const maps = useMap()
-  const activeStep = batch?.molecular_timeline[selectedStepIndex ?? 0]
 
   useEffect(() => {
     const mapRef = maps['meteoric-trace-map'] ?? maps.current
-    if (!mapRef || selectedStepIndex === null || !activeStep?.coordinates) return
+    if (!mapRef) return
+
+    if (selectedStepIndex === null) {
+      if (batch) {
+        const coords = batch.molecular_timeline.map(s => s.coordinates).filter(Boolean) as {lat: number, lng: number}[]
+        if (coords.length > 0) {
+          const minLng = Math.min(...coords.map(c => c.lng))
+          const maxLng = Math.max(...coords.map(c => c.lng))
+          const minLat = Math.min(...coords.map(c => c.lat))
+          const maxLat = Math.max(...coords.map(c => c.lat))
+          mapRef.fitBounds(
+            [minLng, minLat, maxLng, maxLat],
+            { padding: 100, duration: 1500 }
+          )
+        }
+      }
+      return
+    }
+
+    const activeStep = batch?.molecular_timeline[selectedStepIndex]
+    if (!activeStep?.coordinates) return
 
     mapRef.flyTo({
       center: [activeStep.coordinates.lng, activeStep.coordinates.lat],
       zoom: 12,
       duration: 1500,
     })
-  }, [selectedStepIndex, activeStep, maps])
+  }, [selectedStepIndex, batch, maps])
 
   const handleStepClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
@@ -45,15 +64,26 @@ export default function TraceabilitySlide() {
         <MapBase
           id="meteoric-trace-map"
           initialViewState={{
+            bounds: batch 
+              ? (() => {
+                  const coords = batch.molecular_timeline.map(s => s.coordinates).filter(Boolean) as {lat: number, lng: number}[]
+                  if (!coords.length) return undefined
+                  const minLng = Math.min(...coords.map(c => c.lng))
+                  const maxLng = Math.max(...coords.map(c => c.lng))
+                  const minLat = Math.min(...coords.map(c => c.lat))
+                  const maxLat = Math.max(...coords.map(c => c.lat))
+                  return [minLng, minLat, maxLng, maxLat]
+                })()
+              : undefined,
             longitude: 40,
             latitude: 5,
             zoom: 1.5,
             pitch: 0,
             bearing: 0,
-          }}
+          } as any}
           interactive={true}
-          disableZoomControls={true}
-          hideControls={true}
+          disableZoomControls={false}
+          hideControls={false}
           forceStyle="satellite"
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >

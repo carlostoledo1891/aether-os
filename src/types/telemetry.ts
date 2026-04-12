@@ -76,6 +76,17 @@ export interface EnvTelemetry {
   springEvents?: SpringEvent[]
 }
 
+export interface MolecularTimelineStep {
+  step: string
+  description: string
+  timestamp: string
+  status: 'verified' | 'active' | 'pending'
+  coordinates?: { lat: number; lng: number }
+  hash?: string
+  linked_drills?: string[]
+  entity?: string
+}
+
 export interface ComplianceLedger {
   batch_id: string           // e.g., "BATCH-MREC-8X9"
   batch_date: string
@@ -88,16 +99,7 @@ export interface ComplianceLedger {
     tier: 'Premium' | 'Standard' | 'High'
     vs_chinese_baseline: number  // % reduction
   }
-  molecular_timeline: Array<{
-    step: string
-    description: string
-    timestamp: string
-    status: 'verified' | 'active' | 'pending'
-    coordinates?: { lat: number; lng: number }
-    hash?: string
-    linked_drills?: string[]
-    entity?: string
-  }>
+  molecular_timeline: MolecularTimelineStep[]
   offtake_destination: string
   certificates: string[]
 }

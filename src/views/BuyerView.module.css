@@ -86,8 +86,8 @@
 }
 
 .exportBtn[data-exporting="true"] {
-  background: rgba(34, 197, 94, 0.15); /* W.green 26 hex approx */
-  border-color: rgba(34, 197, 94, 0.4); /* W.green 66 hex approx */
+  background: var(--w-green-subtle);
+  border-color: color-mix(in srgb, var(--w-green) 40%, transparent);
   color: var(--w-green);
 }
 

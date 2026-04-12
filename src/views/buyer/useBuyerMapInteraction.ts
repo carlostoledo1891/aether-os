@@ -58,6 +58,7 @@ export function useBuyerMapInteraction() {
   return {
     hoveredHoleId,
     popupData,
+    setPopupData,
     handleBuyerMouseEnter,
     handleBuyerMouseLeave,
   }

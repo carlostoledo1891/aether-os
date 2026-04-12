@@ -233,7 +233,6 @@ export function useMapInteraction({
       const nonBoundaryFeat = feats?.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID)
       const boundaryFeat = feats?.find(f => f.layer?.id === CALDEIRA_BOUNDARY_LAYER_ID)
       if (boundaryFeat && !nonBoundaryFeat) {
-        setSelectedPlantNode(null)
         setSelectedHydroNode(null)
         setGeoSelection((g) =>
           g?.kind === 'boundary'
@@ -260,18 +259,7 @@ export function useMapInteraction({
         const id = props.id
         if (typeof id !== 'string') return
 
-        if (layerId === PLANT_NODE_LAYER_ID && opsMapLayers.plantSchematic) {
-          setGeoSelection(null)
-          const coords = (feat.geometry as { coordinates?: [number, number] }).coordinates
-          setSelectedPlantNode(prev => {
-            if (prev?.id === id) return null
-            return toPlantNodeDetail(props, coords)
-          })
-          return
-        }
-
         if (layerId === OPS_PLANT_SITE_CORE_LAYER_ID && opsMapLayers.plantSites) {
-          setSelectedPlantNode(null)
           setGeoSelection((g) =>
             g?.kind === 'infra' && g.id === id
               ? null
@@ -289,8 +277,6 @@ export function useMapInteraction({
           )
           return
         }
-
-        setSelectedPlantNode(null)
 
         if (layerId === LICENSE_LAYER_ID && opsMapLayers.tenements) {
           const d = toLicenseDetail(props)
@@ -371,7 +357,6 @@ export function useMapInteraction({
       opsMapLayers.pfsEngineering,
       opsMapLayers.plantSites,
       opsMapLayers.infra,
-      opsMapLayers.plantSchematic,
       springsRef,
     ],
   )

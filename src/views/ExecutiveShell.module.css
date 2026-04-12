@@ -23,13 +23,9 @@
   flex-shrink: 0;
   padding-bottom: 8px;
   margin-bottom: -4px;
-  background: linear-gradient(
-    to bottom,
-    var(--w-bg) 0%,
-    var(--w-bg) 72%,
-    color-mix(in srgb, var(--w-bg) 88%, transparent) 100%
-  );
-  border-bottom: 1px solid color-mix(in srgb, var(--w-text4) 18%, transparent);
+  background: var(--w-chrome-header-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: var(--w-border-hairline);
 }
 
 .tabMask {

@@ -64,8 +64,8 @@ export const W = {
   mapHudBorderCyanStrong: '1px solid rgba(0,212,200,0.20)',
   mapHudBorderAmber: '1px solid rgba(245,166,35,0.28)',
   mapHudBorderRed: '1px solid rgba(255,77,77,0.25)',
-  mapControlBg:     'rgba(18, 10, 40, 0.94)',
-  mapControlBorder: '1px solid rgba(124, 92, 252, 0.15)',
+  mapControlBg:     'rgba(13, 13, 28, 0.95)',
+  mapControlBorder: '1px solid rgba(255, 255, 255, 0.08)',
 
   /** App shell: top header bar (blur + tint) */
   chromeHeaderBg: 'rgba(13,13,28,0.95)',

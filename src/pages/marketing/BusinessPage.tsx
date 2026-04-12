@@ -1,7 +1,5 @@
-import { type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../../app/canvas/canvasTheme'
-import { Terminal as TerminalBase, Kw, Str, Num, Cmt, Fn } from '../../components/deck'
 import { PRODUCT_ROADMAP } from '../../data/domain/roadmap'
 import { MarketingNav } from '../../components/layout/MarketingNav'
 import { MarketingObservability } from '../../components/layout/MarketingObservability'

@@ -27,9 +27,6 @@ export default function DataVizSlide() {
           <span style={{ fontSize: 13, color: V, fontWeight: 600 }}>Connect any dataset, API, or sensor feed to extend the platform for your project</span>
         </div>
       </div>
-      <p style={{ fontSize: 12, color: W.text4, marginTop: 20 }}>
-        Prefeitura de Poços de Caldas dashboard already live at <span style={{ color: V, fontFamily: 'var(--font-mono)' }}>/deck/prefeitura</span>
-      </p>
     </>
   )
 }

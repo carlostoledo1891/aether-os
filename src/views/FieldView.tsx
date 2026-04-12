@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import { Layers, Settings } from 'lucide-react'
 import { TabSwitcher } from '../components/ui/TabSwitcher'
 import { HydroStation } from './field/HydroStation'
+import { PilotPlantCard } from '../components/plant/PilotPlantCard'
+import { ControlRoom } from '../components/plant/ControlRoom'
 import { MapBase } from '../components/map/MapBase'
 import { HydroOverlay, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from '../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../components/map/HydroOverlay'
@@ -63,6 +65,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
+  const [controlRoomOpen, setControlRoomOpen] = useState(false)
   const [hydroStationOpen, setHydroStationOpen] = useState(false)
   const { opsMapLayers, envMapLayers, setOpsMapLayers, setEnvMapLayers } = useSharedMapLayers()
 
@@ -112,6 +115,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const switchTab = useCallback((tab: MapTab) => {
     setMapTab(tab)
     setHydroStationOpen(false)
+    setControlRoomOpen(false)
     setHoveredNodeId(null)
     setMapHoverHint(null)
     setGeoSelection(null)
@@ -211,9 +215,8 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
             className={fieldChrome.mapHero}
             style={{
               borderRadius: W.radius.lg,
-              border: `1px solid ${TAB_COLOR[mapTab]}30`,
-              boxShadow: `0 0 22px ${TAB_COLOR[mapTab]}14`,
-              transition: 'border-color 0.4s, box-shadow 0.4s',
+              border: `1px solid ${W.border2}`,
+              boxShadow: `0 4px 24px rgba(0,0,0,0.5)`,
             }}
           >
             <MapBase
@@ -310,6 +313,16 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
               )}
             </AnimatePresence>
             <MapLayerPicker layers={layerToggles} onToggle={handleLayerToggle} />
+            <AnimatePresence>
+              {mapTab === 'operations' && !controlRoomOpen && (
+                <PilotPlantCard onOpen={() => setControlRoomOpen(true)} />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {controlRoomOpen && mapTab === 'operations' && (
+                <ControlRoom onClose={() => setControlRoomOpen(false)} />
+              )}
+            </AnimatePresence>
             <AnimatePresence>
               {hydroStationOpen && mapTab === 'environment' && (
                 <HydroStation onClose={() => setHydroStationOpen(false)} />

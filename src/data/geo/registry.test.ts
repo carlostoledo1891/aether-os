@@ -33,20 +33,20 @@ describe('GEO registry', () => {
   describe('renderOrder conventions', () => {
     it('all polygon entries have renderOrder < 20', () => {
       for (const entry of entries.filter((e) => e.kind === 'polygon')) {
-        expect(entry.renderOrder).toBeLessThan(20)
+        expect((entry as any).renderOrder).toBeLessThan(20)
       }
     })
 
     it('all line entries have 20 <= renderOrder < 30', () => {
-      for (const entry of entries.filter((e) => e.kind === 'line')) {
-        expect(entry.renderOrder).toBeGreaterThanOrEqual(20)
-        expect(entry.renderOrder).toBeLessThan(30)
+      for (const entry of entries.filter((e) => (e.kind as string) === 'line')) {
+        expect((entry as any).renderOrder).toBeGreaterThanOrEqual(20)
+        expect((entry as any).renderOrder).toBeLessThan(30)
       }
     })
 
     it('all point entries have renderOrder >= 30', () => {
       for (const entry of entries.filter((e) => e.kind === 'point')) {
-        expect(entry.renderOrder).toBeGreaterThanOrEqual(30)
+        expect((entry as any).renderOrder).toBeGreaterThanOrEqual(30)
       }
     })
   })

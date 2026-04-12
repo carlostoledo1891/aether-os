@@ -7,6 +7,9 @@ import { EnvironmentalOverlay, ENV_APA_FILL_LAYER_ID } from '../../../../compone
 import { SpringPinsOverlay, SPRING_PIN_LAYER_ID } from '../../../../components/map/SpringPinsOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
+import { HydroMonitoringCard } from '../../../../components/map/HydroMonitoringCard'
+import { useTelemetry } from '../../../../services/DataServiceProvider'
+import { useSiteWeather } from '../../../../hooks/useSiteWeather'
 import { W, V, CALDEIRA_CENTER } from './shared'
 
 const AnimatedStat = lazy(() => import('../AnimatedStat'))
@@ -19,6 +22,24 @@ const INTERACTIVE_LAYERS = [
 
 export default function HydroSlide() {
   const [popup, setPopup] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
+  const { env } = useTelemetry()
+  const weather = useSiteWeather(30, { enabled: true })
+
+  const springCounts = {
+    active: env.springs.filter(s => s.status === 'Active').length,
+    reduced: env.springs.filter(s => s.status === 'Reduced').length,
+    suppressed: env.springs.filter(s => s.status === 'Suppressed').length,
+  }
+
+  const weatherStrip = {
+    loading: weather.loading,
+    error: weather.error,
+    windowPrecipMm: weather.windowPrecipMm,
+    anomalyMm: weather.anomalyMm,
+    source: weather.source,
+    scenarioDroughtIndex: 0,
+    scenarioHorizon: '',
+  }
 
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
@@ -94,8 +115,8 @@ export default function HydroSlide() {
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          disableZoomControls={true}
-          hideControls={true}
+          disableZoomControls={false}
+          hideControls={false}
           forceStyle="satellite"
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >
@@ -104,6 +125,11 @@ export default function HydroSlide() {
           <SpringPinsOverlay />
         </MapBase>
       </Suspense>
+      <HydroMonitoringCard 
+        springCounts={springCounts}
+        sulfatePpm={env.water_quality.sulfate_ppm}
+        weatherStrip={weatherStrip}
+      />
       <MapFeaturePopup data={popup?.data ?? null} x={popup?.x ?? 0} y={popup?.y ?? 0} />
 
       <div style={{ position: 'absolute', top: 40, right: 24, width: 300, display: 'flex', flexDirection: 'column', gap: 10, zIndex: 6, pointerEvents: 'auto' }}>

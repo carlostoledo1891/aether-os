@@ -287,6 +287,52 @@ function MapStylePicker({
   )
 }
 
+function ResetCameraController({ initialViewState, hideControls }: { initialViewState: any, hideControls: boolean }) {
+  const maps = useMap()
+  if (hideControls) return null
+  return (
+    <button
+      type="button"
+      title="Reset View"
+      onClick={(e) => {
+        e.stopPropagation()
+        const map = maps.current?.getMap()
+        if (map) {
+          if (initialViewState.bounds) {
+             map.fitBounds(initialViewState.bounds, { padding: 40, duration: 1500 })
+          } else {
+             map.flyTo({
+               center: [initialViewState.longitude || 0, initialViewState.latitude || 0],
+               zoom: initialViewState.zoom || 0,
+               pitch: initialViewState.pitch || 0,
+               bearing: initialViewState.bearing || 0,
+               duration: 1500
+             })
+          }
+        }
+      }}
+      style={{
+        position: 'absolute',
+        top: 104,
+        right: 10,
+        zIndex: Z.mapStyleControl,
+        width: 29,
+        height: 29,
+        background: W.mapControlBg,
+        border: W.mapControlBorder,
+        borderRadius: W.radius.sm,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: W.text3,
+      }}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0v3a2 2 0 0 0 2 2h3"/></svg>
+    </button>
+  )
+}
+
 export function MapBase({
   id = 'aetherField',
   initialViewState = CALDEIRA_VIEW_STATE,
@@ -350,6 +396,7 @@ export function MapBase({
             visualizePitch
           />
         )}
+        <ResetCameraController initialViewState={initialViewState} hideControls={hideControls || false} />
         {children}
       </Map>
 

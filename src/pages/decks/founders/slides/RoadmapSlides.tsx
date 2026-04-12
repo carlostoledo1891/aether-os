@@ -45,16 +45,23 @@ const MILESTONES = [
 
 export function TimelineSlide() {
   return (<>
-    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>What Happens Next</h2>
-    <div style={{ maxWidth: 900, width: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 19, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${V}60, ${V}10)` }} />
-      <div style={{ display: 'flex', gap: 0 }}>
+    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 40 }}>What Happens Next</h2>
+    <div style={{ maxWidth: 600, width: '100%', position: 'relative', margin: '0 auto' }}>
+      {/* Vertical Line */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 2, background: `linear-gradient(180deg, ${V}80 0%, ${V}20 100%)` }} />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
         {MILESTONES.map((t, i) => (
-          <div key={t.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: t.status === 'next' ? `${V}20` : W.glass04, border: `1px solid ${t.status === 'next' ? V : W.glass06}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: t.status === 'next' ? V : W.text4, fontFamily: 'var(--font-mono)' }}>{t.date}</span>
+          <div key={t.date} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
+            <div style={{ width: '45%', textAlign: 'right', fontSize: 16, fontWeight: 800, color: t.status === 'next' ? V : W.text3, fontFamily: 'var(--font-mono)' }}>
+              {t.date}
             </div>
-            <p style={{ fontSize: 11, color: i === 0 ? W.text1 : W.text2, lineHeight: 1.4, margin: '10px 0 0', fontWeight: i === 0 ? 700 : 400, textAlign: 'center', padding: '0 4px' }}>{t.label}</p>
+            <div style={{ width: 14, height: 14, borderRadius: '50%', background: W.bg, border: `3px solid ${t.status === 'next' ? V : W.glass08}`, zIndex: 1, position: 'relative' }}>
+              {t.status === 'next' && <div style={{ position: 'absolute', inset: -4, borderRadius: '50%', background: `${V}40`, filter: 'blur(4px)' }} />}
+            </div>
+            <div style={{ width: '45%', textAlign: 'left', fontSize: 15, color: i === 0 ? W.text1 : W.text2, fontWeight: i === 0 ? 700 : 500 }}>
+              {t.label}
+            </div>
           </div>
         ))}
       </div>

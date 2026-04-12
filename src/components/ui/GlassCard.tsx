@@ -11,26 +11,26 @@ interface GlassCardProps {
   animate?: boolean
 }
 
-const insetTop = `inset 0 1px 0 ${W.glass07}`
-const glowMap = {
-  violet: `0 0 12px ${W.violetGlow}, ${insetTop}`,
-  cyan:   `0 0 12px ${W.cyanGlow}, ${insetTop}`,
-  green:  `0 0 12px ${W.greenGlow}, ${insetTop}`,
-  amber:  `0 0 12px ${W.amberGlow}, ${insetTop}`,
-  red:    `0 0 12px ${W.redGlow}, ${insetTop}`,
-  none:   `inset 0 1px 0 ${W.glass03}`,
+const colorMap = {
+  violet: W.violet,
+  cyan:   W.cyan,
+  green:  W.green,
+  amber:  W.amber,
+  red:    W.red,
+  none:   'transparent',
 }
 
 export function GlassCard({
   children, className = '', style, glow = 'none', onClick, animate = true
 }: GlassCardProps) {
   const baseStyle: CSSProperties = {
-    background: 'var(--w-glass-card-bg, var(--w-glass))',
+    background: `var(--w-glass-card-bg, ${W.glass04})`,
     backdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
     WebkitBackdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
     border: 'var(--w-glass-card-border, var(--w-border-chrome))',
+    borderTop: glow !== 'none' ? `1px solid ${colorMap[glow]}` : undefined,
     borderRadius: W.radius.lg,
-    boxShadow: glowMap[glow],
+    boxShadow: `0 4px 12px rgba(0,0,0,0.1)`,
     ...style,
   }
 

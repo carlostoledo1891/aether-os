@@ -8,11 +8,10 @@ import { ProvenanceBadge } from '../../components/ui/ProvenanceBadge'
 import { W } from '../../app/canvas/canvasTheme'
 import { LITH_COLORS, LITH_LABELS } from '../../components/charts/lithologyPalette'
 import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
-import type { PlantOverlayNodeDetail } from '../../components/map/PlantOverlay'
 import type { HydroOverlayNodeDetail } from '../../components/map/HydroOverlay'
 import type { FieldMapGeoSelection } from './fieldMapGeoSelection'
 import type { MapTab } from './constants'
-import { PLANT_NODE_SPECS, HYDRO_NODE_SPECS } from './constants'
+import { HYDRO_NODE_SPECS } from './constants'
 
 export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
   mapTab,
@@ -26,7 +25,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
   mapTab: MapTab
   isPinned: boolean
   isHovering: boolean
-  activeNode: PlantOverlayNodeDetail | HydroOverlayNodeDetail | null
+  activeNode: HydroOverlayNodeDetail | null
   geoSelection: FieldMapGeoSelection | null
   onClear: () => void
   onClearGeo: () => void
@@ -240,17 +239,6 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
             )
           })()}
 
-          {geoSelection.kind === 'deposit' && (
-            <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
-              <div className="font-bold text-[var(--w-text1)]">{geoSelection.detail.name}</div>
-              <div>
-                {geoSelection.detail.tonnage_mt} Mt · {geoSelection.detail.treo_ppm} ppm · MREO{' '}
-                {geoSelection.detail.mreo_pct}%
-              </div>
-              <div style={{ color: W.text4 }}>{geoSelection.detail.resource_note}</div>
-            </div>
-          )}
-
           {geoSelection.kind === 'pfs' && (
             <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
               <div className="font-bold text-[var(--w-text1)]">{geoSelection.detail.label}</div>
@@ -336,7 +324,6 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
         </>
       ) : activeNode ? (() => {
         const accentColor = mapTab === 'operations' ? W.violetSoft : W.cyan
-        const plantSpec = mapTab === 'operations' ? PLANT_NODE_SPECS[activeNode.id] : undefined
         const hydroNode = mapTab === 'environment' ? (activeNode as HydroOverlayNodeDetail) : null
         const hydroSpec = hydroNode && hydroNode.nodeType !== 'spring'
           ? HYDRO_NODE_SPECS[hydroNode.id]
@@ -360,35 +347,6 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
                 {activeNode.metric || '—'}
               </div>
             </div>
-
-            {plantSpec && (
-              <AnimatePresence>
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="mb-2 flex flex-col gap-1"
-                >
-                  {([['Hardware', plantSpec.hardware], ['Spec', plantSpec.spec], ...(plantSpec.threshold ? [['Threshold', plantSpec.threshold]] : []), ['Frequency', plantSpec.frequency]] as [string, string][]).map(([k, v]) => (
-                    <div key={k} className="flex justify-between gap-1.5">
-                      <span className="shrink-0 text-[10px]" style={{ color: W.text4 }}>{k}</span>
-                      <span className="text-right text-[10px] font-semibold" style={{ color: W.text2 }}>{v}</span>
-                    </div>
-                  ))}
-                  {'status' in activeNode && (
-                    <div className="flex justify-between gap-1.5">
-                      <span className="text-[10px]" style={{ color: W.text4 }}>Status</span>
-                      <StatusChip label={String((activeNode as PlantOverlayNodeDetail).status).toUpperCase()} variant={
-                        (activeNode as PlantOverlayNodeDetail).status === 'running' ? 'violet' :
-                        (activeNode as PlantOverlayNodeDetail).status === 'success' ? 'green' :
-                        (activeNode as PlantOverlayNodeDetail).status === 'warning' ? 'amber' : 'red'
-                      } size="sm" />
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            )}
 
             {hydroSpec && (
               <AnimatePresence>

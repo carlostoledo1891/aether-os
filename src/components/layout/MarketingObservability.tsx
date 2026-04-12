@@ -64,11 +64,10 @@ function OrganogramEdge({ x1, y1, x2, y2, delay }: { x1: number, y1: number, x2:
       <motion.circle
         r={3}
         fill={V}
-        style={{ filter: `drop-shadow(0 0 6px ${V})` }}
         initial={{ offsetDistance: '0%' }}
         animate={{ offsetDistance: '100%' }}
         transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay }}
-        style={{ offsetPath: `path('${path}')` } as any}
+        style={{ filter: `drop-shadow(0 0 6px ${V})`, offsetPath: `path('${path}')` } as any}
       />
     </>
   )
@@ -145,11 +144,10 @@ export function MarketingObservability() {
               <motion.circle
                 r={3}
                 fill={W.green}
-                style={{ filter: `drop-shadow(0 0 6px ${W.green})` }}
                 initial={{ offsetDistance: '0%' }}
                 animate={{ offsetDistance: '100%' }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'linear', delay: 2.6 }}
-                style={{ offsetPath: `path('M 120 400 C 40 400, 40 100, 120 100')` } as any}
+                style={{ filter: `drop-shadow(0 0 6px ${W.green})`, offsetPath: `path('M 120 400 C 40 400, 40 100, 120 100')` } as any}
               />
             </svg>
           </div>
