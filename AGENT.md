@@ -44,10 +44,20 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Perfect alignment between file hierarchy and canonical URL routing.
+*   **Focus:** Advisors onboarding sprint complete. Founders pitch (Juliano & Guilherme) ready for Apr 13. Meteoric pitch (Dr. Carvalho & Dr. Tunks) targeted for Apr 16.
 *   **Recent Changes:**
-    - Reorganized `src/pages` into `marketing/`, `decks/`, and `views/` directories to match exact URL structures.
-    - Cleaned up legacy route aliases in `src/App.tsx`.
-    - Automatically patched relative imports across the entire deck slide hierarchy.
+    - Onboarded **Milca Neves Tavares** and **Alexandre Quevedo** (Mil Caminhos) as ESG/HRDD advisors across all surfaces: website, Founders Deck, Meteoric Deck, personas.
+    - Created unified `TeamMember` interface and shared `TEAM` roster in `src/config/marketing.ts` — single source of truth for 6 team members across 4 surfaces.
+    - Deleted Investors Deck entirely (`src/pages/decks/investors/`, route, references). Only Founders + Meteoric decks remain.
+    - Removed Thiago A. from all active docs (core-personas.md, VALUATION.md). Archives untouched.
+    - Consolidated persona docs: fixed Aether->Vero title, standardized Caponi to "Scientific Advisor", updated team config and advisor collaboration table.
+    - Fixed stale stats: "27 AI tools" -> 31, hardcoded values replaced with `MARKETING_COPY` constants in BookendSlides/CloseSlide.
+    - Updated RiskSlide from "Solo founder risk" to "Key-person risk" with advisory bench mitigation.
+    - Added ESG lane to WhyINeedYouSlide (LANES + CANNOT_ITEMS).
+*   **Next Steps:**
+    - Visual smoke test across Platform, Decks, and Reports before Apr 13 send.
+    - Draft and send Founders pitch email to Juliano & Guilherme.
+    - Small improvements sprint (user-led) across all pages.
+    - Prepare Meteoric pitch for Apr 16 send.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*

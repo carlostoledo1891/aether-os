@@ -7,8 +7,8 @@ export const ENGINE_CONFIG = {
   openMeteo: {
     enabled: process.env.ENRICHER_OPENMETEO !== '0',
     intervalMs: 30 * 60 * 1000,
-    latitude: parseFloat(process.env.SITE_LAT ?? '-21.815'),
-    longitude: parseFloat(process.env.SITE_LNG ?? '-46.585'),
+    latitude: parseFloat(process.env.SITE_LAT ?? '-21.88'),
+    longitude: parseFloat(process.env.SITE_LNG ?? '-46.555'),
     pastDays: 30,
   },
 
@@ -20,8 +20,8 @@ export const ENGINE_CONFIG = {
   usgs: {
     enabled: process.env.ENRICHER_USGS !== '0',
     intervalMs: 6 * 60 * 60 * 1000,
-    latitude: -21.79,
-    longitude: -46.58,
+    latitude: -21.88,
+    longitude: -46.555,
     radiusKm: 200,
   },
 
@@ -30,6 +30,21 @@ export const ENGINE_CONFIG = {
     apiKey: process.env.ALPHA_VANTAGE_KEY ?? '',
     intervalMs: 24 * 60 * 60 * 1000,
     symbol: 'MEI.AX',
+  },
+
+  forecast: {
+    enabled: process.env.ENRICHER_FORECAST !== '0',
+    intervalMs: 30 * 60 * 1000,
+    latitude: parseFloat(process.env.SITE_LAT ?? '-21.88'),
+    longitude: parseFloat(process.env.SITE_LNG ?? '-46.555'),
+    forecastDays: 16,
+  },
+
+  archive: {
+    enabled: process.env.ENRICHER_ARCHIVE !== '0',
+    latitude: parseFloat(process.env.SITE_LAT ?? '-21.88'),
+    longitude: parseFloat(process.env.SITE_LNG ?? '-46.555'),
+    yearsBack: 5,
   },
 }
 

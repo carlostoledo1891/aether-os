@@ -41,20 +41,17 @@ function getInitialStyle(): MapStyleId {
   return MAP_STYLE_DEFS[0].id
 }
 
-/** Default framing: Poços de Caldas Alkaline Complex centroid.
- *  Latitude shifted south to compensate for pitch-induced visual center shift. */
+import { CALDEIRA_GEO } from 'shared/sites/caldeira'
+
 export const CALDEIRA_VIEW_STATE = {
-  longitude: -46.555,
-  latitude:  -21.88,
-  zoom:       10.98,
-  pitch:      35,
-  bearing:    0,
+  longitude: CALDEIRA_GEO.center[0],
+  latitude:  CALDEIRA_GEO.center[1],
+  zoom:      CALDEIRA_GEO.defaultZoom,
+  pitch:     CALDEIRA_GEO.defaultPitch,
+  bearing:   CALDEIRA_GEO.defaultBearing,
 }
 
-export const CALDEIRA_BBOX: [[number, number], [number, number]] = [
-  [-46.72, -22.06],
-  [-46.39, -21.75],
-]
+export const CALDEIRA_BBOX: [[number, number], [number, number]] = CALDEIRA_GEO.bbox
 
 export interface FlyToTarget {
   center: [number, number]
@@ -328,7 +325,7 @@ function ResetCameraController({ initialViewState, hideControls }: { initialView
         color: W.text3,
       }}
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0v3a2 2 0 0 0 2 2h3"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 1 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
     </button>
   )
 }

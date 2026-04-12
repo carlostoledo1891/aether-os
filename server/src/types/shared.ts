@@ -106,6 +106,7 @@ export type DataProvenanceKind =
   | 'modeled'
   | 'illustrative'
   | 'simulated'
+  | 'ai_predicted'
 
 export interface IngestPayload {
   source: string
@@ -136,6 +137,46 @@ export interface MarketIngestPayload {
   value: number
   currency: string
   detail?: Record<string, unknown>
+}
+
+export interface ForecastIngestPayload {
+  source: string
+  provenance: DataProvenanceKind
+  timestamp: string
+  latitude: number
+  longitude: number
+  forecastDays: number
+  totalPrecipMm: number
+  series: {
+    time: string[]
+    temperature_2m_max: number[]
+    temperature_2m_min: number[]
+    precipitation_sum: number[]
+    wind_speed_10m_max: number[]
+    relative_humidity_2m_max: number[]
+    et0_fao_evapotranspiration: number[]
+  }
+}
+
+export interface HistoricalWeatherIngestPayload {
+  source: string
+  provenance: DataProvenanceKind
+  timestamp: string
+  latitude: number
+  longitude: number
+  startDate: string
+  endDate: string
+  dayCount: number
+  totalPrecipMm: number
+  avgAnnualPrecipMm: number
+  series: {
+    time: string[]
+    temperature_2m_max: number[]
+    temperature_2m_min: number[]
+    precipitation_sum: number[]
+    wind_speed_10m_max: number[]
+    et0_fao_evapotranspiration: number[]
+  }
 }
 
 export interface SeismicIngestPayload {

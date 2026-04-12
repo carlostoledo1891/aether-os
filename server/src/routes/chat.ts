@@ -10,6 +10,8 @@ import {
   getLatestTelemetry,
   getTelemetryHistory,
   getLatestWeather,
+  getLatestForecast,
+  getHistoricalWeather,
   getMarketData,
 } from '../store/db.js'
 import { getAuditTrail, verifyChain } from '../store/auditChain.js'
@@ -28,6 +30,7 @@ CORE RULES:
 4. Distinguish Vero data (with provenance) from any external or user-uploaded sources.
 5. If a tool returns null or empty data, say "This data is not currently available in the Vero database" rather than making up values.
 6. For financial metrics (NPV, IRR, CAPEX), always note the scenario context (bear/consensus/bull).
+7. For regulatory questions, use queryKnowledgeBase FIRST before webSearch. The knowledge base contains verified references for CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, and Caldeira-specific regulatory context.
 7. For environmental data, note whether readings are live (from enrichers) or simulated.
 8. Numbers should be formatted for readability (e.g., "$821M" not "821000000").
 9. Keep responses concise but thorough. Use bullet points for multi-item answers.
@@ -37,7 +40,9 @@ CITATION FORMAT (two-tier):
 - Vero data: "NPV is $821M (source: PFS Jul 2025, as_of: 2025-07-21)"
 - External/web: "According to [Source Name, Date]: quote or fact" — always label as external context, not Vero-verified data.
 
-When using the webSearch tool, clearly distinguish external results from Vero database queries. Prefix web findings with "External:" or "According to [source]:".`
+When using the webSearch tool, clearly distinguish external results from Vero database queries. Prefix web findings with "External:" or "According to [source]:".
+
+You have access to weather intelligence tools. When users ask about environmental conditions, water quality outlook, spring health, or climate patterns, proactively use queryWeatherForecast, queryWeatherHistory, and analyzeEnvironmentalRisk to provide data-backed answers. Reference ECMWF ERA5 data provenance when discussing historical patterns. Always distinguish between observed data (verified_real) and AI-predicted forecasts. Never present predictions as certainties.`
 
 function loadPilotPlantMirror(): Record<string, unknown> {
   if (!existsSync(PILOT_PLANT_PATH)) return { error: 'pilot-plant-mirror.json not found' }
@@ -216,6 +221,127 @@ function buildTools() {
         audit_design: 'Real SHA-256 append-only hash chain in dedicated audit_events table. Each event stores payload_hash, prev_hash, and chain_hash. Chain integrity verifiable via GET /api/audit/verify-chain. Merkle root anchoring planned for Phase 1.',
       }),
     }),
+    queryKnowledgeBase: tool({
+      description: 'Search Vero regulatory and technical knowledge base. Use BEFORE web search for regulatory questions about CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, mining codes, or Caldeira-specific context.',
+      inputSchema: z.object({
+        query: z.string().describe('Search query, e.g. "sulfate discharge limits Brazil"'),
+        domain: z.enum(['geology', 'hydrology', 'regulatory', 'international', 'apis', 'all']).optional().describe('Knowledge domain to search'),
+      }),
+      execute: async ({ query, domain }: { query: string; domain?: string }) => {
+        try {
+          const indexPath = resolve(__dirname, '..', '..', '..', 'data', 'knowledge', 'index.json')
+          if (!existsSync(indexPath)) return { error: 'Knowledge base index not found', results: [] }
+          const index = JSON.parse(readFileSync(indexPath, 'utf-8')) as Array<{
+            id: string; jurisdiction: string; authority: string; title: string
+            relevant_thresholds: Array<Record<string, unknown>>
+            file: string; tags: string[]
+          }>
+
+          const queryLower = query.toLowerCase()
+          const queryTerms = queryLower.split(/\s+/)
+
+          const scored = index.map(entry => {
+            let score = 0
+            const searchable = `${entry.title} ${entry.authority} ${entry.tags.join(' ')} ${entry.jurisdiction}`.toLowerCase()
+            for (const term of queryTerms) {
+              if (searchable.includes(term)) score += 2
+              if (entry.tags.some(t => t.includes(term))) score += 3
+            }
+            if (domain && domain !== 'all') {
+              if (entry.jurisdiction.includes(domain) || entry.tags.includes(domain)) score += 5
+            }
+            return { entry, score }
+          }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3)
+
+          const results = scored.map(({ entry }) => {
+            const filePath = resolve(__dirname, '..', '..', '..', 'data', 'knowledge', entry.file)
+            let content = ''
+            if (existsSync(filePath)) {
+              content = readFileSync(filePath, 'utf-8').slice(0, 3000)
+            }
+            return {
+              id: entry.id,
+              title: entry.title,
+              authority: entry.authority,
+              jurisdiction: entry.jurisdiction,
+              thresholds: entry.relevant_thresholds,
+              content: content || 'Document not yet populated',
+            }
+          })
+
+          return { query, matched: results.length, results }
+        } catch (err) {
+          return { error: err instanceof Error ? err.message : 'Knowledge base query failed', results: [] }
+        }
+      },
+    }),
+
+    queryWeatherForecast: tool({
+      description: 'Get 16-day weather forecast for the Caldeira site including temperature, precipitation, wind, humidity, and evapotranspiration.',
+      inputSchema: z.object({}),
+      execute: async () => getLatestForecast() ?? { error: 'No forecast data available' },
+    }),
+    queryWeatherHistory: tool({
+      description: 'Get historical climate data (ERA5 reanalysis via Open-Meteo) for the Caldeira site — up to 5 years of daily temperature, precipitation, wind, and evapotranspiration.',
+      inputSchema: z.object({}),
+      execute: async () => getHistoricalWeather() ?? { error: 'No historical weather data available' },
+    }),
+    analyzeEnvironmentalRisk: tool({
+      description: 'Analyze environmental risk by combining current telemetry, weather forecast, and compliance thresholds. Returns a structured risk assessment.',
+      inputSchema: z.object({}),
+      execute: async () => {
+        const telemetry = getLatestTelemetry()
+        const forecast = getLatestForecast()
+        const thresholds = getDomainState<Record<string, unknown>>('thresholds')
+
+        const sulfate = telemetry?.env?.sulfate_ppm ?? null
+        const nitrate = telemetry?.env?.nitrate_ppm ?? null
+        const pH = telemetry?.env?.ph ?? null
+        const forecastPrecip = forecast?.totalPrecipMm ?? null
+
+        const risks: string[] = []
+        if (sulfate !== null && sulfate > 200) risks.push('Sulfate approaching CONAMA 357 limit (250 mg/L)')
+        if (nitrate !== null && nitrate > 8) risks.push('Nitrate approaching CONAMA 357 limit (10 mg/L)')
+        if (pH !== null && (pH < 6.2 || pH > 8.8)) risks.push('pH near regulatory boundary (6.0–9.0)')
+        if (forecastPrecip !== null && forecastPrecip > 150) risks.push('Heavy precipitation forecast may affect runoff and dilution')
+
+        const riskLevel = risks.length >= 3 ? 'high' : risks.length >= 1 ? 'medium' : 'low'
+
+        return {
+          riskLevel,
+          risks,
+          currentReadings: { sulfate_ppm: sulfate, nitrate_ppm: nitrate, pH },
+          forecastPrecipMm: forecastPrecip,
+          thresholdsLoaded: thresholds !== null,
+          assessedAt: new Date().toISOString(),
+        }
+      },
+    }),
+    querySpringHealthPrediction: tool({
+      description: 'Predict spring health changes based on forecast precipitation and historical patterns. Returns predicted spring preservation percentage and status.',
+      inputSchema: z.object({}),
+      execute: async () => {
+        const forecast = getLatestForecast()
+        if (!forecast) return { error: 'No forecast data available for prediction' }
+
+        const totalPrecip = forecast.totalPrecipMm
+        let preservation: number
+        let status: string
+        if (totalPrecip > 200) { preservation = 98; status = 'excellent — ample water supply' }
+        else if (totalPrecip > 100) { preservation = 95; status = 'good — adequate seasonal rainfall' }
+        else if (totalPrecip > 50) { preservation = 91; status = 'fair — below-average precipitation' }
+        else { preservation = 87; status = 'watch — low precipitation may stress springs' }
+
+        return {
+          predictedPreservation: preservation,
+          status,
+          forecastPrecipMm: totalPrecip,
+          forecastDays: forecast.forecastDays,
+          confidence: 'Simplified model based on precipitation–spring-flow correlation. Full hydrological modeling pending.',
+          assessedAt: new Date().toISOString(),
+        }
+      },
+    }),
     webSearch: tool({
       description: 'Search the web for external context: regulatory news, market trends, rare earths industry updates. Results are NOT Vero-verified data — always label as external.',
       inputSchema: z.object({
@@ -288,7 +414,7 @@ export async function chatRoutes(app: FastifyInstance) {
       })
     }
 
-    const modelId = process.env.AI_MODEL ?? 'gemini-2.5-flash'
+    const modelId = process.env.AI_MODEL ?? 'gemini-2.5-pro'
     const google = createGoogleGenerativeAI({ apiKey })
 
     const { messages } = req.body as { messages: UIMessage[] }

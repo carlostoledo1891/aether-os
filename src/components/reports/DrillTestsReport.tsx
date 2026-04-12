@@ -43,30 +43,9 @@ const RECOVERY_TABLE = [
 
 const maxTreo = Math.max(...DEPOSIT_DATA.filter(d => d.treo_ppm > 0).map(d => d.treo_ppm))
 
-/* ─── Shared Styles ────────────────────────────────────────────────────── */
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
 
-const sectionStyle = {
-  padding: '32px 40px',
-  borderBottom: `1px solid ${WL.border}`,
-} as const
-
-const cardStyle = {
-  background: WL.surface,
-  border: `1px solid ${WL.border}`,
-  borderRadius: WL.radius.lg,
-  padding: 20,
-} as const
-
-const sectionTitle = (text: string) => (
-  <h2 style={{
-    fontSize: 14, fontWeight: 700, color: WL.text1,
-    letterSpacing: '-0.01em', margin: '0 0 20px',
-    fontFamily: 'var(--font-ui)',
-    display: 'flex', alignItems: 'center', gap: 8,
-  }}>
-    {text}
-  </h2>
-)
+const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
 const thStyle = {
   textAlign: 'left' as const, padding: '8px 12px',

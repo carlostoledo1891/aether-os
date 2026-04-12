@@ -1,7 +1,7 @@
 import { W, V } from '../shared'
 
 const VIEWS = [
-  { view: 'Ground Truth', who: 'Geologists · Operators', what: '3D terrain, drill collars, pilot plant digital twin, hydro monitoring, 1,092 springs', icon: '\u{1F5FA}\uFE0F', accent: V },
+  { view: 'Ground Truth', who: 'Geologists · Operators', what: '3D terrain, drill collars, pilot plant digital twin, hydro monitoring, 1,092 springs + predictive environmental intelligence. Real weather data from ECMWF ERA5 feeds spring health forecasting.', icon: '\u{1F5FA}\uFE0F', accent: V },
   { view: 'Trade Truth', who: 'Buyers · Auditors · DoD', what: 'FEOC tracking, DPP export, SHA-256 audit chain, molecular-to-magnet traceability', icon: '\u{1F517}', accent: V },
   { view: 'Board Truth', who: 'Board · Investors · ECAs', what: 'Financial scenarios, risk register, capital tracker, ESG frameworks, stakeholders', icon: '\u{1F4CA}', accent: V },
 ]

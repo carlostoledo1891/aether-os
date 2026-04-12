@@ -2,25 +2,23 @@
 import { lazy, Suspense, useState, useCallback } from 'react'
 import { StatCard, Tag, SlidePanel } from '../../../../components/deck'
 import { MapBase } from '../../../../components/map/MapBase'
-import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
-import { LicenseOverlay, LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
-import { DrillHoleOverlay, DRILL_LAYER_ID, parseLithologyIntervals } from '../../../../components/map/DrillHoleOverlay'
+import { MapOverlays } from '../../../../components/map/MapOverlays'
+import { useMapPreset } from '../../../../components/map/mapPresets'
+import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
+import { LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
+import { DRILL_LAYER_ID, parseLithologyIntervals } from '../../../../components/map/DrillHoleOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
 import { PilotPlantCard } from '../../../../components/plant/PilotPlantCard'
-import { W, V, CALDEIRA_CENTER } from './shared'
+import { CALDEIRA_GEO } from 'shared/sites/caldeira'
+import { W, V } from './shared'
 
 const AnimatedStat = lazy(() => import('../AnimatedStat'))
 
-const CAPAO_DO_MEL: [number, number] = [-46.565, -21.848]
-
-const INTERACTIVE_LAYERS = [
-  DRILL_LAYER_ID,
-  LICENSE_LAYER_ID,
-  CALDEIRA_BOUNDARY_LAYER_ID,
-]
+const CAPAO_DO_MEL = CALDEIRA_GEO.pois.capaoDoMel.coords
 
 export default function GeologySlide() {
+  const preset = useMapPreset('deck-geology')
   const [popup, setPopup] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
 
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
@@ -88,28 +86,16 @@ export default function GeologySlide() {
       <Suspense fallback={<div style={{ width: '100%', height: '100%', background: W.glass04 }} />}>
         <MapBase
           id="meteoric-geology-map"
-          initialViewState={{
-            longitude: CALDEIRA_CENTER[0],
-            latitude: CALDEIRA_CENTER[1],
-            zoom: 10.5,
-            pitch: 40,
-            bearing: 0,
-          }}
-          interactive={true}
-          interactiveLayerIds={INTERACTIVE_LAYERS}
+          {...preset.viewProps}
+          interactiveLayerIds={preset.interactiveLayerIds}
           cursor={popup ? 'pointer' : ''}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           flyTo={{ center: CAPAO_DO_MEL, zoom: 13, pitch: 45, duration: 4000 }}
-          disableZoomControls={false}
-          hideControls={false}
-          forceStyle="satellite"
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >
-          <CaldeiraBoundary />
-          <LicenseOverlay />
-          <DrillHoleOverlay />
+          <MapOverlays layers={preset.overlays} />
         </MapBase>
       </Suspense>
       <PilotPlantCard />

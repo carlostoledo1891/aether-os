@@ -34,30 +34,9 @@ const PROCESS_STEPS = [
   { step: 7, name: 'MREC Product', detail: '>90% TREO grade — ready for separation', color: WL.green },
 ]
 
-/* ─── Shared Styles ────────────────────────────────────────────────────── */
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
 
-const sectionStyle = {
-  padding: '32px 40px',
-  borderBottom: `1px solid ${WL.border}`,
-} as const
-
-const cardStyle = {
-  background: WL.surface,
-  border: `1px solid ${WL.border}`,
-  borderRadius: WL.radius.lg,
-  padding: 20,
-} as const
-
-const sectionTitle = (text: string) => (
-  <h2 style={{
-    fontSize: 14, fontWeight: 700, color: WL.text1,
-    letterSpacing: '-0.01em', margin: '0 0 20px',
-    fontFamily: 'var(--font-ui)',
-    display: 'flex', alignItems: 'center', gap: 8,
-  }}>
-    {text}
-  </h2>
-)
+const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
 const metricBox = (value: string, label: string, accent?: string) => (
   <div style={cardStyle}>

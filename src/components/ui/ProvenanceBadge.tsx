@@ -10,6 +10,7 @@ const KIND_COLOR: Record<DataProvenanceKind, string> = {
   modeled: W.amber,
   illustrative: W.text3,
   simulated: W.text4,
+  ai_predicted: W.amber,
 }
 
 interface ProvenanceBadgeProps {
@@ -21,6 +22,7 @@ interface ProvenanceBadgeProps {
 
 export function ProvenanceBadge({ kind, title, className = '', style }: ProvenanceBadgeProps) {
   const c = KIND_COLOR[kind]
+  const isPredicted = kind === 'ai_predicted'
   return (
     <span
       title={title ?? PROVENANCE_SHORT_LABEL[kind]}
@@ -29,7 +31,10 @@ export function ProvenanceBadge({ kind, title, className = '', style }: Provenan
     >
       <span
         className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
-        style={{ background: c }}
+        style={{
+          background: isPredicted ? 'transparent' : c,
+          border: isPredicted ? `1.5px dashed ${c}` : undefined,
+        }}
       />
       {PROVENANCE_SHORT_LABEL[kind]}
     </span>

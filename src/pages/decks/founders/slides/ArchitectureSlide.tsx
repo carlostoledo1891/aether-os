@@ -2,10 +2,11 @@ import { W, V } from '../shared'
 import { Tag } from '../../../../components/deck'
 
 const ENRICHERS = [
-  { label: 'Open-Meteo', y: 72 },
-  { label: 'BCB PTAX', y: 96 },
-  { label: 'USGS', y: 120 },
-  { label: 'Alpha Vantage', y: 144 },
+  { label: 'Open-Meteo Forecast', y: 60 },
+  { label: 'ECMWF ERA5 Archive', y: 84 },
+  { label: 'BCB PTAX', y: 108 },
+  { label: 'USGS', y: 132 },
+  { label: 'Alpha Vantage', y: 156 },
 ]
 
 const SEC_BADGES = ['CSP', 'CORS', 'Rate Limit', 'Fail-closed']

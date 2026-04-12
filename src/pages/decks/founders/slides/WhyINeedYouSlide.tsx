@@ -14,12 +14,14 @@ const CANNOT_ITEMS = [
   'Pricing benchmarks and contract structuring',
   'Board governance and advisory network',
   'Market positioning against Minviro, Circulor, generic ESG',
+  'ESG governance, HRDD compliance, and community rights frameworks',
 ]
 
 const LANES = [
   { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC' },
   { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
   { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
+  { who: 'Milca + Ale', lane: 'ESG + Social License', detail: 'Due diligence, HRDD, community rights, EU compliance' },
 ]
 
 export default function WhyINeedYouSlide() {
@@ -47,7 +49,7 @@ export default function WhyINeedYouSlide() {
         ))}
       </div>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, maxWidth: 800, width: '100%', marginBottom: 20 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, maxWidth: 900, width: '100%', marginBottom: 20 }}>
       {LANES.map(p => (
         <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>

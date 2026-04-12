@@ -12,6 +12,8 @@ import { telemetryIngestRoutes } from './ingest/telemetryHook.js'
 import { weatherIngestRoutes } from './ingest/weatherHook.js'
 import { marketIngestRoutes } from './ingest/marketHook.js'
 import { lapocIngestRoutes } from './ingest/lapocHook.js'
+import { forecastIngestRoutes } from './ingest/forecastHook.js'
+import { historicalWeatherIngestRoutes } from './ingest/historicalWeatherHook.js'
 import { telemetryWsRoutes } from './ws/telemetryChannel.js'
 import multipart from '@fastify/multipart'
 import { chatRoutes } from './routes/chat.js'
@@ -123,6 +125,8 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
   await app.register(domainRoutes)
   await app.register(telemetryIngestRoutes)
   await app.register(weatherIngestRoutes)
+  await app.register(forecastIngestRoutes)
+  await app.register(historicalWeatherIngestRoutes)
   await app.register(marketIngestRoutes)
   await app.register(lapocIngestRoutes)
   await app.register(telemetryWsRoutes)

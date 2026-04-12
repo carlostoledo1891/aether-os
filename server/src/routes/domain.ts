@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import {
-  getDomainState, getLatestWeather, getMarketData, getRecentSeismic,
+  getDomainState, getLatestWeather, getLatestForecast, getHistoricalWeather,
+  getMarketData, getRecentSeismic,
   getLatestLapocIngest, dismissAlert, dismissAllAlerts,
 } from '../store/db.js'
 import { getAuditTrail, getAuditEvent, verifyChain } from '../store/auditChain.js'
@@ -152,12 +153,16 @@ export async function domainRoutes(app: FastifyInstance) {
   app.get('/api/context', { schema: { tags: ['domain'], summary: 'Data context (mode, banner label, active sources)' } }, async () => {
     const base = getDomainState<Record<string, unknown>>('data_context') ?? {}
     const weather = getLatestWeather()
+    const forecast = getLatestForecast()
+    const historical = getHistoricalWeather()
     const fx = getMarketData('BRL/USD')
     const seismic = getRecentSeismic(1)
     const lapoc = getLatestLapocIngest()
 
     const sources: string[] = ['Engine']
     if (weather) sources.push('Open-Meteo')
+    if (forecast) sources.push('Forecast')
+    if (historical) sources.push('ERA5')
     if (fx) sources.push('BCB')
     if (seismic.length > 0) sources.push('USGS')
     if (lapoc && lapoc.provenance === 'verified_real') sources.push('LAPOC')
@@ -173,6 +178,8 @@ export async function domainRoutes(app: FastifyInstance) {
     if (!base) return {}
 
     const weather = getLatestWeather()
+    const forecast = getLatestForecast()
+    const historical = getHistoricalWeather()
     const fx = getMarketData('BRL/USD')
     const lapoc = getLatestLapocIngest()
 
@@ -180,6 +187,13 @@ export async function domainRoutes(app: FastifyInstance) {
     if (weather) {
       sections['precip_field'] = { kind: 'verified_real', hint: `Open-Meteo live data (updated ${weather.updatedAt})` }
       sections['hydro_spring_status'] = { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay — modeled with real precip input from Open-Meteo' }
+    }
+    if (forecast) {
+      sections['weather_forecast'] = { kind: 'modeled', hint: `Open-Meteo ${forecast.forecastDays}-day forecast — numerical weather prediction model (updated ${forecast.updatedAt})` }
+      sections['spring_health_prediction'] = { kind: 'ai_predicted', hint: 'Spring health forecast based on predicted precipitation and historical correlation — indicative only' }
+    }
+    if (historical) {
+      sections['climate_baseline'] = { kind: 'from_public_record', hint: `ECMWF ERA5 reanalysis — ${historical.dayCount} days (${historical.startDate} to ${historical.endDate})` }
     }
     if (fx) {
       sections['fx_rate'] = { kind: 'verified_real', hint: `BCB PTAX rate (updated ${fx.updatedAt})` }
@@ -243,7 +257,7 @@ export async function domainRoutes(app: FastifyInstance) {
         unique_battery_identifier: { value: batch.batch_id, status: 'mapped', cen_ref: 'Annex VI §1(a)' },
         manufacturer_identification: { value: 'Meteoric Resources — Caldeira Project', status: 'mapped', cen_ref: 'Annex VI §1(b)' },
         manufacturing_date: { value: batch.batch_date, status: 'mapped', cen_ref: 'Annex VI §1(c)' },
-        manufacturing_location: { value: 'Poços de Caldas, MG, Brazil (-21.79, -46.56)', status: 'mapped', cen_ref: 'Annex VI §1(d)' },
+        manufacturing_location: { value: 'Poços de Caldas, MG, Brazil (-21.88, -46.555)', status: 'mapped', cen_ref: 'Annex VI §1(d)' },
         batch_weight_kg: { value: batch.tonnage_kg, status: 'mapped', cen_ref: 'Annex VI §1(e)' },
         battery_chemistry: { value: 'NdFeB permanent magnet precursor (MREC)', status: 'mapped', cen_ref: 'Annex VI §2(a)' },
         critical_raw_materials: { value: 'Nd, Pr, Dy, Tb (ionic clay adsorption REE)', status: 'mapped', cen_ref: 'Annex VI §2(b)' },
@@ -300,6 +314,16 @@ export async function domainRoutes(app: FastifyInstance) {
   app.get('/api/weather/current', { schema: { tags: ['enrichers'], summary: 'Current weather (Open-Meteo)' } }, async (_req, reply) => {
     const data = getLatestWeather()
     return data ?? reply.code(503).send({ error: 'No weather data ingested' })
+  })
+
+  app.get('/api/weather/forecast', { schema: { tags: ['enrichers'], summary: '16-day weather forecast (Open-Meteo)' } }, async (_req, reply) => {
+    const data = getLatestForecast()
+    return data ?? reply.code(503).send({ error: 'No forecast data ingested' })
+  })
+
+  app.get('/api/weather/historical', { schema: { tags: ['enrichers'], summary: 'Historical climate data (ERA5 via Open-Meteo)' } }, async (_req, reply) => {
+    const data = getHistoricalWeather()
+    return data ?? reply.code(503).send({ error: 'No historical weather data ingested' })
   })
 
   app.get('/api/market/fx', { schema: { tags: ['enrichers'], summary: 'BRL/USD exchange rate (BCB PTAX)' } }, async (_req, reply) => {

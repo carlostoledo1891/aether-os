@@ -2,25 +2,22 @@
 import { lazy, Suspense, useState, useCallback } from 'react'
 import { Tag, SlidePanel } from '../../../../components/deck'
 import { MapBase } from '../../../../components/map/MapBase'
-import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
-import { EnvironmentalOverlay, ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
-import { SpringPinsOverlay, SPRING_PIN_LAYER_ID } from '../../../../components/map/SpringPinsOverlay'
+import { MapOverlays } from '../../../../components/map/MapOverlays'
+import { useMapPreset } from '../../../../components/map/mapPresets'
+import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
+import { ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
+import { SPRING_PIN_LAYER_ID } from '../../../../components/map/SpringPinsOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
 import { HydroMonitoringCard } from '../../../../components/map/HydroMonitoringCard'
 import { useTelemetry } from '../../../../services/DataServiceProvider'
 import { useSiteWeather } from '../../../../hooks/useSiteWeather'
-import { W, V, CALDEIRA_CENTER } from './shared'
+import { W, V } from './shared'
 
 const AnimatedStat = lazy(() => import('../AnimatedStat'))
 
-const INTERACTIVE_LAYERS = [
-  SPRING_PIN_LAYER_ID,
-  ENV_APA_FILL_LAYER_ID,
-  CALDEIRA_BOUNDARY_LAYER_ID,
-]
-
 export default function HydroSlide() {
+  const preset = useMapPreset('deck-hydro')
   const [popup, setPopup] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
   const { env } = useTelemetry()
   const weather = useSiteWeather(30, { enabled: true })
@@ -40,6 +37,8 @@ export default function HydroSlide() {
     scenarioDroughtIndex: 0,
     scenarioHorizon: '',
   }
+
+  const INTERACTIVE_LAYERS = preset.interactiveLayerIds
 
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
@@ -102,27 +101,15 @@ export default function HydroSlide() {
       <Suspense fallback={<div style={{ width: '100%', height: '100%', background: W.glass04 }} />}>
         <MapBase
           id="meteoric-hydro-map"
-          initialViewState={{
-            longitude: CALDEIRA_CENTER[0],
-            latitude: CALDEIRA_CENTER[1],
-            zoom: 11,
-            pitch: 30,
-            bearing: 10,
-          }}
-          interactive={true}
+          {...preset.viewProps}
           interactiveLayerIds={INTERACTIVE_LAYERS}
           cursor={popup ? 'pointer' : ''}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          disableZoomControls={false}
-          hideControls={false}
-          forceStyle="satellite"
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >
-          <EnvironmentalOverlay showApa showBuffer showMonitoring />
-          <CaldeiraBoundary />
-          <SpringPinsOverlay />
+          <MapOverlays layers={preset.overlays} environmentalProps={{ showApa: true, showBuffer: true, showMonitoring: true }} />
         </MapBase>
       </Suspense>
       <HydroMonitoringCard 
@@ -142,7 +129,7 @@ export default function HydroSlide() {
         </SlidePanel>
         <SlidePanel style={{ padding: '14px 16px' }}>
           <div style={{ fontSize: 10, color: W.cyan, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Environmental Layers</div>
-          {['APA boundary with buffer zones', 'Spring network (pH, conductivity, flow)', 'Piezometer stations with readings', 'FEAM/IGAM compliance zones', 'Community monitoring interface'].map(item => (
+          {['APA boundary with buffer zones', 'Spring network (pH, conductivity, flow)', 'Predictive spring health analysis', 'Piezometer stations with readings', 'FEAM/IGAM compliance zones', 'Community monitoring interface'].map(item => (
             <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
               <div style={{ width: 3, height: 3, borderRadius: '50%', background: W.cyan, marginTop: 6, flexShrink: 0 }} />
               <span style={{ fontSize: 11, color: W.text2, lineHeight: 1.4 }}>{item}</span>
@@ -150,12 +137,15 @@ export default function HydroSlide() {
           ))}
         </SlidePanel>
         <SlidePanel style={{ padding: '14px 16px' }}>
-          <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>LAPOC Pipeline</div>
+          <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>LAPOC Pipeline + Weather Intelligence</div>
           <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: '0 0 8px' }}>
-            Platform actively parses and stores real LAPOC CSV data.
+            Platform actively parses and stores real LAPOC CSV data. 16-day environmental forecast powered by Open-Meteo + ECMWF ERA5 baseline.
+          </p>
+          <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: '0 0 8px' }}>
+            Dynamic provenance engine automatically upgrades UI badges from <span style={{ color: W.text4 }}>"simulated"</span> to <span style={{ color: W.green }}>"verified_real"</span>.
           </p>
           <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>
-            Dynamic provenance engine automatically upgrades UI badges from <span style={{ color: W.text4 }}>"simulated"</span> to <span style={{ color: W.green }}>"verified_real"</span>.
+            5-year historical climate baseline (ERA5 reanalysis) for seasonal compliance forecasting.
           </p>
         </SlidePanel>
         <div style={{ display: 'flex', gap: 6 }}>

@@ -5,6 +5,7 @@ import type {
   PlantTelemetry, EnvTelemetry, EsgScore, AlertItem,
   TelemetryTick, HistoricalTelemetry, TimeRangeKey,
   WeatherIngestPayload, MarketIngestPayload, SeismicIngestPayload,
+  ForecastIngestPayload, HistoricalWeatherIngestPayload,
 } from '../types/shared.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -88,6 +89,33 @@ const MIGRATIONS: Array<(d: Database.Database) => void> = [
       depth_km REAL NOT NULL,
       source TEXT NOT NULL,
       ingested_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS weather_forecast (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      source TEXT NOT NULL,
+      provenance TEXT NOT NULL,
+      latitude REAL NOT NULL,
+      longitude REAL NOT NULL,
+      forecast_days INTEGER NOT NULL,
+      total_precip_mm REAL NOT NULL,
+      series_json TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS weather_historical (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      source TEXT NOT NULL,
+      provenance TEXT NOT NULL,
+      latitude REAL NOT NULL,
+      longitude REAL NOT NULL,
+      start_date TEXT NOT NULL,
+      end_date TEXT NOT NULL,
+      day_count INTEGER NOT NULL,
+      total_precip_mm REAL NOT NULL,
+      avg_annual_precip_mm REAL NOT NULL,
+      series_json TEXT NOT NULL,
+      updated_at TEXT NOT NULL
     );
   `)
   },
@@ -294,6 +322,87 @@ export function getLatestWeather() {
     latitude: row.latitude, longitude: row.longitude,
     precipMm: row.precip_mm,
     series: safeParse(row.series_json, { time: [] as string[], precipitation_sum: [] as number[] }),
+    updatedAt: row.updated_at,
+  }
+}
+
+/* ─── Weather Forecast ──────────────────────────────────────────────── */
+
+export function upsertForecast(payload: ForecastIngestPayload) {
+  getDb().prepare(`
+    INSERT INTO weather_forecast (id, source, provenance, latitude, longitude, forecast_days, total_precip_mm, series_json, updated_at)
+    VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      source = excluded.source, provenance = excluded.provenance,
+      latitude = excluded.latitude, longitude = excluded.longitude,
+      forecast_days = excluded.forecast_days, total_precip_mm = excluded.total_precip_mm,
+      series_json = excluded.series_json, updated_at = excluded.updated_at
+  `).run(
+    payload.source, payload.provenance, payload.latitude, payload.longitude,
+    payload.forecastDays, payload.totalPrecipMm, JSON.stringify(payload.series), payload.timestamp,
+  )
+}
+
+export function getLatestForecast() {
+  const row = getDb().prepare('SELECT * FROM weather_forecast WHERE id = 1').get() as {
+    source: string; provenance: string; latitude: number; longitude: number
+    forecast_days: number; total_precip_mm: number; series_json: string; updated_at: string
+  } | undefined
+  if (!row) return null
+  return {
+    source: row.source, provenance: row.provenance,
+    latitude: row.latitude, longitude: row.longitude,
+    forecastDays: row.forecast_days, totalPrecipMm: row.total_precip_mm,
+    series: safeParse(row.series_json, {
+      time: [] as string[], temperature_2m_max: [] as number[],
+      temperature_2m_min: [] as number[], precipitation_sum: [] as number[],
+      wind_speed_10m_max: [] as number[], relative_humidity_2m_max: [] as number[],
+      et0_fao_evapotranspiration: [] as number[],
+    }),
+    updatedAt: row.updated_at,
+  }
+}
+
+/* ─── Weather Historical ───────────────────────────────────────────── */
+
+export function upsertHistoricalWeather(payload: HistoricalWeatherIngestPayload) {
+  getDb().prepare(`
+    INSERT INTO weather_historical (id, source, provenance, latitude, longitude, start_date, end_date, day_count, total_precip_mm, avg_annual_precip_mm, series_json, updated_at)
+    VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      source = excluded.source, provenance = excluded.provenance,
+      latitude = excluded.latitude, longitude = excluded.longitude,
+      start_date = excluded.start_date, end_date = excluded.end_date,
+      day_count = excluded.day_count, total_precip_mm = excluded.total_precip_mm,
+      avg_annual_precip_mm = excluded.avg_annual_precip_mm,
+      series_json = excluded.series_json, updated_at = excluded.updated_at
+  `).run(
+    payload.source, payload.provenance, payload.latitude, payload.longitude,
+    payload.startDate, payload.endDate, payload.dayCount,
+    payload.totalPrecipMm, payload.avgAnnualPrecipMm,
+    JSON.stringify(payload.series), payload.timestamp,
+  )
+}
+
+export function getHistoricalWeather() {
+  const row = getDb().prepare('SELECT * FROM weather_historical WHERE id = 1').get() as {
+    source: string; provenance: string; latitude: number; longitude: number
+    start_date: string; end_date: string; day_count: number
+    total_precip_mm: number; avg_annual_precip_mm: number
+    series_json: string; updated_at: string
+  } | undefined
+  if (!row) return null
+  return {
+    source: row.source, provenance: row.provenance,
+    latitude: row.latitude, longitude: row.longitude,
+    startDate: row.start_date, endDate: row.end_date,
+    dayCount: row.day_count, totalPrecipMm: row.total_precip_mm,
+    avgAnnualPrecipMm: row.avg_annual_precip_mm,
+    series: safeParse(row.series_json, {
+      time: [] as string[], temperature_2m_max: [] as number[],
+      temperature_2m_min: [] as number[], precipitation_sum: [] as number[],
+      wind_speed_10m_max: [] as number[], et0_fao_evapotranspiration: [] as number[],
+    }),
     updatedAt: row.updated_at,
   }
 }

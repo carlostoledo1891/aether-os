@@ -56,11 +56,11 @@ export const PredictiveModelingCard = memo(function PredictiveModelingCard({
       <div className={css.grid2} style={{ marginBottom: 6, gap: 6 }}>
         <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: W.glass04, border: W.chromeBorder }}>
           <div className={css.labelUpper} style={{ color: W.text4 }}>Data Ingestion</div>
-          <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Target: piezometers + Open-Meteo/INMET class precip (demo: optional API + mock)</div>
+          <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Live: Open-Meteo forecast + ECMWF ERA5 historical baseline + piezometers</div>
         </div>
         <div className={css.infoCell} style={{ borderRadius: W.radius.sm, background: W.glass04, border: W.chromeBorder }}>
           <div className={css.labelUpper} style={{ color: W.text4 }}>Output</div>
-          <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>Simulated hydrological digital twin (commercial-case model)</div>
+          <div style={{ fontSize: 10, color: W.text2, marginTop: 2 }}>AI-predicted spring preservation — forecast + ERA5 correlation model</div>
         </div>
       </div>
       <p className={css.bodyText} style={{ color: W.text3, marginBottom: 6 }}>

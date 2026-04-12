@@ -146,7 +146,7 @@ export function buildDppExport(
       unique_battery_identifier: { value: batch.batch_id, status: 'mapped', cen_ref: 'Annex VI §1(a)' },
       manufacturer_identification: { value: 'Meteoric Resources — Caldeira Project', status: 'mapped', cen_ref: 'Annex VI §1(b)' },
       manufacturing_date: { value: batch.batch_date, status: 'mapped', cen_ref: 'Annex VI §1(c)' },
-      manufacturing_location: { value: 'Poços de Caldas, MG, Brazil (-21.79, -46.56)', status: 'mapped', cen_ref: 'Annex VI §1(d)' },
+      manufacturing_location: { value: 'Poços de Caldas, MG, Brazil (-21.88, -46.555)', status: 'mapped', cen_ref: 'Annex VI §1(d)' },
       batch_weight_kg: { value: batch.tonnage_kg, status: 'mapped', cen_ref: 'Annex VI §1(e)' },
       battery_chemistry: { value: 'NdFeB permanent magnet precursor (MREC)', status: 'mapped', cen_ref: 'Annex VI §2(a)' },
       critical_raw_materials: { value: 'Nd, Pr, Dy, Tb (ionic clay adsorption REE)', status: 'mapped', cen_ref: 'Annex VI §2(b)' },

@@ -32,7 +32,7 @@ export default function CtaSlide() {
       <div style={{ maxWidth: 760, display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36, textAlign: 'left' }}>
         <Bullet>The Caldeira is a flagship asset. It requires a flagship trust layer to maximize valuation.</Bullet>
         <Bullet>We have the platform: 3 views, Mini Engine, and {MARKETING_COPY.aiToolCount} AI tools already built.</Bullet>
-        <Bullet>We have the team: iFood-scale tech & commercial execution, 40 years of local Caldeira context, and decades of LAPOC science.</Bullet>
+        <Bullet>We have the team: iFood-scale tech & commercial execution, 40 years of local Caldeira context, decades of LAPOC science, and ESG due diligence expertise.</Bullet>
         <Bullet accent={W.green}>Let's make it official. $102k locks in the Growth Tier and live telemetry in 90 days.</Bullet>
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>

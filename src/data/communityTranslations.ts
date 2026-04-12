@@ -16,6 +16,9 @@ export interface CommunityStrings {
   contacts_title: string
   contacts: { label: string; value: string; note?: string }[]
   toggle_label: string
+  forecast_title: string
+  forecast_safe: string
+  forecast_disclaimer: string
 }
 
 export const COMMUNITY_STRINGS: Record<CommunityLang, CommunityStrings> = {
@@ -42,6 +45,9 @@ export const COMMUNITY_STRINGS: Record<CommunityLang, CommunityStrings> = {
       { label: 'Meteoric Community Office', value: 'community@meteoric.com.au', note: 'Project-specific community inquiries' },
     ],
     toggle_label: 'Português',
+    forecast_title: '7-Day Water Outlook',
+    forecast_safe: 'Predicted rainfall will not affect water quality thresholds in the next 7 days.',
+    forecast_disclaimer: 'Predictive model — does not replace official monitoring.',
   },
   pt: {
     title: 'Aviso à Comunidade e Partes Interessadas',
@@ -66,5 +72,8 @@ export const COMMUNITY_STRINGS: Record<CommunityLang, CommunityStrings> = {
       { label: 'Escritório Comunitário Meteoric', value: 'community@meteoric.com.au', note: 'Consultas comunitárias sobre o projeto' },
     ],
     toggle_label: 'English',
+    forecast_title: 'Previsão Hídrica — 7 Dias',
+    forecast_safe: 'A chuva prevista não afetará os limites de qualidade da água nos próximos 7 dias.',
+    forecast_disclaimer: 'Modelo preditivo — não substitui monitoramento oficial.',
   },
 }

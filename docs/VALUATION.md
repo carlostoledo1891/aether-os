@@ -63,7 +63,7 @@ Source: `mockDataService.ts` — `MARKET_SIZING` with analyst citations.
 
 **2030 ARR: ~$1.4M**
 
-Risk drivers: No DoD/ECA adoption catalyst, EU Battery Passport enforcement delayed, solo-founder bandwidth limits sales capacity.
+Risk drivers: No DoD/ECA adoption catalyst, EU Battery Passport enforcement delayed, founder bandwidth limits sales capacity pre-funding.
 
 ### Scenario B: Consensus — "Catalyzed Growth"
 
@@ -132,7 +132,7 @@ For pre-revenue / seed-stage vertical SaaS with regulatory tailwinds in critical
 
 | Scenario | Pre-Money | Rationale |
 |----------|-----------|-----------|
-| **Bear** | $3–4M | Real product, no revenue, no signed pilot, solo founder risk |
+| **Bear** | $3–4M | Real product, no revenue, no signed pilot, key-person risk mitigated by advisory bench |
 | **Consensus** | $5–7M | Named anchor, regulatory tailwind, production-grade demo, team ready |
 | **Bull** | $8–12M | Strategic interest from DoD/ECA, multiple pilot conversations |
 
@@ -227,7 +227,7 @@ Post-tax NPV turns negative at NdPr ~$50/kg. Breakeven NdPr OPEX is $22/kg — s
 
 | Risk | Discount Applied | Mitigation Path |
 |------|-----------------|-----------------|
-| **Solo founder concentration** | 20–30% on pre-money | Activate Thiago (CEO), Dr. Caponi advisory formalized |
+| **Solo founder concentration** | 20–30% on pre-money | Advisory bench formalized (Dr. Caponi — science, Mil Caminhos — ESG/HRDD), co-founder recruitment in progress |
 | **Zero revenue** | Standard pre-revenue | Close Meteoric pilot |
 | **Single-customer dependency** | 15–20% until customer #2 | Target EU DPP-driven projects |
 | **Brazil jurisdiction risk** | 5–10% (mining-specific) | LP approved, DFS on track |
@@ -268,8 +268,8 @@ Post-tax NPV turns negative at NdPr ~$50/kg. Breakeven NdPr OPEX is $22/kg — s
 ## XV. Next Actions That Move Valuation
 
 1. **Close Meteoric paid pilot** — single event that moves every number up one row
-2. **Activate Thiago as CEO** — removes 20–30% key-person discount
-3. **Formalize Dr. Caponi advisory** — converts "simulated" labels to "field-verified"
+2. **Formalize advisory bench** — Dr. Caponi (science), Mil Caminhos (ESG/HRDD) onboarded; co-founder recruitment reduces key-person discount
+3. **Close co-founder recruitment** — Juliano (tech) + Guilherme (commercial) remove remaining key-person discount
 4. **Seed fundraise at $5–7M** — buys commercial capacity
 5. **Land customer #2 by EU DPP enforcement (Feb 2027)** — proves platform, not custom build
 

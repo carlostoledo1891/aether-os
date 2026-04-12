@@ -52,6 +52,10 @@ const TOOL_LABELS: Record<string, string> = {
   queryDPPValidation: 'DPP Validation',
   queryStakeholders: 'Stakeholders',
   querySecurityArchitecture: 'Security',
+  queryWeatherForecast: 'Weather Forecast',
+  queryWeatherHistory: 'Climate History',
+  analyzeEnvironmentalRisk: 'Environmental Risk',
+  querySpringHealthPrediction: 'Spring Prediction',
 }
 
 function getToolLabel(toolName: string): string {

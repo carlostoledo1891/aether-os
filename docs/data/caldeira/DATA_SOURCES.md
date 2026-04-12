@@ -19,7 +19,7 @@ Single index for GeoJSON layers and issuer metrics. Extend this table when addin
 | `pfs_pit_capao_mel` | Polygon | [Caldeira PFS PDF](https://minedocs.com/29/Caldeira-PFS-07212025.pdf) figures | 2026-04-07 | EPSG:4326 | georeferenced_figure | Georeferenced to basemap + deposit outline. |
 | `pfs_processing_plant` | Polygon | PFS site layout figures | 2026-04-07 | EPSG:4326 | georeferenced_figure | Commercial plant footprint — not pilot. |
 | `pfs_spent_clay` | Polygon | PFS dry-stack / spent clay layout | 2026-04-07 | EPSG:4326 | georeferenced_figure | |
-| `pilot_plant_pocos` | Point | Issuer pilot address + geocode | 2026-04-07 | EPSG:4326 | approximate | Validate against latest investor deck. |
+| `pilot_plant_pocos` | Point | Issuer pilot address + geocode | 2026-04-07 | EPSG:4326 | approximate | Validate against latest issuer announcements. |
 | `udc_inb_reference` | Point | MPF article coordinates narrative | 2026-04-07 | EPSG:4326 | approximate | Reference marker for proximity context — not INB survey. |
 | `urban_pocos_caldas` | Polygon | OSM / urban envelope approximation | 2026-04-07 | EPSG:4326 | approximate | Town context for stakeholder maps. |
 | `drillholes_caldeira` | Point | ASX **02766588** Table 2 + **02909601** Appendices 1–2 + `dd_intercept_highlights.json` | 2026-04-09 | EPSG:4326 | survey_appendix | Collars: SIRGAS 2000 / UTM 23S (EPSG:31983) via `proj4`; metadata + `easting_utm` / `northing_utm` on each feature. |

@@ -2,18 +2,19 @@ import { W, V } from '../shared'
 import { Tag } from '../../../../components/deck'
 
 const TOOL_CATEGORIES = [
-  { label: 'Geology', y: 28 },
-  { label: 'Financial', y: 68 },
-  { label: 'Compliance', y: 108 },
-  { label: 'Operations', y: 148 },
-  { label: 'Environmental', y: 188 },
-  { label: 'Market', y: 228 },
+  { label: 'Geology', y: 20 },
+  { label: 'Financial', y: 56 },
+  { label: 'Compliance', y: 92 },
+  { label: 'Operations', y: 128 },
+  { label: 'Environmental', y: 164 },
+  { label: 'Env. Intelligence', y: 200 },
+  { label: 'Market', y: 236 },
 ]
 
 export default function AiAgentSlide() {
   return (<>
     <div style={{ marginBottom: 16 }}><Tag>AI Architecture</Tag></div>
-    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 20 }}>AI Agent — 27 Domain Tools</h2>
+    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 20 }}>AI Agent — 31 Domain Tools</h2>
     <svg viewBox="0 0 860 300" style={{ maxWidth: 940, width: '100%', overflow: 'visible' }}>
       <defs>
         <marker id="aiArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d={`M0,0 L8,3 L0,6`} fill={V} /></marker>
@@ -36,7 +37,7 @@ export default function AiAgentSlide() {
 
       <rect x="400" y="104" width="120" height="44" rx="8" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
       <text x="460" y="124" textAnchor="middle" fill={V} fontSize="10" fontWeight="700" fontFamily="var(--font-mono)">Tool Router</text>
-      <text x="460" y="138" textAnchor="middle" fill={W.text4} fontSize="8">27 domain tools</text>
+      <text x="460" y="138" textAnchor="middle" fill={W.text4} fontSize="8">31 domain tools</text>
       <line x1="318" y1="126" x2="396" y2="126" stroke={V} strokeWidth="1" markerEnd="url(#aiArrow)" />
 
       {TOOL_CATEGORIES.map((t) => (
@@ -50,7 +51,7 @@ export default function AiAgentSlide() {
       <rect x="720" y="104" width="120" height="44" rx="8" fill={`${V}08`} stroke={`${V}20`} strokeWidth="0.8" />
       <text x="780" y="122" textAnchor="middle" fill={V} fontSize="9" fontWeight="600" fontFamily="var(--font-mono)">Provenance</text>
       <text x="780" y="136" textAnchor="middle" fill={W.text4} fontSize="8">Source on every response</text>
-      {[28, 68, 108, 148, 188, 228].map(y => (
+      {[20, 56, 92, 128, 164, 200, 236].map(y => (
         <line key={y} x1="690" y1={y + 14} x2="716" y2={120} stroke={`${V}15`} strokeWidth="0.6" />
       ))}
 

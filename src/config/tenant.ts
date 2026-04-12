@@ -2,11 +2,12 @@
  * Project-level tenant configuration.
  *
  * Resolved from VITE_PROJECT_ID env var (default: 'caldeira').
- * When a second project is onboarded, add a new config block here
- * and set VITE_PROJECT_ID in the deployment environment.
+ * When a second project is onboarded, add a new site config under
+ * shared/sites/ and register it in the TENANTS map below.
  */
 
 import type { ViewMode } from '../types/telemetry'
+import { CALDEIRA_IDENTITY, CALDEIRA_GEO } from 'shared/sites/caldeira'
 
 export interface TenantConfig {
   projectId: string
@@ -20,20 +21,20 @@ export interface TenantConfig {
   defaultView: ViewMode
 }
 
-const CALDEIRA: TenantConfig = {
-  projectId: 'caldeira',
-  projectName: 'Caldeira Project',
-  companyName: 'Meteoric Resources',
-  mapCenter: [-46.56, -21.88],
-  mapZoom: 11.5,
-  mapPitch: 35,
-  accentColor: '#7C5CFC',
+const CALDEIRA_TENANT: TenantConfig = {
+  projectId: CALDEIRA_IDENTITY.siteId,
+  projectName: CALDEIRA_IDENTITY.projectName,
+  companyName: CALDEIRA_IDENTITY.companyName,
+  mapCenter: CALDEIRA_GEO.center,
+  mapZoom: CALDEIRA_GEO.defaultZoom,
+  mapPitch: CALDEIRA_GEO.defaultPitch,
+  accentColor: CALDEIRA_IDENTITY.accentColor,
   availableViews: ['operator', 'buyer', 'executive'],
   defaultView: 'operator',
 }
 
 const TENANTS: Record<string, TenantConfig> = {
-  caldeira: CALDEIRA,
+  caldeira: CALDEIRA_TENANT,
 }
 
 function getProjectId(): string {
@@ -45,7 +46,7 @@ export function getTenantConfig(): TenantConfig {
   const config = TENANTS[id]
   if (!config) {
     console.warn(`[tenant] Unknown project "${id}", falling back to caldeira`)
-    return CALDEIRA
+    return CALDEIRA_TENANT
   }
   return config
 }

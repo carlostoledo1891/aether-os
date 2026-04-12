@@ -311,7 +311,7 @@ Before any external-facing material goes out:
 - [ ] Disclaimer pattern included where data is shown
 - [ ] Color accents match their semantic domain
 - [ ] Dark theme only — no white/light backgrounds
-- [ ] Numbers are current (310 tests, 9.3 score, 27 AI tools)
+- [ ] Numbers are current (310 tests, 9.4 score, 31 AI tools)
 - [ ] Meteoric/Caldeira references include "ASX: MEI" on first mention
 - [ ] No overclaiming on compliance, blockchain, or AI capabilities
 

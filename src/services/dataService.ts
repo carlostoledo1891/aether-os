@@ -383,6 +383,7 @@ export type DataProvenanceKind =
   | 'modeled'
   | 'illustrative'
   | 'simulated'
+  | 'ai_predicted'
 
 export interface ProvenanceSection {
   kind: DataProvenanceKind
@@ -402,6 +403,7 @@ export const PROVENANCE_SHORT_LABEL: Record<DataProvenanceKind, string> = {
   modeled: 'Modeled',
   illustrative: 'Illustrative',
   simulated: 'Simulated',
+  ai_predicted: 'AI predicted',
 }
 
 export interface RegulatoryExportBundle {

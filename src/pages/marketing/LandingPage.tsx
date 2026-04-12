@@ -309,9 +309,9 @@ export default function LandingPage() {
         <div style={{ ...wrap, position: 'relative' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={label}>AI Agent</div>
-            <h2 style={heading}>27 domain tools. Grounded in truth.</h2>
+            <h2 style={heading}>{MARKETING_COPY.aiTagline}</h2>
             <p style={{ ...body, margin: '0 auto' }}>
-              Frontier LLM with 27 domain-specific tools. 10 hallucination tests. Model-agnostic via AI SDK.
+              Frontier LLM with {MARKETING_COPY.aiToolCount} domain-specific tools. 10 hallucination tests. Model-agnostic via AI SDK.
               Every response carries visible provenance — the agent refuses to speculate.
             </p>
           </div>
@@ -335,9 +335,16 @@ export default function LandingPage() {
               <div style={glass}>
                 <div style={{ ...label, marginBottom: 16 }}>Tool Categories</div>
                 {AI_TOOLS.map(c => (
-                  <div key={c.cat} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${W.glass06}` }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: W.text1 }}>{c.cat}</div>
-                    <div style={{ fontSize: 11, color: W.text3, marginTop: 2, lineHeight: 1.5 }}>{c.tools}</div>
+                  <div
+                    key={'cat' in c ? c.cat : c.name}
+                    style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${W.glass06}` }}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 600, color: W.text1 }}>
+                      {'cat' in c ? c.cat : c.category}
+                    </div>
+                    <div style={{ fontSize: 11, color: W.text3, marginTop: 2, lineHeight: 1.5 }}>
+                      {'tools' in c ? c.tools : `${c.name} — ${c.label}`}
+                    </div>
                   </div>
                 ))}
                 <div style={{ fontSize: 11, color: W.amber, fontWeight: 600, marginTop: 4 }}>

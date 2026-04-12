@@ -318,6 +318,31 @@
   flex-shrink: 0;
 }
 
+.sideCardSub {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--w-text4);
+  margin-top: -6px;
+  margin-bottom: 8px;
+}
+
+.sideCardText {
+  font-size: 11px;
+  color: var(--w-text2);
+  line-height: 1.5;
+}
+
+.sideCardSource {
+  font-size: 9px;
+  color: var(--w-text4);
+  font-family: var(--font-mono);
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--w-glass-04);
+}
+
 /* ── Contact Card ────────────────────────────────────────────────────── */
 
 .contactRow {

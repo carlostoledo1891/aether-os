@@ -3,6 +3,8 @@
  * Replace with runtime turf.js joins when GeoJSON is swapped for ANM vectors.
  */
 
+import { CALDEIRA_GEO } from 'shared/sites/caldeira'
+
 const EARTH_KM = 6371
 
 function haversineKm(lon1: number, lat1: number, lon2: number, lat2: number): number {
@@ -15,9 +17,8 @@ function haversineKm(lon1: number, lat1: number, lon2: number, lat2: number): nu
   return 2 * EARTH_KM * Math.asin(Math.min(1, Math.sqrt(a)))
 }
 
-/** Pilot + commercial plant collars from ops reality GeoJSON (caldeira-ops-plant-sites) */
-const PILOT_LONLAT: [number, number] = [-46.575, -21.8]
-const COMMERCIAL_PLANT_LONLAT: [number, number] = [-46.545, -21.885]
+const PILOT_LONLAT = CALDEIRA_GEO.pois.pilotPlant.coords
+const COMMERCIAL_PLANT_LONLAT = CALDEIRA_GEO.pois.commercialPlant.coords
 
 /** Per-concession polygons whose centroids fall inside schematic APA buffer rectangle */
 export const SPATIAL_INSIGHTS = {

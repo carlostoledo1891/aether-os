@@ -1,11 +1,9 @@
 import { memo } from 'react'
 import { MapProvider } from 'react-map-gl/maplibre'
-import { Share2, TrendingUp, Mountain, Leaf, Users, Heart, Phone } from 'lucide-react'
+import { Share2, TrendingUp, Mountain, Leaf, Users, Heart, Phone, CloudRain } from 'lucide-react'
 import { MapBase } from '../../../components/map/MapBase'
-import { CaldeiraBoundary } from '../../../components/map/CaldeiraBoundary'
-import { LicenseOverlay } from '../../../components/map/LicenseOverlay'
-import { OpsPlantSitesOverlay } from '../../../components/map/OpsPlantSitesOverlay'
-import { EnvironmentalOverlay } from '../../../components/map/EnvironmentalOverlay'
+import { MapOverlays } from '../../../components/map/MapOverlays'
+import { useMapPreset } from '../../../components/map/mapPresets'
 import data from './data.json'
 import css from './prefeitura.module.css'
 
@@ -23,17 +21,11 @@ const ICONS: Record<string, React.ComponentType<{ size: number; color?: string }
   users: Users,
   heart: Heart,
   phone: Phone,
+  'cloud-rain': CloudRain,
 }
 
-const MAP_VIEW = {
-  longitude: -46.56,
-  latitude: -21.87,
-  zoom: 11.5,
-  pitch: 30,
-  bearing: 0,
-} as const
-
 export const PrefeituraPage = memo(function PrefeituraPage() {
+  const preset = useMapPreset('story-map')
   const { hero, mapHighlights, bottomMetrics, sidebar, footer, meta } = data
 
   return (
@@ -64,14 +56,10 @@ export const PrefeituraPage = memo(function PrefeituraPage() {
           <MapProvider>
             <div className={css.mapWrap}>
               <MapBase
-                initialViewState={MAP_VIEW}
-                interactiveLayerIds={[]}
-                highlightWater={false}
+                {...preset.viewProps}
+                interactiveLayerIds={preset.interactiveLayerIds}
               >
-                <CaldeiraBoundary />
-                <LicenseOverlay hoveredLicenseId={null} selectedLicenseId={null} />
-                <EnvironmentalOverlay showApa showBuffer={false} showMonitoring={false} showUrban={false} />
-                <OpsPlantSitesOverlay hoveredId={null} selectedId={null} />
+                <MapOverlays layers={preset.overlays} environmentalProps={{ showApa: true, showBuffer: false, showMonitoring: false, showUrban: false }} />
               </MapBase>
 
               <div className={css.mapHighlights}>
@@ -119,6 +107,9 @@ export const PrefeituraPage = memo(function PrefeituraPage() {
                   )}
                   <h3 className={css.sideCardTitle}>{card.title}</h3>
                 </div>
+                {'subtitle' in card && (
+                  <div className={css.sideCardSub}>{card.subtitle}</div>
+                )}
                 <div className={css.sideCardItems}>
                   {'items' in card && card.items?.map((item) => (
                     <div key={item.label} className={css.sideItem}>
@@ -126,6 +117,9 @@ export const PrefeituraPage = memo(function PrefeituraPage() {
                       <span className={css.sideItemValue}>{item.value}</span>
                     </div>
                   ))}
+                  {'text' in card && (
+                    <div className={css.sideCardText}>{card.text}</div>
+                  )}
                   {'contacts' in card && card.contacts?.map((c) => (
                     <div key={c.name} className={css.contactRow}>
                       <span className={css.contactName}>{c.name}</span>
@@ -133,6 +127,9 @@ export const PrefeituraPage = memo(function PrefeituraPage() {
                     </div>
                   ))}
                 </div>
+                {'source' in card && (
+                  <div className={css.sideCardSource}>{card.source}</div>
+                )}
               </div>
             )
           })}

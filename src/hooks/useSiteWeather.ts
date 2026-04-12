@@ -3,9 +3,11 @@ import { CALDEIRA_VIEW_STATE } from '../components/map/MapBase'
 import {
   fetchPastDaysDailyPrecip,
   fetchPastDaysClimate,
+  fetchForecast,
   sumPrecipMm,
   type DailyPrecipSeries,
   type DailyClimateSeries,
+  type DailyForecastSeries,
 } from '../services/weather/openMeteoClient'
 
 export type SiteWeatherSource = 'openmeteo' | 'mock'
@@ -316,6 +318,127 @@ export function useSiteClimate(pastDays: number, options?: { enabled?: boolean }
     queueMicrotask(run)
     return () => { cancelled = true }
   }, [enabled, apiOn, lat, lng, days])
+
+  return state
+}
+
+/* ─── Forecast Hook ──────────────────────────────────────────────────── */
+
+export interface SiteForecastSnapshot {
+  loading: boolean
+  error: string | null
+  source: SiteWeatherSource
+  forecastDays: number
+  totalPrecipMm: number
+  series: DailyForecastSeries
+}
+
+function mockForecastSeries(lat: number, lng: number, days: number): DailyForecastSeries {
+  const n = Math.min(16, Math.max(1, Math.floor(days)))
+  const time: string[] = []
+  const temperature_2m_max: number[] = []
+  const temperature_2m_min: number[] = []
+  const precipitation_sum: number[] = []
+  const wind_speed_10m_max: number[] = []
+  const relative_humidity_2m_max: number[] = []
+  const et0_fao_evapotranspiration: number[] = []
+
+  const seed = lat * 1.003 + lng * 1.007
+  const now = new Date()
+
+  for (let i = 0; i < n; i++) {
+    const d = new Date(now)
+    d.setUTCDate(d.getUTCDate() + i + 1)
+    time.push(d.toISOString().slice(0, 10))
+    const t = seed + i * 1.13
+    temperature_2m_max.push(Math.round((24 + Math.sin(t) * 5) * 10) / 10)
+    temperature_2m_min.push(Math.round((14 + Math.sin(t + 1) * 3) * 10) / 10)
+    precipitation_sum.push(Math.round((Math.sin(t * 0.7) * 0.5 + 0.5) * 12 * 10) / 10)
+    wind_speed_10m_max.push(Math.round((10 + Math.sin(t * 0.5) * 6) * 10) / 10)
+    relative_humidity_2m_max.push(Math.round(70 + Math.cos(t * 0.8) * 20))
+    et0_fao_evapotranspiration.push(Math.round((3.5 + Math.sin(t * 1.1) * 1.5) * 10) / 10)
+  }
+
+  return {
+    time, temperature_2m_max, temperature_2m_min, precipitation_sum,
+    wind_speed_10m_max, relative_humidity_2m_max, et0_fao_evapotranspiration,
+  }
+}
+
+const forecastCache = new Map<string, { at: number; data: SiteForecastSnapshot }>()
+
+export function useSiteForecast(days = 16, options?: { enabled?: boolean }): SiteForecastSnapshot {
+  const enabled = options?.enabled ?? true
+  const n = Math.min(16, Math.max(1, Math.floor(days)))
+  const { lat, lng } = useMemo(() => siteCoordinates(), [])
+  const apiOn = weatherEnabled()
+
+  const [state, setState] = useState<SiteForecastSnapshot>(() => {
+    const series = mockForecastSeries(lat, lng, n)
+    return {
+      loading: false, error: null, source: 'mock',
+      forecastDays: series.time.length,
+      totalPrecipMm: series.precipitation_sum.reduce((a, b) => a + b, 0),
+      series,
+    }
+  })
+
+  useEffect(() => {
+    if (!enabled) return
+    let cancelled = false
+
+    const run = () => {
+      const cacheKey = `forecast:${lat.toFixed(4)},${lng.toFixed(4)},${n}`
+      const hit = forecastCache.get(cacheKey)
+      if (hit && Date.now() - hit.at < STALE_MS) {
+        if (!cancelled) setState(hit.data)
+        return
+      }
+
+      if (!apiOn) {
+        const series = mockForecastSeries(lat, lng, n)
+        const snap: SiteForecastSnapshot = {
+          loading: false, error: null, source: 'mock',
+          forecastDays: series.time.length,
+          totalPrecipMm: series.precipitation_sum.reduce((a, b) => a + b, 0),
+          series,
+        }
+        forecastCache.set(cacheKey, { at: Date.now(), data: snap })
+        if (!cancelled) setState(snap)
+        return
+      }
+
+      if (!cancelled) setState(s => ({ ...s, loading: true, error: null }))
+
+      fetchForecast(lat, lng, n)
+        .then(series => {
+          if (cancelled) return
+          const snap: SiteForecastSnapshot = {
+            loading: false, error: null, source: 'openmeteo',
+            forecastDays: series.time.length,
+            totalPrecipMm: series.precipitation_sum.reduce((a, b) => a + b, 0),
+            series,
+          }
+          forecastCache.set(cacheKey, { at: Date.now(), data: snap })
+          setState(snap)
+        })
+        .catch(() => {
+          if (cancelled) return
+          const series = mockForecastSeries(lat, lng, n)
+          const snap: SiteForecastSnapshot = {
+            loading: false, error: 'Open-Meteo unavailable — mock forecast', source: 'mock',
+            forecastDays: series.time.length,
+            totalPrecipMm: series.precipitation_sum.reduce((a, b) => a + b, 0),
+            series,
+          }
+          forecastCache.set(cacheKey, { at: Date.now(), data: snap })
+          setState(snap)
+        })
+    }
+
+    queueMicrotask(run)
+    return () => { cancelled = true }
+  }, [enabled, apiOn, lat, lng, n])
 
   return state
 }

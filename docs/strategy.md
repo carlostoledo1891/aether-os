@@ -324,7 +324,7 @@ Body: Direct calendar link. No pitch, just demo offer.
 
 ## 12. Dr. Caponi Formalization
 
-**Role:** Chief Scientific Advisor (LAPOC)
+**Role:** Scientific Advisor (LAPOC)
 
 **What connects:** Piezometers, water quality sensors, geological sampling from LAPOC field instruments. When LAPOC data connects to Vero, every "simulated" label in the Hydro Twin becomes "field-verified."
 

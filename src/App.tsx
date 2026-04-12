@@ -24,7 +24,6 @@ const BusinessPage = lazy(() => import('./pages/marketing/BusinessPage'))
 
 const FoundersDeck = lazy(() => import('./pages/decks/founders/FoundersDeck'))
 const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
-const InvestorsDeck = lazy(() => import('./pages/decks/investors/InvestorsDeck'))
 
 const PrefeituraPage = lazy(() => import('./pages/views/prefeitura/PrefeituraPage').then(m => ({ default: m.PrefeituraPage })))
 const CaldeiraExecDeck = lazy(() => import('./pages/views/caldeira-exec/CaldeiraExecDeck'))
@@ -200,7 +199,6 @@ export default function App() {
             
             <Route path="/deck/founders" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
             <Route path="/deck/meteoric" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
-            <Route path="/deck/Investors" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><InvestorsDeck /></Suspense></ErrorBoundary>} />
             
             <Route path="/views/prefeitura" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PrefeituraPage /></Suspense></ErrorBoundary>} />
             <Route path="/views/caldeira-exec" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><CaldeiraExecDeck /></Suspense></ErrorBoundary>} />

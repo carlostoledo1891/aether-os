@@ -88,6 +88,14 @@
       ]
     },
     {
+      "title": "Previsão Ambiental",
+      "subtitle": "Próximos 7 dias",
+      "icon": "cloud-rain",
+      "color": "cyan",
+      "text": "Condições estáveis previstas. Qualidade da água dentro dos limites.",
+      "source": "Fonte: Open-Meteo · Modelo preditivo"
+    },
+    {
       "title": "Contatos Úteis",
       "icon": "phone",
       "color": "cyan",

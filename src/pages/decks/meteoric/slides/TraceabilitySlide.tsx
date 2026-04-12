@@ -7,6 +7,7 @@ import { useServiceQuery } from '../../../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../../../components/ui/LoadingSkeleton'
 import { TraceRouteOverlay } from '../../../../components/map/TraceRouteOverlay'
 import { MapBase } from '../../../../components/map/MapBase'
+import { useMapPreset } from '../../../../components/map/mapPresets'
 import type { ComplianceLedger } from '../../../../types/telemetry'
 import { W, V } from './shared'
 
@@ -17,6 +18,7 @@ const STEP_STATUS_COLORS: Record<string, string> = {
 }
 
 export default function TraceabilitySlide() {
+  const { viewProps } = useMapPreset('traceability')
   const { data: batches } = useServiceQuery('batches', s => s.getBatches())
   const batch: ComplianceLedger | undefined = batches?.[0]
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
@@ -75,16 +77,12 @@ export default function TraceabilitySlide() {
                   return [minLng, minLat, maxLng, maxLat]
                 })()
               : undefined,
-            longitude: 40,
-            latitude: 5,
-            zoom: 1.5,
-            pitch: 0,
-            bearing: 0,
+            ...viewProps.initialViewState,
           } as any}
-          interactive={true}
-          disableZoomControls={false}
-          hideControls={false}
-          forceStyle="satellite"
+          interactive={viewProps.interactive}
+          disableZoomControls={viewProps.disableZoomControls}
+          hideControls={viewProps.hideControls}
+          forceStyle={viewProps.forceStyle}
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
         >
           {batch && (

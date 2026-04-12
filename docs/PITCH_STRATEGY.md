@@ -45,8 +45,8 @@ Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credibl
 - 310 tests, 0 TS errors, strict mode
 - `AetherDataService` interface pattern (mock/live swap)
 - Yield-to-real-data ingestion architecture and lean MapBase spatial engine
-- 27 AI tools with hallucination fence
-- Solo-founder codebase ready for team scaling
+- 31 AI tools with hallucination fence
+- Production codebase ready for team scaling
 - AGENT.md + modular docs — AI-ready codebase documentation
 
 ### Guilherme Bonifácio (Business Lens)
@@ -119,7 +119,7 @@ Juliano, Guilherme,
 
 Quero mostrar pra vocês algo que construí sozinho nos últimos meses — e pedir a opinião honesta de vocês dois.
 
-**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 27 AI tools (frontier LLM, model-agnostic), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
+**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 31 AI tools (frontier LLM, model-agnostic), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
 
 The platform runs on real data from the Caldeira Project (Meteoric Resources — ASX: MEI, $821M NPV). On April 15, I'm pitching Meteoric for a $102k/yr pilot contract — 0.03% of their annual revenue.
 
@@ -184,7 +184,7 @@ Dr. De Carvalho,
 
 My name is Carlos Toledo. I grew up in Poços de Caldas, inside the Caldeira, and over the past several months I've built a platform called **Vero** — a critical mineral operations and compliance system.
 
-The platform was built entirely on Caldeira Project data: 19 GeoJSON datasets, JORC-safe resource classification, drill collar metadata, a pilot plant digital twin with 17 equipment items and 28 sensors, and 27 AI tools grounded in your deposit's geology.
+The platform was built entirely on Caldeira Project data: 19 GeoJSON datasets, JORC-safe resource classification, drill collar metadata, a pilot plant digital twin with 17 equipment items and 28 sensors, and 31 AI tools grounded in your deposit's geology.
 
 Every number links to its methodology. Geology and hydrology are visually separated — the digital twin never pretends to prove the deposit. Simulated data is always labeled.
 

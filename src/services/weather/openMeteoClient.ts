@@ -121,3 +121,68 @@ export async function fetchPastDaysClimate(
 export function sumPrecipMm(series: DailyPrecipSeries): number {
   return series.precipitation_sum.reduce((a, b) => a + b, 0)
 }
+
+/* ─── Forecast (16-day) ─────────────────────────────────────────────── */
+
+export interface DailyForecastSeries {
+  time: string[]
+  temperature_2m_max: number[]
+  temperature_2m_min: number[]
+  precipitation_sum: number[]
+  wind_speed_10m_max: number[]
+  relative_humidity_2m_max: number[]
+  et0_fao_evapotranspiration: number[]
+}
+
+const FORECAST_DAILY = [
+  'temperature_2m_max',
+  'temperature_2m_min',
+  'precipitation_sum',
+  'wind_speed_10m_max',
+  'et0_fao_evapotranspiration',
+] as const
+
+const FORECAST_HOURLY = ['relative_humidity_2m'] as const
+
+export async function fetchForecast(
+  latitude: number,
+  longitude: number,
+  days = 16,
+): Promise<DailyForecastSeries> {
+  const url = new URL(FORECAST_BASE)
+  url.searchParams.set('latitude', String(latitude))
+  url.searchParams.set('longitude', String(longitude))
+  url.searchParams.set('daily', FORECAST_DAILY.join(','))
+  url.searchParams.set('hourly', FORECAST_HOURLY.join(','))
+  url.searchParams.set('forecast_days', String(Math.min(16, days)))
+  url.searchParams.set('past_days', '0')
+  url.searchParams.set('timezone', 'auto')
+
+  const res = await fetch(url.toString())
+  if (!res.ok) throw new Error(`Open-Meteo Forecast HTTP ${res.status}`)
+
+  const json = (await res.json()) as {
+    daily?: Record<string, (number | null)[] | string[]>
+    hourly?: Record<string, (number | null)[]>
+  }
+
+  const time = (json.daily?.time ?? []) as string[]
+  if (time.length === 0) throw new Error('Open-Meteo Forecast: empty series')
+
+  const humidityHourly = safeNumbers(json.hourly?.relative_humidity_2m as (number | null)[] | undefined)
+  const relative_humidity_2m_max: number[] = []
+  for (let d = 0; d < time.length; d++) {
+    const slice = humidityHourly.slice(d * 24, (d + 1) * 24)
+    relative_humidity_2m_max.push(slice.length > 0 ? Math.max(...slice) : 0)
+  }
+
+  return {
+    time,
+    temperature_2m_max: safeNumbers(json.daily?.temperature_2m_max as (number | null)[]),
+    temperature_2m_min: safeNumbers(json.daily?.temperature_2m_min as (number | null)[]),
+    precipitation_sum: safeNumbers(json.daily?.precipitation_sum as (number | null)[]),
+    wind_speed_10m_max: safeNumbers(json.daily?.wind_speed_10m_max as (number | null)[]),
+    relative_humidity_2m_max,
+    et0_fao_evapotranspiration: safeNumbers(json.daily?.et0_fao_evapotranspiration as (number | null)[]),
+  }
+}

@@ -1,9 +1,9 @@
 import { memo, useEffect, useMemo } from 'react'
 import { motion } from 'motion/react'
-import { X, Droplets } from 'lucide-react'
+import { X, Droplets, CloudRain, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useTelemetry } from '../../services/DataServiceProvider'
-import { useSiteClimate } from '../../hooks/useSiteWeather'
+import { useSiteClimate, useSiteForecast } from '../../hooks/useSiteWeather'
 import { THRESHOLDS, SPRING_COUNT } from '../../data/mockData'
 import css from './HydroStation.module.css'
 
@@ -29,6 +29,7 @@ function wqColor(ok: boolean): string {
 export const HydroStation = memo(function HydroStation({ onClose }: HydroStationProps) {
   const { env } = useTelemetry()
   const climate = useSiteClimate(30)
+  const forecast = useSiteForecast(7)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -269,6 +270,44 @@ export const HydroStation = memo(function HydroStation({ onClose }: HydroStation
           <div className={css.precipAxis}>
             <span>{climate.tempMinAvg.toFixed(1)}°C min</span>
             <span>{climate.tempMaxAvg.toFixed(1)}°C max</span>
+          </div>
+        </div>
+
+        {/* Forecast */}
+        <div style={{ borderTop: `1px dashed ${W.glass12}`, paddingTop: 8, opacity: 0.85 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
+            <CloudRain size={9} style={{ color: W.cyan }} />
+            <div className={css.sectionLabel} style={{ marginBottom: 0 }}>Forecast (7d)</div>
+            <span style={{
+              fontSize: 7, padding: '1px 4px', borderRadius: 3,
+              background: W.glass06, color: W.text4, fontFamily: 'var(--font-mono)',
+              marginLeft: 'auto',
+            }}>
+              {forecast.source === 'openmeteo' ? 'Open-Meteo' : 'mock'}
+            </span>
+          </div>
+          <div className={css.grid2}>
+            <div className={css.cell}>
+              <div className={css.cellLabel}>Precip Total</div>
+              <div className={css.cellValue} style={{ color: W.cyan, fontSize: 12 }}>
+                {forecast.totalPrecipMm.toFixed(1)}<span className={css.cellUnit}>mm</span>
+              </div>
+            </div>
+            <div className={css.cell}>
+              <div className={css.cellLabel}>Temp Trend</div>
+              <div className={css.cellValue} style={{ fontSize: 12, display: 'flex', alignItems: 'center', gap: 3 }}>
+                {(() => {
+                  const temps = forecast.series.temperature_2m_max.slice(0, 7)
+                  if (temps.length < 2) return <><Minus size={10} style={{ color: W.text4 }} /><span style={{ color: W.text4 }}>Stable</span></>
+                  const first = (temps[0]! + temps[1]!) / 2
+                  const last = (temps[temps.length - 1]! + temps[temps.length - 2]!) / 2
+                  const delta = last - first
+                  if (delta > 1.5) return <><TrendingUp size={10} style={{ color: W.amber }} /><span style={{ color: W.amber }}>Rising</span></>
+                  if (delta < -1.5) return <><TrendingDown size={10} style={{ color: W.cyan }} /><span style={{ color: W.cyan }}>Falling</span></>
+                  return <><Minus size={10} style={{ color: W.text4 }} /><span style={{ color: W.text4 }}>Stable</span></>
+                })()}
+              </div>
+            </div>
           </div>
         </div>
 

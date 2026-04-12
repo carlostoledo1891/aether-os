@@ -14,6 +14,7 @@
 - **Liability surface area (IR)** — Market-facing sessions should reference a **disclosure mode** pattern: versioned, dated, **public-filed** figures only; UI defaults stay honest about simulation.
 - **Community / NGO** — Prefer **listening, plans, limits, grievance** over predictive promises; spring **status colors = modeled UX**, not community water verdicts.
 - **Integrators** — Emphasize **read-only historians, unidirectional gateways**, explicit latency — not replacing SCADA HMI.
+- **Predictive environmental intelligence** — Vero doesn't just monitor; it forecasts. 16-day weather forecasts from Open-Meteo feed into spring health predictions backed by 5 years of ECMWF ERA5 reanalysis data. Position as 'Other platforms tell you what happened. Vero tells you what's coming.' Always label predictions as 'AI-predicted — indicative, not regulatory-grade.'
 
 ---
 
@@ -25,7 +26,7 @@
 | **Defense Buyers** | 18–24 month procurement delays when FEOC documentation is incomplete. No way to verify supply chain provenance. | Infrastructure-first security posture + FEOC origin tracking + SHA-256 audit chain. OpenAPI spec for integration. |
 | **EU Compliance** | Battery Passport enforcement (Feb 2027) with no standard tooling. Schema gaps across the supply chain. | 22 CEN/CENELEC DPP fields mapped. Schema-validated JSON export. Inline validation with error reporting. |
 | **Investors / PF** | Technical risk in the investment model. No visibility into operational readiness. | 310 tests, rate limiting, zero-cache on financials. Bear/Consensus/Bull scenarios. DSCR projections. Capital tracker. |
-| **Community / NGO** | Mining companies making promises about water without transparent monitoring. No grievance path. | Hydro Twin with "modeled" labels visible before spring colors. Bilingual community card (PT/EN). FEAM/IGAM contacts. |
+| **Community / NGO** | Mining companies making promises about water without transparent monitoring. No grievance path. | Hydro Twin with "modeled" labels visible before spring colors. Bilingual community card (PT/EN). FEAM/IGAM contacts. 7-day water forecast outlook in Portuguese. AI-predicted spring health based on real weather data. |
 | **Integrators** | Undocumented APIs, no equipment catalog, unknown protocols. | OpenAPI at `/api/docs`. 17 equipment items, 28 sensors documented. OPC-UA/MQTT roadmap. Cost estimate in a week. |
 
 ---
@@ -33,7 +34,7 @@
 ## 3. Product Positioning & Data Honesty
 
 ### Three Truths, One Platform
-- **Ground truth** (Field) — operations and hydrology on a map with explicit provenance (public geometry vs modeled vs simulated telemetry).
+- **Ground truth** (Field + Forecast) — operations and hydrology on a map with explicit provenance, plus 16-day environmental forecast from Open-Meteo and seasonal compliance outlook from ECMWF ERA5 baseline.
 - **Trade truth** (Compliance) — FEOC / IRA / passport-style evidence metaphors and batch ledger — scoped as repository design until attestation chains are wired.
 - **Board truth** (Executive) — scenarios, risk, capital, DFS rhythm, agency matrix, audit trail, ESG coverage — aligned to steerco and disclosure rhythm.
 
@@ -62,7 +63,11 @@
 - *Community "red phone"?* → **Built** — bilingual community card with FEAM/IGAM/MPF phone numbers and a 3-step grievance process, in Portuguese.
 - *What if the live link crashes during a demo?* → **310 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner, rate limiting.**
 - *What's your security posture?* → **CSP headers, rate limiting, API key auth, fail-closed ingest, CORS allowlist, error handler without stack traces.**
+- *Can you predict environmental compliance issues before they happen?* → **Yes.** 16-day weather forecast feeds spring health prediction model. ERA5 5-year baseline provides seasonal context. All predictions labeled 'AI-predicted — indicative only.'
 - *How do you prevent stale geological data on screen?* → **TTL=0 on all geological/financial endpoints.** No caching. De Carvalho principle enforced at architecture level.
+
+### The Environmental Intelligence Argument
+'We don't just tell you the springs are healthy today. We tell you whether they'll be healthy next week — because our AI correlates ECMWF ERA5 climate data with real-time Open-Meteo forecasts to predict spring health changes before they happen. And every prediction is labeled as AI-predicted, not certified — because honesty is the brand.'
 
 ### Words to Avoid in Regulated Rooms
 - **Avoid implying:** cadastral survey accuracy, final permit outcomes, or live exchange prices unless sourced and labeled.
@@ -108,3 +113,4 @@ Use internally to ensure a deck rehearsal hits every bucket at least once.
 ## 7. Competitor Intel Calibration (Rhetorical)
 Competitors (Minviro, Circulor, Everledger) will cross-check: green premium, recovery vs nameplate, ESG coverage %, FEOC language, basket consistency.
 **Response:** Tie numbers to one issuer snapshot + citations; label simulation; never outrun filed disclosure. Honesty-first is the Everledger defense.
+- **Key differentiator: Predictive vs. Retrospective** — All listed competitors report historical environmental data. Vero forecasts environmental compliance risk using real weather intelligence. This is category separation, not feature parity.

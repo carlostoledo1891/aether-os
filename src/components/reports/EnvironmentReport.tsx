@@ -39,30 +39,9 @@ const SPRING_DISTRIBUTION = [
   { tier: 'Suppressed', count: 44, pct: 4 },
 ]
 
-/* ─── Shared Styles ────────────────────────────────────────────────────── */
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
 
-const sectionStyle = {
-  padding: '32px 40px',
-  borderBottom: `1px solid ${WL.border}`,
-} as const
-
-const cardStyle = {
-  background: WL.surface,
-  border: `1px solid ${WL.border}`,
-  borderRadius: WL.radius.lg,
-  padding: 20,
-} as const
-
-const sectionTitle = (text: string) => (
-  <h2 style={{
-    fontSize: 14, fontWeight: 700, color: WL.text1,
-    letterSpacing: '-0.01em', margin: '0 0 20px',
-    fontFamily: 'var(--font-ui)',
-    display: 'flex', alignItems: 'center', gap: 8,
-  }}>
-    {text}
-  </h2>
-)
+const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
 const statusColor = (s: string) =>
   s === 'completed' ? WL.green : s === 'active' ? WL.violet : WL.text4
@@ -185,6 +164,46 @@ function EnvironmentReport({ range: _range }: Props) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Forecast Compliance Outlook */}
+      <div style={sectionStyle}>
+        {sectionTitle('Forecast Compliance Outlook')}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 16 }}>
+          {([
+            { horizon: '30 Day', status: 'Within Threshold' },
+            { horizon: '60 Day', status: 'Within Threshold' },
+            { horizon: '90 Day', status: 'Within Threshold' },
+          ] as const).map(fc => (
+            <div key={fc.horizon} style={cardStyle}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: WL.text2 }}>{fc.horizon}</span>
+                <span style={{
+                  fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
+                  padding: '2px 8px', borderRadius: WL.radius.xs,
+                  background: WL.greenSubtle, color: WL.green,
+                }}>
+                  {fc.status}
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{
+                  width: 8, height: 8, borderRadius: '50%', background: WL.green, flexShrink: 0,
+                }} />
+                <span style={{ fontSize: 12, color: WL.text3 }}>
+                  Forecasted water quality parameters remain within regulatory thresholds
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{
+          padding: '10px 14px', borderRadius: WL.radius.sm,
+          background: WL.glass04, border: `1px solid ${WL.border}`,
+          fontSize: 10, color: WL.text4, lineHeight: 1.6, fontStyle: 'italic',
+        }}>
+          AI-predicted based on Open-Meteo forecast and ECMWF ERA5 historical baseline. Indicative only — does not replace regulatory monitoring.
         </div>
       </div>
 

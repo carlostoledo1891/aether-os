@@ -25,7 +25,7 @@ import {
   DSCR_PROJECTIONS, DRAWDOWN_SCHEDULE, DFS_WORKSTREAMS, REGULATORY_LOG,
   STAKEHOLDER_REGISTER,
 } from '../data/domain'
-import drillholesUrl from '../data/geojson/caldeira-drillholes.geojson?url'
+import { GEO } from '../data/geo/registry'
 import { CALDEIRA_ISSUER_SNAPSHOT } from '../data/caldeira/issuerSnapshot'
 import { SPATIAL_INSIGHTS, getSpatialInsightsSummary } from '../data/caldeira/spatialInsights'
 import { getDataMode, getPresentationMode, getDisclosureMode } from '../config/env'
@@ -103,7 +103,7 @@ function buildProvenanceProfile(): ProvenanceProfile {
       plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels simulated for UI rehearsal' },
       precip_field: {
         kind: 'from_public_record',
-        hint: 'Open-Meteo public weather API (ERA5 reanalysis)',
+        hint: 'Open-Meteo public weather API — recent observed precipitation',
       },
       regulatory_log: {
         kind: 'issuer_attested',
@@ -128,6 +128,18 @@ function buildProvenanceProfile(): ProvenanceProfile {
       apa_buffer: {
         kind: 'from_public_record',
         hint: 'ICMBio/IEF public environmental protection area boundaries',
+      },
+      weather_forecast: {
+        kind: 'modeled',
+        hint: 'Open-Meteo 16-day forecast — numerical weather prediction model output, not observed data',
+      },
+      climate_baseline: {
+        kind: 'from_public_record',
+        hint: 'ECMWF ERA5 reanalysis — 5-year historical climate baseline via Open-Meteo Archive API (public scientific dataset)',
+      },
+      spring_health_prediction: {
+        kind: 'ai_predicted',
+        hint: 'Spring health forecast based on predicted precipitation and historical ERA5 correlation — indicative only',
       },
     },
   }
@@ -163,7 +175,7 @@ let drillFetchPromise: Promise<void> | null = null
 function loadDrillFeatures(): Promise<void> {
   if (drillFeatures) return Promise.resolve()
   if (!drillFetchPromise) {
-    drillFetchPromise = fetch(drillholesUrl)
+    drillFetchPromise = fetch(GEO.drillholes.url)
       .then(r => r.json())
       .then((geo: { features: DrillFeature[] }) => { drillFeatures = geo.features })
       .catch(() => { drillFeatures = [] })

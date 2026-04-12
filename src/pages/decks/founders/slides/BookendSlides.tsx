@@ -1,27 +1,20 @@
 import { Suspense } from 'react'
 import { motion } from 'motion/react'
-import { W, V, ease, CALDEIRA_CENTER } from '../shared'
+import { W, V, ease } from '../shared'
 import { GlassRow } from '../../../../components/deck'
+import { MARKETING_COPY } from '../../../../config/marketing'
 import { MapBase } from '../../../../components/map/MapBase'
+import { useMapPreset } from '../../../../components/map/mapPresets'
 
 export function CoverSlide() {
+  const { viewProps } = useMapPreset('deck-cover')
   return (
     <>
       <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.25 }}>
         <Suspense fallback={null}>
           <MapBase
             id="founders-cover-map"
-            initialViewState={{
-              longitude: CALDEIRA_CENTER[0],
-              latitude: CALDEIRA_CENTER[1],
-              zoom: 11.5,
-              pitch: 50,
-              bearing: -15,
-            }}
-            interactive={false}
-            disableZoomControls={true}
-            hideControls={true}
-            forceStyle="satellite"
+            {...viewProps}
             containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
           />
         </Suspense>
@@ -39,13 +32,13 @@ export function CoverSlide() {
         </p>
         <GlassRow items={[
           { label: 'Persona Score', value: '9.4/10' },
-          { label: 'Tests', value: '310' },
-          { label: 'AI Tools', value: '27' },
-          { label: 'Overlays', value: '14' },
-          { label: 'Equipment', value: '17' },
+          { label: 'Tests', value: MARKETING_COPY.testCount },
+          { label: 'AI Tools', value: MARKETING_COPY.aiToolCount },
+          { label: 'Overlays', value: MARKETING_COPY.overlayCount },
+          { label: 'Equipment', value: MARKETING_COPY.equipmentCount },
         ]} />
         <div style={{ marginTop: 20, fontSize: 12, color: W.text4, letterSpacing: '0.04em', textAlign: 'center' }}>
-          Solo founder · TypeScript strict · Zero compilation errors · Production architecture
+          Founded solo · TypeScript strict · Zero compilation errors · Production architecture
         </div>
       </div>
     </>
@@ -60,7 +53,7 @@ export function CloseSlide() {
       The product is better than the pitch.
     </h2>
     <p style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', color: W.text3, maxWidth: 500, lineHeight: 1.6, marginBottom: 40 }}>
-      Come see it. 310 tests. 27 AI tools. 14 map layers. 17 equipment. 9 stakeholders at 9.4/10. Built by one person from inside the Caldeira.
+      Come see it. {MARKETING_COPY.testCount} tests. {MARKETING_COPY.aiToolCount} AI tools. {MARKETING_COPY.overlayCount} map layers. {MARKETING_COPY.equipmentCount} equipment. 9 stakeholders at 9.4/10. Founded solo from inside the Caldeira.
     </p>
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
       <a href="/" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>Open Platform</a>

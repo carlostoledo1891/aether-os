@@ -1,4 +1,4 @@
-import { W } from '../shared'
+import { W, V } from '../shared'
 import { Tag, Bullet } from '../../../../components/deck'
 
 const COMPETITORS = [
@@ -27,6 +27,8 @@ export default function MoatSlide() {
       <Bullet>Founder grew up inside the deposit — 40 years of local context. Irreplicable.</Bullet>
       <div style={{ height: 6 }} />
       <Bullet accent={W.green}>Honesty-first positioning — data honesty banner, Slide 0 disclaimer, "words to avoid" appendix. The Everledger defense.</Bullet>
+      <div style={{ height: 6 }} />
+      <Bullet accent={V}>Predictive environmental intelligence — competitors report historical data; Vero forecasts compliance risk.</Bullet>
     </div>
   </>)
 }

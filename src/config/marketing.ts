@@ -38,6 +38,13 @@ export const CAPABILITIES = [
     features: ['Dynamic Provenance badges', 'SHA-256 append-only audit ledger', 'EU DPP JSON export (22 fields)', 'Explicit data honesty labels'],
     metrics: [{ value: 'SHA-256', label: 'Audit' }, { value: '22', label: 'DPP Fields' }, { value: '100%', label: 'Export' }],
   },
+  {
+    tag: 'Environment',
+    headline: 'Predictive environmental intelligence',
+    desc: 'Forecast horizons and ERA5-backed baselines connect weather, hydrology, and risk to operations — not generic dashboard widgets.',
+    features: ['16-day weather forecast', '5-year ERA5 climate history', 'Environmental risk analysis', 'Spring health prediction'],
+    metrics: [{ value: '16-day', label: 'Forecast' }, { value: 'ERA5', label: 'Baseline' }, { value: '4', label: 'AI Tools' }],
+  },
 ]
 
 export const ARCH_NODES = [
@@ -45,7 +52,7 @@ export const ARCH_NODES = [
   { label: 'Simulation Engine', sub: '2s tick · 4 enrichers', icon: '🔄' },
   { label: 'React 19 Frontend', sub: 'MapLibre GL · Recharts', icon: '🖥' },
   { label: 'SQLite + Cache', sub: 'Ring buffer · TTL', icon: '🗄' },
-  { label: '27 AI Tools', sub: 'Domain-grounded', icon: '🤖' },
+  { label: '31 AI Tools', sub: 'Domain-grounded', icon: '🤖' },
   { label: 'OpenAPI Spec', sub: 'Auto-generated', icon: '📄' },
 ]
 
@@ -57,9 +64,64 @@ export const QUALITY = [
   { value: '14', label: 'Memo\'d', sub: 'Map overlays' },
 ]
 
-export const TEAM = [
-  { name: 'Carlos Toledo', role: 'Founder & Product Lead', desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — 310 tests, 27 AI tools. Domain expert with decades of field context.' },
-  { name: 'Dr. Heber Caponi', role: 'Scientific Advisor', desc: 'Field researcher with decades of active geological and hydrological work. The bridge from simulated to field-verified data.' },
+export interface TeamMember {
+  name: string
+  role: string
+  desc: string
+  bg?: string
+  accent: string
+  onboarding?: boolean
+}
+
+export const TEAM: TeamMember[] = [
+  {
+    name: 'Juliano Dutra',
+    role: 'Co-founder · Technical Advisor',
+    desc: 'iFood co-founder. Gringo CTO. Engineering leader with 20+ angel investments.',
+    bg: 'iFood co-founder. Gringo CTO. 20+ angel investments. Unicamp CS. Architecture review, engineering mentorship, hiring bar, and scaling guidance.',
+    accent: V,
+    onboarding: true,
+  },
+  {
+    name: 'Guilherme Bonifácio',
+    role: 'Co-founder · Commercial Strategy',
+    desc: 'iFood co-founder. Kanoa Capital. 110+ angel investments. GTM & revenue engines.',
+    bg: 'iFood co-founder. Kanoa Capital. 110+ angel investments. FEA-USP Economics. Leads GTM, investor pipeline, revenue strategy, and commercial execution.',
+    accent: V,
+    onboarding: true,
+  },
+  {
+    name: 'Dr. Heber Caponi',
+    role: 'Scientific Advisor · LAPOC',
+    desc: 'Field researcher with decades of active geological and hydrological work. The bridge from simulated to field-verified data.',
+    bg: 'Decades of active Caldeira field research through LAPOC (CNEN). The bridge from simulated to field-verified data. Piezometers, water quality, geological sampling.',
+    accent: V,
+    onboarding: true,
+  },
+  {
+    name: 'Milca Neves Tavares',
+    role: 'ESG & Human Rights Advisor',
+    desc: 'Co-founder of Mil Caminhos. MSc Sustainability (FGV). 15 years integrating human rights and ESG policy across companies, governments, and communities.',
+    bg: 'Co-founder of Mil Caminhos. MSc Sustainability Management (EAESP-FGV). Schumacher College (UK). 15 years building policies and programs that integrate companies, governments, and communities for human rights and sustainable development.',
+    accent: V,
+    onboarding: true,
+  },
+  {
+    name: 'Alexandre Quevedo',
+    role: 'Sustainability Strategy Advisor',
+    desc: 'Co-founder of Mil Caminhos. MSc Administration (FGV). 15+ years in ESG governance, socio-environmental due diligence, and community-based development.',
+    bg: 'Co-founder of Mil Caminhos. MSc Administration (EAESP-FGV). Schumacher College (UK). 15+ years corporate strategy and field work across 40+ Brazilian territories. Former Natura, Petlove. Socio-environmental due diligence, social innovation, ESG governance.',
+    accent: V,
+    onboarding: true,
+  },
+  {
+    name: 'Carlos Toledo',
+    role: 'Founder · Product & Technical Lead',
+    desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — 310 tests, 31 AI tools. Domain expert with decades of field context.',
+    bg: 'Air Force pilot, full-stack engineer, product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: 310 tests, 31 AI tools, pilot plant digital twin.',
+    accent: V,
+    onboarding: false,
+  },
 ]
 
 export const AI_TOOLS = [
@@ -69,6 +131,10 @@ export const AI_TOOLS = [
   { cat: 'Operations', tools: 'plant telemetry, equipment status, sensor channels' },
   { cat: 'Environmental', tools: 'water quality, springs monitoring, hydrology scenarios' },
   { cat: 'Market', tools: 'sizing, pricing, benchmarks, comparable analysis' },
+  { name: 'queryWeatherForecast', label: '16-Day Weather Forecast', category: 'Environmental Intelligence' },
+  { name: 'queryWeatherHistory', label: 'ERA5 Climate History', category: 'Environmental Intelligence' },
+  { name: 'analyzeEnvironmentalRisk', label: 'Environmental Risk Analysis', category: 'Environmental Intelligence' },
+  { name: 'querySpringHealthPrediction', label: 'Spring Health Prediction', category: 'Environmental Intelligence' },
 ]
 
 export const MARKET_DATA = [
@@ -86,12 +152,12 @@ export const REPORT_CARDS = [
 export const MARKETING_COPY = {
   heroTagline: 'Verified Origin. Trusted Supply.',
   heroHeadline: 'The trust layer for critical operations',
-  heroSubhead: 'Hybrid telemetry engine. Build digital twins. Prove compliance. Seamlessly transition from simulated models to real-world sensor data for field operations and board-level decisions.',
+  heroSubhead: 'Predictive environmental intelligence on a hybrid telemetry engine — digital twins, proven compliance, and a clear path from simulation to live field data.',
   heroFooter: '310 automated tests · Zero compilation errors · TypeScript strict · One developer',
   
   // Metrics explicitly defined for easier reuse in decks
   testCount: '310',
-  aiToolCount: '27',
+  aiToolCount: '31',
   overlayCount: '14',
   equipmentCount: '17',
   sensorCount: '28',
@@ -99,7 +165,9 @@ export const MARKETING_COPY = {
   
   // Reusable taglines
   platformTagline: 'Ingest. Visualize. Verify.',
-  aiTagline: '27 domain tools. Grounded in truth.',
+  aiTagline: '31 domain tools. Grounded in truth.',
   architectureTagline: 'Production-grade hybrid architecture',
   marketTagline: 'Regulation creates the market',
+  forecastHorizon: '16-day',
+  climateBaseline: '5yr ERA5',
 }

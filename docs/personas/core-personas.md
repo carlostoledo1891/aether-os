@@ -1,13 +1,13 @@
-# Aether OS — Personas
+# Vero — Personas
 
 **Purpose:** Two kinds of personas live here:
 
 1. **Internal Advisor Personas** — roles the AI assistant adopts when the user asks for strategic business guidance or technical product leadership. These are *your voice* when you need a sparring partner.
-2. **External Stakeholder Personas** — profiles of the people Aether is built to convince. Used to frame demos, copy, and product narrative.
+2. **External Stakeholder Personas** — profiles of the people Vero is built to convince. Used to frame demos, copy, and product narrative.
 
 Use alongside [`docs/messaging-strategy.md`](../messaging-strategy.md) and [`AGENT.md`](../../AGENT.md).
 
-**Last updated:** 2026-04-10 (post v15: Online Report Templates)
+**Last updated:** 2026-04-12 (Advisors onboarding: Mil Caminhos ESG advisory, Investors Deck removed)
 
 ---
 
@@ -51,25 +51,15 @@ I am none of those. I am a **builder who grew up in the Caldeira**, trained in m
 
 ## The Team — Ready to Deploy
 
-These people are committed and ready to join when the pilot is greenlit. They are not hypothetical hires — they are real professionals who have said yes. Advisors and external personas should factor this team into their evaluation of Aether's execution capacity.
+These people are committed and ready to join when the pilot is greenlit. They are not hypothetical hires — they are real professionals who have said yes. Advisors and external personas should factor this team into their evaluation of Vero's execution capacity.
 
-### Thiago A. — CEO (designated)
-
-**Role on activation:** Chief Executive Officer — corporate structure, legal, operations, team management.
-
-- Deep experience in **Brazilian and international law**, enterprise operations, and managing development teams.
-- Understands the **regulatory and corporate landscape** that Aether operates in — Brazilian permitting, international compliance frameworks, cross-border legal structures.
-- Complements Carlos's technical and product focus by owning the **business operations, legal architecture, and commercial execution** side.
-
-**Strategic value:** When Carlos is building product and engaging technical stakeholders, Thiago handles corporate structure, contracts, legal compliance, and operational scaling. A founder-CEO pair where the founder keeps building and the CEO keeps the business running is the structure investors prefer.
-
-### Dr. Heber Caponi — Chief Scientific Advisor (LAPOC)
+### Dr. Heber Caponi — Scientific Advisor (LAPOC)
 
 **Role on activation:** Scientific and geological authority — field validation, academic credibility, regulatory-grade data.
 
 - **Decades** of active field research on the **Caldeira alkaline complex** through LAPOC (Laboratorio de Pesquisas do Alcalino de Pocos de Caldas).
 - **Still on the ground** — not retired, not desk-only. Currently conducting fieldwork in the Caldeira.
-- Brings **peer-reviewed, instrument-backed geological and hydrological knowledge** of the exact terrain Aether visualizes.
+- Brings **peer-reviewed, instrument-backed geological and hydrological knowledge** of the exact terrain Vero visualizes.
 
 **Why Dr. Caponi is the most strategic team member:**
 
@@ -86,6 +76,27 @@ This is not hyperbole. Consider what he resolves for every external persona:
 
 **In plain terms:** Dr. Caponi is the person who turns Aether's "modeled" and "simulated" labels into "field-verified" and "instrument-backed" labels. That single transition is the difference between a demo and a product. Every persona score in the aggregate scorecard improves when LAPOC data flows through the `AetherDataService`.
 
+### Milca Neves Tavares — ESG & Human Rights Advisor (Mil Caminhos)
+
+**Role:** ESG governance, human rights due diligence (HRDD), community rights strategy.
+
+- Co-founder of **Mil Caminhos** — consultancy specializing in sustainability, human rights, and productive value chains integrated into business strategy.
+- **MSc Sustainability Management** (EAESP-FGV). Certified by **Schumacher College (UK)** in Natural Processes.
+- **15 years** building policies and programs that integrate companies, governments, and communities for human rights and sustainable development.
+- Specialist in constructing the social license frameworks that critical mineral operations require.
+
+**Strategic value:** Milca is the bridge between Vero's compliance claims and the operational reality of HRDD, community engagement, and social license. When EU Battery Regulation enforcement asks "how do you verify responsible sourcing?", Milca's frameworks provide the answer. She strengthens the **Trade Truth** pillar — ESG compliance and supply chain integrity.
+
+### Alexandre Quevedo — Sustainability Strategy Advisor (Mil Caminhos)
+
+**Role:** ESG governance integration, sustainable value chain design, socio-environmental due diligence.
+
+- Co-founder of **Mil Caminhos**. **MSc Administration** (EAESP-FGV). Certified by **Schumacher College (UK)** in Natural Processes.
+- **15+ years** in corporate strategy and field work across **40+ Brazilian territories**. Former **Natura** and **Petlove**.
+- Expertise in social innovation, multi-sector articulation, and converting human rights principles into operational actions.
+
+**Strategic value:** Ale brings the ESG governance depth that connects Vero's data architecture to real-world due diligence workflows. His experience across Brazilian territories — from supply chain traceability to community-based development — maps directly to the OECD Due Diligence requirements in our knowledge base. Together with Milca, they form the ESG advisory pillar that buyers and regulators demand.
+
 ### Full-Stack Developer — Engineering (designated)
 
 **Role on activation:** Senior full-stack engineer — ship velocity, code quality, feature throughput.
@@ -99,13 +110,21 @@ This is not hyperbole. Consider what he resolves for every external persona:
 ### Team configuration at pilot activation
 
 ```
-Carlos Toledo         — Founder, Product & Technical Lead
-Thiago A.            — CEO, Legal & Operations
-Dr. Heber Caponi     — Chief Scientific Advisor (LAPOC)
-Full-Stack Developer — Engineering
+Carlos Toledo              — Founder, Product & Technical Lead
+Dr. Heber Caponi           — Scientific Advisor (LAPOC)
+Milca Neves Tavares        — ESG & Human Rights Advisor (Mil Caminhos)
+Alexandre Quevedo          — Sustainability Strategy Advisor (Mil Caminhos)
+Juliano Dutra              — Co-founder · Technical Advisor (onboarding)
+Guilherme Bonifácio        — Co-founder · Commercial Strategy (onboarding)
+Full-Stack Developer       — Engineering (designated)
 ```
 
-This is a four-person team with **zero gaps**: product/technical (Carlos), business/legal (Thiago), scientific/field authority (Dr. Caponi), and engineering velocity (developer). Most mining tech startups at this stage have either no scientific advisor or no builder-founder. Aether has both.
+**Three pillars, zero gaps:**
+- **Ground Truth** — Dr. Caponi (science, LAPOC field data, geological authority)
+- **Trade Truth** — Milca + Ale (ESG governance, HRDD, community rights, supply chain due diligence)
+- **Product + Execution** — Carlos (platform, field integration), Juliano (architecture, scaling), Guilherme (GTM, investor pipeline)
+
+Most mining tech startups at this stage have no scientific advisor, no ESG counsel, and no builder-founder. Vero has all three.
 
 ---
 
@@ -314,5 +333,6 @@ Always answer with this structure:
 | "Prepare me for a journalist / analyst call" | **Marketing Director** — narrative prep, key messages, anticipated questions, quotable lines, things to avoid | Business Expert provides deal context and competitive framing; CTO provides technical accuracy check |
 | "Should we rebrand / rename / change the tagline?" | **Marketing Director** — brand architecture analysis, audience testing framework, naming criteria, visual identity evaluation | Business Expert validates market positioning impact; CTO flags any product/codebase naming implications |
 | "We have a conference in 3 weeks — what do we do?" | **Marketing Director** — booth strategy, deck adaptation for audience, pre-event outreach, post-event follow-up sequence | Business Expert identifies highest-value contacts; CTO prepares the live demo environment |
+| "How do we handle ESG / HRDD compliance?" | **Business Expert** — regulatory requirements, deal implications | CTO confirms data architecture supports due diligence workflows; **Marketing Director** frames ESG as competitive advantage. Escalate to **Milca + Ale** (Mil Caminhos) for operational HRDD framework design. |
 
 ---

@@ -2135,3 +2135,18 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Reorganized `src/pages` into exact domains: `marketing`, `decks`, and `views` matching the specified route paths.
 - Removed legacy URL aliases to strictly enforce exact paths in `src/App.tsx`.
 - Ensured zero broken relative imports by automatically mapping module depths across 70+ components and slides.
+
+### Session Log — 2026-04-12 (Optimization & Simplification Sprint)
+- Created `shared/sites/caldeira.ts` as single source of truth; migrated all 7 hardcoded coordinate files. Refactored `seed.ts` from 647→45 lines.
+- Built map preset system (`useMapPreset`, `MapOverlays`, 8 presets) and refactored 7 map call sites across decks and pages.
+- Unified `StatCard` across deck/UI kit; created `ReportPrimitives` to kill duplicated inline styles in 3 reports. Removed duplicate drillholes import in mockDataService.
+- Added AI knowledge base: 10 regulatory reference docs, `data/knowledge/index.json`, and `queryKnowledgeBase` chat tool in `chat.ts`.
+
+### Session Log — 2026-04-12 (Advisors Onboarding + Cleanup Sprint)
+- Onboarded Milca Neves Tavares and Alexandre Quevedo (Mil Caminhos) as ESG/HRDD advisors across website, Founders Deck, Meteoric Deck, and persona docs.
+- Created unified `TeamMember` interface and shared `TEAM` roster in `marketing.ts` — single source of truth for all 6 team members. Both deck TeamSlides and LandingPage now import from it.
+- Deleted Investors Deck entirely (directory, route, references). Only Founders + Meteoric decks remain.
+- Removed Thiago A. from all active docs; updated VALUATION.md risk mitigations to reference advisory bench.
+- Consolidated persona docs: Aether->Vero title, standardized Caponi title, rewrote team configuration with three-pillar structure (Ground Truth / Trade Truth / Execution).
+- Fixed stale "27 AI tools" references across BookendSlides, CloseSlide, PITCH_STRATEGY.md, branding.md. Replaced hardcoded stats with `MARKETING_COPY` constants.
+- Added ESG lane to WhyINeedYouSlide. Updated RiskSlide from "Solo founder risk" to "Key-person risk" with advisory bench mitigation.

@@ -7,6 +7,8 @@ import { startBcbEnricher } from './enrichers/bcbExchange.js'
 import { startUsgsEnricher } from './enrichers/usgsSeismic.js'
 import { startAlphaVantageEnricher } from './enrichers/alphaVantage.js'
 import { startLapocSimulator } from './enrichers/lapocAdapter.js'
+import { startForecastEnricher } from './enrichers/openMeteoForecast.js'
+import { startArchiveEnricher } from './enrichers/openMeteoArchive.js'
 import type { AlertItem } from './generators/types.js'
 
 const API = ENGINE_CONFIG.apiBaseUrl
@@ -84,6 +86,8 @@ async function main() {
   loop()
 
   startOpenMeteoEnricher()
+  startForecastEnricher()
+  startArchiveEnricher()
   startBcbEnricher()
   startUsgsEnricher()
   startAlphaVantageEnricher()

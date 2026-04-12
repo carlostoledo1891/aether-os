@@ -1,0 +1,127 @@
+[
+  {
+    "id": "conama-357",
+    "jurisdiction": "brazil",
+    "authority": "CONAMA",
+    "title": "Resolução 357/2005 — Water Quality Classification",
+    "relevant_thresholds": [
+      { "parameter": "sulfate_ppm", "class": "Class 2", "limit": 250, "unit": "mg/L" },
+      { "parameter": "nitrate_ppm", "class": "Class 2", "limit": 10, "unit": "mg/L" },
+      { "parameter": "pH", "class": "Class 2", "min": 6.0, "max": 9.0, "unit": "pH" },
+      { "parameter": "dissolved_oxygen", "class": "Class 2", "limit": 5, "unit": "mg/L", "direction": "minimum" }
+    ],
+    "file": "brazil/conama-357.md",
+    "tags": ["water", "quality", "discharge", "monitoring"]
+  },
+  {
+    "id": "conama-430",
+    "jurisdiction": "brazil",
+    "authority": "CONAMA",
+    "title": "Resolução 430/2011 — Effluent Discharge Standards",
+    "relevant_thresholds": [
+      { "parameter": "pH", "limit_min": 5.0, "limit_max": 9.0, "unit": "pH" },
+      { "parameter": "temperature_delta", "limit": 3, "unit": "°C" },
+      { "parameter": "BOD", "limit": 120, "unit": "mg/L" }
+    ],
+    "file": "brazil/conama-430.md",
+    "tags": ["effluent", "discharge", "plant", "operations"]
+  },
+  {
+    "id": "dn-copam-217",
+    "jurisdiction": "brazil/minas-gerais",
+    "authority": "COPAM",
+    "title": "DN COPAM 217/2017 — Environmental Licensing Procedures (MG)",
+    "relevant_thresholds": [],
+    "file": "brazil/dn-copam-217.md",
+    "tags": ["licensing", "LP", "LI", "LO", "permitting", "FEAM", "SUPRAM"]
+  },
+  {
+    "id": "constitution-225",
+    "jurisdiction": "brazil",
+    "authority": "Federal Constitution",
+    "title": "Art. 225 — Environmental Protection",
+    "relevant_thresholds": [],
+    "file": "brazil/constitution-225.md",
+    "tags": ["constitutional", "EIA", "precautionary", "fundamental-right"]
+  },
+  {
+    "id": "anm-mining",
+    "jurisdiction": "brazil",
+    "authority": "ANM",
+    "title": "Mining Code & ANM Regulations",
+    "relevant_thresholds": [
+      { "parameter": "CFEM_royalty", "limit": 2, "unit": "%" }
+    ],
+    "file": "brazil/anm-mining.md",
+    "tags": ["mining", "rights", "royalties", "CFEM", "exploitation"]
+  },
+  {
+    "id": "eu-battery-reg",
+    "jurisdiction": "EU",
+    "authority": "European Commission",
+    "title": "Regulation (EU) 2023/1542 — Battery Passport Requirements",
+    "relevant_thresholds": [
+      { "parameter": "DPP_fields_mandatory", "limit": 22, "unit": "fields" },
+      { "parameter": "DPP_deadline", "value": "2027-02-01", "unit": "date" }
+    ],
+    "file": "international/eu-battery-reg.md",
+    "tags": ["DPP", "battery", "passport", "Catena-X", "CEN-CENELEC"]
+  },
+  {
+    "id": "ira-45x",
+    "jurisdiction": "USA",
+    "authority": "US Treasury / IRS",
+    "title": "IRA Section 45X — FEOC Rules for Critical Minerals",
+    "relevant_thresholds": [
+      { "parameter": "FEOC_pct_2025", "limit": 0, "unit": "%" },
+      { "parameter": "critical_mineral_content_pct", "limit": 50, "unit": "%" }
+    ],
+    "file": "international/ira-45x.md",
+    "tags": ["FEOC", "IRA", "critical-minerals", "tax-credit", "supply-chain"]
+  },
+  {
+    "id": "dod-critical",
+    "jurisdiction": "USA",
+    "authority": "US Department of Defense",
+    "title": "DoD Critical Minerals Procurement Requirements",
+    "relevant_thresholds": [],
+    "file": "international/dod-critical.md",
+    "tags": ["DPA", "DMEA", "stockpile", "allied-source", "defense"]
+  },
+  {
+    "id": "oecd-due-diligence",
+    "jurisdiction": "international",
+    "authority": "OECD",
+    "title": "OECD Due Diligence Guidance for Responsible Supply Chains",
+    "relevant_thresholds": [],
+    "file": "international/oecd-due-diligence.md",
+    "tags": ["due-diligence", "supply-chain", "traceability", "conflict-minerals"]
+  },
+  {
+    "id": "caldeira-regulatory",
+    "jurisdiction": "brazil/minas-gerais",
+    "authority": "Multiple",
+    "title": "Caldeira Project — Regulatory Context & Status",
+    "relevant_thresholds": [],
+    "file": "caldeira/regulatory.md",
+    "tags": ["caldeira", "COPAM", "FEAM", "MPF", "CNEN", "IBAMA", "permitting"]
+  },
+  {
+    "id": "caldeira-climate",
+    "jurisdiction": "brazil",
+    "authority": "Open-Meteo / ECMWF",
+    "title": "Caldeira Climate Patterns & Spring Health",
+    "relevant_thresholds": [],
+    "file": "caldeira/climate-patterns.md",
+    "tags": ["climate", "hydrology", "springs", "caldeira"]
+  },
+  {
+    "id": "ecmwf-era5",
+    "jurisdiction": "international",
+    "authority": "ECMWF",
+    "title": "ERA5 Reanalysis Dataset — Climate Baseline",
+    "relevant_thresholds": [],
+    "file": "international/ecmwf-era5.md",
+    "tags": ["climate", "era5", "ecmwf", "historical"]
+  }
+]

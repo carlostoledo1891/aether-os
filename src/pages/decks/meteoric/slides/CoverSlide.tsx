@@ -2,26 +2,18 @@ import { Suspense } from 'react'
 import { motion } from 'motion/react'
 import { GlassRow } from '../../../../components/deck'
 import { MapBase } from '../../../../components/map/MapBase'
-import { W, V, ease, CALDEIRA_CENTER } from './shared'
+import { useMapPreset } from '../../../../components/map/mapPresets'
+import { W, V, ease } from './shared'
 
 export default function CoverSlide() {
+  const { viewProps } = useMapPreset('deck-cover')
   return (
     <>
       <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.25 }}>
         <Suspense fallback={null}>
           <MapBase
             id="meteoric-cover-map"
-            initialViewState={{
-              longitude: CALDEIRA_CENTER[0],
-              latitude: CALDEIRA_CENTER[1],
-              zoom: 11.5,
-              pitch: 50,
-              bearing: -15,
-            }}
-            interactive={false}
-            disableZoomControls={true}
-            hideControls={true}
-            forceStyle="satellite"
+            {...viewProps}
             containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
           />
         </Suspense>
@@ -38,7 +30,7 @@ export default function CoverSlide() {
           {'Your digital twin is already built.\nNow connect it to live data.'}
         </p>
         <div style={{ marginTop: 40 }}>
-          <GlassRow items={[{ label: 'Equipment', value: '17' }, { label: 'Sensors', value: '28' }, { label: 'GeoJSON', value: '19' }, { label: 'AI Tools', value: '27' }, { label: 'Tests', value: '310' }]} />
+          <GlassRow items={[{ label: 'Equipment', value: '17' }, { label: 'Sensors', value: '28' }, { label: 'GeoJSON', value: '19' }, { label: 'AI Tools', value: '31' }, { label: 'Forecast', value: '16-Day' }, { label: 'Tests', value: '310' }]} />
         </div>
       </div>
     </>
