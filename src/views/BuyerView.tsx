@@ -32,11 +32,6 @@ const TAB_ITEMS: { id: BuyerTab; label: string; icon: typeof ShieldCheck; color:
   { id: 'compliance',   label: 'Compliance',    icon: ShieldCheck,  color: W.green },
 ]
 
-const TAB_COLOR: Record<BuyerTab, string> = {
-  compliance:   W.green,
-  traceability: W.cyan,
-}
-
 const STEP_STATUS_COLORS: Record<string, string> = {
   verified: W.green,
   active: W.violet,

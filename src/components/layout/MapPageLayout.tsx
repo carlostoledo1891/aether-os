@@ -6,7 +6,6 @@ export interface MapPageLayoutProps {
   sidebarContent?: ReactNode
   bottomContent?: ReactNode
   sidebarWidth?: number
-  mapBorderColor?: string
 }
 
 export function MapPageLayout({
@@ -14,10 +13,7 @@ export function MapPageLayout({
   sidebarContent,
   bottomContent,
   sidebarWidth = 300,
-  mapBorderColor,
 }: MapPageLayoutProps) {
-  const edge = mapBorderColor ?? W.border
-
   return (
     <div
       style={{

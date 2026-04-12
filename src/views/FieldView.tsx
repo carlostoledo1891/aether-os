@@ -32,7 +32,6 @@ import { useServiceQuery } from '../hooks/useServiceQuery'
 import { useSiteWeather } from '../hooks/useSiteWeather'
 
 import type { MapTab } from './field/constants'
-import { TAB_COLOR } from './field/constants'
 import { OperationsPanel } from './field/OperationsPanel'
 import { EnvironmentPanel } from './field/EnvironmentPanel'
 import { FieldBottomMetrics } from './field/FieldBottomMetrics'
