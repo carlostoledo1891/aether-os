@@ -32,7 +32,6 @@ export default function TrustCenterPage() {
           { label: 'Business', href: '/business' },
           { label: 'Trust', href: '/trust' },
         ]}
-        cta={{ label: 'Founders Deck', href: '/deck/founders' }}
       />
 
       {/* Hero */}

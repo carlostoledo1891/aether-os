@@ -18,9 +18,9 @@ export default function CtaSlide() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, width: '100%', maxWidth: 720, marginBottom: 32 }}>
         {[
-          { label: 'Growth Tier', value: '$102k/yr' },
-          { label: 'Live Data', value: '90 days' },
-          { label: 'Views', value: '3 + Mini' }
+          { label: 'Compliance', value: 'EU DPP Ready' },
+          { label: 'Audit Trail', value: 'SHA-256' },
+          { label: 'Field Data', value: 'LAPOC Ready' }
         ].map(s => (
           <div key={s.label} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '16px', textAlign: 'center' }}>
             <div style={{ fontSize: 12, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>{s.label}</div>

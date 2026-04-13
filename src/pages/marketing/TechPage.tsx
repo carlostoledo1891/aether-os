@@ -24,7 +24,6 @@ export default function TechPage() {
           { label: 'Tech', href: '/tech' },
           { label: 'Business', href: '/business' },
         ]}
-        cta={{ label: 'Founders Deck', href: '/deck/founders' }}
       />
 
       {/* ── Hero ───────────────────────────────────────────────── */}

@@ -40,7 +40,6 @@ export default function LandingPage() {
           { label: 'Tech', href: '/tech' },
           { label: 'Business', href: '/business' },
         ]}
-        cta={{ label: 'Founders Deck', href: '/deck/founders' }}
       />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
@@ -72,9 +71,6 @@ export default function LandingPage() {
           style={{ display: 'flex', gap: 12, position: 'relative', flexWrap: 'wrap', justifyContent: 'center' }}>
           <a href="/" style={{ background: V, color: '#fff', padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
             Open Platform
-          </a>
-          <a href="/deck/founders" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>
-            Founders Deck →
           </a>
         </motion.div>
 
@@ -532,11 +528,10 @@ export default function LandingPage() {
             See VeroChain in action
           </h2>
           <p style={{ ...body, margin: '0 auto 36px', textAlign: 'center' }}>
-            Explore the live platform, review the founders deck, or request a pilot deployment.
+            Explore the live platform or request a pilot deployment.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/" style={{ background: V, color: '#fff', padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>Open Platform</a>
-            <a href="/deck/founders" style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>Founders Deck</a>
           </div>
         </div>
       </S>
