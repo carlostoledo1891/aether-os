@@ -12,6 +12,7 @@ import type {
   LithologySummary,
   StakeholderRegister,
   TelemetryTick,
+  MarketFxSnapshot, MarketStockSnapshot, SeismicSnapshot, HistoricalWeatherSnapshot,
 } from './dataService'
 import type { DepositRecord } from '../data/domain/deposits'
 import type { ComplianceLedger, SpringEvent } from '../types/telemetry'
@@ -262,6 +263,26 @@ export function createLiveDataService(): AetherDataService {
 
     getStakeholderRegister() {
       return api<StakeholderRegister>('/api/stakeholders')
+    },
+
+    async getMarketFx() {
+      try { return await api<MarketFxSnapshot>('/api/market/fx', 60_000) }
+      catch { return null }
+    },
+
+    async getMarketStock() {
+      try { return await api<MarketStockSnapshot>('/api/market/stock', 60_000) }
+      catch { return null }
+    },
+
+    async getSeismicRecent() {
+      try { return await api<SeismicSnapshot>('/api/seismic/recent', 60_000) }
+      catch { return null }
+    },
+
+    async getHistoricalWeather() {
+      try { return await api<HistoricalWeatherSnapshot>('/api/weather/historical', 300_000) }
+      catch { return null }
     },
 
     dismissAlert(id: string) {

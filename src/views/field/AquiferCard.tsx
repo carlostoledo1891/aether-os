@@ -4,6 +4,7 @@ import { Droplets } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { SectionLabel } from '../../components/ui/SectionLabel'
+import { DataSourceBadge } from '../../components/ui/DataSourceBadge'
 import { W } from '../../app/canvas/canvasTheme'
 import css from './EnvironmentPanel.module.css'
 
@@ -21,9 +22,12 @@ export interface AquiferCardProps {
 export const AquiferCard = memo(function AquiferCard({ sensors }: AquiferCardProps) {
   return (
     <GlassCard animate={false} className={css.cardBody}>
-      <div className={css.sectionHead} style={{ marginBottom: 8 }}>
-        <GlowingIcon icon={Droplets} color="cyan" size={11}/>
-        <SectionLabel>Aquifer Depths</SectionLabel>
+      <div className={css.sectionHeadBetween} style={{ marginBottom: 8 }}>
+        <div className={css.sectionHead}>
+          <GlowingIcon icon={Droplets} color="cyan" size={11}/>
+          <SectionLabel>Aquifer Depths</SectionLabel>
+        </div>
+        <DataSourceBadge kind="simulated" />
       </div>
       <div className={css.flexCol} style={{ gap: 5 }}>
         {sensors.map(s => {

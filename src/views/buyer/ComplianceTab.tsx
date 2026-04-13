@@ -6,6 +6,7 @@ import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
 import { MetricDisplay } from '../../components/ui/MetricDisplay'
 import { GreenPremiumCard } from '../../components/GreenPremiumCard'
+import { DataSourceBadge } from '../../components/ui/DataSourceBadge'
 import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
@@ -35,11 +36,14 @@ export function ComplianceTab({ batch }: ComplianceTabProps) {
     <div className={css.root}>
       {/* FEOC Badge */}
       <GlassCard glow="green" animate={false} className={css.cardPad}>
-        <div className={css.sectionHeader}>
-          <GlowingIcon icon={ShieldCheck} color="green" size={13} />
-          <span className={css.sectionTitle} style={{ color: W.text3 }}>
-            FEOC Compliance
-          </span>
+        <div className={css.sectionHeader} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <GlowingIcon icon={ShieldCheck} color="green" size={13} />
+            <span className={css.sectionTitle} style={{ color: W.text3 }}>
+              FEOC Compliance
+            </span>
+          </div>
+          <DataSourceBadge kind="seed" label="Seed Data" />
         </div>
         <div className={css.feocRow}>
           <div>

@@ -20,7 +20,6 @@ export const OperationsPanel = memo(function OperationsPanel() {
   const { plant } = useTelemetry()
   const { data: PILOT_PLANT_PERFORMANCE, isLoading: l1, error: e1 } = useServiceQuery('plant-perf', s => s.getPlantPerformance())
   const { data: HARDWARE_SENSORS, isLoading: l2, error: e2 } = useServiceQuery('hardware-sensors', s => s.getHardwareSensors())
-  const { data: spatial, isLoading: l3, error: e3 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
   const [range, setRange] = useState<TimeRangeKey>('24h')
   const { data: history } = useServiceQueryWithArg('history', range, (s, r) => s.getHistory(r))
   const plantHistory = history?.plantHistory ?? []
@@ -31,9 +30,9 @@ export const OperationsPanel = memo(function OperationsPanel() {
   const recircData = plantHistory.map(h => h.flow_metrics.recirculation_pct)
   const treoData   = plantHistory.map(h => h.output.treo_grade_pct)
 
-  const firstError = e1 || e2 || e3
+  const firstError = e1 || e2
   if (firstError) return <ErrorFallback error={firstError} label="Operations data" />
-  if (l1 || l2 || l3 || !PILOT_PLANT_PERFORMANCE || !HARDWARE_SENSORS || !spatial) {
+  if (l1 || l2 || !PILOT_PLANT_PERFORMANCE || !HARDWARE_SENSORS) {
     return <LoadingSkeleton variant="card" label="Loading operations..." />
   }
 
@@ -44,16 +43,6 @@ export const OperationsPanel = memo(function OperationsPanel() {
       transition={{ duration: 0.2 }}
       className="flex flex-col gap-2"
     >
-      <GlassCard animate={false} className="shrink-0 px-3 py-2.5">
-        <SectionLabel wideTracking>Spatial cross-check</SectionLabel>
-        <p className="mt-1.5 text-[10px] leading-snug" style={{ color: W.text3 }}>
-          {spatial.summary}
-        </p>
-        <p className="mt-1 font-mono text-[8px] leading-snug" style={{ color: W.text4 }}>
-          {spatial.apaHeuristicNote}
-        </p>
-      </GlassCard>
-
       <div className="flex shrink-0 justify-end">
         <TimeRangeSelector value={range} onChange={setRange} accentColor={W.violet} />
       </div>

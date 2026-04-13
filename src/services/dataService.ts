@@ -438,6 +438,56 @@ export interface StakeholderRegister {
   last_updated: string
 }
 
+/* ─── Enricher Data (from engine → server DB) ──────────────────────────── */
+
+export type EnricherSource = 'bcb' | 'alpha_vantage' | 'usgs' | 'openmeteo' | 'openmeteo_archive' | 'mock' | 'seed'
+
+export interface MarketFxSnapshot {
+  symbol: string
+  value: number
+  currency: string
+  source: EnricherSource
+  updated_at: string
+  detail?: Record<string, unknown>
+}
+
+export interface MarketStockSnapshot {
+  symbol: string
+  value: number
+  currency: string
+  source: EnricherSource
+  updated_at: string
+  detail?: Record<string, unknown>
+}
+
+export interface SeismicEvent {
+  id: string
+  time: string
+  latitude: number
+  longitude: number
+  depth_km: number
+  magnitude: number
+  place: string
+}
+
+export interface SeismicSnapshot {
+  events: SeismicEvent[]
+  source: EnricherSource
+  updated_at: string
+}
+
+export interface HistoricalWeatherSnapshot {
+  series: {
+    time: string[]
+    precipitation_sum: number[]
+    temperature_2m_max?: number[]
+    temperature_2m_min?: number[]
+  }
+  source: EnricherSource
+  dayCount: number
+  updated_at: string
+}
+
 /* ─── The Service Contract ──────────────────────────────────────────────── */
 
 /** Return type that honestly represents sync (mock) or async (live) results. */
@@ -500,6 +550,15 @@ export interface AetherDataService {
   getLithologySummary(): MaybeAsync<LithologySummary>
 
   getStakeholderRegister(): MaybeAsync<StakeholderRegister>
+
+  /** Enricher data: BRL/USD exchange rate from BCB PTAX */
+  getMarketFx(): MaybeAsync<MarketFxSnapshot | null>
+  /** Enricher data: MEI.AX stock quote from Alpha Vantage */
+  getMarketStock(): MaybeAsync<MarketStockSnapshot | null>
+  /** Enricher data: recent seismic events from USGS */
+  getSeismicRecent(): MaybeAsync<SeismicSnapshot | null>
+  /** Enricher data: historical climate from ERA5 / Open-Meteo Archive */
+  getHistoricalWeather(): MaybeAsync<HistoricalWeatherSnapshot | null>
 
   dismissAlert(id: string): void
   dismissAllAlerts(): void

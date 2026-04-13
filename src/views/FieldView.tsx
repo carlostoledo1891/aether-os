@@ -120,6 +120,8 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const { data: PROJECT_FINANCIALS } = useServiceQuery('project-financials', s => s.getProjectFinancials())
   const { data: PREDICTIVE_HYDROLOGY_SCENARIOS } = useServiceQuery('hydrology-scenarios', s => s.getHydrologyScenarios())
   const { data: SPRING_COUNT } = useServiceQuery('spring-count', s => s.getSpringCount())
+  const { data: marketFx } = useServiceQuery('market-fx', s => s.getMarketFx())
+  const { data: marketStock } = useServiceQuery('market-stock', s => s.getMarketStock())
   const [mapTab, setMapTab] = useState<MapTab>('operations')
   const [controlRoomOpen, setControlRoomOpen] = useState(false)
   const [hydroStationOpen, setHydroStationOpen] = useState(false)
@@ -233,6 +235,8 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
             { label: 'Inflow', value: `${plant.flow_metrics.in_liters_sec.toFixed(0)} L/s`, sub: 'Process water in' },
             { label: 'NH₄ Feed', value: `${plant.leaching_circuit.ammonium_sulfate_ml_min.toFixed(0)} ml/min`, sub: 'Tracked reagent feed' },
             { label: 'Annual NdPr', value: `${PROJECT_FINANCIALS?.annual_ndpr_t.toLocaleString() ?? '—'} t/yr`, sub: 'LOM target' },
+            ...(marketFx ? [{ label: 'BRL/USD', value: marketFx.value.toFixed(2), sub: marketFx.source === 'mock' ? 'Mock' : 'BCB PTAX' }] : []),
+            ...(marketStock ? [{ label: 'MEI.AX', value: `A$${marketStock.value.toFixed(3)}`, sub: marketStock.source === 'mock' ? 'Mock' : 'Alpha Vantage' }] : []),
           ]
         : [
             { label: 'Spring Preservation', value: `${currentScenario?.spring_preservation_pct ?? '—'}%`, sub: currentScenario?.horizon ?? '' },
@@ -241,7 +245,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
             { label: 'Recirculation', value: `${currentScenario?.recirculation_pct?.toFixed(1) ?? '—'}%`, sub: 'Commercial case model' },
             { label: 'LI Signal', value: currentScenario?.permitting_signal ?? '—', sub: 'Hearing readiness' },
           ],
-    [mapTab, plant, currentScenario, PROJECT_FINANCIALS, SPRING_COUNT],
+    [mapTab, plant, currentScenario, PROJECT_FINANCIALS, SPRING_COUNT, marketFx, marketStock],
   )
 
   return (

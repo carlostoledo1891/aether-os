@@ -10,6 +10,7 @@ import {
   type DailyForecastSeries,
 } from '../services/weather/openMeteoClient'
 import { fetchCptecForecast, type CptecForecast } from '../services/weather/cptecClient'
+import { getDataMode } from '../config/env'
 
 export type SiteWeatherSource = 'openmeteo' | 'mock'
 
@@ -53,6 +54,46 @@ function siteCoordinates(): { lat: number; lng: number } {
   const lat = Number(import.meta.env.VITE_WEATHER_LAT ?? CALDEIRA_VIEW_STATE.latitude)
   const lng = Number(import.meta.env.VITE_WEATHER_LNG ?? CALDEIRA_VIEW_STATE.longitude)
   return { lat, lng }
+}
+
+function isLiveMode(): boolean {
+  return getDataMode() === 'live'
+}
+
+async function fetchServerWeatherCurrent(): Promise<DailyPrecipSeries | null> {
+  try {
+    const res = await fetch('/api/weather/current')
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.daily?.time && data?.daily?.precipitation_sum) {
+      return { time: data.daily.time, precipitation_sum: data.daily.precipitation_sum }
+    }
+    if (data?.time && data?.precipitation_sum) {
+      return { time: data.time, precipitation_sum: data.precipitation_sum }
+    }
+    return null
+  } catch { return null }
+}
+
+async function fetchServerForecast(): Promise<DailyForecastSeries | null> {
+  try {
+    const res = await fetch('/api/weather/forecast')
+    if (!res.ok) return null
+    const data = await res.json()
+    const d = data?.daily ?? data
+    if (d?.time && d?.precipitation_sum) {
+      return {
+        time: d.time,
+        temperature_2m_max: d.temperature_2m_max ?? [],
+        temperature_2m_min: d.temperature_2m_min ?? [],
+        precipitation_sum: d.precipitation_sum,
+        wind_speed_10m_max: d.wind_speed_10m_max ?? [],
+        relative_humidity_2m_max: d.relative_humidity_2m_max ?? [],
+        et0_fao_evapotranspiration: d.et0_fao_evapotranspiration ?? [],
+      }
+    }
+    return null
+  } catch { return null }
 }
 
 /** Deterministic mock series for tests and when API is off / fails */
@@ -215,7 +256,12 @@ export function useSiteWeather(pastDays: number, options?: { enabled?: boolean }
 
       if (!cancelled) setState((s) => ({ ...s, loading: true, error: null }))
 
-      fetchPastDaysDailyPrecip(lat, lng, days)
+      const liveMode = isLiveMode()
+      const fetcher = liveMode
+        ? fetchServerWeatherCurrent().then(s => s ?? fetchPastDaysDailyPrecip(lat, lng, days))
+        : fetchPastDaysDailyPrecip(lat, lng, days)
+
+      fetcher
         .then((series) => {
           if (cancelled) return
           const windowPrecipMm = sumPrecipMm(series)
@@ -411,7 +457,12 @@ export function useSiteForecast(days = 16, options?: { enabled?: boolean }): Sit
 
       if (!cancelled) setState(s => ({ ...s, loading: true, error: null }))
 
-      fetchForecast(lat, lng, n)
+      const liveMode = isLiveMode()
+      const fetcher = liveMode
+        ? fetchServerForecast().then(s => s ?? fetchForecast(lat, lng, n))
+        : fetchForecast(lat, lng, n)
+
+      fetcher
         .then(series => {
           if (cancelled) return
           const snap: SiteForecastSnapshot = {

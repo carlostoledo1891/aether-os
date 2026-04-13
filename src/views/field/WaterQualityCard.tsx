@@ -6,6 +6,7 @@ import { StatusChip } from '../../components/ui/StatusChip'
 import { MetricDisplay } from '../../components/ui/MetricDisplay'
 import { SparkLine } from '../../components/charts/SparkLine'
 import { SectionLabel } from '../../components/ui/SectionLabel'
+import { DataSourceBadge } from '../../components/ui/DataSourceBadge'
 import { W } from '../../app/canvas/canvasTheme'
 import type { TimeRangeKey } from '../../services/dataService'
 import css from './EnvironmentPanel.module.css'
@@ -32,9 +33,12 @@ export const WaterQualityCard = memo(function WaterQualityCard({
 
   return (
     <GlassCard animate={false} glow={(!sulfateOk || !nitrateOk) ? 'amber' : 'none'} className={css.cardBody}>
-      <div className={css.sectionHead} style={{ marginBottom: 8 }}>
-        <GlowingIcon icon={Droplets} color={(!sulfateOk || !nitrateOk) ? 'amber' : 'green'} size={11}/>
+      <div className={css.sectionHeadBetween} style={{ marginBottom: 8 }}>
+        <div className={css.sectionHead}>
+          <GlowingIcon icon={Droplets} color={(!sulfateOk || !nitrateOk) ? 'amber' : 'green'} size={11}/>
           <SectionLabel>Water Quality</SectionLabel>
+        </div>
+        <DataSourceBadge kind="simulated" />
       </div>
       <div className={css.grid2} style={{ gap: 8 }}>
         <div>

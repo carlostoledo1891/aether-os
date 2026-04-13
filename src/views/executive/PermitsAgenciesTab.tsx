@@ -31,7 +31,6 @@ export function PermitsAgenciesTab() {
   const { data: audit, isLoading: l3, error: e3 } = useServiceQuery('audit-trail', s => s.getAuditTrail())
   const { data: thresholds, isLoading: l4, error: e4 } = useServiceQuery('thresholds', s => s.getThresholds())
   const { data: profile, isLoading: l5, error: e5 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
-  const { data: spatial, isLoading: l6, error: e6 } = useServiceQuery('spatial-insights', s => s.getSpatialInsights())
 
   const downloadJson = useCallback(async () => {
     const result = service.getRegulatoryExportBundle()
@@ -54,9 +53,9 @@ export function PermitsAgenciesTab() {
     URL.revokeObjectURL(a.href)
   }, [regulatory])
 
-  const firstError = e1 || e2 || e3 || e4 || e5 || e6
+  const firstError = e1 || e2 || e3 || e4 || e5
   if (firstError) return <ErrorFallback error={firstError} label="Agencies data" />
-  if (l1 || l2 || l3 || l4 || l5 || l6 || !profile) {
+  if (l1 || l2 || l3 || l4 || l5 || !profile) {
     return <LoadingSkeleton variant="card" label="Loading agencies…" />
   }
 
@@ -94,23 +93,6 @@ export function PermitsAgenciesTab() {
           <ProvenanceBadge kind={profile.sections.map_geometry.kind} title={profile.sections.map_geometry.hint} />
         ) : null}
       </div>
-
-      <GlassCard animate={false} className="p-4 md:p-5">
-        <div className="mb-2 flex items-center gap-2">
-          <GlowingIcon icon={Link2} color="cyan" size={14} />
-          <SectionLabel>Spatial cross-check (heuristic)</SectionLabel>
-        </div>
-        <p className="text-[11px] leading-snug" style={{ color: W.text3 }}>
-          {spatial?.summary ?? '—'}
-        </p>
-        <p className="mt-2 font-mono text-[9px] leading-snug" style={{ color: W.text4 }}>
-          Pilot → PFS plant ≈ {(spatial?.pilotToPfsPlantKm ?? 0).toFixed(2)} km · Licence zones overlapping APA buffer (illustrative union):{' '}
-          {spatial?.licenceZonesInApaBuffer ?? '—'}
-        </p>
-        <p className="mt-1 font-mono text-[8px] leading-snug" style={{ color: W.text4 }}>
-          {spatial?.apaHeuristicNote ?? '—'}
-        </p>
-      </GlassCard>
 
       <GlassCard animate={false} className="p-4 md:p-5">
         <div className="mb-2 flex items-center gap-2">

@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
-import { AlertTriangle, ChevronDown, CloudRain, CloudSun, FileCheck, Globe, Phone, RadioTower, Wind } from 'lucide-react'
+import { Activity, AlertTriangle, ChevronDown, CloudRain, CloudSun, FileCheck, Globe, Phone, RadioTower, Thermometer, Wind } from 'lucide-react'
 import { GlassCard } from '../../components/ui/GlassCard'
 import { GlowingIcon } from '../../components/ui/GlowingIcon'
 import { StatusChip } from '../../components/ui/StatusChip'
@@ -19,6 +19,8 @@ import type { TimeRangeKey } from '../../services/dataService'
 import type { SiteWeatherSnapshot } from '../../hooks/useSiteWeather'
 import { useSiteForecast, useCptecForecast } from '../../hooks/useSiteWeather'
 import type { CptecForecast } from '../../services/weather/cptecClient'
+import type { SeismicSnapshot, HistoricalWeatherSnapshot } from '../../services/dataService'
+import { DataSourceBadge } from '../../components/ui/DataSourceBadge'
 import { MonitoringNetworkCard } from './MonitoringNetworkCard'
 import { PredictiveModelingCard } from './PredictiveModelingCard'
 import { LIReadinessCard } from './LIReadinessCard'
@@ -40,6 +42,8 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
   const { data: scaleUp, isLoading: loadingScaleUp, error: e2 } = useServiceQuery('scale-up', s => s.getScaleUpPathway())
   const { data: springCount, isLoading: loadingSpringCount, error: e3 } = useServiceQuery('spring-count', s => s.getSpringCount())
   const { data: prov, isLoading: loadingProv, error: e4 } = useServiceQuery('provenance', s => s.getProvenanceProfile())
+  const { data: seismicData } = useServiceQuery('seismic', s => s.getSeismicRecent())
+  const { data: historicalWeather } = useServiceQuery('historical-weather', s => s.getHistoricalWeather())
   const [communityLang, setCommunityLang] = useState<CommunityLang>(() =>
     (typeof localStorage !== 'undefined' && localStorage.getItem('aether-community-lang') as CommunityLang) || 'en',
   )
@@ -181,7 +185,10 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
             <GlowingIcon icon={RadioTower} color={radOk ? 'text2' : 'red'} size={11}/>
             <SectionLabel>UDC Radiation</SectionLabel>
           </div>
-          <StatusChip label={env.legacy_infrastructure.udc_status} variant={radOk ? 'green' : 'red'} dot size="sm"/>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <DataSourceBadge kind="simulated" />
+            <StatusChip label={env.legacy_infrastructure.udc_status} variant={radOk ? 'green' : 'red'} dot size="sm"/>
+          </div>
         </div>
         <MetricDisplay value={env.legacy_infrastructure.radiation_usv_h} unit="μSv/h" decimals={3} size="md" color={radOk ? 'green' : 'red'}/>
         <SparkLine data={radData} color={radOk ? W.green : W.red} thresholdHigh={0.18} height={28} unit=" μSv/h" rangeLabel={range}/>
@@ -189,6 +196,9 @@ export const EnvironmentPanel = memo(function EnvironmentPanel({
       </GlassCard>
 
       <SpringsCard springCount={SPRING_COUNT} counts={counts} />
+
+      {seismicData && <SeismicActivityCard data={seismicData} />}
+      {historicalWeather && <ClimateBaselineCard data={historicalWeather} />}
 
       {/* License timeline */}
       <GlassCard animate={false} className={css.cardBody}>
@@ -415,4 +425,124 @@ function CptecForecastCard({ data }: { data: CptecForecast }) {
 function formatCptecDate(iso: string): string {
   const d = new Date(iso + 'T12:00:00')
   return d.toLocaleDateString('en', { weekday: 'short', day: 'numeric' })
+}
+
+/* ─── Seismic Activity Card ────────────────────────────────────────────── */
+
+function SeismicActivityCard({ data }: { data: SeismicSnapshot }) {
+  const events = data.events.slice(0, 5)
+  const maxMag = events.length > 0 ? Math.max(...events.map(e => e.magnitude)) : 0
+
+  return (
+    <GlassCard animate={false} glow={maxMag >= 4 ? 'amber' : 'none'} className={css.cardBody}>
+      <div className={css.sectionHeadBetween} style={{ marginBottom: 6 }}>
+        <div className={css.sectionHead}>
+          <GlowingIcon icon={Activity} color={maxMag >= 4 ? 'amber' : 'green'} size={11} />
+          <SectionLabel>Seismic Activity</SectionLabel>
+        </div>
+        <span
+          style={{
+            fontSize: 8, fontFamily: 'var(--font-mono)', fontWeight: 600,
+            padding: '1px 5px', borderRadius: W.radius.xs,
+            background: data.source === 'mock' ? `${W.amber}15` : `${W.cyan}15`,
+            color: data.source === 'mock' ? W.amber : W.cyan,
+            letterSpacing: '0.04em', textTransform: 'uppercase',
+          }}
+        >
+          {data.source === 'mock' ? 'Mock' : 'USGS'}
+        </span>
+      </div>
+
+      {events.length === 0 ? (
+        <p className={css.mono10} style={{ color: W.text3 }}>
+          No seismic events near site in the last year.
+        </p>
+      ) : (
+        <div className={css.flexCol} style={{ gap: 3 }}>
+          {events.map(e => (
+            <div key={e.id} className={css.flexStart} style={{ gap: 6, alignItems: 'center' }}>
+              <span
+                className={css.mono10}
+                style={{
+                  color: e.magnitude >= 4 ? W.amber : e.magnitude >= 3 ? W.text2 : W.text4,
+                  fontWeight: e.magnitude >= 4 ? 700 : 500,
+                  minWidth: 30,
+                }}
+              >
+                M{e.magnitude.toFixed(1)}
+              </span>
+              <span className={css.mono10} style={{ color: W.text3, minWidth: 52 }}>
+                {e.depth_km.toFixed(0)} km
+              </span>
+              <span className={css.mono10} style={{ color: W.text4, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {e.place}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className={css.mono10} style={{ color: W.text4, margin: '5px 0 0' }}>
+        300 km radius · {events.length} event{events.length !== 1 ? 's' : ''} in window
+      </p>
+    </GlassCard>
+  )
+}
+
+/* ─── Climate Baseline Card ────────────────────────────────────────────── */
+
+function ClimateBaselineCard({ data }: { data: HistoricalWeatherSnapshot }) {
+  const { series, dayCount } = data
+  const totalPrecip = series.precipitation_sum.reduce((a, b) => a + b, 0)
+  const avgPrecip = dayCount > 0 ? totalPrecip / dayCount : 0
+  const tMaxArr = series.temperature_2m_max ?? []
+  const tMinArr = series.temperature_2m_min ?? []
+  const avgTMax = tMaxArr.length > 0 ? tMaxArr.reduce((a, b) => a + b, 0) / tMaxArr.length : 0
+  const avgTMin = tMinArr.length > 0 ? tMinArr.reduce((a, b) => a + b, 0) / tMinArr.length : 0
+
+  return (
+    <GlassCard animate={false} glow="cyan" className={css.cardBody}>
+      <div className={css.sectionHeadBetween} style={{ marginBottom: 6 }}>
+        <div className={css.sectionHead}>
+          <GlowingIcon icon={Thermometer} color="cyan" size={11} />
+          <SectionLabel>Climate Baseline</SectionLabel>
+        </div>
+        <span
+          style={{
+            fontSize: 8, fontFamily: 'var(--font-mono)', fontWeight: 600,
+            padding: '1px 5px', borderRadius: W.radius.xs,
+            background: `${W.cyan}15`, color: W.cyan,
+            letterSpacing: '0.04em', textTransform: 'uppercase',
+          }}
+        >
+          ERA5 Archive
+        </span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+        <div>
+          <p className={css.mono10} style={{ color: W.text4, margin: 0 }}>Avg daily precip</p>
+          <p className={css.mono10} style={{ color: W.cyan, margin: '2px 0 0', fontSize: 12, fontWeight: 700 }}>
+            {avgPrecip.toFixed(1)} mm
+          </p>
+        </div>
+        <div>
+          <p className={css.mono10} style={{ color: W.text4, margin: 0 }}>Avg high</p>
+          <p className={css.mono10} style={{ color: W.amber, margin: '2px 0 0', fontSize: 12, fontWeight: 700 }}>
+            {avgTMax.toFixed(1)}°C
+          </p>
+        </div>
+        <div>
+          <p className={css.mono10} style={{ color: W.text4, margin: 0 }}>Avg low</p>
+          <p className={css.mono10} style={{ color: W.text3, margin: '2px 0 0', fontSize: 12, fontWeight: 700 }}>
+            {avgTMin.toFixed(1)}°C
+          </p>
+        </div>
+      </div>
+
+      <p className={css.mono10} style={{ color: W.text4, margin: '5px 0 0' }}>
+        {dayCount}-day window · total precip {totalPrecip.toFixed(0)} mm
+      </p>
+    </GlassCard>
+  )
 }

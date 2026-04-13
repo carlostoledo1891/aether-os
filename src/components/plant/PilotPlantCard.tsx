@@ -4,6 +4,7 @@ import { Factory } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
 import { useTelemetry } from '../../services/DataServiceProvider'
 import { PROCESS_STEPS } from '../../data/caldeira/pilotPlantData'
+import { DataSourceBadge } from '../ui/DataSourceBadge'
 import css from './controlRoom.module.css'
 
 interface PilotPlantCardProps {
@@ -61,7 +62,7 @@ export const PilotPlantCard = memo(function PilotPlantCard({ onOpen }: PilotPlan
         <div className={css.hudStatusDot} style={{ background: W.green }} />
         <Factory size={10} style={{ color: W.cyan, opacity: 0.7 }} />
         <span className={css.hudTitle}>Pilot Plant</span>
-        <span style={{ marginLeft: 'auto', fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)' }}>LIVE</span>
+        <span style={{ marginLeft: 'auto' }}><DataSourceBadge kind="simulated" /></span>
       </div>
 
       <div className={css.hudMetricsGrid}>

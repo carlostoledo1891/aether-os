@@ -370,6 +370,32 @@ export function createMockDataService(): AetherDataService {
 
     getStakeholderRegister() { return STAKEHOLDER_REGISTER },
 
+    getMarketFx() {
+      return {
+        symbol: 'BRL/USD', value: 5.05, currency: 'BRL',
+        source: 'mock' as const, updated_at: new Date().toISOString(),
+        detail: { buy: 5.04, sell: 5.06 },
+      }
+    },
+
+    getMarketStock() {
+      return {
+        symbol: 'MEI.AX', value: 0.038, currency: 'AUD',
+        source: 'mock' as const, updated_at: new Date().toISOString(),
+        detail: { change_pct: 2.7 },
+      }
+    },
+
+    getSeismicRecent() {
+      return {
+        events: [],
+        source: 'mock' as const,
+        updated_at: new Date().toISOString(),
+      }
+    },
+
+    getHistoricalWeather() { return null },
+
     dismissAlert(id: string) {
       alerts = alerts.map(a => a.id === id ? { ...a, dismissed: true } : a)
       const esg = calculateEsgScore(plant, env)

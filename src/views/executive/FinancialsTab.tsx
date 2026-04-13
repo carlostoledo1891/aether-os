@@ -4,6 +4,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { useServiceQuery, useServiceQueryWithArg } from '../../hooks/useServiceQuery'
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton'
 import { ErrorFallback } from '../../components/ui/ErrorFallback'
+import { DataSourceBadge } from '../../components/ui/DataSourceBadge'
 import type { ScenarioKey } from '../../services/dataService'
 import { SCENARIO_LABELS } from './constants'
 import { ExecutiveCard } from './ExecutiveCard'
@@ -28,9 +29,12 @@ export function FinancialsTab() {
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-5 lg:grid-cols-2">
       <div className="col-span-full flex min-w-0 flex-col gap-2">
-        <ExecutivePageIntro>
-          Illustrative scenarios aligned to public disclosure materials — not a live market or trading feed.
-        </ExecutivePageIntro>
+        <div className="flex items-center justify-between gap-3">
+          <ExecutivePageIntro>
+            Illustrative scenarios aligned to public disclosure materials — not a live market or trading feed.
+          </ExecutivePageIntro>
+          <DataSourceBadge kind="seed" label="Seed Data" />
+        </div>
         <p className={`${ty.body} max-w-[52rem] border-l-2 border-[color-mix(in_srgb,var(--w-green)_45%,transparent)] pl-3`}>
           <span className="font-mono text-[10px] text-[var(--w-text4)]">As of {snap?.as_of ?? '—'}</span>
           {' · '}
