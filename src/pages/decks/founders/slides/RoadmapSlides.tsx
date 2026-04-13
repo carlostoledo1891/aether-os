@@ -35,7 +35,7 @@ export function RoadmapSlide() {
 /* ── Timeline ──────────────────────────────────────────────── */
 
 const MILESTONES = [
-  { date: 'Apr 15', label: 'Pitch to Meteoric Resources', status: 'next' as const },
+  { date: 'Apr 16', label: 'Demo to Meteoric Resources', status: 'next' as const },
   { date: 'Apr 21', label: 'Term sheet with angel investors', status: 'next' as const },
   { date: 'May', label: 'LAPOC connected — field-verified', status: 'pending' as const },
   { date: 'Jun', label: 'Meteoric pilot — $102k/yr', status: 'pending' as const },

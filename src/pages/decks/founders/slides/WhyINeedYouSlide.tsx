@@ -1,3 +1,5 @@
+import { motion } from 'motion/react'
+import { Loader2 } from 'lucide-react'
 import { W, V } from '../shared'
 import { Tag } from '../../../../components/deck'
 
@@ -50,8 +52,16 @@ export default function WhyINeedYouSlide() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 500, width: '100%', marginBottom: 24 }}>
       {LANES.map(p => (
         <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: W.text1, marginTop: 4 }}>{p.lane}</div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3, background: `${V}20`, border: `1px solid ${V}40`, padding: '2px 5px', borderRadius: 4 }}>
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: V }}>
+                <Loader2 size={8} strokeWidth={3} />
+              </motion.div>
+              <span style={{ fontSize: 7, fontWeight: 800, color: V, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Pitching</span>
+            </div>
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: W.text1 }}>{p.lane}</div>
           <div style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>{p.detail}</div>
         </div>
       ))}

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { W } from '../app/canvas/canvasTheme'
-import { VeroChainLogo } from './brand/VeroChainLogo'
 
 const V = W.violet
 
@@ -88,10 +87,6 @@ export function PasswordGate({ children }: { children: ReactNode }) {
         transition: 'border-color 0.3s',
         animation: shake ? 'vgShake 0.45s ease' : 'none',
       }}>
-        <div style={{ marginBottom: 24 }}>
-          <VeroChainLogo iconOnly size={44} />
-        </div>
-
         <div style={{ fontSize: 11, color: W.text4, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8 }}>
           Private Preview
         </div>

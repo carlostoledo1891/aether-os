@@ -13,7 +13,7 @@ export function MeteorPlaySlide() {
   return (<>
     <div style={{ marginBottom: 16 }}><Tag>Insider Timing</Tag></div>
     <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>The Meteoric Play</h2>
-    <p style={{ fontSize: 13, color: W.text3, marginBottom: 24, maxWidth: 640 }}>Tuesday April 15 — I will officially email the pitch to Mr. Gale, Dr. de Carvalho, and Dr. Tunks to kick off the season. I hope you are in this with me!</p>
+    <p style={{ fontSize: 13, color: W.text3, marginBottom: 24, maxWidth: 640 }}>Wednesday April 16 — I'm demoing VeroChain live to Dr. de Carvalho, the chief geologist at Poços de Caldas. This is the gate to a pilot contract. I hope you are in this with me!</p>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, maxWidth: 860, width: '100%', marginBottom: 20 }}>
       {LEADERS.map(p => (
         <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '16px 14px', textAlign: 'left' }}>
@@ -48,12 +48,12 @@ export function WhyBeforeMeteorSlide() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, maxWidth: 900, width: '100%', marginBottom: 32 }}>
       <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'center' }}>
         <div style={{ fontSize: 10, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Pre-Money Today</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: W.text1, fontFamily: 'var(--font-mono)' }}>$5-7M</div>
-        <div style={{ fontSize: 11, color: W.text3, marginTop: 6 }}>Pre-revenue consensus</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: W.text1, fontFamily: 'var(--font-mono)' }}>$3-5M</div>
+        <div style={{ fontSize: 11, color: W.text3, marginTop: 6 }}>Pre-revenue, pre-pilot</div>
       </div>
       <div style={{ background: `${W.green}08`, border: `1px solid ${W.green}30`, borderRadius: 14, padding: '24px 20px', textAlign: 'center' }}>
         <div style={{ fontSize: 10, color: W.green, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Post-Pilot</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: W.green, fontFamily: 'var(--font-mono)' }}>$7M+</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: W.green, fontFamily: 'var(--font-mono)' }}>$5-7M</div>
         <div style={{ fontSize: 11, color: W.text3, marginTop: 6 }}>Traction factor jumps 3.5 → 4.5</div>
       </div>
       <div style={{ background: `${V}10`, border: `1px solid ${V}30`, borderRadius: 14, padding: '24px 20px', textAlign: 'center' }}>

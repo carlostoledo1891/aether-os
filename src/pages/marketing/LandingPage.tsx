@@ -503,8 +503,20 @@ export default function LandingPage() {
             {TEAM.map((t, i) => (
               <Stagger key={t.name} i={i}>
                 <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} style={glass}>
-                  <div style={{ fontSize: 16, fontWeight: 600, color: W.text1, marginBottom: 4 }}>{t.name}</div>
-                  <div style={{ fontSize: 12, color: V, fontWeight: 600, marginBottom: 12 }}>{t.role}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontSize: 16, fontWeight: 600, color: W.text1, marginBottom: 4 }}>{t.name}</div>
+                      <div style={{ fontSize: 12, color: V, fontWeight: 600, marginBottom: 12 }}>{t.role}</div>
+                    </div>
+                    {t.onboarding && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: `${V}20`, border: `1px solid ${V}40`, padding: '3px 8px', borderRadius: 6, flexShrink: 0 }}>
+                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} style={{ display: 'flex', alignItems: 'center', color: V }}>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                        </motion.div>
+                        <span style={{ fontSize: 8, fontWeight: 800, color: V, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Pitching</span>
+                      </div>
+                    )}
+                  </div>
                   <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0 }}>{t.desc}</p>
                 </motion.div>
               </Stagger>

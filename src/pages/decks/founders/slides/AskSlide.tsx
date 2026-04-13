@@ -8,9 +8,9 @@ export default function AskSlide() {
     </h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, width: '100%', maxWidth: 720, marginBottom: 24 }}>
       {[
-        { label: 'Target', value: '$500k-1M' },
-        { label: 'Pre-Money', value: '$5-7M' },
-        { label: 'Runway', value: '18 months' }
+        { label: 'Target', value: '$250-500k' },
+        { label: 'Pre-Money', value: '$3-5M' },
+        { label: 'Runway', value: '12 months' }
       ].map(s => (
         <div key={s.label} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: 12, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>{s.label}</div>
@@ -19,11 +19,10 @@ export default function AskSlide() {
       ))}
     </div>
     <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12, marginBottom: 12 }}>
-      <Bullet>12 months Carlos full-time → product + stakeholder demos</Bullet>
-      <Bullet>Senior dev hire (Month 1-2) → 2x shipping velocity</Bullet>
-      <Bullet>Commercial hire (Month 2-3) → pipeline + pilot conversions</Bullet>
-      <Bullet>Infra + AI tokens + conferences → $110k/yr</Bullet>
-      <Bullet accent={W.green}>Target: 3 paying pilots by Month 6 · Seed round by Month 9</Bullet>
+      <Bullet>12 months Carlos full-time → product, demos, pilot conversion</Bullet>
+      <Bullet>Infra, AI tokens, field travel → $80-110k/yr</Bullet>
+      <Bullet>Apr 16 Meteoric demo → first pilot target by June</Bullet>
+      <Bullet accent={W.green}>Target: 3 paying pilots by Month 9 · Seed round by Month 12</Bullet>
     </div>
   </>)
 }

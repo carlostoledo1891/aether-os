@@ -42,7 +42,7 @@ export default function TeamSlide() {
                     >
                       <Loader2 size={10} strokeWidth={3} />
                     </motion.div>
-                    <span style={{ fontSize: 8, fontWeight: 800, color: V, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Onboarding</span>
+                    <span style={{ fontSize: 8, fontWeight: 800, color: V, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Pitching</span>
                   </div>
                 )}
                 {!isOnboarding && (

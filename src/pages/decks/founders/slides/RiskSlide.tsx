@@ -3,7 +3,7 @@ import { Tag } from '../../../../components/deck'
 
 const RISKS = [
   { risk: 'Key-person risk', mitigation: 'Advisory bench (science, ESG, tech, commercial) + AGENT.md bootstrap + strict TypeScript + CI quality gates = day-1 onboarding for any senior dev' },
-  { risk: 'Zero revenue', mitigation: 'Apr 15 Meteoric pitch → pilot by June. Named anchor client, not cold pipeline.' },
+  { risk: 'Zero revenue', mitigation: 'Apr 16 Meteoric demo → pilot by June. Named anchor client, not cold pipeline.' },
   { risk: 'Single customer dependency', mitigation: '150 Critical Mineral projects identified (ASX/TSX/SEC). OEM pipeline via ERP/ECA channels.' },
   { risk: 'EU DPP delay', mitigation: 'IRA/FEOC active now. Australian ESG 2025+. Regulatory diversification across 3 jurisdictions.' },
   { risk: 'NdPr price volatility', mitigation: '0.03% of client revenue. Price-insensitive tier — less than one day of CAPEX interest.' },
