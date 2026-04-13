@@ -50,7 +50,6 @@ export default function BusinessPage() {
       <MarketingNav
         section="business"
         links={[
-          { label: 'Platform', href: '/lp' },
           { label: 'Tech', href: '/tech' },
           { label: 'Business', href: '/business' },
         ]}

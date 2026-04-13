@@ -37,7 +37,6 @@ export default function LandingPage() {
 
       <MarketingNav
         links={[
-          { label: 'Platform', href: '/lp' },
           { label: 'Tech', href: '/tech' },
           { label: 'Business', href: '/business' },
         ]}

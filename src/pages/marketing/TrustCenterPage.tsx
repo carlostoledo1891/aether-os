@@ -28,7 +28,6 @@ export default function TrustCenterPage() {
       <MarketingNav
         section="trust"
         links={[
-          { label: 'Platform', href: '/lp' },
           { label: 'Tech', href: '/tech' },
           { label: 'Business', href: '/business' },
           { label: 'Trust', href: '/trust' },
