@@ -1,13 +1,11 @@
 import { W, V } from '../shared'
 import { StatCard } from '../../../../components/deck'
 
-import { MARKETING_COPY } from '../../../../config/marketing'
-
 const TWIN_STATS = [
-  { v: MARKETING_COPY.equipmentCount, l: 'Equipment', s: 'Metso · Andritz · GEA · Outotec' },
-  { v: MARKETING_COPY.sensorCount, l: 'Sensors', s: 'Mapped to telemetry channels' },
+  { v: 'Full', l: 'AMSUL Process', s: 'Metso · Andritz · GEA · Outotec' },
+  { v: 'Live', l: 'Telemetry', s: 'Mapped to sensor channels' },
   { v: '7', l: 'Process Steps', s: 'AMSUL ion-exchange' },
-  { v: '15', l: 'Flow Paths', s: 'Animated SVG connections' },
+  { v: 'Animated', l: 'SVG Flow', s: 'Interactive connections' },
 ]
 
 const PROCESS_NODES = [
@@ -21,7 +19,7 @@ const PROCESS_NODES = [
 export default function DigitalTwinSlide() {
   return (<>
     <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>Pilot Plant Digital Twin</h2>
-    <p style={{ fontSize: 12, color: W.text3, marginBottom: 20, maxWidth: 600 }}>Interactive Control Room — {MARKETING_COPY.equipmentCount} equipment, {MARKETING_COPY.sensorCount} sensors, 7 process steps, animated SVG flow</p>
+    <p style={{ fontSize: 12, color: W.text3, marginBottom: 20, maxWidth: 600 }}>Interactive Control Room — full pilot plant process, every sensor mapped, animated SVG flow</p>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, maxWidth: 860, width: '100%', marginBottom: 16 }}>
       {TWIN_STATS.map(s => <StatCard key={s.l} value={s.v} label={s.l} sub={s.s} />)}
     </div>
@@ -41,7 +39,7 @@ export default function DigitalTwinSlide() {
           {i < 4 && <line x1={n.x + 120} y1="58" x2={n.x + 176} y2="58" stroke={V} strokeWidth="1" markerEnd="url(#flowA)" strokeDasharray="4 2" />}
         </g>
       ))}
-      <text x="400" y="18" textAnchor="middle" fill={`${V}40`} fontSize="9" fontFamily="var(--font-mono)">Simplified AMSUL process — live version has {MARKETING_COPY.equipmentCount} equipment + 15 animated flow paths</text>
+      <text x="400" y="18" textAnchor="middle" fill={`${V}40`} fontSize="9" fontFamily="var(--font-mono)">Full AMSUL process — live version includes all equipment with animated flow paths</text>
     </svg>
   </>)
 }

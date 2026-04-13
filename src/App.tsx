@@ -21,6 +21,7 @@ import shell from './AppShell.module.css'
 const LandingPage = lazy(() => import('./pages/marketing/LandingPage'))
 const TechPage = lazy(() => import('./pages/marketing/TechPage'))
 const BusinessPage = lazy(() => import('./pages/marketing/BusinessPage'))
+const TrustCenterPage = lazy(() => import('./pages/marketing/TrustCenterPage'))
 
 const FoundersDeck = lazy(() => import('./pages/decks/founders/FoundersDeck'))
 const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
@@ -28,6 +29,8 @@ const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
 const PrefeituraPage = lazy(() => import('./pages/views/prefeitura/PrefeituraPage').then(m => ({ default: m.PrefeituraPage })))
 const CaldeiraExecDeck = lazy(() => import('./pages/views/caldeira-exec/CaldeiraExecDeck'))
 const ComplianceSnapshotDeck = lazy(() => import('./pages/views/compliance-snapshot/ComplianceSnapshotDeck'))
+
+const KnowledgePage = lazy(() => import('./pages/admin/KnowledgePage'))
 
 const EnvironmentReport = lazy(() => import('./components/reports/EnvironmentReport'))
 const OperationsReport = lazy(() => import('./components/reports/OperationsReport'))
@@ -196,6 +199,7 @@ export default function App() {
             <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
             <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
             <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
+            <Route path="/trust" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TrustCenterPage /></Suspense></ErrorBoundary>} />
             
             <Route path="/deck/founders" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
             <Route path="/deck/meteoric" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
@@ -203,6 +207,8 @@ export default function App() {
             <Route path="/views/prefeitura" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PrefeituraPage /></Suspense></ErrorBoundary>} />
             <Route path="/views/caldeira-exec" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><CaldeiraExecDeck /></Suspense></ErrorBoundary>} />
             <Route path="/views/compliance-snapshot" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><ComplianceSnapshotDeck /></Suspense></ErrorBoundary>} />
+            
+            <Route path="/admin/knowledge" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><KnowledgePage /></Suspense></ErrorBoundary>} />
             
             <Route path="/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
           </Routes>

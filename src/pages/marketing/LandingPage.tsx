@@ -311,7 +311,7 @@ export default function LandingPage() {
             <div style={label}>AI Agent</div>
             <h2 style={heading}>{MARKETING_COPY.aiTagline}</h2>
             <p style={{ ...body, margin: '0 auto' }}>
-              Frontier LLM with {MARKETING_COPY.aiToolCount} domain-specific tools. 10 hallucination tests. Model-agnostic via AI SDK.
+              Frontier LLM with domain-specific tools. Hallucination-tested and guardrailed. Model-agnostic via AI SDK.
               Every response carries visible provenance — the agent refuses to speculate.
             </p>
           </div>

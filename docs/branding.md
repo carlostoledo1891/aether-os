@@ -37,7 +37,7 @@ Vero is a B2B SaaS platform that aligns field operations, compliance evidence, a
 
 | Principle | What it means | Example |
 |-----------|---------------|---------|
-| **Technical confidence** | State capabilities precisely. No hedging, no hyperbole. | "310 automated tests across 3 packages" — not "rigorously tested" |
+| **Technical confidence** | State capabilities precisely. No hedging, no hyperbole. | "Controls mapped to NIST 800-53 Rev 5 — 8 families, code-referenced" — not "rigorously tested" |
 | **Honest boundaries** | Always disclose what is simulated, modeled, or demo-only. | "Demo environment — simulated telemetry until LAPOC instruments connect" |
 | **Military brevity** | Short sentences. Active voice. No filler. Say it once. | "Vero aligns field and board." — not "Vero helps bridge the gap between..." |
 | **Evidence over assertion** | Show the number, the screenshot, the citation. Never "best-in-class." | "9.3/10 persona-weighted score" — not "industry-leading stakeholder satisfaction" |
@@ -62,7 +62,7 @@ These words and phrases must never appear in Vero external communications:
 
 | Audience | Tone | Example opening |
 |----------|------|-----------------|
-| Investor / board | Confident, precise, metric-forward | "310 tests. Zero TypeScript errors. $5–7M pre-money." |
+| Investor / board | Confident, precise, metric-forward | "Zero TypeScript errors. NIST 800-53 mapped. $5–7M pre-money." |
 | Operator / technical | Peer-level, architecture-aware | "Three-process architecture. Fastify API, simulation engine, Vite frontend." |
 | Buyer / compliance | Evidence-first, schema-aware | "22 CEN/CENELEC DPP fields mapped. Schema-validated JSON export." |
 | Regulator | Factual, cautious, boundary-clear | "Evidence repository design — not certification. Verify against filed instruments." |
@@ -311,7 +311,7 @@ Before any external-facing material goes out:
 - [ ] Disclaimer pattern included where data is shown
 - [ ] Color accents match their semantic domain
 - [ ] Dark theme only — no white/light backgrounds
-- [ ] Numbers are current (310 tests, 9.4 score, 31 AI tools)
+- [ ] Trust signals are current (NIST 800-53, SHA-256 audit chain, 9.4 persona score, CI quality gates)
 - [ ] Meteoric/Caldeira references include "ASX: MEI" on first mention
 - [ ] No overclaiming on compliance, blockchain, or AI capabilities
 

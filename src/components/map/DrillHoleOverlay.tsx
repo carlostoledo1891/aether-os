@@ -29,6 +29,10 @@ interface DrillHoleProperties {
   campaign: DrillCampaign
   hole_type: DrillHoleType
   note: string | null
+  intercept?: string | null
+  including?: string | null
+  hmreo_ppm?: number
+  prnd_ppm?: number
   source_ref?: string
   as_of?: string
   lithology_intervals?: { from_m: number; to_m: number; lithology: string; weathering: string }[]
@@ -45,10 +49,12 @@ export interface DrillHoleDetail {
   campaign: DrillCampaign
   hole_type: DrillHoleType
   note: string | null
-  source_ref?: string
-  as_of?: string
   intercept?: string
   including?: string
+  hmreo_ppm?: number
+  prnd_ppm?: number
+  source_ref?: string
+  as_of?: string
   lithology_intervals?: { from_m: number; to_m: number; lithology: string; weathering: string }[]
 }
 

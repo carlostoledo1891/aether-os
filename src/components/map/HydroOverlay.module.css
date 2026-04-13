@@ -3,10 +3,10 @@
 .hudColumn {
   position: absolute;
   top: 14px;
-  right: 14px;
+  left: 14px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 6px;
   max-width: 300px;
   pointer-events: none;
@@ -87,31 +87,4 @@
   border: var(--w-map-hud-border-red);
 }
 
-.legend {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  z-index: 15;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background: var(--w-map-control-bg);
-  border: var(--w-map-control-border);
-  border-radius: 8px;
-  padding: 5px 10px;
-  pointer-events: none;
-}
-
-.legendDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.legendLabel {
-  font-size: 10px;
-  color: var(--w-text4);
-  font-family: var(--font-mono);
-  letter-spacing: 0.04em;
-}
+/* Legend moved to HydroLegend component rendered via MapControlStack.bottomRight */

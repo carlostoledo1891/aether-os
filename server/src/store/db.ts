@@ -24,7 +24,7 @@ export function getDb(): Database.Database {
   return db
 }
 
-const SCHEMA_VERSION = 3
+const SCHEMA_VERSION = 4
 
 const MIGRATIONS: Array<(d: Database.Database) => void> = [
   // v0 → v1: initial schema
@@ -183,6 +183,24 @@ const MIGRATIONS: Array<(d: Database.Database) => void> = [
       provenance TEXT NOT NULL,
       timestamp TEXT NOT NULL
     );
+  `)
+  },
+  // v3 → v4: knowledge chunks for RAG
+  (d) => {
+    d.exec(`
+    CREATE TABLE IF NOT EXISTS knowledge_chunks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      doc_id TEXT NOT NULL,
+      chunk_index INTEGER NOT NULL,
+      content TEXT NOT NULL,
+      heading TEXT,
+      token_count INTEGER NOT NULL,
+      created_at TEXT NOT NULL,
+      UNIQUE(doc_id, chunk_index)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_kc_doc ON knowledge_chunks(doc_id);
+    CREATE INDEX IF NOT EXISTS idx_kc_content ON knowledge_chunks(content);
   `)
   },
 ]

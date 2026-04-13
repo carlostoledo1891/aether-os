@@ -2,7 +2,6 @@ import { memo } from 'react'
 import { motion } from 'motion/react'
 import { Droplets } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
-import { MAP_STACKING } from './mapStacking'
 import { THRESHOLDS } from '../../data/mockData'
 import type { HydroWeatherStripModel } from './hydroDetailMappers'
 import hudCss from '../plant/controlRoom.module.css'
@@ -32,7 +31,6 @@ export const HydroMonitoringCard = memo(function HydroMonitoringCard({
       tabIndex={0}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenStation?.() } }}
       style={{
-        zIndex: MAP_STACKING.hud,
         background: W.overlay88,
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',

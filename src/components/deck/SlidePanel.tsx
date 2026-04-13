@@ -12,7 +12,7 @@ export function SlidePanel({ children, style, className }: SlidePanelProps) {
     <div
       className={className}
       style={{
-        background: 'rgba(10,10,18,0.82)',
+        background: W.overlay88,
         backdropFilter: 'blur(16px)',
         border: `1px solid ${W.glass08}`,
         borderRadius: 14,

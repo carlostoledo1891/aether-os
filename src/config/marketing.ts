@@ -3,7 +3,7 @@ import { W } from '../app/canvas/canvasTheme'
 const V = W.violet
 
 export const HERO_STATS = [
-  { value: '310', label: 'Automated Tests' },
+  { value: 'Strict', label: 'TypeScript', sub: 'Zero errors, CI-enforced' },
   { value: 'Live', label: 'Sensor Ingestion' },
   { value: 'Dynamic', label: 'Provenance' },
   { value: '< 2 s', label: 'Data Refresh' },
@@ -22,28 +22,28 @@ export const CAPABILITIES = [
     headline: 'Connect any data source',
     desc: 'Seamlessly transition from synthetic modeling to real-world sensor telemetry (SCADA/LAPOC) with zero architectural changes.',
     features: ['Live Sensor Ingestion (LAPOC)', 'REST / WebSocket / MQTT connectors', 'Hybrid real/simulated telemetry', 'CSV / Excel batch upload'],
-    metrics: [{ value: '40+', label: 'Endpoints' }, { value: '4', label: 'Enrichers' }, { value: '< 2s', label: 'Refresh' }],
+    metrics: [{ value: 'REST + WS', label: 'API' }, { value: 'Multi-source', label: 'Enrichers' }, { value: '< 2s', label: 'Refresh' }],
   },
   {
     tag: 'Visualize',
     headline: 'Maps, charts, digital twins',
     desc: 'Interactive 3D terrain, process flow diagrams, time series, and custom overlays — all driven by your data, not our templates.',
     features: ['3D terrain with custom overlays', 'Process flow digital twins', 'Time series & gauge dashboards', 'Custom view builder (JSON-driven)'],
-    metrics: [{ value: '14', label: 'Overlay Types' }, { value: '17', label: 'Equipment' }, { value: '28', label: 'Sensors' }],
+    metrics: [{ value: 'Full', label: 'Digital Twin' }, { value: 'Multi-layer', label: 'Map Engine' }, { value: 'Real-time', label: 'Dashboards' }],
   },
   {
     tag: 'Verify',
     headline: 'Prove it with evidence',
     desc: 'SHA-256 audit chains, schema-validated compliance exports, and dynamic provenance labeling for real-time trust.',
     features: ['Dynamic Provenance badges', 'SHA-256 append-only audit ledger', 'EU DPP JSON export (22 fields)', 'Explicit data honesty labels'],
-    metrics: [{ value: 'SHA-256', label: 'Audit' }, { value: '22', label: 'DPP Fields' }, { value: '100%', label: 'Export' }],
+    metrics: [{ value: 'SHA-256', label: 'Audit' }, { value: '22', label: 'DPP Fields' }, { value: 'JSON', label: 'Schema Export' }],
   },
   {
     tag: 'Environment',
     headline: 'Predictive environmental intelligence',
     desc: 'Forecast horizons and ERA5-backed baselines connect weather, hydrology, and risk to operations — not generic dashboard widgets.',
     features: ['16-day weather forecast', '5-year ERA5 climate history', 'Environmental risk analysis', 'Spring health prediction'],
-    metrics: [{ value: '16-day', label: 'Forecast' }, { value: 'ERA5', label: 'Baseline' }, { value: '4', label: 'AI Tools' }],
+    metrics: [{ value: '16-day', label: 'Forecast' }, { value: 'ERA5', label: 'Baseline' }, { value: 'Predictive', label: 'Risk Model' }],
   },
 ]
 
@@ -52,16 +52,16 @@ export const ARCH_NODES = [
   { label: 'Simulation Engine', sub: '2s tick · 4 enrichers', icon: '🔄' },
   { label: 'React 19 Frontend', sub: 'MapLibre GL · Recharts', icon: '🖥' },
   { label: 'SQLite + Cache', sub: 'Ring buffer · TTL', icon: '🗄' },
-  { label: '31 AI Tools', sub: 'Domain-grounded', icon: '🤖' },
+  { label: 'AI Agent', sub: 'Domain-grounded', icon: '🤖' },
   { label: 'OpenAPI Spec', sub: 'Auto-generated', icon: '📄' },
 ]
 
 export const QUALITY = [
-  { value: '310', label: 'Tests', sub: '260 + 50' },
+  { value: 'CI', label: 'Quality Gates', sub: 'Lint, type-check, test, scan' },
   { value: '0', label: 'TS Errors', sub: 'Strict mode' },
-  { value: 'CSP', label: 'Headers', sub: 'Security policy' },
-  { value: '120', label: 'Rate Limit', sub: 'req / min' },
-  { value: '14', label: 'Memo\'d', sub: 'Map overlays' },
+  { value: 'NIST', label: '800-53 Mapped', sub: '8 control families' },
+  { value: 'SBOM', label: 'Every CI Build', sub: 'Syft + Grype' },
+  { value: 'SHA-256', label: 'Audit Chain', sub: 'Append-only, verifiable' },
 ]
 
 export interface TeamMember {
@@ -117,8 +117,8 @@ export const TEAM: TeamMember[] = [
   {
     name: 'Carlos Toledo',
     role: 'Founder · Product & Technical Lead',
-    desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — 310 tests, 31 AI tools. Domain expert with decades of field context.',
-    bg: 'Air Force pilot, full-stack engineer, product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: 310 tests, 31 AI tools, pilot plant digital twin.',
+    desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
+    bg: 'Air Force pilot, full-stack engineer, product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
     accent: V,
     onboarding: false,
   },
@@ -153,19 +153,12 @@ export const MARKETING_COPY = {
   heroTagline: 'Verified Origin. Trusted Supply.',
   heroHeadline: 'The trust layer for critical operations',
   heroSubhead: 'Predictive environmental intelligence on a hybrid telemetry engine — digital twins, proven compliance, and a clear path from simulation to live field data.',
-  heroFooter: '310 automated tests · Zero compilation errors · TypeScript strict · One developer',
-  
-  // Metrics explicitly defined for easier reuse in decks
-  testCount: '310',
-  aiToolCount: '31',
-  overlayCount: '14',
-  equipmentCount: '17',
-  sensorCount: '28',
+  heroFooter: 'TypeScript strict · CI quality gates · NIST 800-53 mapped · SBOM on every build · Provenance on every data point',
+
   dppFieldCount: '22',
-  
-  // Reusable taglines
+
   platformTagline: 'Ingest. Visualize. Verify.',
-  aiTagline: '31 domain tools. Grounded in truth.',
+  aiTagline: 'Domain-grounded AI. Every response cites its source.',
   architectureTagline: 'Production-grade hybrid architecture',
   marketTagline: 'Regulation creates the market',
   forecastHorizon: '16-day',

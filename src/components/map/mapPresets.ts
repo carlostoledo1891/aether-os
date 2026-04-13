@@ -36,17 +36,13 @@ export type MapPresetKey =
   | 'story-map'
   | 'traceability'
 
-export type OverlayKey =
-  | 'boundary'
-  | 'licenses'
-  | 'drillholes'
-  | 'pfs'
-  | 'environmental'
-  | 'hydroSprings'
-  | 'hydroNodes'
-  | 'infra'
-  | 'plantSites'
-  | 'weather'
+import type { LayerId } from './layerRegistry'
+
+/**
+ * OverlayKey is now an alias for LayerId plus composite keys
+ * ('environmental', 'weather') that expand to multiple registry entries.
+ */
+export type OverlayKey = LayerId | 'environmental' | 'weather'
 
 export interface MapPresetViewProps {
   initialViewState: {
@@ -111,7 +107,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: true,
       forceStyle: undefined,
     },
-    overlays: ['boundary', 'licenses', 'environmental', 'hydroSprings', 'hydroNodes', 'weather'],
+    overlays: ['boundary', 'licenses', 'environmental', 'hydroSprings', 'weather'],
     interactiveLayerIds: [
       SPRING_PIN_LAYER_ID,
       HYDRO_NODE_LAYER_ID,
@@ -163,13 +159,13 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    overlays: ['boundary', 'licenses', 'drillholes'],
+    overlays: ['boundary', 'licenses', 'drillholes', 'cprmGeology'],
     interactiveLayerIds: [
       DRILL_LAYER_ID,
       LICENSE_LAYER_ID,
       CALDEIRA_BOUNDARY_LAYER_ID,
     ],
-    showLayerPicker: false,
+    showLayerPicker: true,
   },
 
   'deck-hydro': {
@@ -187,7 +183,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       ENV_APA_FILL_LAYER_ID,
       CALDEIRA_BOUNDARY_LAYER_ID,
     ],
-    showLayerPicker: false,
+    showLayerPicker: true,
   },
 
   'story-map': {

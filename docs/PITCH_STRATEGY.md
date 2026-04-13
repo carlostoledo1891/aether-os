@@ -37,15 +37,15 @@ Meteoric (Apr 15) ──→ Full team visible on MeteoricDeck, pilot ask credibl
 | Asset | URL | Purpose |
 |-------|-----|---------|
 | Founders Deck | `/founders-deck` | Full 28-slide pitch — problem, product, engineering, science, business, timing, advisory ask |
-| **Tech Deep Dive** | `/tech` | CTO-grade architecture breakdown — 310 tests, service layer, AI tools, SCADA integration, DPP/blockchain pipeline, modularity |
+| **Tech Deep Dive** | `/tech` | CTO-grade architecture breakdown — CI quality gates, service layer, AI tools, SCADA integration, DPP/blockchain pipeline, modularity |
 | Platform Demo | `/` | Live platform — Field, Compliance, Executive views, AI agent, Control Room |
 | Website | `/lp` | Marketing landing page with team, architecture, market data |
 
 **Key hooks for Juliano:**
-- 310 tests, 0 TS errors, strict mode
+- CI quality gates, 0 TS errors, strict mode, NIST 800-53 mapped
 - `AetherDataService` interface pattern (mock/live swap)
 - Yield-to-real-data ingestion architecture and lean MapBase spatial engine
-- 31 AI tools with hallucination fence
+- Domain-grounded AI with hallucination fence
 - Production codebase ready for team scaling
 - AGENT.md + modular docs — AI-ready codebase documentation
 
@@ -119,7 +119,7 @@ Juliano, Guilherme,
 
 Quero mostrar pra vocês algo que construí sozinho nos últimos meses — e pedir a opinião honesta de vocês dois.
 
-**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, 31 AI tools (frontier LLM, model-agnostic), pilot plant digital twin (17 equipment, 28 sensors), and 310 automated tests. Zero TypeScript errors. Strict mode.
+**Vero** is a critical mineral operations and compliance platform. I built the entire stack: React 19 frontend, Fastify API, simulation engine, domain-grounded AI (frontier LLM, model-agnostic), full pilot plant digital twin, and CI-enforced quality gates. Zero TypeScript errors. Strict mode. NIST 800-53 mapped.
 
 The platform runs on real data from the Caldeira Project (Meteoric Resources — ASX: MEI, $821M NPV). On April 15, I'm pitching Meteoric for a $102k/yr pilot contract — 0.03% of their annual revenue.
 
@@ -184,7 +184,7 @@ Dr. De Carvalho,
 
 My name is Carlos Toledo. I grew up in Poços de Caldas, inside the Caldeira, and over the past several months I've built a platform called **Vero** — a critical mineral operations and compliance system.
 
-The platform was built entirely on Caldeira Project data: 19 GeoJSON datasets, JORC-safe resource classification, drill collar metadata, a pilot plant digital twin with 17 equipment items and 28 sensors, and 31 AI tools grounded in your deposit's geology.
+The platform was built entirely on Caldeira Project data: 19 GeoJSON datasets, JORC-safe resource classification, drill collar metadata, a full pilot plant digital twin, and domain-grounded AI tools anchored in your deposit's geology.
 
 Every number links to its methodology. Geology and hydrology are visually separated — the digital twin never pretends to prove the deposit. Simulated data is always labeled.
 

@@ -1,0 +1,17 @@
+node_modules
+server/node_modules
+engine/node_modules
+.git
+.github
+.cursor
+.env
+.env.*
+!.env.example
+*.md
+docs
+data/knowledge
+dist
+server/dist
+engine/dist
+coverage
+sbom-*.cdx.json

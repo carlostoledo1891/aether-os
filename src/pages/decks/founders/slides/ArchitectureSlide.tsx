@@ -51,7 +51,7 @@ export default function ArchitectureSlide() {
       <rect x="660" y="80" width="180" height="72" rx="10" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
       <text x="750" y="106" textAnchor="middle" fill={V} fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">Vite Frontend</text>
       <text x="750" y="122" textAnchor="middle" fill={W.text3} fontSize="10">React 19 · MapLibre</text>
-      <text x="750" y="138" textAnchor="middle" fill={W.text4} fontSize="9">Motion · Recharts · 14 overlays</text>
+      <text x="750" y="138" textAnchor="middle" fill={W.text4} fontSize="9">Motion · Recharts · Memoized overlays</text>
 
       <line x1="540" y1="104" x2="656" y2="104" stroke={V} strokeWidth="1.2" markerEnd="url(#arrowV)" />
       <text x="598" y="98" textAnchor="middle" fill={W.text4} fontSize="8" fontFamily="var(--font-mono)">fetch + WS</text>

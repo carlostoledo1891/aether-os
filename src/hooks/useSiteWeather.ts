@@ -9,6 +9,7 @@ import {
   type DailyClimateSeries,
   type DailyForecastSeries,
 } from '../services/weather/openMeteoClient'
+import { fetchCptecForecast, type CptecForecast } from '../services/weather/cptecClient'
 
 export type SiteWeatherSource = 'openmeteo' | 'mock'
 
@@ -439,6 +440,54 @@ export function useSiteForecast(days = 16, options?: { enabled?: boolean }): Sit
     queueMicrotask(run)
     return () => { cancelled = true }
   }, [enabled, apiOn, lat, lng, n])
+
+  return state
+}
+
+/* ── CPTEC / INPE municipal forecast ─────────────────────────────────── */
+
+export interface CptecForecastSnapshot {
+  loading: boolean
+  error: string | null
+  data: CptecForecast | null
+}
+
+let _cptecCache: { at: number; data: CptecForecast } | null = null
+
+export function useCptecForecast(): CptecForecastSnapshot {
+  const enabled = weatherEnabled()
+  const [state, setState] = useState<CptecForecastSnapshot>(() => {
+    if (enabled && _cptecCache && Date.now() - _cptecCache.at < STALE_MS) {
+      return { loading: false, error: null, data: _cptecCache.data }
+    }
+    return { loading: false, error: null, data: null }
+  })
+
+  useEffect(() => {
+    if (!enabled) return
+    if (_cptecCache && Date.now() - _cptecCache.at < STALE_MS) return
+
+    let cancelled = false
+
+    const run = () => {
+      if (cancelled) return
+      setState(s => ({ ...s, loading: true, error: null }))
+
+      fetchCptecForecast()
+        .then(data => {
+          if (cancelled) return
+          _cptecCache = { at: Date.now(), data }
+          setState({ loading: false, error: null, data })
+        })
+        .catch(err => {
+          if (cancelled) return
+          setState({ loading: false, error: String(err), data: null })
+        })
+    }
+
+    queueMicrotask(run)
+    return () => { cancelled = true }
+  }, [enabled])
 
   return state
 }

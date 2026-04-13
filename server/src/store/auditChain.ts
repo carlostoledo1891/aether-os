@@ -14,6 +14,17 @@ export type AuditEventType =
   | 'system_event'
   | 'regulatory_submission'
   | 'offtake_update'
+  | 'dpp_export'
+  | 'regulatory_bundle_export'
+  | 'auth_failure'
+  | 'ws_connection'
+  | 'chain_verification'
+  | 'audit_export'
+  | 'knowledge_ingested'
+  | 'knowledge_verified'
+  | 'knowledge_cited'
+  | 'knowledge_updated'
+  | 'knowledge_deleted'
 
 export interface AuditEventInput {
   event_id: string

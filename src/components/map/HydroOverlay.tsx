@@ -14,12 +14,10 @@ import {
   type PointGeometry,
 } from './geojson'
 import { GEO } from '../../data/geo/registry'
-import styles from './HydroOverlay.module.css'
 import { MAP_STACKING } from './mapStacking'
-import { tierShort, type HydroNodeType, type HydroWeatherStripModel } from './hydroDetailMappers'
+import { tierShort, type HydroNodeType } from './hydroDetailMappers'
 import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from './hydroLayerIds'
 import { springPinRadiusPx, tierCircleOpacity } from './springPinStyle'
-import { HydroMonitoringCard } from './HydroMonitoringCard'
 
 const HYDRO_SPRINGS_CIRCLE_PAINT = {
   'circle-radius': ['get', 'radius'],
@@ -158,11 +156,9 @@ interface HydroOverlayProps {
   env: EnvTelemetry
   hoveredNodeId: string | null
   selectedNodeId: string | null
-  weatherStrip?: HydroWeatherStripModel | null
-  onOpenStation?: () => void
 }
 
-export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, selectedNodeId, weatherStrip, onOpenStation }: HydroOverlayProps) {
+export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, selectedNodeId }: HydroOverlayProps) {
   const { current: mapRef } = useMap()
   const staticNodes = useGeoJsonFeatureCollection<HydroNodeFeature>(GEO.hydroNodes.url)
   const staticSprings = useGeoJsonFeatureCollection<HydroSpringFeature>(GEO.hydroSprings.url)
@@ -172,12 +168,6 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
     env.aquifer.sensors.forEach((sensor) => { byId[sensor.sensor_id] = sensor })
     return byId
   }, [env.aquifer.sensors])
-
-  const springCounts = useMemo(() => ({
-    active: env.springs.filter((s) => s.status === 'Active').length,
-    reduced: env.springs.filter((s) => s.status === 'Reduced').length,
-    suppressed: env.springs.filter((s) => s.status === 'Suppressed').length,
-  }), [env.springs])
 
   const springById = useMemo(() => {
     const m = new Map<string, SpringTelemetry>()
@@ -325,13 +315,6 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
   const [hoverLng, hoverLat] = hoveredNode?.geometry.coordinates
     ?? hoveredSpring?.geometry.coordinates
     ?? [null, null]
-  const waterQualityAlert = env.water_quality.sulfate_ppm >= 250 || env.water_quality.nitrate_ppm >= 50
-  const showRainStressBadge = Boolean(
-    weatherStrip
-    && weatherStrip.anomalyMm < -6
-    && weatherStrip.scenarioDroughtIndex >= 0.35,
-  )
-
   return (
     <>
       {/* ── Springs ────────────────────────────────────────────────────────── */}
@@ -364,26 +347,6 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
 
       {/* ── Warning/critical pulse rings ─────────────────────────────────── */}
       {pulseMarkers}
-
-      {/* ── WQ badge (always visible) ────────────────────────────────────── */}
-      <div className={styles.hudColumn} style={{ zIndex: MAP_STACKING.hudMetrics }}>
-        <div className={`${styles.wqBadge} ${waterQualityAlert ? styles.wqBadgeWarn : styles.wqBadgeOk}`}>
-          WQ · SO4 {env.water_quality.sulfate_ppm.toFixed(0)} ppm · NO3 {env.water_quality.nitrate_ppm.toFixed(0)} ppm
-        </div>
-        {showRainStressBadge && (
-          <div className={styles.rainStressBadge}>
-            Rain deficit vs norm · watch springs
-          </div>
-        )}
-      </div>
-
-      {/* ── Monitoring HUD card (mirrors PilotPlantCard) ──────────────────── */}
-      <HydroMonitoringCard
-        springCounts={springCounts}
-        sulfatePpm={env.water_quality.sulfate_ppm}
-        weatherStrip={weatherStrip}
-        onOpenStation={onOpenStation}
-      />
 
       {/* ── Hover tooltip card ─────────────────────────────────────────────── */}
       <AnimatePresence>
@@ -486,23 +449,45 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
         })()}
       </AnimatePresence>
 
-      {/* ── Legend ──────────────────────────────────────────────────────────── */}
-      <div className={styles.legend}>
-        {[
-          { label: 'Piezometer', color: W.cyan },
-          { label: 'UDC Site', color: W.red },
-          { label: 'Spring', color: W.cyan },
-          { label: 'Water Feature', color: W.cyan },
-        ].map(({ label, color }) => (
-          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span
-              className={styles.legendDot}
-              style={{ background: color, boxShadow: `0 0 4px ${color}80` }}
-            />
-            <span className={styles.legendLabel}>{label}</span>
-          </div>
-        ))}
-      </div>
+      {/* ── Legend (rendered via bottomRight slot, see HydroLegend export) ── */}
     </>
   )
 })
+
+/* ── Standalone legend for the MapControlStack.bottomRight slot ───────── */
+
+export function HydroLegend() {
+  return (
+    <div style={{
+      background: W.mapControlBg,
+      border: W.mapControlBorder,
+      borderRadius: 8,
+      padding: '8px 10px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      fontSize: 10,
+      color: W.text3,
+    }}>
+      <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 9 }}>Legend</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: W.cyan, flexShrink: 0 }} />
+        <span>Piezometer</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <svg width="8" height="8" viewBox="0 0 10 10" style={{ flexShrink: 0 }}>
+          <polygon points="5,1 9,9 1,9" fill={W.amber} />
+        </svg>
+        <span>UDC Site</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: W.cyan, flexShrink: 0, opacity: 0.7 }} />
+        <span>Spring</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: W.cyan, flexShrink: 0, opacity: 0.4 }} />
+        <span>Water Feature</span>
+      </div>
+    </div>
+  )
+}

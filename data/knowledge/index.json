@@ -5,13 +5,51 @@
     "authority": "CONAMA",
     "title": "Resolução 357/2005 — Water Quality Classification",
     "relevant_thresholds": [
-      { "parameter": "sulfate_ppm", "class": "Class 2", "limit": 250, "unit": "mg/L" },
-      { "parameter": "nitrate_ppm", "class": "Class 2", "limit": 10, "unit": "mg/L" },
-      { "parameter": "pH", "class": "Class 2", "min": 6.0, "max": 9.0, "unit": "pH" },
-      { "parameter": "dissolved_oxygen", "class": "Class 2", "limit": 5, "unit": "mg/L", "direction": "minimum" }
+      {
+        "parameter": "sulfate_ppm",
+        "class": "Class 2",
+        "limit": 250,
+        "unit": "mg/L"
+      },
+      {
+        "parameter": "nitrate_ppm",
+        "class": "Class 2",
+        "limit": 10,
+        "unit": "mg/L"
+      },
+      {
+        "parameter": "pH",
+        "class": "Class 2",
+        "min": 6,
+        "max": 9,
+        "unit": "pH"
+      },
+      {
+        "parameter": "dissolved_oxygen",
+        "class": "Class 2",
+        "limit": 5,
+        "unit": "mg/L",
+        "direction": "minimum"
+      }
     ],
     "file": "brazil/conama-357.md",
-    "tags": ["water", "quality", "discharge", "monitoring"]
+    "tags": [
+      "water",
+      "quality",
+      "discharge",
+      "monitoring"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "2005-03-17",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "conama-430",
@@ -19,12 +57,41 @@
     "authority": "CONAMA",
     "title": "Resolução 430/2011 — Effluent Discharge Standards",
     "relevant_thresholds": [
-      { "parameter": "pH", "limit_min": 5.0, "limit_max": 9.0, "unit": "pH" },
-      { "parameter": "temperature_delta", "limit": 3, "unit": "°C" },
-      { "parameter": "BOD", "limit": 120, "unit": "mg/L" }
+      {
+        "parameter": "pH",
+        "limit_min": 5,
+        "limit_max": 9,
+        "unit": "pH"
+      },
+      {
+        "parameter": "temperature_delta",
+        "limit": 3,
+        "unit": "°C"
+      },
+      {
+        "parameter": "BOD",
+        "limit": 120,
+        "unit": "mg/L"
+      }
     ],
     "file": "brazil/conama-430.md",
-    "tags": ["effluent", "discharge", "plant", "operations"]
+    "tags": [
+      "effluent",
+      "discharge",
+      "plant",
+      "operations"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "2011-05-13",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "dn-copam-217",
@@ -33,7 +100,26 @@
     "title": "DN COPAM 217/2017 — Environmental Licensing Procedures (MG)",
     "relevant_thresholds": [],
     "file": "brazil/dn-copam-217.md",
-    "tags": ["licensing", "LP", "LI", "LO", "permitting", "FEAM", "SUPRAM"]
+    "tags": [
+      "licensing",
+      "LP",
+      "LI",
+      "LO",
+      "permitting",
+      "FEAM",
+      "SUPRAM"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "2017-12-06",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "constitution-225",
@@ -42,7 +128,23 @@
     "title": "Art. 225 — Environmental Protection",
     "relevant_thresholds": [],
     "file": "brazil/constitution-225.md",
-    "tags": ["constitutional", "EIA", "precautionary", "fundamental-right"]
+    "tags": [
+      "constitutional",
+      "EIA",
+      "precautionary",
+      "fundamental-right"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "1988-10-05",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "anm-mining",
@@ -50,10 +152,31 @@
     "authority": "ANM",
     "title": "Mining Code & ANM Regulations",
     "relevant_thresholds": [
-      { "parameter": "CFEM_royalty", "limit": 2, "unit": "%" }
+      {
+        "parameter": "CFEM_royalty",
+        "limit": 2,
+        "unit": "%"
+      }
     ],
     "file": "brazil/anm-mining.md",
-    "tags": ["mining", "rights", "royalties", "CFEM", "exploitation"]
+    "tags": [
+      "mining",
+      "rights",
+      "royalties",
+      "CFEM",
+      "exploitation"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "eu-battery-reg",
@@ -61,11 +184,36 @@
     "authority": "European Commission",
     "title": "Regulation (EU) 2023/1542 — Battery Passport Requirements",
     "relevant_thresholds": [
-      { "parameter": "DPP_fields_mandatory", "limit": 22, "unit": "fields" },
-      { "parameter": "DPP_deadline", "value": "2027-02-01", "unit": "date" }
+      {
+        "parameter": "DPP_fields_mandatory",
+        "limit": 22,
+        "unit": "fields"
+      },
+      {
+        "parameter": "DPP_deadline",
+        "value": "2027-02-01",
+        "unit": "date"
+      }
     ],
     "file": "international/eu-battery-reg.md",
-    "tags": ["DPP", "battery", "passport", "Catena-X", "CEN-CENELEC"]
+    "tags": [
+      "DPP",
+      "battery",
+      "passport",
+      "Catena-X",
+      "CEN-CENELEC"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "2023-07-12",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "ira-45x",
@@ -73,11 +221,36 @@
     "authority": "US Treasury / IRS",
     "title": "IRA Section 45X — FEOC Rules for Critical Minerals",
     "relevant_thresholds": [
-      { "parameter": "FEOC_pct_2025", "limit": 0, "unit": "%" },
-      { "parameter": "critical_mineral_content_pct", "limit": 50, "unit": "%" }
+      {
+        "parameter": "FEOC_pct_2025",
+        "limit": 0,
+        "unit": "%"
+      },
+      {
+        "parameter": "critical_mineral_content_pct",
+        "limit": 50,
+        "unit": "%"
+      }
     ],
     "file": "international/ira-45x.md",
-    "tags": ["FEOC", "IRA", "critical-minerals", "tax-credit", "supply-chain"]
+    "tags": [
+      "FEOC",
+      "IRA",
+      "critical-minerals",
+      "tax-credit",
+      "supply-chain"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": "2022-08-16",
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "dod-critical",
@@ -86,7 +259,24 @@
     "title": "DoD Critical Minerals Procurement Requirements",
     "relevant_thresholds": [],
     "file": "international/dod-critical.md",
-    "tags": ["DPA", "DMEA", "stockpile", "allied-source", "defense"]
+    "tags": [
+      "DPA",
+      "DMEA",
+      "stockpile",
+      "allied-source",
+      "defense"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "oecd-due-diligence",
@@ -95,7 +285,23 @@
     "title": "OECD Due Diligence Guidance for Responsible Supply Chains",
     "relevant_thresholds": [],
     "file": "international/oecd-due-diligence.md",
-    "tags": ["due-diligence", "supply-chain", "traceability", "conflict-minerals"]
+    "tags": [
+      "due-diligence",
+      "supply-chain",
+      "traceability",
+      "conflict-minerals"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "caldeira-regulatory",
@@ -104,7 +310,26 @@
     "title": "Caldeira Project — Regulatory Context & Status",
     "relevant_thresholds": [],
     "file": "caldeira/regulatory.md",
-    "tags": ["caldeira", "COPAM", "FEAM", "MPF", "CNEN", "IBAMA", "permitting"]
+    "tags": [
+      "caldeira",
+      "COPAM",
+      "FEAM",
+      "MPF",
+      "CNEN",
+      "IBAMA",
+      "permitting"
+    ],
+    "provenance": {
+      "kind": "issuer_attested",
+      "source_url": "https://meteoric.com.au/asx-announcements/",
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "caldeira-climate",
@@ -113,7 +338,23 @@
     "title": "Caldeira Climate Patterns & Spring Health",
     "relevant_thresholds": [],
     "file": "caldeira/climate-patterns.md",
-    "tags": ["climate", "hydrology", "springs", "caldeira"]
+    "tags": [
+      "climate",
+      "hydrology",
+      "springs",
+      "caldeira"
+    ],
+    "provenance": {
+      "kind": "modeled",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
   },
   {
     "id": "ecmwf-era5",
@@ -122,6 +363,89 @@
     "title": "ERA5 Reanalysis Dataset — Climate Baseline",
     "relevant_thresholds": [],
     "file": "international/ecmwf-era5.md",
-    "tags": ["climate", "era5", "ecmwf", "historical"]
+    "tags": [
+      "climate",
+      "era5",
+      "ecmwf",
+      "historical"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T00:00:00Z",
+      "ingested_by": "seed",
+      "ingestion_method": "manual",
+      "sha256": null,
+      "verified_by": null,
+      "verified_at": null
+    }
+  },
+  {
+    "id": "meteoric-website",
+    "jurisdiction": "AU",
+    "authority": "Meteoric",
+    "title": "Meteoric Website",
+    "relevant_thresholds": [],
+    "file": "general/meteoric-website.md",
+    "tags": [
+      "meteoric"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": "https://meteoric.com.au/",
+      "original_date": null,
+      "ingested_at": "2026-04-13T07:18:41.117Z",
+      "ingested_by": "admin-ui",
+      "ingestion_method": "pipeline",
+      "sha256": "326c72e1fcf2225f8b808c47ac8a452ac5ea6a12b55e93eabd22f2263e4bb5ff",
+      "verified_by": null,
+      "verified_at": null
+    }
+  },
+  {
+    "id": "exceptional-ree-drill-results-outside-inferred-resources-inc",
+    "jurisdiction": "unknown",
+    "authority": "Meteoric",
+    "title": "Exceptional REE Drill Results Outside Inferred Resources: Includes Elevated Tb + Dy",
+    "relevant_thresholds": [],
+    "file": "general/exceptional-ree-drill-results-outside-inferred-resources-inc.md",
+    "tags": [
+      "mining"
+    ],
+    "provenance": {
+      "kind": "verified_real",
+      "source_url": "https://meteoric.com.au/",
+      "original_date": null,
+      "ingested_at": "2026-04-13T07:21:20.630Z",
+      "ingested_by": "admin-ui",
+      "ingestion_method": "pipeline",
+      "sha256": "5bbcfb538ebb78d390556b8b8eeeaefac443e03c36aafebeac38739f2e14dc05",
+      "verified_by": null,
+      "verified_at": null
+    }
+  },
+  {
+    "id": "pre-feasibility-study-confirms-caldeira-as-a-globally-strate",
+    "jurisdiction": "Brazil",
+    "authority": "Meteoric",
+    "title": "Pre-Feasibility Study confirms Caldeira as a globally strategic, long-life rare earths project with significant growth potential",
+    "relevant_thresholds": [],
+    "file": "general/pre-feasibility-study-confirms-caldeira-as-a-globally-strate.md",
+    "tags": [
+      "mining",
+      "drilling"
+    ],
+    "provenance": {
+      "kind": "from_public_record",
+      "source_url": null,
+      "original_date": null,
+      "ingested_at": "2026-04-13T07:37:50.439Z",
+      "ingested_by": "admin-ui",
+      "ingestion_method": "pipeline",
+      "sha256": "900818a16e840631579dadb45b7e227afa79cf2bee06a5f6ef7316785cabd166",
+      "verified_by": null,
+      "verified_at": null
+    }
   }
 ]

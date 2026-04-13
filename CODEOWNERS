@@ -1,0 +1,23 @@
+# Vero — Code Ownership
+# These owners are requested for review on PRs touching their areas.
+
+# Default — all changes require founder review
+* @carlostoledo
+
+# Architecture and data service boundary
+src/services/ @carlostoledo
+server/src/ @carlostoledo
+engine/src/ @carlostoledo
+
+# Security-sensitive paths
+SECURITY.md @carlostoledo
+server/src/index.ts @carlostoledo
+server/src/ws/ @carlostoledo
+server/src/store/auditChain.ts @carlostoledo
+.github/workflows/ @carlostoledo
+
+# Compliance and governance docs
+docs/compliance/ @carlostoledo
+
+# Shared site configuration (affects all packages)
+shared/ @carlostoledo

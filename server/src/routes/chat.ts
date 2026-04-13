@@ -14,7 +14,8 @@ import {
   getHistoricalWeather,
   getMarketData,
 } from '../store/db.js'
-import { getAuditTrail, verifyChain } from '../store/auditChain.js'
+import { getAuditTrail, verifyChain, appendAuditEvent } from '../store/auditChain.js'
+import { searchChunksByKeyword } from '../store/knowledgeStore.js'
 import type { TimeRangeKey } from '../types/shared.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -30,11 +31,12 @@ CORE RULES:
 4. Distinguish Vero data (with provenance) from any external or user-uploaded sources.
 5. If a tool returns null or empty data, say "This data is not currently available in the Vero database" rather than making up values.
 6. For financial metrics (NPV, IRR, CAPEX), always note the scenario context (bear/consensus/bull).
-7. For regulatory questions, use queryKnowledgeBase FIRST before webSearch. The knowledge base contains verified references for CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, and Caldeira-specific regulatory context.
-7. For environmental data, note whether readings are live (from enrichers) or simulated.
-8. Numbers should be formatted for readability (e.g., "$821M" not "821000000").
-9. Keep responses concise but thorough. Use bullet points for multi-item answers.
-10. This is a decision-support tool, not a system of record. Always include appropriate caveats.
+7. For regulatory questions, use queryKnowledgeBase FIRST before webSearch. The knowledge base contains verified references for CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, and Caldeira-specific regulatory context. Each KB result includes a provenance_kind field — cite it in your response.
+8. For environmental data, note whether readings are live (from enrichers) or simulated.
+9. Numbers should be formatted for readability (e.g., "$821M" not "821000000").
+10. Keep responses concise but thorough. Use bullet points for multi-item answers.
+11. This is a decision-support tool, not a system of record. Always include appropriate caveats.
+12. When queryKnowledgeBase returns results, cite them with their provenance_kind (e.g. "from_public_record", "issuer_attested"). If no KB results match a regulatory question, explicitly say "This is not currently in the verified knowledge base" before falling back to webSearch.
 
 CITATION FORMAT (two-tier):
 - Vero data: "NPV is $821M (source: PFS Jul 2025, as_of: 2025-07-21)"
@@ -235,12 +237,14 @@ function buildTools() {
             id: string; jurisdiction: string; authority: string; title: string
             relevant_thresholds: Array<Record<string, unknown>>
             file: string; tags: string[]
+            provenance?: { kind: string; source_url: string | null }
           }>
 
           const queryLower = query.toLowerCase()
-          const queryTerms = queryLower.split(/\s+/)
+          const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 1)
 
-          const scored = index.map(entry => {
+          // Path 1: Index-level keyword scoring (document-level matches)
+          const indexScored = index.map(entry => {
             let score = 0
             const searchable = `${entry.title} ${entry.authority} ${entry.tags.join(' ')} ${entry.jurisdiction}`.toLowerCase()
             for (const term of queryTerms) {
@@ -251,25 +255,80 @@ function buildTools() {
               if (entry.jurisdiction.includes(domain) || entry.tags.includes(domain)) score += 5
             }
             return { entry, score }
-          }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3)
+          }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 5)
 
-          const results = scored.map(({ entry }) => {
-            const filePath = resolve(__dirname, '..', '..', '..', 'data', 'knowledge', entry.file)
-            let content = ''
-            if (existsSync(filePath)) {
-              content = readFileSync(filePath, 'utf-8').slice(0, 3000)
+          // Path 2: Chunk-level keyword search (content-level matches)
+          const chunkResults = searchChunksByKeyword(queryTerms, 10)
+
+          // Merge: build a map of doc_id → best content
+          const docContentMap = new Map<string, { content: string; chunkScore: number }>()
+          for (const chunk of chunkResults) {
+            const existing = docContentMap.get(chunk.doc_id)
+            if (!existing || chunk.score > existing.chunkScore) {
+              docContentMap.set(chunk.doc_id, { content: chunk.content, chunkScore: chunk.score })
             }
+          }
+
+          const results = indexScored.map(({ entry, score }) => {
+            const chunkMatch = docContentMap.get(entry.id)
+            let content: string
+            if (chunkMatch) {
+              content = chunkMatch.content
+            } else {
+              const filePath = resolve(__dirname, '..', '..', '..', 'data', 'knowledge', entry.file)
+              content = existsSync(filePath) ? readFileSync(filePath, 'utf-8').slice(0, 3000) : 'Document not yet populated'
+            }
+
             return {
               id: entry.id,
               title: entry.title,
               authority: entry.authority,
               jurisdiction: entry.jurisdiction,
               thresholds: entry.relevant_thresholds,
-              content: content || 'Document not yet populated',
+              provenance_kind: entry.provenance?.kind ?? 'unknown',
+              source_url: entry.provenance?.source_url ?? null,
+              relevance: score + (chunkMatch?.chunkScore ?? 0),
+              content,
             }
           })
 
-          return { query, matched: results.length, results }
+          // Include chunk-matched docs not in index top-5
+          for (const [docId, chunkData] of docContentMap) {
+            if (!results.some(r => r.id === docId)) {
+              const entry = index.find(e => e.id === docId)
+              if (entry) {
+                results.push({
+                  id: entry.id,
+                  title: entry.title,
+                  authority: entry.authority,
+                  jurisdiction: entry.jurisdiction,
+                  thresholds: entry.relevant_thresholds,
+                  provenance_kind: entry.provenance?.kind ?? 'unknown',
+                  source_url: entry.provenance?.source_url ?? null,
+                  relevance: chunkData.chunkScore,
+                  content: chunkData.content,
+                })
+              }
+            }
+          }
+
+          results.sort((a, b) => b.relevance - a.relevance)
+          const topResults = results.slice(0, 5)
+
+          if (topResults.length > 0) {
+            try {
+              appendAuditEvent({
+                event_id: `kb-cited-${Date.now()}`,
+                timestamp: new Date().toISOString(),
+                type: 'knowledge_cited',
+                actor: 'ai_agent',
+                action: 'knowledge_base_query',
+                detail: `Query: "${query}" → ${topResults.length} results: ${topResults.map(r => r.id).join(', ')}`,
+              })
+            } catch { /* best-effort audit */ }
+          }
+
+          return { query, matched: topResults.length, results: topResults }
         } catch (err) {
           return { error: err instanceof Error ? err.message : 'Knowledge base query failed', results: [] }
         }

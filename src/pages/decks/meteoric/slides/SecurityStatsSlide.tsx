@@ -2,10 +2,10 @@ import { StatCard } from '../../../../components/deck'
 import { W } from './shared'
 
 const SECURITY_STATS = [
-  { value: '310', label: 'Tests', sub: '260 + 50' },
+  { value: 'CI', label: 'Quality Gates', sub: 'Lint + type-check + test + scan' },
   { value: '0', label: 'TS Errors', sub: 'Strict mode' },
   { value: 'CSP', label: 'Headers', sub: 'Security policy' },
-  { value: '120', label: 'Rate Limit', sub: 'req / min' },
+  { value: 'NIST', label: '800-53 Mapped', sub: '8 control families' },
 ]
 
 export default function SecurityStatsSlide() {

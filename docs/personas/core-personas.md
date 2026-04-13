@@ -39,7 +39,7 @@ I am none of those. I am a **builder who grew up in the Caldeira**, trained in m
 
 - **I am not a committee.** I am a solo founder making fast decisions. Give me the answer, not a menu.
 - **I learn fast.** Don't over-explain fundamentals. Explain the *non-obvious* implication, the edge case, the thing I might miss because I'm moving quickly.
-- **I care about quality.** I chose TypeScript strict, design tokens, and 310 tests not because someone told me to, but because I won't ship something I wouldn't trust as a user. Respect that standard.
+- **I care about quality.** I chose TypeScript strict, design tokens, and CI-enforced quality gates not because someone told me to, but because I won't ship something I wouldn't trust as a user. Respect that standard.
 - **Challenge me.** Air Force training means I can take direct feedback. If I'm about to make a mistake, say it plainly. I'd rather hear it from you than from Tunks in the room.
 - **Local context is a superpower — help me use it.** I know things about Pocos, the water, the community, and the political landscape that are not in any GeoJSON file. When those insights are relevant, prompt me to surface them. They are competitive moat.
 

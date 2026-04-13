@@ -35,9 +35,9 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 |---------|-----------|--------------|--------------|
 | **DoD Program Officer** | Deployment-ready security architecture for defense procurement. FedRAMP pathway. | Security posture: CSP headers, rate limiting, API key auth, fail-closed ingest, SHA-256 audit chain, OpenAPI spec. FEOC origin tracking. | "Infrastructure first, map second. Here's the security architecture, the OpenAPI spec, and the audit chain." |
 | **EU Enforcement Officer** | Schema-compliant digital product passport with verification chains. 100% field coverage. | DPP JSON export with CEN/CENELEC field mapping (22 fields, 59% coverage) + inline schema validation. Export button. | "22 mandatory DPP fields mapped. Schema-validated JSON export from any batch. Here — run it against your validator." |
-| **Project Finance Analyst** | Covenant monitoring narrative that de-risks the investment model. Technical risk discount. | Financial scenario modeling (Bear/Consensus/Bull) + DSCR projections + zero-cache policy + 310 automated tests. | "310 tests, rate limiting, zero-cache on financial data. The technical risk discount in your model just got smaller." |
+| **Project Finance Analyst** | Covenant monitoring narrative that de-risks the investment model. Technical risk discount. | Financial scenario modeling (Bear/Consensus/Bull) + DSCR projections + zero-cache policy + CI-enforced quality gates. | "CI quality gates, NIST 800-53 mapped, zero-cache on financial data. The technical risk discount in your model just got smaller." |
 | **Water Justice NGO** | Honest environmental monitoring with community grievance path. No "green" verdicts. | Hydro Twin spring monitoring + bilingual community card (PT/EN) with FEAM/IGAM/MPF contacts + visible "modeled" labels. | "Every spring shows 'modeled' until field-verified. Here's the phone number for FEAM. In Portuguese." |
-| **SCADA Integrator** | Clean integration surface with documented contracts. Cost estimate in a week. | OpenAPI spec at `/api/docs` + AetherDataService seam + equipment-sensor catalog (17 equipment, 28 sensors). OPC-UA/MQTT roadmap. | "Here's the OpenAPI spec. 17 equipment items, 28 sensors, documented DTOs. How fast can you map OPC-UA tags?" |
+| **SCADA Integrator** | Clean integration surface with documented contracts. Cost estimate in a week. | OpenAPI spec at `/api/docs` + AetherDataService seam + full equipment-sensor catalog. OPC-UA/MQTT roadmap. | "Here's the OpenAPI spec. Full equipment-sensor catalog, documented DTOs. How fast can you map OPC-UA tags?" |
 | **Journalist / Researcher** | Verifiable claims with clear simulation/public/modeled boundaries. No headline risk. | Data honesty banner + build verification stamp + issuer snapshot with ASX links + Pilot Plant Digital Twin screenshot. | "We label what's simulated, what's public, and what's modeled. The disclaimer is always visible. Here's the ASX link." |
 
 ---
@@ -71,7 +71,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 
 ### Tier 3 — Investors
 
-**Strategy:** Demo → Deck → Financial Model. The product sells itself when seen — 310 tests, 9.4 persona score, and a Pilot Plant Digital Twin are not things competitors can fake.
+**Strategy:** Demo → Deck → Financial Model. The product sells itself when seen — NIST 800-53 mapped, 9.4 persona score, and a Pilot Plant Digital Twin are not things competitors can fake.
 
 **Approach:**
 1. 45-minute live demo (not slides) — walk through Field Ops → Compliance → Executive
@@ -79,7 +79,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 3. Share VALUATION.md financial model for deep-dive investors
 4. Close with seed ask: hire commercial lead, onboard 5 pilots, connect LAPOC instruments
 
-**Message:** "9.4/10 across 9 stakeholder personas. 310 automated tests. Built by a founder inside the Caldeira. $5–7M pre-money."
+**Message:** "9.4/10 across 9 stakeholder personas. NIST 800-53 mapped. Built by a founder inside the Caldeira. $5–7M pre-money."
 
 ### Tier 4 — Regulators & Standards Bodies
 
@@ -142,7 +142,7 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 - ESG frameworks
 
 **Minutes 35–40: Technical Credibility**
-- "310 tests, zero TypeScript errors, CSP headers, rate limiting"
+- "CI quality gates, zero TypeScript errors, NIST 800-53 mapped, SBOM on every build"
 - Show OpenAPI docs at /api/docs
 - Show build verification stamp
 - "Persona-scored at 9.4/10 — here's the methodology"
@@ -207,7 +207,7 @@ No direct competitor exists in "critical mineral supply chain trust layer." Adja
 1. **Founder inside the Caldeira** — 40 years of local context no outside team can replicate
 2. **Persona-validated at 9.4/10** — proven product-market fit methodology, not just feature claims
 3. **Three truths in one platform** — no competitor covers field ops + compliance + executive in one stack
-4. **Architecture credibility** — 310 tests, production 3-process architecture, OpenAPI, SHA-256 audit chain
+4. **Architecture credibility** — CI-enforced quality gates, production 3-process architecture, OpenAPI, SHA-256 audit chain, NIST 800-53 mapped
 5. **Mini Engine** — JSON-driven public dashboards (Prefeitura) that no competitor even attempts
 
 ---
@@ -222,7 +222,7 @@ Subject: "What if due diligence took 45 minutes instead of 45 days?"
 Body: 2 sentences about Vero + link to LP. No attachment.
 
 **Email 2 — The proof (Day 3)**
-Subject: "310 tests, 9.4/10 persona score, built inside a Caldeira"
+Subject: "NIST 800-53 mapped, 9.4/10 persona score, built inside a Caldeira"
 
 Body: Screenshot of Control Room + 3 bullet metrics. Link to live demo.
 
@@ -296,7 +296,7 @@ Body: Direct calendar link. No pitch, just demo offer.
 | EU DPP enforcement delayed | SAM growth slower than projected | DoD FEOC requirements are independent driver; diversify persona emphasis |
 | Solo-founder bandwidth limits sales | Pipeline dies | Seed hire #1 = commercial lead; automate demo scheduling |
 | Competitor enters with deep pockets | Price pressure, feature race | Moat is local context + persona methodology — not replicable by throwing engineers at it |
-| Technical due diligence finds gaps | Investor confidence shaken | 310 tests + zero TS errors + CSP headers + rate limiting already address this; maintain quality gate |
+| Technical due diligence finds gaps | Investor confidence shaken | CI quality gates + zero TS errors + NIST 800-53 mapped + SBOM scanning already address this; maintain quality gate |
 
 ---
 

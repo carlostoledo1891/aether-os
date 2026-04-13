@@ -35,9 +35,22 @@ export interface SiteIdentity {
   accentColor: string
 }
 
+export type SiteLayerSourceType = 'arcgis-rest' | 'wms' | 'xyz-raster' | 'geojson-component'
+
+export interface SiteExternalLayer {
+  id: string
+  group: string
+  label: string
+  sourceType: SiteLayerSourceType
+  url?: string
+  attribution: string
+  defaultOn?: boolean
+}
+
 export interface SiteConfig {
   identity: SiteIdentity
   geo: SiteGeo
   thresholds: SiteThresholds
   springCount: number
+  externalLayers?: SiteExternalLayer[]
 }

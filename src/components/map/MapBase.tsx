@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, type ReactNode, type RefObject } from 'react'
 import Map, { NavigationControl, useMap } from 'react-map-gl/maplibre'
 import type { MapLayerMouseEvent } from 'maplibre-gl'
 import type maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { W } from '../../app/canvas/canvasTheme'
-import { Z } from './mapStacking'
+import { MapControlStack } from './MapControlStack'
 
 export type { MapLayerMouseEvent }
 
@@ -61,6 +61,13 @@ export interface FlyToTarget {
   duration?: number
 }
 
+export interface MapControlSlots {
+  topRight?: ReactNode
+  topLeft?: ReactNode
+  bottomLeft?: ReactNode
+  bottomRight?: ReactNode
+}
+
 interface MapBaseProps {
   id?: string
   initialViewState?: typeof CALDEIRA_VIEW_STATE
@@ -74,6 +81,8 @@ interface MapBaseProps {
   containerStyle?: React.CSSProperties
   flyTo?: FlyToTarget
   forceStyle?: MapStyleId
+  /** Inject controls into the MapControlStack slots */
+  controlSlots?: MapControlSlots
   onMouseEnter?: (e: MapLayerMouseEvent) => void
   onMouseLeave?: (e: MapLayerMouseEvent) => void
   onMouseMove?: (e: MapLayerMouseEvent) => void
@@ -143,7 +152,7 @@ function StyleController({
             tileSize: 256,
           } as never)
         }
-        map.setTerrain({ source: 'terrain-dem', exaggeration: 1.4 } as never)
+        // Terrain enable/disable is owned by TerrainOverlay — no setTerrain here
       }
 
       const isDark = activeStyleId === 'operations'
@@ -221,7 +230,7 @@ function StyleController({
   return null
 }
 
-function MapStylePicker({
+export function MapStylePicker({
   active, onChange,
 }: {
   active: MapStyleId; onChange: (id: MapStyleId) => void
@@ -230,10 +239,7 @@ function MapStylePicker({
   if (MAP_STYLE_DEFS.length <= 1) return null
 
   return (
-    <div style={{
-      position: 'absolute', bottom: 24, left: 10, zIndex: Z.mapStyleControl,
-      display: 'flex', flexDirection: 'column', gap: 4,
-    }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       {open && (
         <div style={{
           display: 'flex', flexDirection: 'column', gap: 2,
@@ -284,35 +290,27 @@ function MapStylePicker({
   )
 }
 
-function ResetCameraController({ initialViewState, hideControls }: { initialViewState: any, hideControls: boolean }) {
-  const maps = useMap()
-  if (hideControls) return null
+export function ResetCameraButton({
+  mapRef,
+}: {
+  mapRef: RefObject<maplibregl.Map | null>
+}) {
   return (
     <button
       type="button"
       title="Reset View"
       onClick={(e) => {
         e.stopPropagation()
-        const map = maps.current?.getMap()
-        if (map) {
-          if (initialViewState.bounds) {
-             map.fitBounds(initialViewState.bounds, { padding: 40, duration: 1500 })
-          } else {
-             map.flyTo({
-               center: [initialViewState.longitude || 0, initialViewState.latitude || 0],
-               zoom: initialViewState.zoom || 0,
-               pitch: initialViewState.pitch || 0,
-               bearing: initialViewState.bearing || 0,
-               duration: 1500
-             })
-          }
-        }
+        const map = mapRef.current
+        if (!map) return
+        map.fitBounds(CALDEIRA_BBOX, {
+          padding: { top: 60, bottom: 80, left: 60, right: 60 },
+          pitch: CALDEIRA_VIEW_STATE.pitch,
+          bearing: CALDEIRA_VIEW_STATE.bearing,
+          duration: 1500,
+        })
       }}
       style={{
-        position: 'absolute',
-        top: 104,
-        right: 10,
-        zIndex: Z.mapStyleControl,
         width: 29,
         height: 29,
         background: W.mapControlBg,
@@ -330,6 +328,19 @@ function ResetCameraController({ initialViewState, hideControls }: { initialView
   )
 }
 
+function Attribution() {
+  return (
+    <div style={{
+      fontSize: 9, color: 'rgba(255,255,255,0.18)',
+      fontFamily: 'var(--font-mono)', pointerEvents: 'none',
+    }}>
+      {HAS_TILER
+        ? '© MapTiler · OpenStreetMap contributors'
+        : '© CARTO · OpenStreetMap contributors'}
+    </div>
+  )
+}
+
 export function MapBase({
   id = 'aetherField',
   initialViewState = CALDEIRA_VIEW_STATE,
@@ -343,12 +354,14 @@ export function MapBase({
   containerStyle,
   flyTo,
   forceStyle,
+  controlSlots,
   onMouseEnter,
   onMouseLeave,
   onMouseMove,
   onClick,
 }: MapBaseProps) {
   const [styleId, setStyleId] = useState<MapStyleId>(getInitialStyle)
+  const nativeMapRef = useRef<maplibregl.Map | null>(null)
 
   const activeStyleId = forceStyle ?? styleId
   const styleUrl = MAP_STYLE_DEFS.find(d => d.id === activeStyleId)?.url ?? MAP_STYLE_DEFS[0].url
@@ -359,11 +372,16 @@ export function MapBase({
     try { localStorage.setItem(STORAGE_KEY, id) } catch { /* noop */ }
   }, [forceStyle])
 
+  const captureRef = useCallback((ref: { getMap(): maplibregl.Map } | null) => {
+    nativeMapRef.current = ref?.getMap() ?? null
+  }, [])
+
   return (
     <div style={{ position: 'absolute', inset: 0, ...containerStyle }}>
       {!interactive && <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2 }} />}
       <Map
         id={id}
+        ref={captureRef as never}
         initialViewState={initialViewState}
         mapStyle={styleUrl}
         style={{ width: '100%', height: '100%' }}
@@ -393,21 +411,31 @@ export function MapBase({
             visualizePitch
           />
         )}
-        <ResetCameraController initialViewState={initialViewState} hideControls={hideControls || false} />
         {children}
       </Map>
 
-      {!hideControls && <MapStylePicker active={activeStyleId} onChange={handleStyleChange} />}
-
-      {!hideControls && (
-        <div style={{
-          position: 'absolute', bottom: 4, right: 8,
-          fontSize: 9, color: 'rgba(255,255,255,0.18)',
-          fontFamily: 'var(--font-mono)', pointerEvents: 'none', zIndex: Z.tabIndicator,
-        }}>
-          © MapTiler · OpenStreetMap contributors
-        </div>
-      )}
+      <MapControlStack
+        hide={hideControls}
+        topRight={
+          <>
+            <ResetCameraButton mapRef={nativeMapRef} />
+            {controlSlots?.topRight}
+          </>
+        }
+        topLeft={controlSlots?.topLeft}
+        bottomLeft={
+          <>
+            <MapStylePicker active={activeStyleId} onChange={handleStyleChange} />
+            {controlSlots?.bottomLeft}
+          </>
+        }
+        bottomRight={
+          <>
+            {controlSlots?.bottomRight}
+            <Attribution />
+          </>
+        }
+      />
     </div>
   )
 }

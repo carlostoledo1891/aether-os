@@ -1,19 +1,19 @@
 import { W } from '../shared'
 import { Tag, StatCard, Terminal, Kw, Fn, Str, Num, Cmt } from '../../../../components/deck'
 
-const BADGES = ['React.memo × 14 overlays', 'Lazy-loaded views', 'ErrorBoundary on every route', 'CI: lint + test + build', 'Docker Compose deploy']
+const BADGES = ['Memoized overlays', 'Lazy-loaded views', 'ErrorBoundary on every route', 'CI: lint + type-check + test + scan', 'Docker Compose deploy']
 
 export default function CodeQualitySlide() {
   return (<>
     <div style={{ marginBottom: 16 }}><Tag>Engineering</Tag></div>
-    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 24 }}>Code Quality — The Numbers</h2>
+    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 24 }}>Code Quality — Trust Signals</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, maxWidth: 880, width: '100%', marginBottom: 20 }}>
-      <StatCard value="310" label="Tests" sub="260 frontend + 50 server" accent={W.green} />
+      <StatCard value="CI" label="Quality Gates" sub="Lint + type-check + test + scan" accent={W.green} />
       <StatCard value="0" label="TS Errors" sub="Strict mode" />
-      <StatCard value="135+" label="TS Files" sub="3 packages" />
+      <StatCard value="Strict" label="TypeScript" sub="Every package" />
       <StatCard value="AGENT.md" label="AI Bootstrap" sub="On-demand context" />
     </div>
-    <Terminal title="src/app/canvas/canvasTheme.ts — Design Token System (107 tokens)">
+    <Terminal title="src/app/canvas/canvasTheme.ts — Semantic Design Token System">
       <Kw>export const</Kw> <Fn>W</Fn> = {'{'}<br />
       {'  '}bg: <Str>'#07070E'</Str>, canvas: <Str>'#060610'</Str>,<br />
       {'  '}panel: <Str>'#0D0D1C'</Str>, surface: <Str>'#121228'</Str>,<br />

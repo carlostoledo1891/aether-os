@@ -6,17 +6,18 @@ import { Marker, useMap } from 'react-map-gl/maplibre'
 import { GlassCard } from '../components/ui/GlassCard'
 import { CountdownTimer } from '../components/ui/CountdownTimer'
 import { MapBase } from '../components/map/MapBase'
+import { MapOverlays } from '../components/map/MapOverlays'
 import { useMapCameraRestore } from '../hooks/useMapCameraRestore'
-import { CaldeiraBoundary } from '../components/map/CaldeiraBoundary'
-import { LicenseOverlay, LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
-import { EnvironmentalOverlay, ENV_APA_FILL_LAYER_ID } from '../components/map/EnvironmentalOverlay'
+import { LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
+import { ENV_APA_FILL_LAYER_ID } from '../components/map/EnvironmentalOverlay'
 import { TraceRouteOverlay } from '../components/map/TraceRouteOverlay'
 import { DrillHoleOverlay, DRILL_LAYER_ID } from '../components/map/DrillHoleOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
-import { MapLayerPicker } from '../components/map/MapLayerPicker'
+import { MapLayerPanel } from '../components/map/MapLayerPanel'
+import { usePresetLayers } from '../components/map/useMapLayers'
+import { MAP_PRESETS } from '../components/map/mapPresets'
 import { useBuyerMapInteraction } from './buyer/useBuyerMapInteraction'
 import { useServiceQuery } from '../hooks/useServiceQuery'
-import { useSharedMapLayers } from './field/fieldMapLayers'
 import { W } from '../app/canvas/canvasTheme'
 import { ComplianceTab } from './buyer/ComplianceTab'
 import { TraceabilityTab } from './buyer/TraceabilityTab'
@@ -47,6 +48,7 @@ export function BuyerView() {
   const [exporting, setExporting] = useState(false)
   const [activeTab, setActiveTab] = useState<BuyerTab>('traceability')
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
+  const [showMarkers] = useState(true)
 
   const {
     hoveredHoleId,
@@ -56,26 +58,8 @@ export function BuyerView() {
     handleBuyerMouseLeave,
   } = useBuyerMapInteraction()
 
-  const { opsMapLayers, envMapLayers, setOpsMapLayers, setEnvMapLayers } = useSharedMapLayers()
-  const [buyerLayers, setBuyerLayers] = useState({
-    boundary: true,
-    markers: true,
-  })
-  const buyerLayerToggles = [
-    { id: 'boundary', label: 'Caldeira Boundary', checked: buyerLayers.boundary },
-    { id: 'licenses', label: 'Mining licences', checked: opsMapLayers.tenements },
-    { id: 'apa', label: 'APA Pedra Branca', checked: envMapLayers.apa },
-    { id: 'markers', label: 'Batch Markers', checked: buyerLayers.markers },
-  ]
-  const handleBuyerLayerToggle = useCallback((id: string) => {
-    if (id === 'licenses') {
-      setOpsMapLayers(prev => ({ ...prev, tenements: !prev.tenements }))
-    } else if (id === 'apa') {
-      setEnvMapLayers(prev => ({ ...prev, apa: !prev.apa }))
-    } else {
-      setBuyerLayers(prev => ({ ...prev, [id]: !prev[id as keyof typeof prev] }))
-    }
-  }, [setOpsMapLayers, setEnvMapLayers])
+  const mapLayers = usePresetLayers(MAP_PRESETS['buyer'].overlays)
+  const ls = mapLayers.state
 
   const handleStepClick = useCallback((index: number) => {
     setSelectedStepIndex(prev => prev === index ? null : index)
@@ -159,15 +143,29 @@ export function BuyerView() {
               cursor={popupData ? 'pointer' : ''}
               onMouseEnter={handleBuyerMouseEnter}
               onMouseLeave={handleBuyerMouseLeave}
+              controlSlots={{
+                topRight: (
+                  <MapLayerPanel
+                    state={ls}
+                    onToggle={mapLayers.toggle}
+                    groups={['base', 'environment']}
+                  />
+                ),
+                bottomRight: <BuyerMapLegend />,
+              }}
             >
-              {buyerLayers.boundary && <CaldeiraBoundary />}
-              {opsMapLayers.tenements && <LicenseOverlay hoveredLicenseId={null} selectedLicenseId={null} highlightId={originLicenseId} />}
-              {(selectedStepIndex === 0 || selectedStepIndex === null) && (
-                <DrillHoleOverlay depositFilter={activeDrills ? null : originDepositId} drillIds={activeDrills ?? null} hoveredHoleId={hoveredHoleId} />
-              )}
-              {envMapLayers.apa && <EnvironmentalOverlay showApa showBuffer showMonitoring={false} showUrban={false} />}
+              <MapOverlays
+                layers={mapLayers.overlayKeys}
+                licenseProps={{ highlightId: originLicenseId }}
+                environmentalProps={{ showApa: true, showBuffer: true, showMonitoring: false, showUrban: false }}
+                renderOverrides={{
+                  drillholes: (selectedStepIndex === 0 || selectedStepIndex === null) ? (
+                    <DrillHoleOverlay depositFilter={activeDrills ? null : originDepositId} drillIds={activeDrills ?? null} hoveredHoleId={hoveredHoleId} />
+                  ) : null,
+                }}
+              />
               <TraceRouteOverlay timeline={batch.molecular_timeline} mapId="buyerField" selectedStepIndex={selectedStepIndex} />
-              {buyerLayers.markers && batch.molecular_timeline.map((step, i) => {
+              {showMarkers && batch.molecular_timeline.map((step, i) => {
                 if (!step.coordinates) return null
                 const isSelected = selectedStepIndex === i
                 const stepColor = STEP_STATUS_COLORS[step.status] ?? W.text4
@@ -209,9 +207,6 @@ export function BuyerView() {
               })}
             </MapBase>
             <MapFeaturePopup data={popupData?.data ?? null} x={popupData?.x ?? 0} y={popupData?.y ?? 0} />
-            <MapLayerPicker layers={buyerLayerToggles} onToggle={handleBuyerLayerToggle} />
-
-            <BuyerMapLegend />
           </div>
         </div>
 

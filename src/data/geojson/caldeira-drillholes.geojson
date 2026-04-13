@@ -5351,15 +5351,15 @@
       "properties": {
         "id": "AGODD0001",
         "deposit": "agostinho",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2616,
+        "mreo_pct": 9,
         "depth_m": 43.17,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "43.2m @ 2,616ppm TREO [0m] · incl. 18m @ 3,628ppm TREO [17m]",
+        "intercept": "43.2m @ 2,616ppm TREO [0m]",
+        "including": "18m @ 3,628ppm TREO [17m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1323,
         "easting_utm": 336154,
@@ -5385,7 +5385,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 18,
+        "prnd_ppm": 224
       },
       "geometry": {
         "type": "Point",
@@ -5400,15 +5402,15 @@
       "properties": {
         "id": "AGODD0002",
         "deposit": "agostinho",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3143,
+        "mreo_pct": 25,
         "depth_m": 37.09,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "37.1m @ 3,143ppm TREO [0m]",
+        "intercept": "37.1m @ 3,143ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1289,
         "easting_utm": 336312,
@@ -5434,7 +5436,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 42,
+        "prnd_ppm": 730
       },
       "geometry": {
         "type": "Point",
@@ -5657,15 +5661,15 @@
       "properties": {
         "id": "BDPDD0002",
         "deposit": "barra-do-pacu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3855,
+        "mreo_pct": 18,
         "depth_m": 58.61,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "58.6m @ 3,855ppm TREO [0m] · incl. 31m @ 5,727ppm TREO [0m]",
+        "intercept": "58.6m @ 3,855ppm TREO [0m]",
+        "including": "31m @ 5,727ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1317,
         "easting_utm": 346372,
@@ -5697,7 +5701,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 37,
+        "prnd_ppm": 649
       },
       "geometry": {
         "type": "Point",
@@ -5712,15 +5718,15 @@
       "properties": {
         "id": "BDPDD0003",
         "deposit": "barra-do-pacu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 4151,
+        "mreo_pct": 18,
         "depth_m": 39.12,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "39.1m @ 4,151ppm TREO [0m] · incl. 25m @ 5,391ppm TREO [6m]",
+        "intercept": "39.1m @ 4,151ppm TREO [0m]",
+        "including": "25m @ 5,391ppm TREO [6m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1336,
         "easting_utm": 345958,
@@ -5746,7 +5752,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 41,
+        "prnd_ppm": 704
       },
       "geometry": {
         "type": "Point",
@@ -5761,15 +5769,15 @@
       "properties": {
         "id": "BDPDD0004",
         "deposit": "barra-do-pacu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3053,
+        "mreo_pct": 24,
         "depth_m": 29.16,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "29.2m @ 3,053ppm TREO [0m] · incl. 11m @ 5,695ppm TREO [7m]",
+        "intercept": "29.2m @ 3,053ppm TREO [0m]",
+        "including": "11m @ 5,695ppm TREO [7m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1319,
         "easting_utm": 346259,
@@ -5795,7 +5803,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 30,
+        "prnd_ppm": 695
       },
       "geometry": {
         "type": "Point",
@@ -5810,15 +5820,15 @@
       "properties": {
         "id": "BDPDD0005",
         "deposit": "barra-do-pacu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1642,
+        "mreo_pct": 13,
         "depth_m": 52.09,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "52.1m @ 1,642ppm TREO [0m] · incl. 5.1m @ 3,200ppm TREO [4m]",
+        "intercept": "52.1m @ 1,642ppm TREO [0m]",
+        "including": "5.1m @ 3,200ppm TREO [4m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1335,
         "easting_utm": 345999,
@@ -5850,7 +5860,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 15,
+        "prnd_ppm": 197
       },
       "geometry": {
         "type": "Point",
@@ -5865,15 +5877,15 @@
       "properties": {
         "id": "BDPDD0006",
         "deposit": "barra-do-pacu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1984,
+        "mreo_pct": 17,
         "depth_m": 43.35,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "43.4m @ 1,984ppm TREO [0m] · incl. 4.9m @ 4,977ppm TREO [8m]",
+        "intercept": "43.4m @ 1,984ppm TREO [0m]",
+        "including": "4.9m @ 4,977ppm TREO [8m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1363,
         "easting_utm": 346252,
@@ -5905,7 +5917,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 21,
+        "prnd_ppm": 324
       },
       "geometry": {
         "type": "Point",
@@ -6685,15 +6699,15 @@
       "properties": {
         "id": "CERDD0003",
         "deposit": "cercado",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2419,
+        "mreo_pct": 19,
         "depth_m": 75.25,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "75.3m @ 2,419ppm TREO [0m] · incl. 12m @ 3,202ppm TREO [46m]",
+        "intercept": "75.3m @ 2,419ppm TREO [0m]",
+        "including": "12m @ 3,202ppm TREO [46m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1468,
         "easting_utm": 343049,
@@ -6725,7 +6739,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 24,
+        "prnd_ppm": 443
       },
       "geometry": {
         "type": "Point",
@@ -6740,15 +6756,15 @@
       "properties": {
         "id": "CERDD0004",
         "deposit": "cercado",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2026,
+        "mreo_pct": 20,
         "depth_m": 66.83,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "66.8m @ 2,026ppm TREO [0m] · incl. 17.3m @ 3,295ppm TREO [8m]",
+        "intercept": "66.8m @ 2,026ppm TREO [0m]",
+        "including": "17.3m @ 3,295ppm TREO [8m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1437,
         "easting_utm": 344485,
@@ -6780,7 +6796,9 @@
             "lithology": "nepheline_syenite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 33,
+        "prnd_ppm": 374
       },
       "geometry": {
         "type": "Point",
@@ -6795,15 +6813,15 @@
       "properties": {
         "id": "CERDD0005",
         "deposit": "cercado",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1628,
+        "mreo_pct": 20,
         "depth_m": 120.05,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "120.1m @ 1,628ppm TREO [0m] · incl. 7.8m @ 5,109ppm TREO [0m]",
+        "intercept": "120.1m @ 1,628ppm TREO [0m]",
+        "including": "7.8m @ 5,109ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1446,
         "easting_utm": 343988,
@@ -6835,7 +6853,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 23,
+        "prnd_ppm": 300
       },
       "geometry": {
         "type": "Point",
@@ -6850,15 +6870,15 @@
       "properties": {
         "id": "CIPDD0001",
         "deposit": "cipo",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1991,
+        "mreo_pct": 17,
         "depth_m": 39.46,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "33.5m @ 1,991ppm TREO [0m] · incl. 9.8m @ 3,490ppm TREO [21m]",
+        "intercept": "33.5m @ 1,991ppm TREO [0m]",
+        "including": "9.8m @ 3,490ppm TREO [21m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1305,
         "easting_utm": 332897,
@@ -6890,7 +6910,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 24,
+        "prnd_ppm": 313
       },
       "geometry": {
         "type": "Point",
@@ -6905,15 +6927,15 @@
       "properties": {
         "id": "COQDD0001",
         "deposit": "coqueirinho",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2019,
+        "mreo_pct": 18,
         "depth_m": 82.62,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "82.6m @ 2,019ppm TREO [0m] · incl. 15m @ 4,974ppm TREO [13m]",
+        "intercept": "82.6m @ 2,019ppm TREO [0m]",
+        "including": "15m @ 4,974ppm TREO [13m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1287,
         "easting_utm": 334117,
@@ -6945,7 +6967,9 @@
             "lithology": "nepheline_syenite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 24,
+        "prnd_ppm": 339
       },
       "geometry": {
         "type": "Point",
@@ -6960,15 +6984,15 @@
       "properties": {
         "id": "COQDD0002",
         "deposit": "coqueirinho",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3603,
+        "mreo_pct": 25,
         "depth_m": 32.64,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "32.6m @ 3,603ppm TREO [0m] · incl. 24.2m @ 4,127ppm TREO [1m]",
+        "intercept": "32.6m @ 3,603ppm TREO [0m]",
+        "including": "24.2m @ 4,127ppm TREO [1m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1342,
         "easting_utm": 335429,
@@ -6994,7 +7018,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 52,
+        "prnd_ppm": 838
       },
       "geometry": {
         "type": "Point",
@@ -7009,15 +7035,15 @@
       "properties": {
         "id": "COQDD0003",
         "deposit": "coqueirinho",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2145,
+        "mreo_pct": 20,
         "depth_m": 17.78,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "17.8m @ 2,145ppm TREO [0m]",
+        "intercept": "17.8m @ 2,145ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1301,
         "easting_utm": 334919,
@@ -7043,7 +7069,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 29,
+        "prnd_ppm": 391
       },
       "geometry": {
         "type": "Point",
@@ -7413,15 +7441,15 @@
       "properties": {
         "id": "CVSDD0002",
         "deposit": "cupim-vermelho-sul",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2514,
+        "mreo_pct": 17,
         "depth_m": 70.8,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "70.8m @ 2,514ppm TREO [0m] · incl. 7m @ 7,594ppm TREO [2m]",
+        "intercept": "70.8m @ 2,514ppm TREO [0m]",
+        "including": "7m @ 7,594ppm TREO [2m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1391,
         "easting_utm": 340953,
@@ -7453,7 +7481,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 31,
+        "prnd_ppm": 401
       },
       "geometry": {
         "type": "Point",
@@ -7468,15 +7498,15 @@
       "properties": {
         "id": "CVSDD0003",
         "deposit": "cupim-vermelho-sul",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3322,
+        "mreo_pct": 14,
         "depth_m": 56.58,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "56.6m @ 3,322ppm TREO [0m] · incl. 35m @ 3,766ppm TREO [0m]",
+        "intercept": "56.6m @ 3,322ppm TREO [0m]",
+        "including": "35m @ 3,766ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1359,
         "easting_utm": 340564,
@@ -7508,7 +7538,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 31,
+        "prnd_ppm": 436
       },
       "geometry": {
         "type": "Point",
@@ -7524,14 +7556,14 @@
         "id": "CVSDD0004",
         "deposit": "cupim-vermelho-sul",
         "treo_ppm": 3387,
-        "mreo_pct": 25,
+        "mreo_pct": 18,
         "depth_m": 200.02,
         "campaign": "2024-resource",
         "hole_type": "DD",
         "note": "200m @ 3,387ppm TREO [0m] · incl. 5m @ 11,888ppm TREO [36m]",
         "intercept": "200m @ 3,387ppm TREO [0m]",
         "including": "5m @ 11,888ppm TREO [36m]",
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1451,
         "easting_utm": 339756,
@@ -7563,7 +7595,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 62,
+        "prnd_ppm": 543
       },
       "geometry": {
         "type": "Point",
@@ -7578,15 +7612,15 @@
       "properties": {
         "id": "CVSDD0005",
         "deposit": "cupim-vermelho-sul",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 3451,
+        "mreo_pct": 17,
         "depth_m": 200.57,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "200.6m @ 3,451ppm TREO [0m] · incl. 5.8m @ 10,417ppm TREO [1m]",
+        "intercept": "200.6m @ 3,451ppm TREO [0m]",
+        "including": "5.8m @ 10,417ppm TREO [1m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1357,
         "easting_utm": 340326,
@@ -7618,7 +7652,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 55,
+        "prnd_ppm": 546
       },
       "geometry": {
         "type": "Point",
@@ -8160,15 +8196,15 @@
       "properties": {
         "id": "DONDD0001",
         "deposit": "donana",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1640,
+        "mreo_pct": 20,
         "depth_m": 14.96,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "15m @ 1,640ppm TREO [0m] · incl. 4m @ 3,208ppm TREO [0m]",
+        "intercept": "15m @ 1,640ppm TREO [0m]",
+        "including": "4m @ 3,208ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1354,
         "easting_utm": 332724,
@@ -8188,7 +8224,9 @@
             "lithology": "saprolite",
             "weathering": "high"
           }
-        ]
+        ],
+        "hmreo_ppm": 21,
+        "prnd_ppm": 302
       },
       "geometry": {
         "type": "Point",
@@ -8692,15 +8730,15 @@
       "properties": {
         "id": "FLIDD0001",
         "deposit": "fazenda-limoeiro",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2746,
+        "mreo_pct": 27,
         "depth_m": 17.95,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "18m @ 2,746ppm TREO [0m] · incl. 8m @ 4,298ppm TREO [0m]",
+        "intercept": "18m @ 2,746ppm TREO [0m]",
+        "including": "8m @ 4,298ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1316,
         "easting_utm": 331993,
@@ -8726,7 +8764,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 40,
+        "prnd_ppm": 705
       },
       "geometry": {
         "type": "Point",
@@ -8741,15 +8781,15 @@
       "properties": {
         "id": "FLIDD0002",
         "deposit": "fazenda-limoeiro",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2109,
+        "mreo_pct": 22,
         "depth_m": 24.82,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "24.8m @ 2,109ppm TREO [0m] · incl. 5.5m @ 3,722ppm TREO [10m]",
+        "intercept": "24.8m @ 2,109ppm TREO [0m]",
+        "including": "5.5m @ 3,722ppm TREO [10m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1287,
         "easting_utm": 330836,
@@ -8775,7 +8815,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 21,
+        "prnd_ppm": 449
       },
       "geometry": {
         "type": "Point",
@@ -8790,15 +8832,15 @@
       "properties": {
         "id": "PIADD0001",
         "deposit": "piao",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 6406,
+        "mreo_pct": 21,
         "depth_m": 142.96,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "143m @ 6,406ppm TREO [0m] · incl. 8m @ 23,946ppm TREO [85m]",
+        "intercept": "143m @ 6,406ppm TREO [0m]",
+        "including": "8m @ 23,946ppm TREO [85m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1415,
         "easting_utm": 339398,
@@ -8830,7 +8872,9 @@
             "lithology": "nepheline_syenite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 110,
+        "prnd_ppm": 1248
       },
       "geometry": {
         "type": "Point",
@@ -8845,15 +8889,15 @@
       "properties": {
         "id": "PIADD0002",
         "deposit": "piao",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2556,
+        "mreo_pct": 19,
         "depth_m": 46.24,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "46.2m @ 2,556ppm TREO [0m] · incl. 17m @ 3,271ppm TREO [15m]",
+        "intercept": "46.2m @ 2,556ppm TREO [0m]",
+        "including": "17m @ 3,271ppm TREO [15m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1404,
         "easting_utm": 339579,
@@ -8885,7 +8929,9 @@
             "lithology": "fresh_phonolite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 31,
+        "prnd_ppm": 460
       },
       "geometry": {
         "type": "Point",
@@ -8900,15 +8946,15 @@
       "properties": {
         "id": "PIADD0003",
         "deposit": "piao",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1214,
+        "mreo_pct": 18,
         "depth_m": 12.67,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "12.7m @ 1,214ppm TREO [0m]",
+        "intercept": "12.7m @ 1,214ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1365,
         "easting_utm": 338908,
@@ -8928,7 +8974,9 @@
             "lithology": "saprolite",
             "weathering": "high"
           }
-        ]
+        ],
+        "hmreo_ppm": 20,
+        "prnd_ppm": 198
       },
       "geometry": {
         "type": "Point",
@@ -8943,15 +8991,15 @@
       "properties": {
         "id": "PIADD0004",
         "deposit": "piao",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1318,
+        "mreo_pct": 20,
         "depth_m": 62.59,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "62.6m @ 1,318ppm TREO [0m]",
+        "intercept": "62.6m @ 1,318ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1350,
         "easting_utm": 339473,
@@ -8983,7 +9031,9 @@
             "lithology": "nepheline_syenite",
             "weathering": "fresh"
           }
-        ]
+        ],
+        "hmreo_ppm": 19,
+        "prnd_ppm": 248
       },
       "geometry": {
         "type": "Point",
@@ -9053,15 +9103,15 @@
       "properties": {
         "id": "PINDD0001",
         "deposit": "pinheiro",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1777,
+        "mreo_pct": 19,
         "depth_m": 32.64,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
-        "including": null,
-        "source_ref": "asx_02766588_table2",
+        "note": "32.6m @ 1,777ppm TREO [0m] · incl. 11m @ 3,053ppm TREO [0m]",
+        "intercept": "32.6m @ 1,777ppm TREO [0m]",
+        "including": "11m @ 3,053ppm TREO [0m]",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1327,
         "easting_utm": 338389,
@@ -9087,7 +9137,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 18,
+        "prnd_ppm": 311
       },
       "geometry": {
         "type": "Point",
@@ -9102,15 +9154,15 @@
       "properties": {
         "id": "PITDD0001",
         "deposit": "pitangueira",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1697,
+        "mreo_pct": 21,
         "depth_m": 44.75,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "44.8m @ 1,697ppm TREO [0m]",
+        "intercept": "44.8m @ 1,697ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1295,
         "easting_utm": 348327,
@@ -9136,7 +9188,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 19,
+        "prnd_ppm": 337
       },
       "geometry": {
         "type": "Point",
@@ -9690,15 +9744,15 @@
       "properties": {
         "id": "TAMDD0001",
         "deposit": "tamandua",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1626,
+        "mreo_pct": 21,
         "depth_m": 15.71,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "15.7m @ 1,626ppm TREO [0m]",
+        "intercept": "15.7m @ 1,626ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1347,
         "easting_utm": 334357,
@@ -9724,7 +9778,9 @@
             "lithology": "weathered_phonolite",
             "weathering": "moderate"
           }
-        ]
+        ],
+        "hmreo_ppm": 21,
+        "prnd_ppm": 324
       },
       "geometry": {
         "type": "Point",
@@ -9739,15 +9795,15 @@
       "properties": {
         "id": "TAMDD0002",
         "deposit": "tamandua",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 1784,
+        "mreo_pct": 20,
         "depth_m": 14.67,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "14.7m @ 1,784ppm TREO [0m]",
+        "intercept": "14.7m @ 1,784ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1296,
         "easting_utm": 334497,
@@ -9773,7 +9829,9 @@
             "lithology": "saprolite",
             "weathering": "high"
           }
-        ]
+        ],
+        "hmreo_ppm": 18,
+        "prnd_ppm": 331
       },
       "geometry": {
         "type": "Point",
@@ -9788,15 +9846,15 @@
       "properties": {
         "id": "TAMDD0003",
         "deposit": "tamandua",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 2938,
+        "mreo_pct": 21,
         "depth_m": 19.53,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "19.5m @ 2,938ppm TREO [0m]",
+        "intercept": "19.5m @ 2,938ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1282,
         "easting_utm": 333481,
@@ -9816,7 +9874,9 @@
             "lithology": "saprolite",
             "weathering": "high"
           }
-        ]
+        ],
+        "hmreo_ppm": 28,
+        "prnd_ppm": 581
       },
       "geometry": {
         "type": "Point",
@@ -9831,15 +9891,15 @@
       "properties": {
         "id": "TATDD0001",
         "deposit": "tatu",
-        "treo_ppm": 0,
-        "mreo_pct": 0,
+        "treo_ppm": 927,
+        "mreo_pct": 15,
         "depth_m": 6.28,
         "campaign": "2024-resource",
         "hole_type": "DD",
-        "note": null,
-        "intercept": null,
+        "note": "6.3m @ 927ppm TREO [0m]",
+        "intercept": "6.3m @ 927ppm TREO [0m]",
         "including": null,
-        "source_ref": "asx_02766588_table2",
+        "source_ref": "asx_02766588_table1",
         "as_of": "2024-01-30",
         "elev_m": 1320,
         "easting_utm": 333947,
@@ -9859,7 +9919,9 @@
             "lithology": "saprolite",
             "weathering": "high"
           }
-        ]
+        ],
+        "hmreo_ppm": 9,
+        "prnd_ppm": 129
       },
       "geometry": {
         "type": "Point",

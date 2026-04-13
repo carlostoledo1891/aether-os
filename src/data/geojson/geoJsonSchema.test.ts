@@ -62,6 +62,10 @@ describe('Caldeira GeoJSON schema', () => {
         expect(typeof p.northing_utm).toBe('number')
         expect(p.crs_epsg).toBe(31983)
       }
+      if (p.hmreo_ppm != null) {
+        expect(typeof p.hmreo_ppm).toBe('number')
+        expect(typeof p.prnd_ppm).toBe('number')
+      }
     }
   })
 

@@ -24,3 +24,51 @@ jobs:
       - name: Engine tests
         run: |
           cd engine && npm ci && npm test
+
+  security:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: cd server && npm ci
+      - run: cd engine && npm ci
+
+      - name: Dependency audit (root)
+        run: npm audit --audit-level=high || true
+      - name: Dependency audit (server)
+        run: cd server && npm audit --audit-level=high || true
+      - name: Dependency audit (engine)
+        run: cd engine && npm audit --audit-level=high || true
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+      - name: Generate SBOM (root)
+        run: syft dir:. -o cyclonedx-json=sbom-root.cdx.json
+      - name: Generate SBOM (server)
+        run: syft dir:server -o cyclonedx-json=sbom-server.cdx.json
+      - name: Generate SBOM (engine)
+        run: syft dir:engine -o cyclonedx-json=sbom-engine.cdx.json
+
+      - name: Install Grype
+        uses: anchore/scan-action/download-grype@v4
+      - name: Vulnerability scan (root)
+        run: grype sbom:sbom-root.cdx.json --fail-on critical || true
+      - name: Vulnerability scan (server)
+        run: grype sbom:sbom-server.cdx.json --fail-on critical || true
+      - name: Vulnerability scan (engine)
+        run: grype sbom:sbom-engine.cdx.json --fail-on critical || true
+
+      - name: Upload SBOM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-reports
+          path: |
+            sbom-root.cdx.json
+            sbom-server.cdx.json
+            sbom-engine.cdx.json
+          retention-days: 90

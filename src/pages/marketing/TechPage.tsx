@@ -54,15 +54,15 @@ export default function TechPage() {
             Under the Hood
           </h1>
           <p style={{ ...body, margin: '0 auto 32px', textAlign: 'center', maxWidth: 600 }}>
-            Production-grade architecture, 310 automated tests, zero TypeScript errors, and a plug-and-play integration surface actively ingesting live sensor data. This is not a prototype.
+            Production-grade architecture, CI-enforced quality gates, zero TypeScript errors, and a plug-and-play integration surface actively ingesting live sensor data. This is not a prototype.
           </p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4, ease }}
           style={{ display: 'flex', gap: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { value: '310', label: 'Tests', sub: '260 frontend + 50 server' },
+            { value: 'CI', label: 'Quality Gates', sub: 'Lint + type-check + test + scan' },
             { value: '0', label: 'TS Errors', sub: 'Strict mode' },
-            { value: '135+', label: 'TS Files', sub: '3 packages' },
+            { value: 'Strict', label: 'TypeScript', sub: 'Every package' },
             { value: '40+', label: 'API Endpoints', sub: 'REST + WebSocket' },
           ].map(s => <Stat key={s.label} {...s} />)}
         </motion.div>
@@ -81,7 +81,7 @@ export default function TechPage() {
             {[
               { title: 'aether-engine', sub: 'Simulation & Ingestion Bot', desc: 'Node.js process with a 2-second tick cycle. Ingests real field data (LAPOC, Open-Meteo, BCB PTAX, USGS), automatically yields synthetic generation when real sensors connect, and POSTs results to the API. Stateless by design.', badge: 'Node.js · 2s cycle' },
               { title: 'aether-api', sub: 'Fastify + SQLite', desc: 'REST and WebSocket server with 40+ endpoints. Ring-buffer SQLite with WAL mode for concurrent reads. Dynamic provenance engine tags data origins. All writes go through a single ingest gate with schema validation.', badge: 'REST · WS · 40+ endpoints' },
-              { title: 'Vite Frontend', sub: 'React 19 · MapLibre', desc: 'Single-page app with 14 memoized map overlays, Recharts data viz, and Motion animations. Lean shared layer store and a service layer that abstracts data sources — seamlessly upgrading simulated models to real sensor data.', badge: 'React 19 · 14 overlays' },
+              { title: 'Vite Frontend', sub: 'React 19 · MapLibre', desc: 'Single-page app with memoized map overlays, Recharts data viz, and Motion animations. Lean shared layer store and a service layer that abstracts data sources — seamlessly upgrading simulated models to real sensor data.', badge: 'React 19 · MapLibre GL' },
             ].map((n, i) => (
               <Stagger key={n.title} i={i}>
                 <div style={glass}>
@@ -127,17 +127,17 @@ export default function TechPage() {
         <div style={wrap}>
           <SectionHeader
             label="Engineering Quality"
-            heading="310 Tests. Zero Errors. Ship-Ready."
-            body="Every commit runs through a CI gate: lint, type-check (strict mode), and the full test suite. The codebase has never shipped with a TypeScript error."
+            heading="Zero Errors. CI-Enforced. Ship-Ready."
+            body="Every commit runs through a CI gate: lint, type-check (strict mode), test suite, and security scan. The codebase has never shipped with a TypeScript error."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 40 }}>
             {[
-              { v: '260', l: 'Frontend Tests', s: 'Vitest · React Testing Library' },
-              { v: '50', l: 'Server Tests', s: 'API + engine coverage' },
+              { v: 'Frontend', l: 'Test Suite', s: 'Vitest · React Testing Library' },
+              { v: 'Server', l: 'Test Suite', s: 'API + engine coverage' },
               { v: '0', l: 'TypeScript Errors', s: 'Strict mode, all packages' },
-              { v: '135+', l: 'TypeScript Files', s: 'Across 3 packages' },
-              { v: 'CI', l: 'Pipeline', s: 'lint → tsc → test → build' },
+              { v: 'SBOM', l: 'Every Build', s: 'Syft + Grype scanning' },
+              { v: 'CI', l: 'Pipeline', s: 'lint → tsc → test → scan' },
             ].map((s, i) => (
               <Stagger key={s.l} i={i}>
                 <div style={glass}>
@@ -148,7 +148,7 @@ export default function TechPage() {
             ))}
           </div>
 
-          <Terminal title="src/app/canvas/canvasTheme.ts — Design Token System (107 tokens)">
+          <Terminal title="src/app/canvas/canvasTheme.ts — Semantic Design Token System">
             <Kw>export const</Kw> <Fn>W</Fn> = {'{'}<br />
             {'  '}bg: <Str>'#07070E'</Str>, canvas: <Str>'#060610'</Str>,<br />
             {'  '}panel: <Str>'#0D0D1C'</Str>, surface: <Str>'#121228'</Str>,<br />
@@ -214,23 +214,22 @@ export default function TechPage() {
         <div style={wrap}>
           <SectionHeader
             label="AI Architecture"
-            heading="27 Domain Tools. 10 Guardrails. Zero Hallucination."
-            body="Frontier LLM via Vercel AI SDK with function calling — model-agnostic, swap providers without code changes. Every response is grounded in tool output — the AI cannot invent data. 10 system-prompt honesty rules enforce factual boundaries."
+            heading="Domain-Grounded AI. Zero Hallucination."
+            body="Frontier LLM via Vercel AI SDK with function calling — model-agnostic, swap providers without code changes. Every response is grounded in tool output — the AI cannot invent data. System-prompt honesty rules enforce factual boundaries."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { cat: 'Geology', count: 5, tools: 'deposits, resources, lithology, drill logs, JORC classification' },
-              { cat: 'Financial', count: 5, tools: 'scenario modeling, NPV sensitivity, CAPEX tracking, DSCR, IRR' },
-              { cat: 'Compliance', count: 4, tools: 'DPP validation, FEOC verification, audit chain, export' },
-              { cat: 'Operations', count: 5, tools: 'plant telemetry, equipment status, sensor channels, flow paths, process steps' },
-              { cat: 'Environmental', count: 4, tools: 'water quality, springs, hydrology scenarios, community card' },
-              { cat: 'Market', count: 4, tools: 'sizing, pricing, benchmarks, comparable analysis' },
+              { cat: 'Geology', tools: 'deposits, resources, lithology, drill logs, JORC classification' },
+              { cat: 'Financial', tools: 'scenario modeling, NPV sensitivity, CAPEX tracking, DSCR, IRR' },
+              { cat: 'Compliance', tools: 'DPP validation, FEOC verification, audit chain, export' },
+              { cat: 'Operations', tools: 'plant telemetry, equipment status, sensor channels, flow paths, process steps' },
+              { cat: 'Environmental', tools: 'water quality, springs, hydrology scenarios, community card' },
+              { cat: 'Market', tools: 'sizing, pricing, benchmarks, comparable analysis' },
             ].map((c, i) => (
               <Stagger key={c.cat} i={i}>
                 <div style={glass}>
                   <div style={glow} />
-                  <div style={{ fontSize: 24, fontWeight: 800, color: V }}>{c.count}</div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: W.text1, marginTop: 4 }}>{c.cat}</div>
                   <div style={{ fontSize: 12, color: W.text3, marginTop: 6, lineHeight: 1.5 }}>{c.tools}</div>
                 </div>
@@ -287,7 +286,7 @@ export default function TechPage() {
           <SectionHeader
             label="Integration Surface"
             heading="REST. WebSocket. SCADA-Ready."
-            body="Three integration paths — REST for batch queries, WebSocket for real-time telemetry, and an OPC-UA/MQTT roadmap for industrial SCADA systems. Equipment-sensor catalog with 17 equipment items and 28 mapped sensor channels."
+            body="Three integration paths — REST for batch queries, WebSocket for real-time telemetry, and an OPC-UA/MQTT roadmap for industrial SCADA systems. Full equipment-sensor catalog mapped to the pilot plant process."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 32 }}>
@@ -324,10 +323,10 @@ export default function TechPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginTop: 24 }}>
             {[
-              { v: '17', l: 'Equipment Items', s: 'Metso · Andritz · GEA · Outotec' },
-              { v: '28', l: 'Sensor Channels', s: 'Mapped to telemetry' },
+              { v: 'Full', l: 'Equipment Catalog', s: 'Metso · Andritz · GEA · Outotec' },
+              { v: 'Mapped', l: 'Sensor Channels', s: 'Every sensor to telemetry' },
               { v: '7', l: 'Process Steps', s: 'ROM to product' },
-              { v: '15', l: 'Flow Paths', s: 'Animated SVG' },
+              { v: 'Animated', l: 'Flow Paths', s: 'Interactive SVG' },
             ].map((s, i) => (
               <Stagger key={s.l} i={i}>
                 <div style={{ ...glass, textAlign: 'center' }}>
@@ -346,7 +345,7 @@ export default function TechPage() {
           <SectionHeader
             label="Digital Twin"
             heading="Pilot Plant Control Room"
-            body="Interactive SVG schematic of the Caldeira AMSUL pilot plant — 17 equipment nodes, 28 sensors, 7 process steps, and 15 animated flow paths. Each equipment item maps to its real-world counterpart with status indicators and sensor channels."
+            body="Interactive SVG schematic of the Caldeira AMSUL pilot plant — full equipment catalog, every sensor mapped, 7 process steps, and animated flow paths. Each equipment item maps to its real-world counterpart with status indicators and sensor channels."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
@@ -486,12 +485,12 @@ export default function TechPage() {
           <SectionHeader
             label="Modularity"
             heading="Architected for Scale"
-            body="107 design tokens, shared component library, lazy-loaded routes, and a Mini Engine pattern that generates public dashboards from JSON manifests. Built for a second developer to be productive on day one."
+            body="Semantic design token system, shared component library, lazy-loaded routes, and a Mini Engine pattern that generates public dashboards from JSON manifests. Built for a second developer to be productive on day one."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { title: 'Design Tokens', desc: '107 semantic tokens — colors, glass, radii, chrome. One source of truth for dark mode. Light mode–ready.' },
+              { title: 'Design Tokens', desc: 'Semantic token system — colors, glass, radii, chrome. One source of truth for dark mode. Light mode–ready.' },
               { title: 'Component Library', desc: 'DeckShell, Terminal, StatCard, GlassRow, Tag, Bullet — shared across decks, pages, and dashboards.' },
               { title: 'Mini Engine', desc: 'JSON-driven public views. One manifest generates a complete dashboard — Prefeitura, community, investor views.' },
               { title: 'Error Boundaries', desc: 'ErrorBoundary on every route. Lazy loading on every page. Suspense fallbacks. Graceful degradation.' },

@@ -48,7 +48,7 @@ export const PilotPlantCard = memo(function PilotPlantCard({ onOpen }: PilotPlan
       tabIndex={0}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.() } }}
       style={{
-        background: 'rgba(6, 6, 16, 0.88)',
+        background: W.overlay88,
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         border: `1px solid ${W.cyan}20`,

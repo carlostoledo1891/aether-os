@@ -1,8 +1,12 @@
 # Vero — Critical Mineral OS
 
+![CI](https://github.com/carlostoledo/aether-os/actions/workflows/ci.yml/badge.svg)
+
 **The trust layer for critical mineral supply chains.**
 
 A pitch-ready B2B SaaS prototype providing real-time telemetry, ESG compliance, molecular traceability, and financial modeling for the Caldeira Project REE supply chain (Meteoric Resources, ASX: MEI). Commercial brand: **Vero** (from Latin *verus*, 'true'). Codebase retains `aether-os` as internal name.
+
+**Enterprise Readiness:** Controls mapped to NIST 800-53 Rev 5 and CMMC Level 2. SBOM generated via Syft on every CI build. See [Trust Center](/trust) and [SECURITY.md](SECURITY.md).
 
 ## Quick Start
 

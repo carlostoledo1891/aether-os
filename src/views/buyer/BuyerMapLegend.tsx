@@ -1,10 +1,8 @@
 import { W } from '../../app/canvas/canvasTheme'
-import { Z } from '../../components/map/mapStacking'
 
 export function BuyerMapLegend() {
   return (
     <div style={{
-      position: 'absolute', bottom: 12, right: 12, zIndex: Z.mapHud,
       background: W.mapControlBg, border: W.mapControlBorder,
       borderRadius: 8, padding: '8px 10px',
       display: 'flex', flexDirection: 'column', gap: 4,

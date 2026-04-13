@@ -2150,3 +2150,17 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Consolidated persona docs: Aether->Vero title, standardized Caponi title, rewrote team configuration with three-pillar structure (Ground Truth / Trade Truth / Execution).
 - Fixed stale "27 AI tools" references across BookendSlides, CloseSlide, PITCH_STRATEGY.md, branding.md. Replaced hardcoded stats with `MARKETING_COPY` constants.
 - Added ESG lane to WhyINeedYouSlide. Updated RiskSlide from "Solo founder risk" to "Key-person risk" with advisory bench mitigation.
+
+### Session Log — 2026-04-12 (Map System Refactor Sprint)
+- Fixed broken CPRM Geology overlay (WMS→ArcGIS REST export). Removed CPRM Hazards (HTTP mixed content). Renamed Macrostrat label to signal external/flaky.
+- Unified layer catalog: derived `LayerId` from `ALL_LAYERS`, added `available`/`sourceType`/`requiresEnv` to `LayerDef`, gated `MapLayerPanel` on availability. Removed phantom `markers` entry.
+- Consolidated overlay mounting: added `renderOverrides` to `MapOverlays`; migrated FieldView (60+ lines) and BuyerView to single `<MapOverlays>` calls.
+- Created site-scoped layer system: `SiteExternalLayer` type, `externalLayers` on `SiteConfig`, `CALDEIRA_EXTERNAL_LAYERS` in `caldeira.ts`, generic `ExternalRasterOverlay.tsx`.
+- Fixed UI overlaps: moved GeologySlide/HydroSlide info panels to top-left, HydroOverlay HUD to top-left, added `compact` mode and bottom padding to `MapControlStack`, fixed attribution accuracy.
+
+### Session Log — 2026-04-12 (Map Surface Control Sprint)
+- Isolated BuyerView layer state (`usePresetLayers` instead of shared `useMapLayers`); added `activeGroups` filtering to `deriveOverlayKeys` so FieldView tab transitions don't leak layers.
+- Moved PilotPlantCard and HydroMonitoringCard into `controlSlots.topLeft` across all map surfaces (FieldView, GeologySlide, HydroSlide). Removed `position: absolute` from `.hudCard` CSS.
+- Purified HydroOverlay: extracted WQ badge, rain stress badge, and HydroMonitoringCard render into the view layer. Overlay now renders only MapLibre Source/Layer elements.
+- Unified card visual tokens (both use `W.overlay88`). Added `maxHeight`/`overflowY` to MapControlStack topLeft for deck slide content.
+- Documented deferred API Registry Architecture (`ApiSourceDef` pattern for NOAA, INMET, etc.) in AGENT.md next steps.

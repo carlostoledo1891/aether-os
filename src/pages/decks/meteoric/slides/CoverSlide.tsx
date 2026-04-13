@@ -30,7 +30,7 @@ export default function CoverSlide() {
           {'Your digital twin is already built.\nNow connect it to live data.'}
         </p>
         <div style={{ marginTop: 40 }}>
-          <GlassRow items={[{ label: 'Equipment', value: '17' }, { label: 'Sensors', value: '28' }, { label: 'GeoJSON', value: '19' }, { label: 'AI Tools', value: '31' }, { label: 'Forecast', value: '16-Day' }, { label: 'Tests', value: '310' }]} />
+          <GlassRow items={[{ label: 'Digital Twin', value: 'Full' }, { label: 'Forecast', value: '16-Day' }, { label: 'Audit Chain', value: 'SHA-256' }, { label: 'EU DPP', value: '22/37' }, { label: 'Telemetry', value: 'Live' }, { label: 'Baseline', value: 'ERA5' }]} />
         </div>
       </div>
     </>

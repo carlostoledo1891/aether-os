@@ -239,7 +239,7 @@ export default function BusinessPage() {
               { title: 'Founder Inside the Caldeira', desc: '40 years of local context. Born and raised in Poços de Caldas. No outside team can replicate this.' },
               { title: '9.4/10 Persona Score', desc: 'Validated against 9 named stakeholder personas before a single line of marketing was written.' },
               { title: 'Three Truths Stack', desc: 'Field ops + compliance + executive in one platform. No competitor even attempts this integration.' },
-              { title: '310 Tests + OpenAPI', desc: 'Production architecture, not a prototype. SHA-256 audit chain. Auto-generated API spec.' },
+              { title: 'CI + OpenAPI', desc: 'Production architecture, not a prototype. SHA-256 audit chain. NIST 800-53 mapped. Auto-generated API spec.' },
               { title: 'Mini Engine', desc: 'JSON-driven public dashboards (Prefeitura, community, investor views). No competitor offers this.' },
             ].map((m, i) => (
               <Stagger key={m.title} i={i}>
@@ -333,11 +333,11 @@ export default function BusinessPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
             {[
-              { v: '310', l: 'Automated Tests' },
+              { v: 'NIST', l: '800-53 Mapped' },
               { v: '9.4/10', l: 'Persona Score' },
-              { v: '27', l: 'AI Domain Tools' },
+              { v: 'SHA-256', l: 'Audit Chain' },
               { v: '19', l: 'GeoJSON Datasets' },
-              { v: '17', l: 'Equipment Items' },
+              { v: 'Full', l: 'Digital Twin' },
               { v: '59%', l: 'DPP Coverage' },
             ].map((s, i) => (
               <Stagger key={s.l} i={i}>
@@ -363,7 +363,7 @@ export default function BusinessPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
             {[
-              { date: 'Now', items: ['Platform deployed with Caldeira data', 'Meteoric relationship active', '310 tests, production architecture', '2 US frontier AI company collaborations'] },
+              { date: 'Now', items: ['Platform deployed with Caldeira data', 'Meteoric relationship active', 'CI-enforced quality gates, production architecture', '2 US frontier AI company collaborations'] },
               { date: 'Q2–Q3 2026', items: ['Meteoric pilot contract ($102k/yr)', 'LAPOC live sensor integration', '75% DPP field coverage', '2 additional pilot customers'] },
               { date: 'Q4 2026', items: ['Seed raise ($5–7M pre-money)', 'OPC-UA SCADA proof of concept', 'Conference pipeline (TMS, Critical Minerals Summit)', 'DPP schema validation tool launch'] },
               { date: '2027', items: ['EU DPP enforcement begins', '5+ active pilot customers', 'Enterprise tier launches', 'On-chain attestation MVP'] },

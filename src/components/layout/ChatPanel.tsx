@@ -4,6 +4,9 @@ import { X, Send, Sparkles, Paperclip, FileText, ChevronDown, ChevronRight, Data
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { W } from '../../app/canvas/canvasTheme'
+import { ProvenanceBadge } from '../ui/ProvenanceBadge'
+import { KIND_COLOR } from '../ui/provenanceColors'
+import type { DataProvenanceKind } from '../../services/dataService'
 import styles from './ChatPanel.module.css'
 
 interface ChatPanelProps {
@@ -56,6 +59,7 @@ const TOOL_LABELS: Record<string, string> = {
   queryWeatherHistory: 'Climate History',
   analyzeEnvironmentalRisk: 'Environmental Risk',
   querySpringHealthPrediction: 'Spring Prediction',
+  queryKnowledgeBase: 'Knowledge Base',
 }
 
 function getToolLabel(toolName: string): string {
@@ -78,6 +82,21 @@ function extractToolParts(parts: Array<{ type: string; [k: string]: unknown }>):
       input: p.input,
       output: p.output,
     }))
+}
+
+interface KBResult {
+  id: string
+  title: string
+  authority: string
+  provenance_kind?: string
+  source_url?: string | null
+}
+
+function extractKBResults(output: unknown): KBResult[] {
+  if (!output || typeof output !== 'object') return []
+  const obj = output as Record<string, unknown>
+  if (!Array.isArray(obj.results)) return []
+  return (obj.results as KBResult[]).filter(r => r.id && r.title)
 }
 
 function ToolProvenance({ tools }: { tools: ToolPart[] }) {
@@ -105,17 +124,44 @@ function ToolProvenance({ tools }: { tools: ToolPart[] }) {
       </button>
       {expanded && (
         <div className={styles.provenanceDetail}>
-          {tools.map(t => (
-            <div key={t.toolCallId} className={styles.provenanceItem}>
-              <span className={styles.provenanceToolName}>{getToolLabel(t.toolName)}</span>
-              {t.state === 'output-available' && t.output != null && (
-                <span className={styles.provenanceOutput}>{summarizeOutput(t.output)}</span>
-              )}
-              {t.state === 'output-error' && (
-                <span className={styles.provenanceError}>Error</span>
-              )}
-            </div>
-          ))}
+          {tools.map(t => {
+            const kbResults = t.toolName === 'queryKnowledgeBase' && t.state === 'output-available'
+              ? extractKBResults(t.output)
+              : []
+
+            return (
+              <div key={t.toolCallId} className={styles.provenanceItem}>
+                <span className={styles.provenanceToolName}>{getToolLabel(t.toolName)}</span>
+                {kbResults.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 3 }}>
+                    {kbResults.map(r => (
+                      <div key={r.id} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9 }}>
+                        {r.provenance_kind && (
+                          <ProvenanceBadge kind={r.provenance_kind as DataProvenanceKind} />
+                        )}
+                        <span style={{ color: W.text2 }}>{r.title}</span>
+                        {r.source_url && (
+                          <a href={r.source_url} target="_blank" rel="noopener noreferrer"
+                            style={{ color: `${KIND_COLOR[r.provenance_kind as DataProvenanceKind] ?? W.text4}`, fontSize: 8 }}>
+                            [link]
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    {t.state === 'output-available' && t.output != null && (
+                      <span className={styles.provenanceOutput}>{summarizeOutput(t.output)}</span>
+                    )}
+                    {t.state === 'output-error' && (
+                      <span className={styles.provenanceError}>Error</span>
+                    )}
+                  </>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
@@ -179,13 +225,18 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [isOpen, onClose])
 
+  const sessionIdRef = useRef<string | null>(null)
+
   const doSend = useCallback(() => {
     const text = input.trim()
     if (!text) return
-    sendMessage({ text })
+    const fileContext = attachedFile
+      ? `\n\n[Attached file: ${attachedFile.filename} (${attachedFile.type})]\n${attachedFile.preview}`
+      : ''
+    sendMessage({ text: text + fileContext })
     setInput('')
     setAttachedFile(null)
-  }, [input, sendMessage])
+  }, [input, sendMessage, attachedFile])
 
   const onKeyDownInput = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -202,8 +253,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const res = await fetch('/api/chat/upload', { method: 'POST', body: formData })
+      const headers: Record<string, string> = {}
+      if (sessionIdRef.current) headers['x-chat-session'] = sessionIdRef.current
+      const res = await fetch('/api/chat/upload', { method: 'POST', body: formData, headers })
       if (!res.ok) throw new Error(`Upload failed: ${res.status}`)
+      const sid = res.headers.get('x-chat-session')
+      if (sid) sessionIdRef.current = sid
       const data = await res.json() as AttachedFile
       setAttachedFile(data)
     } catch (err) {

@@ -1,10 +1,8 @@
 import { W, V } from '../shared'
 import { Tag } from '../../../../components/deck'
 
-import { MARKETING_COPY } from '../../../../config/marketing'
-
 const RISKS = [
-  { risk: 'Key-person risk', mitigation: `Advisory bench (science, ESG, tech, commercial) + AGENT.md bootstrap + 107 design tokens + ${MARKETING_COPY.testCount} tests = day-1 onboarding for any senior dev` },
+  { risk: 'Key-person risk', mitigation: 'Advisory bench (science, ESG, tech, commercial) + AGENT.md bootstrap + strict TypeScript + CI quality gates = day-1 onboarding for any senior dev' },
   { risk: 'Zero revenue', mitigation: 'Apr 15 Meteoric pitch → pilot by June. Named anchor client, not cold pipeline.' },
   { risk: 'Single customer dependency', mitigation: '15 REE projects identified (ASX/TSX). OEM pipeline via ERP/ECA channels.' },
   { risk: 'EU DPP delay', mitigation: 'IRA/FEOC active now. Australian ESG 2025+. Regulatory diversification across 3 jurisdictions.' },

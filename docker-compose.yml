@@ -8,6 +8,7 @@ services:
     environment:
       - PORT=3001
       - HOST=0.0.0.0
+      - NODE_ENV=production
     volumes:
       - api-data:/app/data
     healthcheck:
@@ -15,6 +16,13 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp
 
   engine:
     build: ./engine
@@ -30,6 +38,11 @@ services:
       - ENRICHER_BCB=1
       - ENRICHER_USGS=1
       # - ALPHA_VANTAGE_KEY=
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
 
   ui:
     build:
@@ -40,6 +53,15 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
 
 volumes:
   api-data:

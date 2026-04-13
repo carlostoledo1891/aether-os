@@ -1,7 +1,6 @@
 import { lazy, useEffect } from 'react'
 import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
-import { MARKETING_COPY } from '../../../config/marketing'
 
 /* ── Lazy Slide Imports ───────────────────────────────────── */
 
@@ -87,8 +86,8 @@ export default function FoundersDeck() {
       console.log(
         '%c\u{1F44B} Hey Juliano %c\n\n' +
         'You opened DevTools. We expected that.\n\n' +
-        `${MARKETING_COPY.testCount} tests \u00B7 0 errors \u00B7 TypeScript strict\n` +
-        '107 design tokens \u00B7 MaybeAsync<T> \u00B7 3 processes\n\n' +
+        'TypeScript strict \u00B7 0 errors \u00B7 CI quality gates\n' +
+        'NIST 800-53 mapped \u00B7 SHA-256 audit chain \u00B7 3 processes\n\n' +
         'The codebase is ready for a second pair of hands.\n' +
         'AGENT.md bootstraps any AI agent in seconds.\n\n' +
         '%cgit clone \u2192 npm i \u2192 npm run dev:all%c\n',

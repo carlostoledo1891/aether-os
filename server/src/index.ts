@@ -18,15 +18,13 @@ import { telemetryWsRoutes } from './ws/telemetryChannel.js'
 import multipart from '@fastify/multipart'
 import { chatRoutes } from './routes/chat.js'
 import { chatUploadRoutes } from './routes/chatUpload.js'
+import { knowledgeAdminRoutes } from './routes/knowledgeAdmin.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
+import { enforceEnvOrExit } from './validateEnv.js'
+import { appendAuditEvent } from './store/auditChain.js'
 
-const ENV_HINTS: Array<[string, string]> = [
-  ['GOOGLE_GENERATIVE_AI_API_KEY', 'AI chat will return 501. Get a key at https://aistudio.google.com/apikey'],
-]
-for (const [key, hint] of ENV_HINTS) {
-  if (!process.env[key]) console.warn(`\u26A0 ${key} not set \u2014 ${hint}`)
-}
+enforceEnvOrExit()
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10)
 const HOST = process.env.HOST ?? '0.0.0.0'
@@ -105,6 +103,16 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
       }
       const key = req.headers['x-api-key']
       if (key !== INGEST_API_KEY) {
+        try {
+          appendAuditEvent({
+            event_id: `auth-fail-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            type: 'auth_failure',
+            actor: req.ip ?? 'unknown',
+            action: 'ingest_auth_rejected',
+            detail: `Failed auth on ${req.method} ${req.url}`,
+          })
+        } catch { /* best-effort */ }
         return reply.code(401).send({ error: 'Invalid or missing API key' })
       }
     }
@@ -115,6 +123,16 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
       }
       const key = req.headers['x-api-key']
       if (key !== CHAT_API_KEY) {
+        try {
+          appendAuditEvent({
+            event_id: `auth-fail-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            type: 'auth_failure',
+            actor: req.ip ?? 'unknown',
+            action: 'chat_auth_rejected',
+            detail: `Failed auth on ${req.method} ${req.url}`,
+          })
+        } catch { /* best-effort */ }
         return reply.code(401).send({ error: 'Invalid or missing API key' })
       }
     }
@@ -132,6 +150,7 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
   await app.register(telemetryWsRoutes)
   await app.register(chatRoutes)
   await app.register(chatUploadRoutes)
+  await app.register(knowledgeAdminRoutes)
 
   return app
 }

@@ -25,9 +25,9 @@
 | **Operators** | Siloed data across engineering, permitting, IR, and community. No unified story for board or investor. | One narrative canvas — from drill collar to product output. Control Room digital twin. Hydro Twin for LI defense. |
 | **Defense Buyers** | 18–24 month procurement delays when FEOC documentation is incomplete. No way to verify supply chain provenance. | Infrastructure-first security posture + FEOC origin tracking + SHA-256 audit chain. OpenAPI spec for integration. |
 | **EU Compliance** | Battery Passport enforcement (Feb 2027) with no standard tooling. Schema gaps across the supply chain. | 22 CEN/CENELEC DPP fields mapped. Schema-validated JSON export. Inline validation with error reporting. |
-| **Investors / PF** | Technical risk in the investment model. No visibility into operational readiness. | 310 tests, rate limiting, zero-cache on financials. Bear/Consensus/Bull scenarios. DSCR projections. Capital tracker. |
+| **Investors / PF** | Technical risk in the investment model. No visibility into operational readiness. | CI-enforced quality gates, NIST 800-53 mapped, zero-cache on financials. Bear/Consensus/Bull scenarios. DSCR projections. Capital tracker. |
 | **Community / NGO** | Mining companies making promises about water without transparent monitoring. No grievance path. | Hydro Twin with "modeled" labels visible before spring colors. Bilingual community card (PT/EN). FEAM/IGAM contacts. 7-day water forecast outlook in Portuguese. AI-predicted spring health based on real weather data. |
-| **Integrators** | Undocumented APIs, no equipment catalog, unknown protocols. | OpenAPI at `/api/docs`. 17 equipment items, 28 sensors documented. OPC-UA/MQTT roadmap. Cost estimate in a week. |
+| **Integrators** | Undocumented APIs, no equipment catalog, unknown protocols. | OpenAPI at `/api/docs`. Full equipment-sensor catalog documented. OPC-UA/MQTT roadmap. Cost estimate in a week. |
 
 ---
 
@@ -61,7 +61,7 @@
 - *What QP signs off on a screenshot?* → **Nothing** until counsel/IR defines disclosure mode; default demo is **non-reliance**.
 - *Can opponents FOIA spring layers?* → Public geometry labeled; **status colors = modeled UX**, not agency findings.
 - *Community "red phone"?* → **Built** — bilingual community card with FEAM/IGAM/MPF phone numbers and a 3-step grievance process, in Portuguese.
-- *What if the live link crashes during a demo?* → **310 tests, deployment checklist, ErrorFallback on every data consumer, connection-aware banner, rate limiting.**
+- *What if the live link crashes during a demo?* → **CI-enforced quality gates, deployment checklist, ErrorFallback on every data consumer, connection-aware banner, rate limiting.**
 - *What's your security posture?* → **CSP headers, rate limiting, API key auth, fail-closed ingest, CORS allowlist, error handler without stack traces.**
 - *Can you predict environmental compliance issues before they happen?* → **Yes.** 16-day weather forecast feeds spring health prediction model. ERA5 5-year baseline provides seasonal context. All predictions labeled 'AI-predicted — indicative only.'
 - *How do you prevent stale geological data on screen?* → **TTL=0 on all geological/financial endpoints.** No caching. De Carvalho principle enforced at architecture level.
@@ -80,7 +80,7 @@
 
 ### Founders Deck (Juliano & Guilherme)
 - **Narrative Arc:** Honesty → Problem → Opportunity → Product → Engineering → Science → Business → Timing → Close.
-- **Technical Deep Dive (Juliano):** Yield-to-real-data ingestion architecture, lean MapBase spatial engine, 310 tests, API integration surface.
+- **Technical Deep Dive (Juliano):** Yield-to-real-data ingestion architecture, lean MapBase spatial engine, CI quality gates, API integration surface.
 - **Commercial Validation (Guilherme):** Sourced TAM ($31.9B), SAM ($5.2B), regulation-driven growth (EU DPP, IRA), $102k ACV vs $821M NPV, mitigation of risks.
 
 ### Meteoric Implementation Deck
