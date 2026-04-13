@@ -27,10 +27,9 @@ interface MapFeaturePopupProps {
 export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: MapFeaturePopupProps) {
   if (!data) return null
 
-  const hasLith = data.lithologyIntervals && data.lithologyIntervals.length > 0
-  const totalDepth = hasLith
-    ? data.lithologyIntervals[data.lithologyIntervals.length - 1].to_m
-    : 0
+  const lith = data.lithologyIntervals
+  const hasLith = lith && lith.length > 0
+  const totalDepth = hasLith ? lith[lith.length - 1].to_m : 0
 
   const style: CSSProperties = {
     position: 'absolute',
