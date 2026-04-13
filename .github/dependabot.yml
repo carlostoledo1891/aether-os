@@ -8,6 +8,13 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - dependencies
+    ignore:
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
       minor-and-patch:
         update-types:
@@ -23,6 +30,11 @@ updates:
     labels:
       - dependencies
       - server
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: npm
     directory: /engine
@@ -33,6 +45,11 @@ updates:
     labels:
       - dependencies
       - engine
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: github-actions
     directory: /
