@@ -5,6 +5,7 @@ import { W } from '../../app/canvas/canvasTheme'
 import { Z } from '../map/mapStacking'
 import { LITH_COLORS, LITH_LABELS, LITH_ORDER } from './lithologyPalette'
 import { GEO } from '../../data/geo/registry'
+import { REE_GRADE_HIGH, REE_GRADE_MEDIUM, REE_GRADE_LOW } from '../../data/domainThresholds'
 
 const DEFAULT_VISIBLE = 20
 const COL_WIDTH = 20
@@ -43,9 +44,9 @@ function depositLabel(slug: string): string {
 }
 
 function gradeColor(ppm: number): string {
-  if (ppm >= 8000) return W.green
-  if (ppm >= 5000) return W.cyan
-  if (ppm >= 3000) return W.amber
+  if (ppm >= REE_GRADE_HIGH) return W.green
+  if (ppm >= REE_GRADE_MEDIUM) return W.cyan
+  if (ppm >= REE_GRADE_LOW) return W.amber
   return W.text3
 }
 
@@ -136,9 +137,11 @@ export function DrillTraceSection() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let cancelled = false
     fetch(GEO.drillholes.url)
       .then(r => r.json())
       .then((geojson: { features: Array<{ properties: DrillHoleEntry }> }) => {
+        if (cancelled) return
         setAllHoles(
           geojson.features
             .map(f => f.properties)
@@ -146,6 +149,7 @@ export function DrillTraceSection() {
         )
       })
       .catch(() => { /* graceful: empty state */ })
+    return () => { cancelled = true }
   }, [])
 
   const deposits = useMemo(() => {
@@ -465,10 +469,10 @@ export function DrillTraceSection() {
           {/* Mini lithology column */}
           {(selectedData.lithology_intervals?.length ?? 0) > 0 && (
             <MiniColumn
-              intervals={selectedData.lithology_intervals!}
+              intervals={selectedData.lithology_intervals ?? []}
               maxDepth={Math.max(
                 selectedData.depth_m,
-                ...selectedData.lithology_intervals!.map(iv => iv.to_m),
+                ...(selectedData.lithology_intervals?.map(iv => iv.to_m) ?? []),
               )}
             />
           )}
@@ -503,7 +507,7 @@ export function DrillTraceSection() {
             {/* Lithology interval list */}
             {(selectedData.lithology_intervals?.length ?? 0) > 0 && (
               <div style={{ marginTop: 6, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {selectedData.lithology_intervals!.map((iv, i) => (
+                {(selectedData.lithology_intervals ?? []).map((iv, i) => (
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 4,
                     padding: '2px 6px', borderRadius: W.radius.xs,

@@ -68,7 +68,7 @@ export const CALDEIRA_SEED: Record<string, unknown> = {
     { id: 'R03', title: 'FEOC policy change expands restricted entities', category: 'geopolitical', likelihood: 2, impact: 4, score: 8, mitigation: 'Full Scope 3 reagent provenance tracking; allied-only supply chain architecture', status: 'mitigating', owner: 'VP Compliance' },
     { id: 'R04', title: 'DFS completion delayed beyond mid-2026', category: 'technical', likelihood: 3, impact: 4, score: 12, mitigation: 'Ausenco acceleration package; parallel workstreams; weekly progress tracking', status: 'mitigating', owner: 'Project Director' },
     { id: 'R05', title: 'Water quality exceedance at discharge point', category: 'environmental', likelihood: 2, impact: 4, score: 8, mitigation: 'ISE real-time monitoring; automated throttle at 200 ppm sulfate; contingency treatment', status: 'mitigating', owner: 'Environmental Manager' },
-    { id: 'R06', title: 'UDC legacy radiation above background', category: 'environmental', likelihood: 2, impact: 3, score: 6, mitigation: 'Continuous scintillation monitoring; 3 km exclusion buffer; INB/CNEN compliance', status: 'accepted', owner: 'HSE Director' },
+    { id: 'R06', title: 'UDC legacy radiation above background', category: 'environmental', likelihood: 2, impact: 3, score: 6, mitigation: 'Continuous scintillation monitoring; 3 km exclusion buffer; INB/ANSN compliance', status: 'accepted', owner: 'HSE Director' },
     { id: 'R07', title: 'Ammonium sulfate supply chain disruption', category: 'operational', likelihood: 2, impact: 3, score: 6, mitigation: 'Dual-supplier qualification (AdvanSix + backup); 90-day strategic inventory', status: 'mitigating', owner: 'Supply Chain Manager' },
     { id: 'R08', title: 'Key personnel retention during scale-up', category: 'operational', likelihood: 3, impact: 3, score: 9, mitigation: 'Long-term incentive plans; knowledge transfer protocols; deputy role assignments', status: 'open', owner: 'CHRO' },
     { id: 'R09', title: 'BRL/USD FX exposure on operating costs', category: 'market', likelihood: 3, impact: 3, score: 9, mitigation: 'Natural hedge (USD revenue / BRL costs); rolling 12-month hedging policy', status: 'mitigating', owner: 'Treasury' },
@@ -142,9 +142,9 @@ export const CALDEIRA_SEED: Record<string, unknown> = {
   },
 
   market_sizing: {
-    tam: { label: 'Global Digital Mining & Smart Mining Technology', value_usd_b: 18.8, year: 2026, forecast_usd_b: 31.9, forecast_year: 2031, cagr_pct: 11.2, source: 'Mordor Intelligence, "Smart Mining Market Size & Share Analysis" (2026 est. $18.77B → 2031 $31.86B, CAGR 11.16%); Grand View Research, "Digital Mining Market" (2024 $9.39B → 2030 $18.11B, CAGR 9.8%)', report_date: '2025', methodology: 'Composite of Mordor Intelligence smart mining and Grand View Research digital mining forecasts.' },
+    tam: { label: 'ESG Compliance in Mining', value_usd_b: 4.8, year: 2025, forecast_usd_b: 9.6, forecast_year: 2033, cagr_pct: 8.9, source: 'Grand View Research "ESG Compliance in Mining Market" (2024 $4.53B, 2025 $4.84B → 2033 $9.55B, CAGR 8.9%)', report_date: '2025-11', methodology: 'Total value of environmental compliance, social compliance, governance and reporting products/services purchased by mining companies globally.' },
     sam: { label: 'Critical Minerals Compliance & Traceability SaaS', value_usd_b: 1.6, year: 2025, forecast_usd_b: 5.2, forecast_year: 2033, cagr_pct: 14.2, source: 'Dataintelo, "Critical Mineral Traceability Market" ($3.8B total in 2025, software = 42.5% = ~$1.6B)', report_date: '2025', methodology: 'Software component of critical mineral traceability market.' },
-    som: { label: 'REE Projects in Allied Jurisdictions with Active Compliance Requirements', value_usd_m: 15, year: 2026, forecast_usd_m: 45, forecast_year: 2030, source: 'Bottom-up: 15 identified REE projects in development (Brazil, Australia, USA, Canada, Greenland)', report_date: '2026-Q2', methodology: 'Bottom-up from public project databases.' },
+    som: { label: 'Critical Mineral Projects in Allied Jurisdictions with Active Compliance Requirements', value_usd_m: 150, year: 2026, forecast_usd_m: 450, forecast_year: 2030, source: 'Bottom-up: 150 identified Critical Mineral projects (Brazil, Australia, USA, Canada, Greenland) × $102k/yr', report_date: '2026-Q2', methodology: 'Bottom-up from public project databases (ASX, TSX, SEC filings).' },
   },
 
   pricing_model: {
@@ -200,7 +200,7 @@ export const CALDEIRA_SEED: Record<string, unknown> = {
     { id: 'REG-02', body: 'SUPRAM', type: 'LI Application', date: '2026-02-14', status: 'submitted', detail: 'Installation License application lodged.' },
     { id: 'REG-03', body: 'FEAM', type: 'Technical Review', date: '2026-03-20', status: 'in_review', detail: 'Environmental conditions review.' },
     { id: 'REG-04', body: 'MPF', type: 'Cumulative EIA Request', date: '2026-01-15', status: 'in_review', detail: 'Federal prosecutor requested cumulative EIA.' },
-    { id: 'REG-05', body: 'INB/CNEN', type: 'Radiation Clearance', date: '2026-03-01', status: 'approved', detail: 'UDC legacy site monitoring protocol accepted.' },
+    { id: 'REG-05', body: 'INB/ANSN', type: 'Radiation Clearance', date: '2026-03-01', status: 'approved', detail: 'UDC legacy site monitoring protocol accepted.' },
     { id: 'REG-06', body: 'IBAMA', type: 'APA Consultation', date: '2026-04-02', status: 'pending', detail: 'APA Pedra Branca buffer zone consultation scheduled.' },
   ],
 
@@ -213,8 +213,8 @@ export const CALDEIRA_SEED: Record<string, unknown> = {
 
   data_context: {
     mode: 'live', telemetry: 'simulated', presentationMode: false, disclosureMode: false,
-    bannerLabel: 'Live pipeline — Vero Simulation Engine',
-    detail: 'Telemetry flows through the Vero API via the simulation engine. Weather data from Open-Meteo, FX from BCB.',
+    bannerLabel: 'Live pipeline — VeroChain Simulation Engine',
+    detail: 'Telemetry flows through the VeroChain API via the simulation engine. Weather data from Open-Meteo, FX from BCB.',
   },
 
   provenance_profile: {
@@ -223,7 +223,7 @@ export const CALDEIRA_SEED: Record<string, unknown> = {
       hydro_spring_geometry: { kind: 'from_public_record', hint: 'Spring locations from FBDS/CAR-derived GeoJSON inside Caldeira boundary' },
       hydro_spring_status: { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay from simulation engine' },
       hydro_piezo_telemetry: { kind: 'simulated', hint: 'Aquifer/piezo metrics from simulation engine' },
-      plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels from Vero Simulation Engine' },
+      plant_telemetry: { kind: 'simulated', hint: 'Pilot plant channels from VeroChain Simulation Engine' },
       precip_field: { kind: 'from_public_record', hint: 'Open-Meteo public weather API — recent observed precipitation' },
       regulatory_log: { kind: 'issuer_attested', hint: 'Structured engagement log' },
       audit_ledger: { kind: 'illustrative', hint: 'Demonstration event log with stub hashes' },
@@ -491,11 +491,11 @@ export const CALDEIRA_AUDIT_SEED: AuditEventInput[] = [
   { event_id: 'AUD-010', timestamp: '2026-04-02T11:30:00Z', type: 'regulatory_submission' as const, actor: 'VP Environment', action: 'Additional hydrological data submitted to FEAM', detail: 'Piezometer data package (Q1 2026) delivered.', relatedEntityId: 'REG-03' },
   { event_id: 'AUD-009', timestamp: '2026-04-03T10:45:00Z', type: 'alert_resolved' as const, actor: 'M. Costa (Env. Manager)', action: 'Sulfate containment resolved', detail: 'Discharge flow reduced 30%. Sulfate dropped to 218 ppm.' },
   { event_id: 'AUD-008', timestamp: '2026-04-03T09:10:00Z', type: 'alert_triggered' as const, actor: 'Sensor Array', action: 'Sulfate containment critical alert', detail: 'Discharge sulfate reached 247 ppm.' },
-  { event_id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff' as const, actor: 'Vero', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. HTTP 200.', relatedEntityId: 'ucore' },
-  { event_id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued' as const, actor: 'Vero', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2.', relatedEntityId: 'BATCH-MREC-7W2' },
+  { event_id: 'AUD-007', timestamp: '2026-04-04T10:05:00Z', type: 'api_handoff' as const, actor: 'VeroChain', action: 'DBP payload pushed to Ucore SAP', detail: 'Automated ABI pre-filing to US CBP. HTTP 200.', relatedEntityId: 'ucore' },
+  { event_id: 'AUD-006', timestamp: '2026-04-04T10:00:00Z', type: 'passport_issued' as const, actor: 'VeroChain', action: 'Digital Battery Passport DBP-2026-0042 issued', detail: 'EU-compliant DBP JSON payload generated for batch BATCH-MREC-7W2.', relatedEntityId: 'BATCH-MREC-7W2' },
   { event_id: 'AUD-005', timestamp: '2026-04-05T14:58:00Z', type: 'alert_resolved' as const, actor: 'J. Santos (Process Eng.)', action: 'pH exceedance alert resolved', detail: 'Ammonium sulfate feed rate increased 12%. pH returned to 4.4.', relatedEntityId: 'alert-ph-high' },
   { event_id: 'AUD-004', timestamp: '2026-04-05T14:12:00Z', type: 'alert_triggered' as const, actor: 'Sensor Array', action: 'pH exceedance alert triggered', detail: 'Leach circuit pH rose to 5.12.', relatedEntityId: 'alert-ph-high' },
   { event_id: 'AUD-003', timestamp: '2026-04-05T16:30:00Z', type: 'batch_created' as const, actor: 'J. Santos (Process Eng.)', action: 'Batch BATCH-MREC-8X9 initiated', detail: 'MREC precipitation run started. Feed material from Capão do Mel pit.', relatedEntityId: 'BATCH-MREC-8X9' },
   { event_id: 'AUD-002', timestamp: '2026-04-06T08:02:14Z', type: 'compliance_check' as const, actor: 'System', action: 'FEOC compliance sweep completed', detail: 'Full supply chain re-verified. 0 flagged entities. 47 suppliers checked.' },
-  { event_id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event' as const, actor: 'System', action: 'Vero instance started', detail: 'Production environment boot — all sensor feeds connected.' },
+  { event_id: 'AUD-001', timestamp: '2026-04-06T08:00:00Z', type: 'system_event' as const, actor: 'System', action: 'VeroChain instance started', detail: 'Production environment boot — all sensor feeds connected.' },
 ]

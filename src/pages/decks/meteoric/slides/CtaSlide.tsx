@@ -29,17 +29,17 @@ export default function CtaSlide() {
         ))}
       </div>
       <div style={{ maxWidth: 760, display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36, textAlign: 'left' }}>
-        <Bullet>The Caldeira is a flagship asset. It requires a flagship trust layer to maximize valuation.</Bullet>
-        <Bullet>We have the platform: 3 views, Mini Engine, and domain-grounded AI already built.</Bullet>
-        <Bullet>We have the team: iFood-scale tech & commercial execution, 40 years of local Caldeira context, decades of LAPOC science, and ESG due diligence expertise.</Bullet>
-        <Bullet accent={W.green}>Let's make it official. $102k locks in the Growth Tier and live telemetry in 90 days.</Bullet>
+        <Bullet>The Caldeira is a globally strategic asset. A flagship trust layer protects its valuation at every stage — PFS, DFS, and construction.</Bullet>
+        <Bullet>The platform is production-ready: live geological data, environmental compliance telemetry, and a domain-grounded AI trained on the Caldeira's own datasets.</Bullet>
+        <Bullet>The team brings iFood-scale engineering, 40 years of Caldeira context, and active LAPOC/ANSN field science.</Bullet>
+        <Bullet accent={W.green}>Let's make it official. $102k/yr at 0.013% of NPV — less than one week of DFS consultant fees.</Bullet>
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
         <a href="/" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
           Open Platform
         </a>
       </div>
-      <p style={{ fontSize: 12, color: W.text4, marginTop: 16 }}>carlos@vero.supply</p>
+      <p style={{ fontSize: 12, color: W.text4, marginTop: 16 }}>carlos@verochain.co</p>
     </>
   )
 }

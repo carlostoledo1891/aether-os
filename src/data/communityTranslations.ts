@@ -29,7 +29,7 @@ export const COMMUNITY_STRINGS: Record<CommunityLang, CommunityStrings> = {
     disclaimer_rest:
       '— not field-verified findings. Locations use public FBDS/CAR reference geometry. ' +
       'For actual water quality data, contact the relevant monitoring authority. ' +
-      'This view demonstrates how Vero would support transparent environmental reporting, not substitute for it.',
+      'This view demonstrates how VeroChain would support transparent environmental reporting, not substitute for it.',
     grievance_title: 'How to Report a Concern',
     grievance_intro: 'If you have a concern about water quality, environmental impact, or community impact:',
     grievance_steps: [
@@ -56,7 +56,7 @@ export const COMMUNITY_STRINGS: Record<CommunityLang, CommunityStrings> = {
     disclaimer_rest:
       '— não são resultados verificados em campo. As localizações utilizam geometria de referência pública FBDS/CAR. ' +
       'Para dados reais de qualidade da água, entre em contato com a autoridade de monitoramento competente. ' +
-      'Esta visualização demonstra como o Vero apoiaria relatórios ambientais transparentes, não substitui os órgãos competentes.',
+      'Esta visualização demonstra como o VeroChain apoiaria relatórios ambientais transparentes, não substitui os órgãos competentes.',
     grievance_title: 'Como Relatar uma Preocupação',
     grievance_intro: 'Se você tem uma preocupação sobre qualidade da água, impacto ambiental ou impacto na comunidade:',
     grievance_steps: [

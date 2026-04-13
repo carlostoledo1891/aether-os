@@ -69,7 +69,7 @@ export const HYDRO_NODE_SPECS: Record<string, { hardware: string; spec: string; 
   'PIZ-C02': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
   'PIZ-S03': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
   'PIZ-E04': { hardware: 'Telemetry piezometer', spec: 'Vibrating-wire pressure transducer · 0–35m range', compliance: 'FEAM groundwater monitoring requirement' },
-  'UDC':     { hardware: 'Scintillation detector', spec: 'Continuous gamma radiation survey · INB/CNEN mandated', compliance: 'INB/CNEN radiation monitoring' },
+  'UDC':     { hardware: 'Scintillation detector', spec: 'Continuous gamma radiation survey · INB/ANSN mandated', compliance: 'INB/ANSN radiation monitoring' },
   'MINE-A':  { hardware: 'Ion-selective electrode array', spec: 'Wastewater discharge monitoring · nitrate + sulfate', compliance: 'FEAM discharge permit conditions' },
   'PLANT':   { hardware: 'Process water quality station', spec: 'pH + conductivity + turbidity · inline continuous', compliance: 'Pilot plant operating permit' },
 }

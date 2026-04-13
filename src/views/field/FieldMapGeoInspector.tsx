@@ -119,7 +119,7 @@ export const FieldMapGeoInspector = memo(function FieldMapGeoInspector({
             <div style={{ marginTop: 10, display: 'flex', gap: 10 }}>
               <div style={{ width: 32, height: 180, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5, flexShrink: 0 }}>
                 {selection.detail.lithology_intervals.map((interval: { from_m: number; to_m: number; lithology: string }, idx: number) => {
-                  const total = selection.detail.depth_m || selection.detail.lithology_intervals![selection.detail.lithology_intervals!.length - 1].to_m
+                  const total = selection.detail.depth_m || selection.detail.lithology_intervals?.[selection.detail.lithology_intervals.length - 1]?.to_m || 0
                   const pct = ((interval.to_m - interval.from_m) / total) * 100
                   return (
                     <div

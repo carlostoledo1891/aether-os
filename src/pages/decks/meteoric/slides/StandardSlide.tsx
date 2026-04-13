@@ -11,7 +11,7 @@ const STANDARDS = [
 export default function StandardSlide() {
   return (
     <>
-      <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 32 }}>Vero Becomes Market Standard</h2>
+      <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 32 }}>VeroChain Becomes Market Standard</h2>
       <div style={{ maxWidth: 860, width: '100%' }}>
         {STANDARDS.map(s => (
           <div key={s.driver} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 0', borderBottom: `1px solid ${W.glass06}`, textAlign: 'left' }}>
@@ -26,7 +26,7 @@ export default function StandardSlide() {
       <div style={{ maxWidth: 720, marginTop: 28 }}>
         <Bullet>Meteoric shapes the DPP schema with us — not after the standard is set</Bullet>
         <div style={{ height: 8 }} />
-        <Bullet>Every new REE project that signs Vero sees Meteoric as the reference deployment</Bullet>
+        <Bullet>Every new REE project that signs VeroChain sees Meteoric as the reference deployment</Bullet>
       </div>
     </>
   )

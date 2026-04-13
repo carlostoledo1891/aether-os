@@ -159,11 +159,11 @@ function StyleController({
 
       if (isDark) {
         if (has('background')) {
-          try { map.setPaintProperty('background', 'background-color', W.canvas) } catch { /* noop */ }
+          try { map.setPaintProperty('background', 'background-color', W.canvas) } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
         }
         for (const id of WATER_LAYER_IDS) {
           if (has(id)) {
-            try { map.setPaintProperty(id, 'fill-color', W.mapWaterFill) } catch { /* noop */ }
+            try { map.setPaintProperty(id, 'fill-color', W.mapWaterFill) } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
           }
         }
       }
@@ -171,7 +171,7 @@ function StyleController({
         if (!has(layerId)) return
         const k = `${layerId}::${prop}`
         if (!originals.current.has(k)) {
-          try { originals.current.set(k, map.getPaintProperty(layerId, prop)) } catch { /* noop */ }
+          try { originals.current.set(k, map.getPaintProperty(layerId, prop)) } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
         }
       }
       const captureZoom = (layerId: string) => {
@@ -184,11 +184,11 @@ function StyleController({
       }
       const set = (layerId: string, prop: string, val: unknown) => {
         if (!has(layerId)) return
-        try { map.setPaintProperty(layerId, prop, val) } catch { /* noop */ }
+        try { map.setPaintProperty(layerId, prop, val) } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
       }
       const setZoom = (layerId: string, min: number, max: number) => {
         if (!has(layerId)) return
-        try { map.setLayerZoomRange(layerId, min, max) } catch { /* noop */ }
+        try { map.setLayerZoomRange(layerId, min, max) } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
       }
 
       if (highlightWater) {
@@ -214,7 +214,7 @@ function StyleController({
               const sep = k.indexOf('::'); const id = k.slice(0, sep); if (!has(id)) continue
               const prop = k.slice(sep + 2); map.setPaintProperty(id, prop, val)
             }
-          } catch { /* noop */ }
+          } catch (err) { if (import.meta.env.DEV) console.debug('[map]', err) }
         }
       }
     }

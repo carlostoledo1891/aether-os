@@ -41,9 +41,9 @@ Source: `mockDataService.ts` — `MARKET_SIZING` with analyst citations.
 
 | Layer | Current | Forecast | CAGR | Source |
 |-------|---------|----------|------|--------|
-| **TAM** | $18.8B (2026) | $31.9B (2031) | 11.2% | Mordor Intelligence "Smart Mining Market"; Grand View Research "Digital Mining Market" |
+| **TAM** | $4.8B (2025) | $9.6B (2033) | 8.9% | Grand View Research "ESG Compliance in Mining Market" (Nov 2025) |
 | **SAM** | $1.6B (2025) | $5.2B (2033) | 14.2% | Dataintelo "Critical Mineral Traceability Market" ($3.8B total, software 42.5%); Growth Market Reports "Conflict Minerals Compliance Software" |
-| **SOM** | $15M (2026) | $45M (2030) | — | Bottom-up: 15 REE projects × Growth tier $102k/yr |
+| **SOM** | $150M (2026) | $450M (2030) | — | Bottom-up: 150 Critical Mineral projects × Growth tier $102k/yr |
 
 ---
 

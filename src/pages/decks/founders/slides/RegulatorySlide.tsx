@@ -23,7 +23,7 @@ export default function RegulatorySlide() {
     <div style={{ marginTop: 24, maxWidth: 720 }}>
       <Bullet accent={W.amber}>Pix created the fintech explosion because <strong style={{ color: W.text1 }}>regulation created the market</strong>. EU DPP does the same for mineral compliance.</Bullet>
       <div style={{ height: 8 }} />
-      <Bullet>Vero is 59% DPP-ready. No competitor has 20%. Enforcement is in 10 months.</Bullet>
+      <Bullet>VeroChain is 59% DPP-ready. No competitor has 20%. Enforcement is in 10 months.</Bullet>
     </div>
   </>)
 }

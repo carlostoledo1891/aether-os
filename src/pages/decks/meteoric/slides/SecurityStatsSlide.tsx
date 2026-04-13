@@ -16,7 +16,7 @@ export default function SecurityStatsSlide() {
         {SECURITY_STATS.map(s => <StatCard key={s.label} {...s} />)}
       </div>
       <p style={{ fontSize: 12, color: W.text4, marginTop: 20, maxWidth: 600, lineHeight: 1.5 }}>
-        Built from a mix of public datasets, government data, Meteoric ASX announcements, live APIs (weather, seismic, PTAX), and independent research.
+        Enterprise security from day one: NIST 800-53 mapped, SHA-256 audit chain, CI-enforced quality gates, and zero TypeScript errors across the full codebase.
       </p>
     </>
   )

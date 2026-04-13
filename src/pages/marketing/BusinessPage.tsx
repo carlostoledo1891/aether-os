@@ -5,9 +5,7 @@ import { MarketingNav } from '../../components/layout/MarketingNav'
 import { MarketingObservability } from '../../components/layout/MarketingObservability'
 import { ScrollSection as S, Stagger, SectionHeader } from '../../components/layout/MarketingPrimitives'
 import { useUnlockScroll, marketingStyles } from '../../components/layout/MarketingShared'
-
-const ease = [0.16, 1, 0.3, 1] as const
-const V = W.violet
+import { ease, V } from './sharedConstants'
 
 const { wrap, label, heading, body, glass } = marketingStyles
 const glow: React.CSSProperties = { position: 'absolute', inset: 0, pointerEvents: 'none', background: `radial-gradient(ellipse at 50% 40%, ${V}05 0%, transparent 55%)` }
@@ -15,9 +13,9 @@ const glow: React.CSSProperties = { position: 'absolute', inset: 0, pointerEvent
 /* ── Market Data ────────────────────────────────────────────────── */
 
 const MARKET_TIERS = [
-  { tier: 'TAM', value: '$18.8 B → $31.9 B', desc: 'Digital Mining & Smart Mining Technology', cagr: '11.2%', src: 'Mordor Intelligence + Grand View Research', pct: 100 },
+  { tier: 'TAM', value: '$4.8 B → $9.6 B', desc: 'ESG Compliance in Mining', cagr: '8.9%', src: 'Grand View Research (Nov 2025)', pct: 100 },
   { tier: 'SAM', value: '$1.6 B → $5.2 B', desc: 'Critical Minerals Compliance SaaS', cagr: '14.2%', src: 'Dataintelo + Growth Market Reports', pct: 52 },
-  { tier: 'SOM', value: '$15 M → $45 M', desc: '15 REE projects × $102k avg ACV', cagr: '—', src: 'Internal analysis — ASX/TSX database', pct: 15 },
+  { tier: 'SOM', value: '$150 M → $450 M', desc: '150 Critical Mineral projects × $102k avg ACV', cagr: '—', src: 'Internal analysis — ASX/TSX database', pct: 15 },
 ]
 
 const REGULATIONS = [
@@ -66,16 +64,16 @@ export default function BusinessPage() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }}>
           <p style={{ ...label, marginBottom: 20 }}>Market & Strategy</p>
           <h1 style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 800, lineHeight: 1.08, marginBottom: 20, maxWidth: 800 }}>
-            The Market Case for Vero
+            The Market Case for VeroChain
           </h1>
           <p style={{ ...body, margin: '0 auto 32px', textAlign: 'center', maxWidth: 620 }}>
-            Regulations are creating a compliance SaaS market that doesn't exist yet. Vero is the first platform built inside a critical minerals project, not about one. The timing is now.
+            Regulations are creating a compliance SaaS market that doesn't exist yet. VeroChain is the first platform built inside a critical minerals project, not about one. The timing is now.
           </p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4, ease }}
           style={{ display: 'flex', gap: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { value: '$31.9B', label: 'TAM by 2030' },
+            { value: '$9.6B', label: 'TAM by 2033' },
             { value: '14.2%', label: 'SAM CAGR' },
             { value: '9.4/10', label: 'Persona Score' },
             { value: 'Feb 2027', label: 'EU DPP Deadline' },
@@ -217,7 +215,7 @@ export default function BusinessPage() {
           <SectionHeader
             label="Competitive Landscape"
             heading="No One Covers All Three Truths"
-            body="Competitors cover one dimension — carbon, traceability, or schema. Vero covers field operations, compliance, and executive oversight in a single platform built inside the project it serves."
+            body="Competitors cover one dimension — carbon, traceability, or schema. VeroChain covers field operations, compliance, and executive oversight in a single platform built inside the project it serves."
           />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 32 }}>
@@ -233,7 +231,7 @@ export default function BusinessPage() {
             ))}
           </div>
 
-          <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: W.text1 }}>Vero's Moat</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: W.text1 }}>VeroChain's Moat</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
             {[
               { title: 'Founder Inside the Caldeira', desc: '40 years of local context. Born and raised in Poços de Caldas. No outside team can replicate this.' },
@@ -358,7 +356,7 @@ export default function BusinessPage() {
           <SectionHeader
             label="Why Now"
             heading="First Mover in a Market Being Created by Law"
-            body="The compliance SaaS market for critical minerals doesn't exist yet — because the regulations enforcing it are still being written. Vero is already built, already deployed, and already scoring 9.4/10 across stakeholders. By the time competitors notice, we'll have the flagship case study and the schema standard."
+            body="The compliance SaaS market for critical minerals doesn't exist yet — because the regulations enforcing it are still being written. VeroChain is already built, already deployed, and already scoring 9.4/10 across stakeholders. By the time competitors notice, we'll have the flagship case study and the schema standard."
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
@@ -440,7 +438,7 @@ export default function BusinessPage() {
       {/* ── Footer ─────────────────────────────────────────────── */}
       <footer style={{ padding: '32px 24px', textAlign: 'center', borderTop: `1px solid ${W.glass06}` }}>
         <p style={{ color: W.text4, fontSize: 11, margin: 0, lineHeight: 1.5, maxWidth: 600, marginInline: 'auto' }}>
-          © 2026 Vero Platform. Market data sourced from Mordor Intelligence, Grand View Research,
+          © 2026 VeroChain. Market data sourced from Grand View Research,
           Dataintelo, Growth Market Reports, and internal ASX/TSX analysis. All figures are estimates.
         </p>
       </footer>

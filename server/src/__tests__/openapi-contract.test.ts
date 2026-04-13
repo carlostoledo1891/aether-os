@@ -18,7 +18,7 @@ describe('OpenAPI contract', () => {
     expect(res.statusCode).toBe(200)
     const spec = JSON.parse(res.payload)
     expect(spec.openapi).toBe('3.1.0')
-    expect(spec.info.title).toBe('Vero API')
+    expect(spec.info.title).toBe('VeroChain API')
   })
 
   it('declares expected tags', async () => {

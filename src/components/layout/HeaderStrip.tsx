@@ -5,6 +5,7 @@ import { ViewSwitcher } from './ViewSwitcher'
 import { W } from '../../app/canvas/canvasTheme'
 import { Z } from '../map/mapStacking'
 import { useDataService } from '../../services/DataServiceProvider'
+import { VeroChainLogo } from '../brand/VeroChainLogo'
 
 interface HeaderStripProps {
   esg: EsgScore
@@ -42,20 +43,7 @@ export function HeaderStrip({
     }}>
       {/* Logo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-        <div style={{
-          width: 28, height: 28,
-          background: W.violet,
-          borderRadius: W.radius.sm,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 12, fontWeight: 800, color: W.textInverse, letterSpacing: '-0.03em',
-        }}>
-          V
-        </div>
-        <div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: W.text1, letterSpacing: '0.04em' }}>
-            Vero
-          </div>
-        </div>
+        <VeroChainLogo size={22} textColor={W.text1} />
         {dataContext.disclosureMode && (
           <span style={{
             fontSize: 9,

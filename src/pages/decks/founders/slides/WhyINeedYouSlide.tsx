@@ -18,10 +18,8 @@ const CANNOT_ITEMS = [
 ]
 
 const LANES = [
-  { who: 'Carlos', lane: 'Product + Science + Field', detail: 'Builds the platform, runs the pilot, integrates LAPOC' },
   { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
   { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
-  { who: 'Milca + Ale', lane: 'ESG + Social License', detail: 'Due diligence, HRDD, community rights, EU compliance' },
 ]
 
 export default function WhyINeedYouSlide() {
@@ -49,7 +47,7 @@ export default function WhyINeedYouSlide() {
         ))}
       </div>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, maxWidth: 900, width: '100%', marginBottom: 20 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 500, width: '100%', marginBottom: 24 }}>
       {LANES.map(p => (
         <div key={p.who} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: V }}>{p.who}</div>
@@ -58,8 +56,8 @@ export default function WhyINeedYouSlide() {
         </div>
       ))}
     </div>
-    <p style={{ fontSize: 13, color: W.text3, maxWidth: 700, lineHeight: 1.6 }}>
-      I am currently balancing Vero with roles at two US-based frontier AI companies. The regulatory storm for critical minerals is forming right now. Seed capital allows me to go 100% full-time on Vero while you provide the strategic leverage to win.
+    <p style={{ fontSize: 13, color: W.text3, maxWidth: 860, lineHeight: 1.6, marginTop: 4 }}>
+      I am currently balancing VeroChain with roles at two US-based frontier AI companies. The regulatory storm for critical minerals is forming right now. Seed capital allows me to go 100% full-time on VeroChain, focus on Governmental Labs and Institutions relationships, integrate LAPOC/ANSN sensors, and lead sensor installations for pilot programs.
     </p>
   </>)
 }

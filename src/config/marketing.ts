@@ -94,9 +94,9 @@ export const TEAM: TeamMember[] = [
     name: 'Dr. Heber Caponi',
     role: 'Scientific Advisor · LAPOC',
     desc: 'Field researcher with decades of active geological and hydrological work. The bridge from simulated to field-verified data.',
-    bg: 'Decades of active Caldeira field research through LAPOC (CNEN). The bridge from simulated to field-verified data. Piezometers, water quality, geological sampling.',
+    bg: 'Decades of active Caldeira field research through LAPOC (ANSN). The bridge from simulated to field-verified data. Piezometers, water quality, geological sampling.',
     accent: V,
-    onboarding: true,
+    onboarding: false,
   },
   {
     name: 'Milca Neves Tavares',
@@ -104,7 +104,7 @@ export const TEAM: TeamMember[] = [
     desc: 'Co-founder of Mil Caminhos. MSc Sustainability (FGV). 15 years integrating human rights and ESG policy across companies, governments, and communities.',
     bg: 'Co-founder of Mil Caminhos. MSc Sustainability Management (EAESP-FGV). Schumacher College (UK). 15 years building policies and programs that integrate companies, governments, and communities for human rights and sustainable development.',
     accent: V,
-    onboarding: true,
+    onboarding: false,
   },
   {
     name: 'Alexandre Quevedo',
@@ -112,7 +112,7 @@ export const TEAM: TeamMember[] = [
     desc: 'Co-founder of Mil Caminhos. MSc Administration (FGV). 15+ years in ESG governance, socio-environmental due diligence, and community-based development.',
     bg: 'Co-founder of Mil Caminhos. MSc Administration (EAESP-FGV). Schumacher College (UK). 15+ years corporate strategy and field work across 40+ Brazilian territories. Former Natura, Petlove. Socio-environmental due diligence, social innovation, ESG governance.',
     accent: V,
-    onboarding: true,
+    onboarding: false,
   },
   {
     name: 'Carlos Toledo',
@@ -138,9 +138,9 @@ export const AI_TOOLS = [
 ]
 
 export const MARKET_DATA = [
-  { tier: 'TAM', value: '$18.8 B → $31.9 B', desc: 'Digital Mining & Smart Mining Technology', cagr: '11.2%', src: 'Mordor Intelligence + Grand View Research', pct: 100 },
+  { tier: 'TAM', value: '$4.8 B → $9.6 B', desc: 'ESG Compliance in Mining', cagr: '8.9%', src: 'Grand View Research (Nov 2025)', pct: 100 },
   { tier: 'SAM', value: '$1.6 B → $5.2 B', desc: 'Critical Minerals Compliance SaaS', cagr: '14.2%', src: 'Dataintelo + Growth Market Reports', pct: 52 },
-  { tier: 'SOM', value: '$15 M → $45 M', desc: '15 REE projects × $102k avg ACV', cagr: '—', src: 'Internal analysis — ASX/TSX database', pct: 15 },
+  { tier: 'SOM', value: '$150 M → $450 M', desc: '150 Critical Mineral projects × $102k avg ACV', cagr: '—', src: 'Internal analysis — ASX/TSX database', pct: 15 },
 ]
 
 export const REPORT_CARDS = [

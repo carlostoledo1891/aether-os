@@ -1,5 +1,5 @@
 /**
- * Site configuration types for the Vero platform.
+ * Site configuration types for the VeroChain platform.
  *
  * Every mine-site deployment has a single SiteConfig that feeds:
  *   - Frontend (tenant identity, map defaults, domain data)

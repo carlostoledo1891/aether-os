@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../../app/canvas/canvasTheme'
 import { ScrollSection as S, Stagger, SectionHeader } from './MarketingPrimitives'
@@ -67,7 +68,7 @@ function OrganogramEdge({ x1, y1, x2, y2, delay }: { x1: number, y1: number, x2:
         initial={{ offsetDistance: '0%' }}
         animate={{ offsetDistance: '100%' }}
         transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay }}
-        style={{ filter: `drop-shadow(0 0 6px ${V})`, offsetPath: `path('${path}')` } as any}
+        style={{ filter: `drop-shadow(0 0 6px ${V})`, offsetPath: `path('${path}')` } as CSSProperties & Record<string, string>}
       />
     </>
   )
@@ -147,7 +148,7 @@ export function MarketingObservability() {
                 initial={{ offsetDistance: '0%' }}
                 animate={{ offsetDistance: '100%' }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'linear', delay: 2.6 }}
-                style={{ filter: `drop-shadow(0 0 6px ${W.green})`, offsetPath: `path('M 120 400 C 40 400, 40 100, 120 100')` } as any}
+                style={{ filter: `drop-shadow(0 0 6px ${W.green})`, offsetPath: `path('M 120 400 C 40 400, 40 100, 120 100')` } as CSSProperties & Record<string, string>}
               />
             </svg>
           </div>

@@ -41,7 +41,7 @@ export const TraceRouteOverlay = memo(function TraceRouteOverlay({ timeline, map
   const lineGeoJson = useMemo(() => {
     const coords = timeline
       .filter(step => step.coordinates != null)
-      .map(step => [step.coordinates!.lng, step.coordinates!.lat] as [number, number])
+      .map(step => [step.coordinates?.lng ?? 0, step.coordinates?.lat ?? 0] as [number, number])
 
     if (coords.length < 2) return null
 

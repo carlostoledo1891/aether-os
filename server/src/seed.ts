@@ -26,7 +26,7 @@ export function seedIfNeeded() {
   // Regulatory export bundle (depends on other domain state being seeded first)
   setDomainState('regulatory_export_bundle', {
     exportedAt: new Date().toISOString(),
-    bannerNote: 'Live pipeline — Vero Simulation Engine',
+    bannerNote: 'Live pipeline — VeroChain Simulation Engine',
     regulatoryLog: getDomainState('regulatory_log'),
     auditEvents: (getDomainState<Array<{ id: string; type: string }>>('audit_trail') ?? [])
       .filter(e => e.type === 'regulatory_submission' || e.id === 'AUD-008' || e.id === 'AUD-009' || e.id === 'AUD-010'),

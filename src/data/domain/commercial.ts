@@ -65,10 +65,10 @@ export const PRICING_MODEL: PricingModel = {
 
 export const MARKET_SIZING: MarketSizing = {
   tam: {
-    label: 'Global Digital Mining & Smart Mining Technology',
-    value_usd_b: 18.8, year: 2026, forecast_usd_b: 31.9, forecast_year: 2031, cagr_pct: 11.2,
-    source: 'Mordor Intelligence "Smart Mining Market" (2026 $18.77B → 2031 $31.86B, CAGR 11.16%); Grand View Research "Digital Mining Market" (2024 $9.39B → 2030 $18.11B, CAGR 9.8%)',
-    report_date: '2025', methodology: 'Composite of smart mining and digital mining forecasts covering automation, analytics, digital twins, cybersecurity, and AI.',
+    label: 'ESG Compliance in Mining',
+    value_usd_b: 4.8, year: 2025, forecast_usd_b: 9.6, forecast_year: 2033, cagr_pct: 8.9,
+    source: 'Grand View Research "ESG Compliance in Mining Market" (2024 $4.53B, 2025 $4.84B → 2033 $9.55B, CAGR 8.9%)',
+    report_date: '2025-11', methodology: 'Total value of environmental compliance, social compliance, governance and reporting products/services purchased by mining companies globally.',
   },
   sam: {
     label: 'Critical Minerals Compliance & Traceability SaaS',
@@ -77,10 +77,10 @@ export const MARKET_SIZING: MarketSizing = {
     report_date: '2025', methodology: 'Software component of critical mineral traceability market, cross-referenced with conflict minerals compliance software.',
   },
   som: {
-    label: 'REE Projects in Allied Jurisdictions with Active Compliance Requirements',
-    value_usd_m: 15, year: 2026, forecast_usd_m: 45, forecast_year: 2030,
-    source: 'Bottom-up: 15 identified REE projects (Brazil, Australia, USA, Canada) × Vero Growth tier pricing ($102k/yr)',
-    report_date: '2026-Q2', methodology: 'Bottom-up from public project databases (ASX, TSX, SEC filings). Targets operators with active FEOC/IRA/EU DBP compliance.',
+    label: 'Critical Mineral Projects in Allied Jurisdictions with Active Compliance Requirements',
+    value_usd_m: 150, year: 2026, forecast_usd_m: 450, forecast_year: 2030,
+    source: 'Bottom-up: 150 identified Critical Mineral projects (Brazil, Australia, USA, Canada, Greenland) × VeroChain Growth tier pricing ($102k/yr)',
+    report_date: '2026-Q2', methodology: 'Bottom-up from public project databases (ASX, TSX, SEC filings). Targets operators with active FEOC/IRA/EU DPP compliance.',
   },
 }
 
@@ -120,6 +120,6 @@ export const REGULATORY_LOG: RegulatoryEntry[] = [
   { id: 'REG-02', body: 'SUPRAM', type: 'LI Application', date: '2026-02-14', status: 'submitted', detail: 'Installation License application lodged. FEAM technical review initiated.', evidenceDocId: 'PORTAL-SUPRAM-LI-2026-0214', nextMilestone: 'FEAM technical opinion (target 45 days)' },
   { id: 'REG-03', body: 'FEAM', type: 'Technical Review', date: '2026-03-20', status: 'in_review', detail: 'Environmental conditions review. Additional hydrological data requested — submitted Apr 1.', evidenceDocId: 'DOC-FEAM-HYDRO-2026-Q1', nextMilestone: 'Close data request loop — see AUD-010' },
   { id: 'REG-04', body: 'MPF', type: 'Cumulative EIA Request', date: '2026-01-15', status: 'in_review', detail: 'Federal prosecutor requested cumulative environmental impact assessment for plateau-wide operations.', evidenceDocId: 'MPF-OFF-2026-0115-CUM-EIA', nextMilestone: 'Issuer response package + hydro annex (illustrative UI until filed)' },
-  { id: 'REG-05', body: 'INB/CNEN', type: 'Radiation Clearance', date: '2026-03-01', status: 'approved', detail: 'UDC legacy site monitoring protocol accepted. Operational clearance for 3 km buffer.', evidenceDocId: 'CNEN-PROT-UDC-2026-03' },
+  { id: 'REG-05', body: 'INB/ANSN', type: 'Radiation Clearance', date: '2026-03-01', status: 'approved', detail: 'UDC legacy site monitoring protocol accepted. Operational clearance for 3 km buffer.', evidenceDocId: 'ANSN-PROT-UDC-2026-03' },
   { id: 'REG-06', body: 'IBAMA', type: 'APA Consultation', date: '2026-04-02', status: 'pending', detail: 'APA Pedra Branca buffer zone consultation scheduled. Pre-submission completed.', evidenceDocId: 'IBAMA-APA-PB-PRESUB-2026-04', nextMilestone: 'Formal consultation session' },
 ]

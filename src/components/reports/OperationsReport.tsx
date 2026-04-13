@@ -34,7 +34,8 @@ const PROCESS_STEPS = [
   { step: 7, name: 'MREC Product', detail: '>90% TREO grade — ready for separation', color: WL.green },
 ]
 
-import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle } from './reportPrimitivesHelpers'
+import { ReportSectionTitle } from './ReportPrimitives'
 
 const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
@@ -304,7 +305,7 @@ function OperationsReport({ range: _range }: Props) {
       }}>
         Financial figures sourced from Meteoric Resources Scoping Study (ASX announcement, 2024).
         All production and cost estimates are forward-looking and subject to Definitive Feasibility Study outcomes.
-        Vero renders these as interactive reference data — not investment advice.
+        VeroChain renders these as interactive reference data — not investment advice.
       </div>
     </div>
   )

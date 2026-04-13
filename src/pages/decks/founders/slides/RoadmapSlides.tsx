@@ -40,7 +40,7 @@ const MILESTONES = [
   { date: 'May', label: 'LAPOC connected — field-verified', status: 'pending' as const },
   { date: 'Jun', label: 'Meteoric pilot — $102k/yr', status: 'pending' as const },
   { date: 'Jul-Sep', label: 'Seed $1-2M · 3 pilots', status: 'pending' as const },
-  { date: 'Feb 27', label: 'EU DPP — market 3x', status: 'pending' as const },
+  { date: 'Feb 2027', label: 'EU DPP — market 3x', status: 'pending' as const },
 ]
 
 export function TimelineSlide() {

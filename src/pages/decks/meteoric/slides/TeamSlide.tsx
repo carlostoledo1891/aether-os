@@ -7,7 +7,7 @@ export default function TeamSlide() {
   return (
     <>
       <div style={{ marginBottom: 16 }}><Tag>Team</Tag></div>
-      <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>The Team Behind Vero</h2>
+      <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>The Team Behind VeroChain</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, maxWidth: 960, width: '100%' }}>
         {TEAM.map((m, i) => (
           <motion.div key={m.name}

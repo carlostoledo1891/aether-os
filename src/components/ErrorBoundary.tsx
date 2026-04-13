@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[Vero ErrorBoundary]', error, info.componentStack)
+    console.error('[VeroChain ErrorBoundary]', error, info.componentStack)
   }
 
   handleReload = () => {

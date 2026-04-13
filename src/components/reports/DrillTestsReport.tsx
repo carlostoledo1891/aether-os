@@ -43,7 +43,8 @@ const RECOVERY_TABLE = [
 
 const maxTreo = Math.max(...DEPOSIT_DATA.filter(d => d.treo_ppm > 0).map(d => d.treo_ppm))
 
-import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle } from './reportPrimitivesHelpers'
+import { ReportSectionTitle } from './ReportPrimitives'
 
 const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
@@ -406,7 +407,7 @@ function DrillTestsReport({ range: _range }: Props) {
       }}>
         Resource estimates follow JORC 2012 guidelines. Data sourced from Meteoric Resources ASX announcements
         and internal pilot plant results. Recovery percentages from pilot-scale continuous operation and ANSTO laboratory validation.
-        Lithology from drill core logging across 750+ holes. See Vero data provenance layer for per-metric classification.
+        Lithology from drill core logging across 750+ holes. See VeroChain data provenance layer for per-metric classification.
       </div>
     </div>
   )

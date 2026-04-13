@@ -3,9 +3,9 @@ import { W, V, ease } from '../shared'
 import { Tag } from '../../../../components/deck'
 
 const MARKET_TIERS = [
-  { tier: 'TAM', value: '$18.8 B → $31.9 B', desc: 'Digital Mining & Smart Mining Technology', cagr: '11.2%', src: 'Mordor Intelligence + Grand View Research', pct: 100 },
+  { tier: 'TAM', value: '$4.8 B → $9.6 B', desc: 'ESG Compliance in Mining', cagr: '8.9%', src: 'Grand View Research (Nov 2025)', pct: 100 },
   { tier: 'SAM', value: '$1.6 B → $5.2 B', desc: 'Critical Minerals Compliance SaaS', cagr: '14.2%', src: 'Dataintelo + Growth Market Reports', pct: 52 },
-  { tier: 'SOM', value: '$15 M → $45 M', desc: '15 REE projects × $102k avg ACV', cagr: 'Bottom-up', src: 'Internal analysis — ASX/TSX project database', pct: 15 },
+  { tier: 'SOM', value: '$150 M → $450 M', desc: '150 Critical Mineral projects × $102k avg ACV', cagr: 'Bottom-up', src: 'Internal analysis — ASX/TSX project database', pct: 15 },
 ]
 
 export default function MarketSlide() {

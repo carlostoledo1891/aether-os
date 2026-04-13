@@ -3,11 +3,12 @@ import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
 const slides: LazySlide[] = [
-  lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Dr. de Carvalho, Dr. Tunks & Mr. Gale" /> }))),
+  lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Dr. Marcelo de Carvalho" /> }))),
   lazy(() => import('./slides/CoverSlide')),
   lazy(() => import('../../../components/deck/slides/WhiteBoxSlide')),
   lazy(() => import('./slides/BuiltStatsSlide')),
   lazy(() => import('./slides/ThreeViewsSlide')),
+  lazy(() => import('./slides/GeoDataSlide')),
   lazy(() => import('./slides/GeologySlide')),
   lazy(() => import('./slides/HydroSlide')),
   lazy(() => import('./slides/TraceabilitySlide')),
@@ -27,7 +28,7 @@ const slides: LazySlide[] = [
 
 const MANIFEST: DeckManifest = {
   id: 'meteoric',
-  title: 'Vero for\nCaldeira Project',
+  title: 'VeroChain for\nCaldeira Project',
   subtitle: 'Your digital twin is already built.\nNow connect it to live data.',
   mode: 'slides',
   exitPath: '/',

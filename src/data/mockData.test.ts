@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import {
   SPRING_COUNT,
   buildInitialSprings,
-  DEPOSIT_DATA,
   THRESHOLDS,
-  BATCHES,
 } from './mockData'
+import { DEPOSIT_DATA } from './domain/deposits'
+import { BATCHES } from './domain/compliance'
 
 describe('mockData static domain', () => {
   it('buildInitialSprings returns SPRING_COUNT springs', () => {

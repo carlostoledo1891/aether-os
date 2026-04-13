@@ -30,7 +30,6 @@ function setConnectionStatus(s: ConnectionStatus) {
   _statusListeners.forEach(fn => fn(s))
 }
 
-export function getConnectionStatus(): ConnectionStatus { return _connectionStatus }
 export function onConnectionStatusChange(fn: (s: ConnectionStatus) => void): () => void {
   _statusListeners.add(fn)
   return () => { _statusListeners.delete(fn) }
@@ -111,7 +110,9 @@ function createWsTelemetryStream() {
         const tick = JSON.parse(event.data as string) as TelemetryTick
         lastTick = tick
         subscribers.forEach(cb => cb(tick))
-      } catch { /* malformed message */ }
+      } catch {
+        console.warn('[ws] malformed message:', event.data)
+      }
     }
 
     ws.onclose = () => {

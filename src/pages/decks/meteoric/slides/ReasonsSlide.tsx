@@ -5,11 +5,12 @@ import { W, V, ease, EU_DPP_DATE } from './shared'
 const DeckCountdown = lazy(() => import('../DeckCountdown'))
 
 const REASONS = [
-  'DFS mid-2026 — the dashboard should be live when the DFS drops.',
-  'Vero becomes market standard. Meteoric gets it 18 months early — and shapes the standard.',
-  'Competitive signaling. An interactive digital twin that Lynas and MP Materials don\'t have.',
-  'Due diligence speed. Every question has a dashboard answer. Raises close faster.',
-  'Community trust. The Prefeitura dashboard is built — Poços sees transparency in Portuguese.',
+  'The DFS lands mid-2026. The dashboard needs to be live before it does — not after.',
+  'VeroChain becomes the data standard every subsequent REE project adopts. Meteoric shapes the schema, not inherits it.',
+  'Every investor question has a dashboard answer. Due diligence rounds close faster when your data is auditable and interactive.',
+  'Competitive positioning. An interactive digital twin with geological and environmental provenance that Lynas and MP Materials do not have.',
+  'Scientific credibility. LAPOC/ANSN data integration means field-verified readings carry the authority of Brazil\'s nuclear safety research institute.',
+  'Community license. The Prefeitura dashboard is already built — Poços de Caldas sees environmental transparency in Portuguese, in real time.',
 ]
 
 export default function ReasonsSlide() {

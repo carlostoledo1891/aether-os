@@ -195,8 +195,8 @@ export default function App() {
       <MapProvider>
         <MapCameraProvider>
           <Routes>
-            <Route path="/" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
-            <Route path="/lp" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+            <Route path="/" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+            <Route path="/app/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
             <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
             <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
             <Route path="/trust" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TrustCenterPage /></Suspense></ErrorBoundary>} />
@@ -210,7 +210,7 @@ export default function App() {
             
             <Route path="/admin/knowledge" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><KnowledgePage /></Suspense></ErrorBoundary>} />
             
-            <Route path="/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
+            <Route path="/*" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
           </Routes>
         </MapCameraProvider>
       </MapProvider>

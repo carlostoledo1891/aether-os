@@ -17,13 +17,16 @@ function ChainIntegrityBadge({ isLive }: { isLive: boolean }) {
   const isUnavailable = !isLive
   useEffect(() => {
     if (isUnavailable) return
+    let cancelled = false
     fetch('/api/audit/verify-chain')
       .then(r => r.json())
       .then((data: { valid: boolean; length: number }) => {
+        if (cancelled) return
         setChainLength(data.length)
         setStatus(data.valid ? 'valid' : 'invalid')
       })
-      .catch(() => setStatus('unavailable'))
+      .catch(() => { if (!cancelled) setStatus('unavailable') })
+    return () => { cancelled = true }
   }, [isUnavailable])
 
   if (status === 'loading') return null

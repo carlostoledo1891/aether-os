@@ -1,28 +1,12 @@
-import { type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../../app/canvas/canvasTheme'
-import { Terminal as TerminalBase, Kw, Str, Num, Cmt, Fn } from '../../components/deck'
+import { Kw, Str, Num, Cmt, Fn } from '../../components/deck'
 import { PRODUCT_ROADMAP } from '../../data/domain/roadmap'
 import { MarketingNav } from '../../components/layout/MarketingNav'
 import { ScrollSection as S, Stagger, SectionHeader } from '../../components/layout/MarketingPrimitives'
 import { useUnlockScroll, marketingStyles } from '../../components/layout/MarketingShared'
-
-const ease = [0.16, 1, 0.3, 1] as const
-const V = W.violet
-
-function Terminal({ title, children }: { title: string; children: ReactNode }) {
-  return <TerminalBase title={title} large>{children}</TerminalBase>
-}
-
-function Stat({ value, label: lbl, sub }: { value: string; label: string; sub?: string }) {
-  return (
-    <div style={{ textAlign: 'center', padding: '18px 14px' }}>
-      <div style={{ fontSize: 28, fontWeight: 800, color: V, fontFamily: 'var(--font-mono)' }}>{value}</div>
-      <div style={{ fontSize: 13, fontWeight: 600, color: W.text1, marginTop: 4 }}>{lbl}</div>
-      {sub && <div style={{ fontSize: 11, color: W.text4, marginTop: 2 }}>{sub}</div>}
-    </div>
-  )
-}
+import { ease, V } from './sharedConstants'
+import { Terminal, Stat } from './shared'
 
 const { wrap, label, heading, body, glass, glow } = marketingStyles
 
@@ -79,7 +63,7 @@ export default function TechPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, marginBottom: 40 }}>
             {[
-              { title: 'aether-engine', sub: 'Simulation & Ingestion Bot', desc: 'Node.js process with a 2-second tick cycle. Ingests real field data (LAPOC, Open-Meteo, BCB PTAX, USGS), automatically yields synthetic generation when real sensors connect, and POSTs results to the API. Stateless by design.', badge: 'Node.js · 2s cycle' },
+              { title: 'aether-engine', sub: 'Simulation & Ingestion Bot', desc: 'Node.js process with a 2-second tick cycle. Ingests real field data (LAPOC, CPTEC, Open-Meteo, ECMWF, BCB PTAX, USGS), automatically yields synthetic generation when real sensors connect, and POSTs results to the API. Stateless by design.', badge: 'Node.js · 2s cycle' },
               { title: 'aether-api', sub: 'Fastify + SQLite', desc: 'REST and WebSocket server with 40+ endpoints. Ring-buffer SQLite with WAL mode for concurrent reads. Dynamic provenance engine tags data origins. All writes go through a single ingest gate with schema validation.', badge: 'REST · WS · 40+ endpoints' },
               { title: 'Vite Frontend', sub: 'React 19 · MapLibre', desc: 'Single-page app with memoized map overlays, Recharts data viz, and Motion animations. Lean shared layer store and a service layer that abstracts data sources — seamlessly upgrading simulated models to real sensor data.', badge: 'React 19 · MapLibre GL' },
             ].map((n, i) => (
@@ -293,7 +277,7 @@ export default function TechPage() {
             {[
               { title: 'REST API', sub: '40+ endpoints', desc: 'Full CRUD for equipment, telemetry, deposits, compliance, financial data. OpenAPI spec auto-generated. Rate-limited and authenticated.' },
               { title: 'WebSocket', sub: 'Real-time channels', desc: 'Live telemetry streaming via subscription channels. Equipment status, sensor readings, alert events — all push-based. Reconnect with exponential backoff.' },
-              { title: 'OPC-UA / MQTT', sub: 'Roadmap', desc: 'Connector framework for industrial protocols. Tag mapping from SCADA to Vero equipment-sensor catalog. CSV/Excel batch upload as interim bridge.' },
+              { title: 'OPC-UA / MQTT', sub: 'Roadmap', desc: 'Connector framework for industrial protocols. Tag mapping from SCADA to VeroChain equipment-sensor catalog. CSV/Excel batch upload as interim bridge.' },
             ].map((n, i) => (
               <Stagger key={n.title} i={i}>
                 <div style={glass}>
@@ -571,7 +555,7 @@ export default function TechPage() {
       {/* ── Footer ─────────────────────────────────────────────── */}
       <footer style={{ padding: '32px 24px', textAlign: 'center', borderTop: `1px solid ${W.glass06}` }}>
         <p style={{ color: W.text4, fontSize: 11, margin: 0, lineHeight: 1.5, maxWidth: 600, marginInline: 'auto' }}>
-          © 2026 Vero Platform. Built with TypeScript, React 19, Fastify, SQLite, MapLibre GL, and Vercel AI SDK.
+          © 2026 VeroChain. Built with TypeScript, React 19, Fastify, SQLite, MapLibre GL, and Vercel AI SDK.
           Demo environment uses public-reference data, disclosure-aligned scenarios, and simulated time series.
         </p>
       </footer>

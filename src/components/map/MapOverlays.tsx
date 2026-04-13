@@ -93,7 +93,7 @@ export function MapOverlays({
       {has('boundary') && <CaldeiraBoundary />}
       {has('licenses') && (
         override('licenses')
-          ? renderOverrides!.licenses
+          ? renderOverrides?.licenses
           : <LicenseOverlay
               highlightId={licenseProps?.highlightId}
               hoveredLicenseId={licenseProps?.hoveredLicenseId ?? null}
@@ -101,16 +101,16 @@ export function MapOverlays({
             />
       )}
       {has('pfs') && (
-        override('pfs') ? renderOverrides!.pfs : <PfsEngineeringOverlay />
+        override('pfs') ? renderOverrides?.pfs : <PfsEngineeringOverlay />
       )}
       {has('drillholes') && (
         override('drillholes')
-          ? renderOverrides!.drillholes
+          ? renderOverrides?.drillholes
           : <DrillHoleOverlay />
       )}
       {has('environmental') && (
         override('environmental')
-          ? renderOverrides!.environmental
+          ? renderOverrides?.environmental
           : <EnvironmentalOverlay
               showApa={environmentalProps?.showApa}
               showBuffer={environmentalProps?.showBuffer}
@@ -120,20 +120,20 @@ export function MapOverlays({
       )}
       {has('hydroSprings') && (
         override('hydroSprings')
-          ? renderOverrides!.hydroSprings
+          ? renderOverrides?.hydroSprings
           : <SpringPinsOverlay />
       )}
       {has('hydroNodes') && (
         override('hydroNodes')
-          ? renderOverrides!.hydroNodes
+          ? renderOverrides?.hydroNodes
           : null
       )}
       {has('infra') && (
-        override('infra') ? renderOverrides!.infra : <InfraOverlay />
+        override('infra') ? renderOverrides?.infra : <InfraOverlay />
       )}
       {has('plantSites') && (
         override('plantSites')
-          ? renderOverrides!.plantSites
+          ? renderOverrides?.plantSites
           : <OpsPlantSitesOverlay />
       )}
       {has('weather') && (

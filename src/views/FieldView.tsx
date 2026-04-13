@@ -34,6 +34,7 @@ import { useMapCameraRestore } from '../hooks/useMapCameraRestore'
 import { useTelemetry } from '../services/DataServiceProvider'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { useSiteWeather } from '../hooks/useSiteWeather'
+import { WATER_SULFATE_LIMIT_PPM, WATER_NITRATE_LIMIT_PPM } from '../data/domainThresholds'
 
 import type { MapTab } from './field/constants'
 import { OperationsPanel } from './field/OperationsPanel'
@@ -213,7 +214,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     suppressed: env.springs.filter(s => s.status === 'Suppressed').length,
   }), [env.springs])
 
-  const waterQualityAlert = env.water_quality.sulfate_ppm >= 250 || env.water_quality.nitrate_ppm >= 50
+  const waterQualityAlert = env.water_quality.sulfate_ppm >= WATER_SULFATE_LIMIT_PPM || env.water_quality.nitrate_ppm >= WATER_NITRATE_LIMIT_PPM
   const showRainStressBadge = Boolean(
     hydroWeatherStrip.anomalyMm < -6
     && hydroWeatherStrip.scenarioDroughtIndex >= 0.35,

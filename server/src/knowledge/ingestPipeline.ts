@@ -10,6 +10,32 @@ const KNOWLEDGE_DIR = resolve(__dirname, '..', '..', '..', 'data', 'knowledge')
 const ORIGINALS_DIR = resolve(KNOWLEDGE_DIR, 'uploads', 'originals')
 const INDEX_PATH = resolve(KNOWLEDGE_DIR, 'index.json')
 
+const SAFE_SLUG_RE = /^[a-z0-9_-]+$/i
+
+function assertSafePath(base: string, child: string): string {
+  const resolved = resolve(base, child)
+  if (!resolved.startsWith(base)) {
+    throw new Error(`Path traversal blocked: "${child}" escapes "${base}"`)
+  }
+  return resolved
+}
+
+function isPrivateUrl(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr)
+    const hostname = u.hostname.toLowerCase()
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]' || hostname === '0.0.0.0') return true
+    const parts = hostname.split('.').map(Number)
+    if (parts.length === 4 && parts.every(n => !isNaN(n))) {
+      if (parts[0] === 10) return true
+      if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true
+      if (parts[0] === 192 && parts[1] === 168) return true
+      if (parts[0] === 169 && parts[1] === 254) return true
+    }
+    return false
+  } catch { return true }
+}
+
 export interface IngestMetadata {
   id?: string
   title: string
@@ -157,9 +183,12 @@ export async function ingestFile(
   const isMdAlready = ext === '.md' && content.startsWith('---')
   const markdown = isMdAlready ? content : buildMarkdown(content, meta)
 
-  const categoryDir = resolve(KNOWLEDGE_DIR, meta.category)
+  if (!SAFE_SLUG_RE.test(meta.category)) {
+    throw new Error(`Invalid category: "${meta.category}" — must be alphanumeric/dash/underscore only`)
+  }
+  const categoryDir = assertSafePath(KNOWLEDGE_DIR, meta.category)
   mkdirSync(categoryDir, { recursive: true })
-  const convertedPath = resolve(categoryDir, `${docId}.md`)
+  const convertedPath = assertSafePath(categoryDir, `${docId}.md`)
   writeFileSync(convertedPath, markdown)
 
   const relativeFile = `${meta.category}/${docId}.md`
@@ -190,6 +219,18 @@ export async function ingestUrl(
   url: string,
   meta: IngestMetadata,
 ): Promise<IngestResult> {
+  const parsed = new URL(url)
+  const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+  if (IS_PRODUCTION && parsed.protocol !== 'https:') {
+    throw new Error('Only HTTPS URLs are allowed in production')
+  }
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    throw new Error(`Unsupported URL scheme: ${parsed.protocol}`)
+  }
+  if (isPrivateUrl(url)) {
+    throw new Error('URLs pointing to private/internal networks are blocked')
+  }
+
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 15_000)
   try {

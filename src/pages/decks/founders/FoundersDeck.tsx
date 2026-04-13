@@ -1,10 +1,10 @@
-import { lazy, useEffect } from 'react'
+import { lazy } from 'react'
 import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
 /* ── Lazy Slide Imports ───────────────────────────────────── */
 
-const DisclaimerSlide  = lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Guilherme & Juliano" /> })))
+const DisclaimerSlide  = lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Guilherme | Juliano" /> })))
 const CoverSlide       = lazy(() => import('./slides/BookendSlides').then(m => ({ default: m.CoverSlide })))
 const ProblemSlide     = lazy(() => import('./slides/ProblemSlide'))
 const WhiteBoxSlide    = lazy(() => import('../../../components/deck/slides/WhiteBoxSlide'))
@@ -19,7 +19,6 @@ const AiAgentSlide     = lazy(() => import('./slides/AiAgentSlide'))
 const DigitalTwinSlide = lazy(() => import('./slides/DigitalTwinSlide'))
 const LapocSlide       = lazy(() => import('./slides/LapocSlide'))
 const ReportsSlide     = lazy(() => import('./slides/ReportsSlide'))
-const PersonasSlide    = lazy(() => import('./slides/PersonasSlide'))
 const MoatSlide        = lazy(() => import('./slides/MoatSlide'))
 const RevenueSlide     = lazy(() => import('./slides/FinancialsSlides').then(m => ({ default: m.RevenueSlide })))
 const ValuationSlide   = lazy(() => import('./slides/FinancialsSlides').then(m => ({ default: m.ValuationSlide })))
@@ -45,15 +44,12 @@ const slides: LazySlide[] = [
   MarketSlide,
   RegulatorySlide,
   PlatformSlide,
-  CaldeiraSlide,
   ArchitectureSlide,
   CodeQualitySlide,
   DataServiceSlide,
   AiAgentSlide,
-  DigitalTwinSlide,
   LapocSlide,
   ReportsSlide,
-  PersonasSlide,
   MoatSlide,
   RevenueSlide,
   ValuationSlide,
@@ -65,6 +61,8 @@ const slides: LazySlide[] = [
   AskSlide,
   MeteorPlaySlide,
   WhyBeforeMeteorSlide,
+  CaldeiraSlide,
+  DigitalTwinSlide,
   RoadmapSlide,
   TimelineSlide,
   CloseSlide,
@@ -72,7 +70,7 @@ const slides: LazySlide[] = [
 
 const MANIFEST: DeckManifest = {
   id: 'founders',
-  title: 'Vero — Founders Deck',
+  title: 'VeroChain — Founders Deck',
   mode: 'slides',
   exitPath: '/',
   slides,
@@ -81,23 +79,5 @@ const MANIFEST: DeckManifest = {
 /* ── Component ────────────────────────────────────────────── */
 
 export default function FoundersDeck() {
-  useEffect(() => {
-    if (import.meta.env.DEV || window.location.pathname.startsWith('/deck/founders') || window.location.pathname === '/founders-deck') {
-      console.log(
-        '%c\u{1F44B} Hey Juliano %c\n\n' +
-        'You opened DevTools. We expected that.\n\n' +
-        'TypeScript strict \u00B7 0 errors \u00B7 CI quality gates\n' +
-        'NIST 800-53 mapped \u00B7 SHA-256 audit chain \u00B7 3 processes\n\n' +
-        'The codebase is ready for a second pair of hands.\n' +
-        'AGENT.md bootstraps any AI agent in seconds.\n\n' +
-        '%cgit clone \u2192 npm i \u2192 npm run dev:all%c\n',
-        'font-size:18px;font-weight:bold;color:#7C5CFC;',
-        'font-size:12px;color:#ECECF8;',
-        'font-size:11px;font-family:monospace;color:#00D4C8;background:#0D0D1C;padding:4px 8px;border-radius:4px;',
-        ''
-      )
-    }
-  }, [])
-
   return <DeckRunner manifest={MANIFEST} />
 }

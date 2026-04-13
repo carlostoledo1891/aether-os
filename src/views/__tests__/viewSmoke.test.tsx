@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
 import { DataServiceProvider } from '../../services/DataServiceProvider'
 import { MapCameraProvider } from '../../contexts/MapCameraContext'
 import { createMockDataService } from '../../services/mockDataService'
@@ -38,6 +38,8 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  cleanup()
+  vi.restoreAllMocks()
   vi.useRealTimers()
 })
 

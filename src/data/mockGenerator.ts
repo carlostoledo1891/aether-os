@@ -42,7 +42,7 @@ export function generatePlantTelemetry(prev: PlantTelemetry, scale = 1, index?: 
   }
 }
 
-export interface GenerateEnvTelemetryOptions {
+interface GenerateEnvTelemetryOptions {
   /** 0–1 dryness signal; nudges modeled_inferred springs when > ~0.4 (demo cross-data) */
   precipStress?: number
 }

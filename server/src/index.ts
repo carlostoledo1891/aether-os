@@ -49,12 +49,12 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
     openapi: {
       openapi: '3.1.0',
       info: {
-        title: 'Vero API',
+        title: 'VeroChain API',
         version: '0.1.0',
         description:
-          'REST + WebSocket API for the Vero critical-minerals supply-chain platform. ' +
+          'REST + WebSocket API for the VeroChain critical-minerals supply-chain platform. ' +
           'Serves domain data, telemetry, enricher outputs, and ingest endpoints for the simulation engine.',
-        contact: { name: 'Vero', url: 'https://vero.earth' },
+        contact: { name: 'VeroChain', url: 'https://vero.earth' },
         license: { name: 'Proprietary' },
       },
       tags: [
@@ -77,15 +77,17 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
     },
   })
 
-  await app.register(swaggerUi, {
-    routePrefix: '/api/docs',
-    uiConfig: { docExpansion: 'list', deepLinking: true },
-  })
+  if (!IS_PRODUCTION) {
+    await app.register(swaggerUi, {
+      routePrefix: '/api/docs',
+      uiConfig: { docExpansion: 'list', deepLinking: true },
+    })
+  }
 
   app.setErrorHandler((error: { statusCode?: number; message?: string; stack?: string }, _req, reply) => {
     const status = error.statusCode ?? 500
-    if (IS_PRODUCTION && status >= 500) {
-      reply.code(status).send({ error: 'Internal Server Error' })
+    if (IS_PRODUCTION) {
+      reply.code(status).send({ error: status >= 500 ? 'Internal Server Error' : (error.message ?? 'Error') })
     } else {
       reply.code(status).send({ error: error.message, ...(error.statusCode ? {} : { stack: error.stack }) })
     }
@@ -161,7 +163,7 @@ async function main() {
   try {
     await app.listen({ port: PORT, host: HOST })
     setupGracefulShutdown(app)
-    console.log(`\n  Vero API running at http://${HOST}:${PORT}`)
+    console.log(`\n  VeroChain API running at http://${HOST}:${PORT}`)
     console.log(`  WebSocket at ws://${HOST}:${PORT}/ws/telemetry`)
     console.log(`  Health check: http://localhost:${PORT}/api/health\n`)
   } catch (err) {

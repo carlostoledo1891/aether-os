@@ -28,7 +28,7 @@ export default function MoatSlide() {
       <div style={{ height: 6 }} />
       <Bullet accent={W.green}>Honesty-first positioning — data honesty banner, Slide 0 disclaimer, "words to avoid" appendix. The Everledger defense.</Bullet>
       <div style={{ height: 6 }} />
-      <Bullet accent={V}>Predictive environmental intelligence — competitors report historical data; Vero forecasts compliance risk.</Bullet>
+      <Bullet accent={V}>Predictive environmental intelligence — competitors report historical data; VeroChain forecasts compliance risk.</Bullet>
     </div>
   </>)
 }

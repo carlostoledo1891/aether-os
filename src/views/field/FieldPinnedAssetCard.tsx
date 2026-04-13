@@ -193,7 +193,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
                       </div>
                       <div style={{ position: 'relative', width: 28, height: 160 }}>
                         <div style={{ width: 28, height: 160, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                          {intervals!.map((iv, idx) => {
+                          {intervals?.map((iv, idx) => {
                             const pct = ((iv.to_m - iv.from_m) / totalDepth) * 100
                             return (
                               <div
@@ -227,7 +227,7 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
                 {/* Lithology legend — bottom of card */}
                 {hasLith && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8, paddingTop: 6, borderTop: `1px solid ${W.glass06}` }}>
-                    {[...new Set(intervals!.map(i => i.lithology))].map(lith => (
+                    {[...new Set((intervals ?? []).map(i => i.lithology))].map(lith => (
                       <div key={lith} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <span style={{ width: 5, height: 5, borderRadius: 1.5, background: LITH_COLORS[lith] ?? '#555' }} />
                         <span style={{ fontSize: 8, color: W.text4 }}>{LITH_LABELS[lith] ?? lith}</span>

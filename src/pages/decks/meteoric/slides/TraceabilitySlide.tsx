@@ -60,25 +60,27 @@ export default function TraceabilitySlide() {
     setSelectedStepIndex(prev => prev === index ? null : index)
   }, [])
 
+  const traceInitialView = {
+    bounds: batch
+      ? (() => {
+          const coords = batch.molecular_timeline.map(s => s.coordinates).filter(Boolean) as {lat: number, lng: number}[]
+          if (!coords.length) return undefined
+          const minLng = Math.min(...coords.map(c => c.lng))
+          const maxLng = Math.max(...coords.map(c => c.lng))
+          const minLat = Math.min(...coords.map(c => c.lat))
+          const maxLat = Math.max(...coords.map(c => c.lat))
+          return [minLng, minLat, maxLng, maxLat]
+        })()
+      : undefined,
+    ...viewProps.initialViewState,
+  }
+
   return (
     <div style={{ position: 'absolute', inset: 0 }} onClick={e => e.stopPropagation()}>
       <Suspense fallback={<div style={{ width: '100%', height: '100%', background: W.glass04 }} />}>
         <MapBase
           id="meteoric-trace-map"
-          initialViewState={{
-            bounds: batch 
-              ? (() => {
-                  const coords = batch.molecular_timeline.map(s => s.coordinates).filter(Boolean) as {lat: number, lng: number}[]
-                  if (!coords.length) return undefined
-                  const minLng = Math.min(...coords.map(c => c.lng))
-                  const maxLng = Math.max(...coords.map(c => c.lng))
-                  const minLat = Math.min(...coords.map(c => c.lat))
-                  const maxLat = Math.max(...coords.map(c => c.lat))
-                  return [minLng, minLat, maxLng, maxLat]
-                })()
-              : undefined,
-            ...viewProps.initialViewState,
-          } as any}
+          initialViewState={traceInitialView}
           interactive={viewProps.interactive}
           disableZoomControls={viewProps.disableZoomControls}
           hideControls={viewProps.hideControls}

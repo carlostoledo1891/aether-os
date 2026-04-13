@@ -39,7 +39,8 @@ const SPRING_DISTRIBUTION = [
   { tier: 'Suppressed', count: 44, pct: 4 },
 ]
 
-import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle, ReportSectionTitle } from './ReportPrimitives'
+import { SECTION_STYLE as sectionStyle, CARD_STYLE as cardStyle } from './reportPrimitivesHelpers'
+import { ReportSectionTitle } from './ReportPrimitives'
 
 const sectionTitle = (text: string) => <ReportSectionTitle>{text}</ReportSectionTitle>
 
@@ -378,7 +379,7 @@ function EnvironmentReport({ range: _range }: Props) {
         fontFamily: 'var(--font-ui)',
       }}>
         This report contains a mix of verified field data, publicly available spatial datasets (FBDS, CAR, ANA), and illustrative
-        monitoring scenarios. Some values are modelled or projected. See Vero data provenance layer for per-metric source classification.
+        monitoring scenarios. Some values are modelled or projected. See VeroChain data provenance layer for per-metric source classification.
       </div>
     </div>
   )

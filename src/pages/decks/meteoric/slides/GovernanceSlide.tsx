@@ -42,7 +42,7 @@ export default function GovernanceSlide() {
         </div>
       </div>
       <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
-        No screenshot from Vero can be misread as certification or attestation. Continuous disclosure safety is built into every mode.
+        No screenshot from VeroChain can be misread as certification or attestation. Continuous disclosure safety is built into every mode.
       </p>
     </>
   )

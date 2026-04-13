@@ -22,14 +22,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const PILOT_PLANT_PATH = resolve(__dirname, '..', '..', '..', 'data', 'caldeira', 'pilot-plant-mirror.json')
 
-const SYSTEM_PROMPT = `You are a Vero platform analyst. You answer questions about the Caldeira critical minerals project using verified data from the Vero database.
+const SYSTEM_PROMPT = `You are a VeroChain platform analyst. You answer questions about the Caldeira critical minerals project using verified data from the VeroChain database.
 
 CORE RULES:
 1. Always cite provenance: include (source: X, as_of: Y) when presenting data values.
 2. Never state compliance conclusions. Instead say "Based on current data, the FEOC percentage is X%" with a disclaimer that this is not legal advice.
 3. When disclosure mode is active, only surface board-approved facts.
-4. Distinguish Vero data (with provenance) from any external or user-uploaded sources.
-5. If a tool returns null or empty data, say "This data is not currently available in the Vero database" rather than making up values.
+4. Distinguish VeroChain data (with provenance) from any external or user-uploaded sources.
+5. If a tool returns null or empty data, say "This data is not currently available in the VeroChain database" rather than making up values.
 6. For financial metrics (NPV, IRR, CAPEX), always note the scenario context (bear/consensus/bull).
 7. For regulatory questions, use queryKnowledgeBase FIRST before webSearch. The knowledge base contains verified references for CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, and Caldeira-specific regulatory context. Each KB result includes a provenance_kind field — cite it in your response.
 8. For environmental data, note whether readings are live (from enrichers) or simulated.
@@ -39,10 +39,10 @@ CORE RULES:
 12. When queryKnowledgeBase returns results, cite them with their provenance_kind (e.g. "from_public_record", "issuer_attested"). If no KB results match a regulatory question, explicitly say "This is not currently in the verified knowledge base" before falling back to webSearch.
 
 CITATION FORMAT (two-tier):
-- Vero data: "NPV is $821M (source: PFS Jul 2025, as_of: 2025-07-21)"
-- External/web: "According to [Source Name, Date]: quote or fact" — always label as external context, not Vero-verified data.
+- VeroChain data: "NPV is $821M (source: PFS Jul 2025, as_of: 2025-07-21)"
+- External/web: "According to [Source Name, Date]: quote or fact" — always label as external context, not VeroChain-verified data.
 
-When using the webSearch tool, clearly distinguish external results from Vero database queries. Prefix web findings with "External:" or "According to [source]:".
+When using the webSearch tool, clearly distinguish external results from VeroChain database queries. Prefix web findings with "External:" or "According to [source]:".
 
 You have access to weather intelligence tools. When users ask about environmental conditions, water quality outlook, spring health, or climate patterns, proactively use queryWeatherForecast, queryWeatherHistory, and analyzeEnvironmentalRisk to provide data-backed answers. Reference ECMWF ERA5 data provenance when discussing historical patterns. Always distinguish between observed data (verified_real) and AI-predicted forecasts. Never present predictions as certainties.`
 
@@ -195,12 +195,12 @@ function buildTools() {
       execute: async () => getDomainState('drawdown_schedule') ?? [],
     }),
     queryPricing: tool({
-      description: 'Get the Vero platform pricing model: deployment tiers (Pilot/Growth/Enterprise), cost components, and total cost of ownership',
+      description: 'Get the VeroChain platform pricing model: deployment tiers (Pilot/Growth/Enterprise), cost components, and total cost of ownership',
       inputSchema: z.object({}),
       execute: async () => getDomainState('pricing_model') ?? {},
     }),
     queryMarketSizing: tool({
-      description: 'Get TAM/SAM/SOM market sizing with analyst report citations (Mordor Intelligence, Grand View Research, Dataintelo)',
+      description: 'Get TAM/SAM/SOM market sizing with analyst report citations (Grand View Research, Dataintelo, Growth Market Reports)',
       inputSchema: z.object({}),
       execute: async () => getDomainState('market_sizing') ?? {},
     }),
@@ -210,7 +210,7 @@ function buildTools() {
       execute: async () => getDomainState('issuer_snapshot') ?? {},
     }),
     querySecurityArchitecture: tool({
-      description: 'Get Vero platform security architecture: FedRAMP roadmap, RBAC role model, SBOM status, audit trail design',
+      description: 'Get VeroChain platform security architecture: FedRAMP roadmap, RBAC role model, SBOM status, audit trail design',
       inputSchema: z.object({}),
       execute: async () => ({
         fedramp_timeline: [
@@ -224,7 +224,7 @@ function buildTools() {
       }),
     }),
     queryKnowledgeBase: tool({
-      description: 'Search Vero regulatory and technical knowledge base. Use BEFORE web search for regulatory questions about CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, mining codes, or Caldeira-specific context.',
+      description: 'Search VeroChain regulatory and technical knowledge base. Use BEFORE web search for regulatory questions about CONAMA, COPAM, FEAM, IRA, EU DPP, OECD, mining codes, or Caldeira-specific context.',
       inputSchema: z.object({
         query: z.string().describe('Search query, e.g. "sulfate discharge limits Brazil"'),
         domain: z.enum(['geology', 'hydrology', 'regulatory', 'international', 'apis', 'all']).optional().describe('Knowledge domain to search'),
@@ -402,7 +402,7 @@ function buildTools() {
       },
     }),
     webSearch: tool({
-      description: 'Search the web for external context: regulatory news, market trends, rare earths industry updates. Results are NOT Vero-verified data — always label as external.',
+      description: 'Search the web for external context: regulatory news, market trends, rare earths industry updates. Results are NOT VeroChain-verified data — always label as external.',
       inputSchema: z.object({
         query: z.string().describe('Search query, e.g. "EU Battery Regulation 2027 enforcement"'),
       }),
@@ -446,7 +446,7 @@ export async function chatRoutes(app: FastifyInstance) {
     schema: {
       tags: ['ai'],
       summary: 'AI chat endpoint (streaming)',
-      description: 'Sends a message to the Vero AI analyst. Returns a streaming UI message response.',
+      description: 'Sends a message to the VeroChain AI analyst. Returns a streaming UI message response.',
       body: {
         type: 'object',
         required: ['messages'],

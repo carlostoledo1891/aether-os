@@ -16,7 +16,7 @@ export default function CaldeiraSlide() {
     </div>
     <div style={{ marginTop: 20, background: `${V}12`, border: `1px solid ${V}30`, borderRadius: 12, padding: '14px 24px', maxWidth: 500 }}>
       <div style={{ fontSize: 22, fontWeight: 800, color: V, fontFamily: 'var(--font-mono)' }}>0.03%</div>
-      <div style={{ fontSize: 12, color: W.text2, marginTop: 4 }}>Vero costs $102k/yr — <strong style={{ color: W.text1 }}>0.03% of Caldeira's annual revenue</strong>. Less than one day of interest on the construction loan.</div>
+      <div style={{ fontSize: 12, color: W.text2, marginTop: 4 }}>VeroChain costs $102k/yr — <strong style={{ color: W.text1 }}>0.03% of Caldeira's annual revenue</strong>. Less than one day of interest on the construction loan.</div>
     </div>
   </>)
 }

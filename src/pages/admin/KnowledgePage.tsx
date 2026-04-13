@@ -24,6 +24,11 @@ interface KBEntry {
 
 type ModalMode = 'none' | 'upload' | 'url' | 'edit'
 
+function adminHeaders(): HeadersInit {
+  const key = (import.meta.env.VITE_ADMIN_API_KEY as string | undefined) ?? ''
+  return key ? { 'x-api-key': key } : {}
+}
+
 const PROVENANCE_OPTIONS: { value: DataProvenanceKind; label: string }[] = [
   { value: 'from_public_record', label: 'Public Record' },
   { value: 'issuer_attested', label: 'Issuer Attested' },
@@ -73,12 +78,15 @@ export default function KnowledgePage() {
   const fetchEntries = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/knowledge')
+      const res = await fetch('/api/admin/knowledge', { headers: adminHeaders() })
       if (res.ok) {
         const data = await res.json() as { entries: KBEntry[] }
         setEntries(data.entries)
       }
-    } catch { /* ignore */ }
+    } catch (err) {
+      console.error('[KB Admin] fetchEntries', err)
+      setFeedback({ type: 'error', message: `Failed to load entries: ${err instanceof Error ? err.message : String(err)}` })
+    }
     setLoading(false)
   }, [])
 
@@ -114,7 +122,7 @@ export default function KnowledgePage() {
       if (sourceUrl) formData.append('sourceUrl', sourceUrl)
       formData.append('ingestedBy', 'admin-ui')
 
-      const res = await fetch('/api/admin/knowledge/ingest', { method: 'POST', body: formData })
+      const res = await fetch('/api/admin/knowledge/ingest', { method: 'POST', body: formData, headers: adminHeaders() })
       if (!res.ok) throw new Error((await res.json() as { error: string }).error)
       const result = await res.json() as { docId: string; chunkCount: number }
       setFeedback({ type: 'success', message: `Ingested "${result.docId}" — ${result.chunkCount} chunks` })
@@ -134,7 +142,7 @@ export default function KnowledgePage() {
     try {
       const res = await fetch('/api/admin/knowledge/ingest-url', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...adminHeaders() },
         body: JSON.stringify({
           url: sourceUrl, title, authority, jurisdiction,
           tags: tags.split(',').map(t => t.trim()).filter(Boolean),
@@ -156,15 +164,18 @@ export default function KnowledgePage() {
   const handleDelete = async (docId: string) => {
     if (!confirm(`Delete "${docId}" from the knowledge base?`)) return
     try {
-      await fetch(`/api/admin/knowledge/${docId}`, { method: 'DELETE' })
+      await fetch(`/api/admin/knowledge/${docId}`, { method: 'DELETE', headers: adminHeaders() })
       fetchEntries()
-    } catch { /* ignore */ }
+    } catch (err) {
+      console.error('[KB Admin] handleDelete', err)
+      setFeedback({ type: 'error', message: `Delete failed: ${err instanceof Error ? err.message : String(err)}` })
+    }
   }
 
   const handleReindex = async () => {
     setReindexing(true)
     try {
-      const res = await fetch('/api/admin/knowledge/reindex', { method: 'POST' })
+      const res = await fetch('/api/admin/knowledge/reindex', { method: 'POST', headers: adminHeaders() })
       const result = await res.json() as { indexed: number; errors: string[] }
       setFeedback({ type: 'success', message: `Re-indexed ${result.indexed} documents` })
       fetchEntries()
@@ -186,12 +197,15 @@ export default function KnowledgePage() {
     setEditContent('')
     setModal('edit')
     try {
-      const res = await fetch(`/api/admin/knowledge/${entry.id}/content`)
+      const res = await fetch(`/api/admin/knowledge/${entry.id}/content`, { headers: adminHeaders() })
       if (res.ok) {
         const data = await res.json() as { content: string }
         setEditContent(data.content)
       }
-    } catch { /* ignore */ }
+    } catch (err) {
+      console.error('[KB Admin] openEdit content fetch', err)
+      setFeedback({ type: 'error', message: `Failed to load content: ${err instanceof Error ? err.message : String(err)}` })
+    }
   }
 
   const handleEditSave = async () => {
@@ -201,7 +215,7 @@ export default function KnowledgePage() {
     try {
       const res = await fetch(`/api/admin/knowledge/${editEntry.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...adminHeaders() },
         body: JSON.stringify({
           title, authority, jurisdiction,
           tags: tags.split(',').map(t => t.trim()).filter(Boolean),

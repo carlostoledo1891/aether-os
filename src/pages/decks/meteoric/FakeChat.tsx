@@ -36,7 +36,7 @@ export default function FakeChat() {
     }}>
       <div style={{ fontSize: 10, color: W.text4, fontFamily: 'var(--font-mono)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: W.green }} />
-        Vero AI Agent
+        VeroChain AI Agent
       </div>
 
       {visible >= 1 && (

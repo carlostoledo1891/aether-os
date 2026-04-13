@@ -19,7 +19,7 @@ export const PRODUCT_ROADMAP: RoadmapPhase[] = [
     title: 'Pilot Ready',
     status: 'active',
     items: [
-      { title: 'LAPOC Live Instruments', description: 'Piezometers, water quality sensors — real-time data from CNEN field stations', tag: 'infra' },
+      { title: 'LAPOC Live Instruments', description: 'Piezometers, water quality sensors — real-time data from ANSN field stations. Active development, first live channel for Caldeira pilot.', tag: 'infra' },
       { title: 'OPC-UA / MQTT Bridge', description: 'Industrial protocol bridge for SCADA historians and plant telemetry', tag: 'tech' },
       { title: 'Multi-Tenant Architecture', description: 'Project isolation with per-tenant data boundaries and access controls', tag: 'tech' },
       { title: 'Covenant Monitoring Dashboard', description: 'DSCR automation, financial covenant tracking with alert thresholds', tag: 'compliance' },
@@ -31,6 +31,7 @@ export const PRODUCT_ROADMAP: RoadmapPhase[] = [
     title: 'Enterprise Grade',
     status: 'planned',
     items: [
+      { title: 'Government & Institutional Data APIs', description: 'Integration with ANM (mining titles), IBGE (terrain/demographics), ANA (hydrology permits), INMET (meteorological stations), and ANSN/LAPOC live sensors', tag: 'infra' },
       { title: 'Blockchain Anchoring', description: 'Merkle-root anchoring for audit chain immutability — tamper-proof provenance', tag: 'compliance' },
       { title: 'FedRAMP Moderate Pathway', description: 'AWS GovCloud deployment for US government supply chain requirements', tag: 'infra' },
       { title: 'Role-Based Access Control', description: 'Admin / Analyst / Viewer / Auditor roles with granular permissions', tag: 'tech' },
@@ -61,7 +62,7 @@ export const PRODUCT_ROADMAP: RoadmapPhase[] = [
       { title: 'On-Chain Provenance', description: 'Public Merkle root verification — any buyer can validate the supply chain', tag: 'compliance' },
       { title: 'AI Covenant Reports', description: 'LLM-generated monitoring reports with source citations and approval workflow', tag: 'ai' },
       { title: 'Conference & Board Mode', description: 'Presentation themes for investor meetings, board sessions, and conferences', tag: 'business' },
-      { title: 'White-Label Deployment', description: 'Enterprise clients deploy Vero under their own brand and domain', tag: 'business' },
+      { title: 'White-Label Deployment', description: 'Enterprise clients deploy VeroChain under their own brand and domain', tag: 'business' },
       { title: 'Multi-Language', description: 'English, Portuguese, Spanish, French — full UI and report localization', tag: 'business' },
     ],
   },

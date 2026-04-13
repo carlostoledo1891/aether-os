@@ -28,7 +28,7 @@ The system runs as three independent processes connected via HTTP and WebSocket:
 ```mermaid
 graph TD
     subgraph engine [aether-engine (Simulation Bot)]
-        E_API[Enrichers:<br>Open-Meteo<br>BCB PTAX<br>USGS Seismic<br>Alpha Vantage<br>LAPOC]
+        E_API[Enrichers:<br>CPTEC / INPE<br>Open-Meteo<br>ECMWF ERA5<br>BCB PTAX<br>USGS Seismic<br>Alpha Vantage<br>LAPOC]
     end
 
     subgraph api [aether-api (Fastify + SQLite)]

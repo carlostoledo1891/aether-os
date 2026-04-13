@@ -121,7 +121,7 @@ export interface CapitalSnapshot {
 }
 
 /* ─── Market Sizing ────────────────────────────────────────────────────── */
-export interface MarketSizingTier {
+interface MarketSizingTier {
   label: string
   value_usd_b?: number
   value_usd_m?: number
@@ -460,7 +460,7 @@ export interface MarketStockSnapshot {
   detail?: Record<string, unknown>
 }
 
-export interface SeismicEvent {
+interface SeismicEvent {
   id: string
   time: string
   latitude: number

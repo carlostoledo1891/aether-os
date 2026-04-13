@@ -198,9 +198,9 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   }, [messages, isLoading])
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100)
-    }
+    if (!isOpen) return
+    const timerId = setTimeout(() => inputRef.current?.focus(), 100)
+    return () => clearTimeout(timerId)
   }, [isOpen])
 
   useEffect(() => {
@@ -293,7 +293,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             ref={drawerRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Vero AI chat"
+            aria-label="VeroChain AI chat"
             initial={{ x: '100%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
@@ -304,7 +304,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             <div className={styles.header}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Sparkles size={14} style={{ color: W.violet }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: W.text1 }}>Vero AI</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: W.text1 }}>VeroChain AI</span>
                 <span className={`${styles.provenanceBadge} ${styles.provenanceVero}`}>
                   Analyst
                 </span>
@@ -430,7 +430,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={onKeyDownInput}
-                placeholder={attachedFile ? `Ask about ${attachedFile.filename}...` : 'Ask Vero AI...'}
+                placeholder={attachedFile ? `Ask about ${attachedFile.filename}...` : 'Ask VeroChain AI...'}
                 rows={1}
                 disabled={isLoading}
               />

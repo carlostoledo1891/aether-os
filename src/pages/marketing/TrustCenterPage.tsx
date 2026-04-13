@@ -3,19 +3,8 @@ import { W } from '../../app/canvas/canvasTheme'
 import { MarketingNav } from '../../components/layout/MarketingNav'
 import { ScrollSection as S, Stagger, SectionHeader } from '../../components/layout/MarketingPrimitives'
 import { useUnlockScroll, marketingStyles } from '../../components/layout/MarketingShared'
-
-const ease = [0.16, 1, 0.3, 1] as const
-const V = W.violet
-
-function Stat({ value, label: lbl, sub }: { value: string; label: string; sub?: string }) {
-  return (
-    <div style={{ textAlign: 'center', padding: '18px 14px' }}>
-      <div style={{ fontSize: 28, fontWeight: 800, color: V, fontFamily: 'var(--font-mono)' }}>{value}</div>
-      <div style={{ fontSize: 13, fontWeight: 600, color: W.text1, marginTop: 4 }}>{lbl}</div>
-      {sub && <div style={{ fontSize: 11, color: W.text4, marginTop: 2 }}>{sub}</div>}
-    </div>
-  )
-}
+import { ease, V } from './sharedConstants'
+import { Stat } from './shared'
 
 const { wrap, label, heading, body, glass, glow } = marketingStyles
 
@@ -57,7 +46,7 @@ export default function TrustCenterPage() {
             Security. Compliance. Transparency.
           </h1>
           <p style={{ ...body, margin: '0 auto 32px', textAlign: 'center', maxWidth: 640 }}>
-            Vero is designed for FedRAMP and CMMC Level 2 compliance. Controls mapped to NIST 800-53 Rev 5, technical foundations implemented, architecture supports the authorization boundary.
+            VeroChain is designed for FedRAMP and CMMC Level 2 compliance. Controls mapped to NIST 800-53 Rev 5, technical foundations implemented, architecture supports the authorization boundary.
           </p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4, ease }}
@@ -248,7 +237,7 @@ export default function TrustCenterPage() {
 
       <footer style={{ padding: '32px 24px', textAlign: 'center', borderTop: `1px solid ${W.glass06}` }}>
         <p style={{ color: W.text4, fontSize: 11, margin: 0, lineHeight: 1.5, maxWidth: 600, marginInline: 'auto' }}>
-          © 2026 Vero Platform. Controls mapped to NIST 800-53 Rev 5 and CMMC Level 2. FedRAMP authorization pending cloud partner selection.
+          © 2026 VeroChain. Controls mapped to NIST 800-53 Rev 5 and CMMC Level 2. FedRAMP authorization pending cloud partner selection.
           See SECURITY.md for responsible disclosure. See docs/compliance/ for full control mapping documentation.
         </p>
       </footer>

@@ -1,19 +1,13 @@
-import { type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { W } from '../../app/canvas/canvasTheme'
-import { Terminal as TerminalBase, Kw, Str, Num, Cmt, Fn } from '../../components/deck'
+import { Kw, Str, Num, Cmt, Fn } from '../../components/deck'
 import { PRODUCT_ROADMAP } from '../../data/domain/roadmap'
 import { MarketingNav } from '../../components/layout/MarketingNav'
 import { MarketingObservability } from '../../components/layout/MarketingObservability'
 import { ScrollSection as S, Stagger } from '../../components/layout/MarketingPrimitives'
 import { useUnlockScroll, marketingStyles } from '../../components/layout/MarketingShared'
-
-const ease = [0.16, 1, 0.3, 1] as const
-const V = W.violet
-
-function Terminal({ title, children }: { title: string; children: ReactNode }) {
-  return <TerminalBase title={title} large>{children}</TerminalBase>
-}
+import { ease, V } from './sharedConstants'
+import { Terminal } from './shared'
 
 import {
   HERO_STATS,
@@ -112,7 +106,7 @@ export default function LandingPage() {
             <div style={label}>Multi-Industry</div>
             <h2 style={heading}>One platform. Any critical operation.</h2>
             <p style={{ ...body, margin: '0 auto' }}>
-              Vero adapts to any industry where operational data, compliance evidence,
+              VeroChain adapts to any industry where operational data, compliance evidence,
               and stakeholder trust must coexist in a single source of truth.
             </p>
           </div>
@@ -146,7 +140,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
             {CAPABILITIES.map((c, idx) => (
               <Stagger key={c.tag} i={idx}>
                 <motion.div whileHover={{ y: -4, borderColor: V + '40' }} transition={{ duration: 0.2 }}
@@ -188,7 +182,7 @@ export default function LandingPage() {
             <div style={label}>Data Ingestion</div>
             <h2 style={heading}>From raw data to Digital Twin</h2>
             <p style={{ ...body, margin: '0 auto' }}>
-              Connect datasets, sensor channels, and external APIs. Vero normalizes
+              Connect datasets, sensor channels, and external APIs. VeroChain normalizes
               everything into a unified operational model with sub-second refresh.
             </p>
           </div>
@@ -382,7 +376,7 @@ export default function LandingPage() {
                 </div>
               ))}
               <div style={{ background: `${V}12`, border: `1px solid ${V}30`, borderRadius: 12, padding: '14px 20px', marginTop: 16 }}>
-                <div style={{ fontSize: 11, color: W.text2 }}>At <span style={{ color: V, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>$102k ACV</span>, Vero costs <span style={{ fontWeight: 700, color: W.text1 }}>0.03% of client annual revenue</span>. Price sensitivity: effectively zero.</div>
+                <div style={{ fontSize: 11, color: W.text2 }}>At <span style={{ color: V, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>$102k ACV</span>, VeroChain costs <span style={{ fontWeight: 700, color: W.text1 }}>0.03% of client annual revenue</span>. Price sensitivity: effectively zero.</div>
               </div>
             </div>
 
@@ -505,7 +499,7 @@ export default function LandingPage() {
             <div style={label}>Team</div>
             <h2 style={heading}>Built by domain experts</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
             {TEAM.map((t, i) => (
               <Stagger key={t.name} i={i}>
                 <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} style={glass}>
@@ -524,7 +518,7 @@ export default function LandingPage() {
         <div style={{ ...glow, background: `radial-gradient(ellipse at 50% 80%, ${V}08 0%, transparent 50%)` }} />
         <div style={{ position: 'relative' }}>
           <h2 style={{ fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 700, marginBottom: 16, background: `linear-gradient(135deg, ${W.text1} 40%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            See Vero in action
+            See VeroChain in action
           </h2>
           <p style={{ ...body, margin: '0 auto 36px', textAlign: 'center' }}>
             Explore the live platform, review the founders deck, or request a pilot deployment.
@@ -539,7 +533,7 @@ export default function LandingPage() {
       {/* ── Footer ─────────────────────────────────────────────── */}
       <footer style={{ padding: '32px 24px', textAlign: 'center', borderTop: `1px solid ${W.glass06}` }}>
         <p style={{ color: W.text4, fontSize: 10, margin: 0, lineHeight: 1.5, maxWidth: 600, marginInline: 'auto' }}>
-          © 2026 Vero Platform. All rights reserved. Demo environment uses
+          © 2026 VeroChain. All rights reserved. Demo environment uses
           public-reference data, disclosure-aligned scenarios, and simulated time series.
         </p>
       </footer>

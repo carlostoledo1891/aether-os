@@ -10,7 +10,7 @@ const REPORT_TYPES = [
 export default function ReportsSlide() {
   return (<>
     <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>Interactive Report Templates</h2>
-    <p style={{ fontSize: 12, color: W.text3, marginBottom: 24, maxWidth: 500 }}>3 light-mode reports — PDF export via browser print — zero new dependencies</p>
+    <p style={{ fontSize: 12, color: W.text3, marginBottom: 24, maxWidth: 500 }}>Custom templates in light or dark mode — PDF export via browser print</p>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, maxWidth: 860, width: '100%', marginBottom: 20 }}>
       {REPORT_TYPES.map(r => (
         <div key={r.name} style={{ background: 'rgba(250,250,253,0.05)', border: `1px solid ${W.glass08}`, borderRadius: 14, padding: '18px 14px', textAlign: 'left' }}>

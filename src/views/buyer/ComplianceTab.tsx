@@ -467,7 +467,7 @@ function DppPassportSection({ batch, uThSafety }: { batch: ComplianceLedger; uTh
       <div className={css.footnoteBox} style={{ background: `${W.violet}08`, border: `1px solid ${W.violet}18`, borderRadius: W.radius.sm }}>
         <p className={css.footnoteP} style={{ color: W.text3 }}>
           Schema aligned to EU Battery Regulation 2023/1542 Annex VI. Fields marked "stub" contain placeholder values;
-          "pending" fields require downstream data not yet in the Vero pipeline. Enforcement begins Feb 2027.
+          "pending" fields require downstream data not yet in the VeroChain pipeline. Enforcement begins Feb 2027.
         </p>
       </div>
     </GlassCard>

@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { W } from '../../app/canvas/canvasTheme'
+import { VeroChainLogo } from '../brand/VeroChainLogo'
 
 const V = W.violet
 
@@ -30,9 +31,8 @@ const linkStyle: CSSProperties = {
 export function MarketingNav({ section, links, cta, onScrollTo }: MarketingNavProps) {
   return (
     <nav style={navStyle}>
-      <a href="/lp" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'inherit' }}>
-        <div style={{ width: 28, height: 28, background: V, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: section ? 14 : 13, fontWeight: 800, color: '#fff' }}>V</div>
-        <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em' }}>Vero</span>
+      <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'inherit' }}>
+        <VeroChainLogo size={24} textColor={W.text1} />
         {section && (
           <span style={{ color: W.text4, fontSize: 12, marginLeft: 4, fontFamily: 'var(--font-mono)' }}>/ {section}</span>
         )}

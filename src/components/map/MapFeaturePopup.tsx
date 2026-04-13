@@ -29,7 +29,7 @@ export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: Map
 
   const hasLith = data.lithologyIntervals && data.lithologyIntervals.length > 0
   const totalDepth = hasLith
-    ? data.lithologyIntervals![data.lithologyIntervals!.length - 1].to_m
+    ? data.lithologyIntervals[data.lithologyIntervals.length - 1].to_m
     : 0
 
   const style: CSSProperties = {
@@ -55,7 +55,7 @@ export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: Map
       {/* Vertical lithology bar (left) */}
       {hasLith && (
         <div style={{ width: 6, minHeight: 48, borderRadius: 3, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 0.5, flexShrink: 0 }}>
-          {data.lithologyIntervals!.map((iv, i) => (
+          {data.lithologyIntervals?.map((iv, i) => (
             <div
               key={i}
               style={{

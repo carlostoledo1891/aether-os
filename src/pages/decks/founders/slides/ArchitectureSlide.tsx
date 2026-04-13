@@ -2,11 +2,12 @@ import { W, V } from '../shared'
 import { Tag } from '../../../../components/deck'
 
 const ENRICHERS = [
-  { label: 'Open-Meteo Forecast', y: 60 },
-  { label: 'ECMWF ERA5 Archive', y: 84 },
-  { label: 'BCB PTAX', y: 108 },
-  { label: 'USGS', y: 132 },
-  { label: 'Alpha Vantage', y: 156 },
+  { label: 'CPTEC / INPE', y: 64 },
+  { label: 'Open-Meteo', y: 80 },
+  { label: 'ECMWF ERA5', y: 96 },
+  { label: 'BCB PTAX', y: 112 },
+  { label: 'USGS Seismic', y: 128 },
+  { label: 'Alpha Vantage', y: 144 },
 ]
 
 const SEC_BADGES = ['CSP', 'CORS', 'Rate Limit', 'Fail-closed']
@@ -23,10 +24,10 @@ export default function ArchitectureSlide() {
       <rect x="118" y="20" width="520" height="300" rx="16" fill="none" stroke={`${V}20`} strokeWidth="1" strokeDasharray="6 4" />
       <text x="130" y="42" fill={`${V}40`} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.06em">INTERNAL TRUST ZONE</text>
 
-      <rect x="140" y="80" width="160" height="72" rx="10" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
-      <text x="220" y="106" textAnchor="middle" fill={V} fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">aether-engine</text>
-      <text x="220" y="122" textAnchor="middle" fill={W.text3} fontSize="10">Simulation Bot</text>
-      <text x="220" y="138" textAnchor="middle" fill={W.text4} fontSize="9">Node.js · 2s tick cycle</text>
+      <rect x="140" y="60" width="160" height="100" rx="10" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
+      <text x="220" y="96" textAnchor="middle" fill={V} fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">aether-engine</text>
+      <text x="220" y="112" textAnchor="middle" fill={W.text3} fontSize="10">Simulation Bot</text>
+      <text x="220" y="128" textAnchor="middle" fill={W.text4} fontSize="9">Node.js · 2s tick cycle</text>
 
       <rect x="380" y="80" width="160" height="72" rx="10" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
       <text x="460" y="106" textAnchor="middle" fill={V} fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">aether-api</text>
