@@ -2164,3 +2164,10 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Purified HydroOverlay: extracted WQ badge, rain stress badge, and HydroMonitoringCard render into the view layer. Overlay now renders only MapLibre Source/Layer elements.
 - Unified card visual tokens (both use `W.overlay88`). Added `maxHeight`/`overflowY` to MapControlStack topLeft for deck slide content.
 - Documented deferred API Registry Architecture (`ApiSourceDef` pattern for NOAA, INMET, etc.) in AGENT.md next steps.
+
+### Session Log — 2026-04-13 (Field Card Extraction & Marketing Polish)
+- Decomposed EnvironmentPanel into 5 standalone cards (WeatherForecast, CptecForecast, ClimateBaseline, SeismicActivity, CommunityNotice). Refactored useSiteWeather into weatherMocks + weatherServerFetch.
+- Added PasswordGate (session-gated access), VeroChainLogo, GeoDataSlide for Meteoric deck.
+- Extracted marketing shared constants/layouts. Added domainThresholds and reportPrimitivesHelpers modules.
+- Added tests: config, lapocAdapter, DataSourceBadge, enricherService. Updated server ingest pipeline, chat routes, knowledge admin, seed.
+- Committed 109 files (ESLint + TypeScript clean) and pushed to main.

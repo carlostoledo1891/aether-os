@@ -52,20 +52,18 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Map Surface Control sprint complete (8 tasks). Build, TypeScript (0 errors), and 249 tests pass.
-*   **Recent Changes (Map Surface Control sprint — Apr 12 2026):**
-    - **BuyerView layer isolation:** Switched from shared `useMapLayers()` to local `usePresetLayers('buyer')`. Layer toggles in FieldView no longer bleed into BuyerView.
-    - **Tab-scoped overlay rendering:** `deriveOverlayKeys` now accepts optional `activeGroups` param. FieldView passes ops/env group sets so toggling `cprmGeology` on ops tab doesn't render on env tab (and vice versa).
-    - **HUD cards into MapControlStack:** Removed `position: absolute` from `.hudCard` CSS. `PilotPlantCard` and `HydroMonitoringCard` now flow through `controlSlots.topLeft` on every map surface (FieldView, GeologySlide, HydroSlide). No more orphaned absolute-positioned cards.
-    - **HydroOverlay purified:** Extracted `.hudColumn` (WQ badge, rain stress badge) and `HydroMonitoringCard` render out of `HydroOverlay.tsx`. The overlay now renders only MapLibre Source/Layer elements and hover tooltips — pure rendering per `map-interactions.mdc` rule.
-    - **Deck slides unified:** GeologySlide and HydroSlide info panels + HUD cards moved from standalone absolute-positioned `<div>` blocks into `controlSlots.topLeft`. `MapControlStack.topLeft` gained `maxHeight`/`overflowY` for tall content.
-    - **Card visual tokens unified:** Both cards now use `W.overlay88` for background. Removed stale `zIndex` from `HydroMonitoringCard`.
-*   **Previous Sprint (Map System Refactor):**
-    - Unified layer catalog, consolidated overlay mounting, site-scoped layer config, `ExternalRasterOverlay`, `MapControlStack` with compact mode.
+*   **Focus:** Field card extraction & marketing polish sprint complete. 109 files changed, ESLint + TypeScript clean, pushed to main.
+*   **Recent Changes (Apr 13 2026):**
+    - **EnvironmentPanel decomposed:** Extracted into 5 standalone cards (WeatherForecastCard, CptecForecastCard, ClimateBaselineCard, SeismicActivityCard, CommunityNoticeCard). EnvironmentPanel dropped ~330 lines.
+    - **Weather refactor:** Split `useSiteWeather` into `weatherMocks.ts` + `weatherServerFetch.ts` modules.
+    - **New components:** PasswordGate (session-gated access), VeroChainLogo brand asset, GeoDataSlide for Meteoric deck.
+    - **Marketing pages refactored:** Shared constants and layout primitives extracted to `shared.tsx` / `sharedConstants.ts`.
+    - **Tests added:** config, lapocAdapter, DataSourceBadge, enricherService tests. Domain thresholds + report primitives helpers extracted.
+    - **Server:** Updated ingest pipeline, chat routes, knowledge admin, seed data. Deleted stale `caldeira-reference-udc.geojson`.
 *   **Next Steps:**
     - Visual smoke test all 7 map surfaces to verify zero overlaps.
     - Consider deleting legacy per-service overlay files (`CprmGeologyOverlay.tsx`, `MacrostratOverlay.tsx`, `UsgsReeOverlay.tsx`) once `ExternalRasterOverlay` is validated in production.
-    - **API Registry Architecture (deferred):** Design `ApiSourceDef` type + central registry (`shared/apis/registry.ts`) for pluggable external API integration (NOAA, INMET, Open-Meteo, BCB, etc.). Each API declares domains (weather, hydrology, geology, environment, finance) and capabilities (map-raster, time-series, ai-context, enricher). Layer panel, AI context, and prediction panels consume from the registry by domain + capability. Build when the 6th API integration creates the pull.
+    - **API Registry Architecture (deferred):** Design `ApiSourceDef` type + central registry (`shared/apis/registry.ts`) for pluggable external API integration (NOAA, INMET, Open-Meteo, BCB, etc.).
     - Prepare Meteoric pitch for Apr 16 send.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*
