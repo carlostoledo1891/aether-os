@@ -4,6 +4,7 @@ import { Share2, TrendingUp, Mountain, Leaf, Users, Heart, Phone, CloudRain } fr
 import { MapBase } from '../../../components/map/MapBase'
 import { MapOverlays } from '../../../components/map/MapOverlays'
 import { useMapPreset } from '../../../components/map/mapPresets'
+import { useLayerSurface } from '../../../components/map/useMapLayers'
 import data from './data.json'
 import css from './prefeitura.module.css'
 
@@ -26,6 +27,7 @@ const ICONS: Record<string, React.ComponentType<{ size: number; color?: string }
 
 export const PrefeituraPage = memo(function PrefeituraPage() {
   const preset = useMapPreset('story-map')
+  const layers = useLayerSurface({ mode: 'local', initialLayerIds: preset.layerIds })
   const { hero, mapHighlights, bottomMetrics, sidebar, footer, meta } = data
 
   return (
@@ -57,9 +59,9 @@ export const PrefeituraPage = memo(function PrefeituraPage() {
             <div className={css.mapWrap}>
               <MapBase
                 {...preset.viewProps}
-                interactiveLayerIds={preset.interactiveLayerIds}
+                interactiveLayerIds={layers.interactiveLayerIds}
               >
-                <MapOverlays layers={preset.overlays} environmentalProps={{ showApa: true, showBuffer: false, showMonitoring: false, showUrban: false }} />
+                <MapOverlays layers={layers.visibleLayerIds} />
               </MapBase>
 
               <div className={css.mapHighlights}>

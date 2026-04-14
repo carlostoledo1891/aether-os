@@ -16,6 +16,27 @@
 
 `vercel.json` also pins the install and build commands so repo defaults match the dashboard.
 
+## Staging Setup
+
+Use the same Vercel project for both production and staging during demo week:
+
+- Production branch/domain: `main`
+- Staging branch/domain: `staging`
+- All other branches: preview deployments only
+
+Branch dropdown guidance in Vercel:
+
+- For the production domain, choose `main`
+- For the staging domain, choose `staging`
+- Do not point either domain at `dependabot/...` or feature branches
+
+Recommended sequence:
+
+1. Create `staging` from the current `main`.
+2. Assign `staging.<your-domain>` to branch `staging` in Vercel Domains.
+3. Keep the primary production domain attached to `main`.
+4. Validate demo-critical routes on `staging` before promoting anything to `main`.
+
 ## Local Release Checklist
 
 Run this before pushing anything intended for production:
