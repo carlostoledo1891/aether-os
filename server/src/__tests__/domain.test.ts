@@ -110,3 +110,59 @@ describe('domain endpoints (seeded data)', () => {
     expect(res.statusCode).toBe(200)
   })
 })
+
+describe('enricher endpoints — API shape contracts', () => {
+  it('GET /api/seismic/recent returns 200 with SeismicSnapshot envelope', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/seismic/recent' })
+    expect(res.statusCode).toBe(200)
+    const body = res.json()
+    // Shape contract: must be an object with events array, not a bare array
+    expect(Array.isArray(body)).toBe(false)
+    expect(Array.isArray(body.events)).toBe(true)
+    expect(typeof body.source).toBe('string')
+    expect(typeof body.updated_at).toBe('string')
+    // Each event must have the fields that SeismicActivityCard reads
+    for (const event of body.events) {
+      expect(typeof event.id).toBe('string')
+      expect(typeof event.magnitude).toBe('number')
+      expect(typeof event.depth_km).toBe('number')
+      expect(typeof event.place).toBe('string')
+    }
+  })
+
+  it('GET /api/weather/historical returns 200 or 503', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/weather/historical' })
+    expect([200, 503]).toContain(res.statusCode)
+    if (res.statusCode === 200) {
+      const body = res.json()
+      expect(body.series).toBeDefined()
+      expect(typeof body.dayCount).toBe('number')
+      expect(typeof body.updated_at).toBe('string')
+    }
+  })
+
+  it('GET /api/market/fx returns 200 or 503', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/market/fx' })
+    expect([200, 503]).toContain(res.statusCode)
+    if (res.statusCode === 200) {
+      const body = res.json()
+      expect(typeof body.rate).toBe('number')
+      expect(typeof body.updated_at).toBe('string')
+    }
+  })
+
+  it('GET /api/market/stock returns 200 or 503', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/market/stock' })
+    expect([200, 503]).toContain(res.statusCode)
+    if (res.statusCode === 200) {
+      const body = res.json()
+      expect(typeof body.price).toBe('number')
+      expect(typeof body.updated_at).toBe('string')
+    }
+  })
+
+  it('GET /api/lapoc/latest returns 200 or 503', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/lapoc/latest' })
+    expect([200, 503]).toContain(res.statusCode)
+  })
+})

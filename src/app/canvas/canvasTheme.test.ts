@@ -43,6 +43,37 @@ describe('canvasTheme W tokens', () => {
     expect(W.hairlineBorder).toBeDefined()
     expect(W.chromeHeaderBg).toBeDefined()
   })
+
+  it('exports all numeric glass tokens used in map overlays', () => {
+    // These tokens were referenced in production components — pin them so
+    // a rename/removal fails here before reaching the Vercel build.
+    expect(W.glass02).toBeDefined()   // glass02
+    expect(W.glass03).toBeDefined()   // WeatherTileOverlay, CptecForecastCard rows
+    expect(W.glass04).toBeDefined()   // HydroOverlay spring event block
+    expect(W.glass05).toBeDefined()   // various overlays
+    expect(W.glass06).toBeDefined()   // glassHover alias
+    expect(W.glass07).toBeDefined()   // map overlay backgrounds
+    expect(W.glass08).toBeDefined()   // WeatherTileOverlay (was incorrectly glass10)
+    expect(W.glass12).toBeDefined()   // hydro node fill
+  })
+
+  it('does NOT export glass10 — the token that caused a build breakage', () => {
+    // glass10 was referenced by WeatherTileOverlay before the fix; this test
+    // ensures that (a) the bad token is gone and (b) any accidental re-add
+    // fails immediately rather than at deploy time.
+    expect((W as Record<string, unknown>)['glass10']).toBeUndefined()
+  })
+
+  it('exports radius scale with expected shape', () => {
+    expect(typeof W.radius.xs).toBe('number')
+    expect(typeof W.radius.sm).toBe('number')
+    expect(typeof W.radius.md).toBe('number')
+    expect(typeof W.radius.lg).toBe('number')
+    // Values increase from xs → lg
+    expect(W.radius.sm).toBeGreaterThan(W.radius.xs)
+    expect(W.radius.md).toBeGreaterThan(W.radius.sm)
+    expect(W.radius.lg).toBeGreaterThan(W.radius.md)
+  })
 })
 
 describe('DOMAIN_COLORS', () => {
