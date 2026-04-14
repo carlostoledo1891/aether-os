@@ -6,7 +6,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.maptiler.com https://*.openstreetmap.org; connect-src 'self' https://*.maptiler.com https://api.open-meteo.com https://aether-api-production-295d.up.railway.app wss://aether-api-production-295d.up.railway.app; worker-src 'self' blob:; child-src blob:; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.maptiler.com https://*.openstreetmap.org; connect-src 'self' data: https://*.maptiler.com https://api.open-meteo.com https://aether-api-production-295d.up.railway.app wss://aether-api-production-295d.up.railway.app; worker-src 'self' blob:; child-src blob:; frame-ancestors 'none'"
         },
         {
           "key": "X-Content-Type-Options",

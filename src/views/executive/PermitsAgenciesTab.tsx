@@ -87,11 +87,15 @@ export function PermitsAgenciesTab() {
           <Download size={12} />
           Regulatory log (CSV)
         </button>
-        <ProvenanceBadge kind={profile.sections.regulatory_log.kind} title={profile.sections.regulatory_log.hint} />
-        <ProvenanceBadge kind={profile.sections.audit_ledger.kind} title={profile.sections.audit_ledger.hint} />
-        {profile.sections.map_geometry ? (
+        {profile.sections?.regulatory_log && (
+          <ProvenanceBadge kind={profile.sections.regulatory_log.kind} title={profile.sections.regulatory_log.hint} />
+        )}
+        {profile.sections?.audit_ledger && (
+          <ProvenanceBadge kind={profile.sections.audit_ledger.kind} title={profile.sections.audit_ledger.hint} />
+        )}
+        {profile.sections?.map_geometry && (
           <ProvenanceBadge kind={profile.sections.map_geometry.kind} title={profile.sections.map_geometry.hint} />
-        ) : null}
+        )}
       </div>
 
       <GlassCard animate={false} className="p-4 md:p-5">

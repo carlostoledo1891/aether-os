@@ -231,7 +231,7 @@ export async function domainRoutes(app: FastifyInstance) {
   app.get('/api/provenance', { schema: { tags: ['domain'], summary: 'Provenance profile with enricher-aware sections' } }, async (req, reply) => {
     try {
       const base = getDomainState<{ presentationMode: boolean; sections: Record<string, { kind: string; hint: string }> }>('provenance_profile')
-      if (!base) return {}
+      if (!base) return { presentationMode: false, sections: {} }
 
       const weather = getLatestWeather()
       const forecast = getLatestForecast()
@@ -262,7 +262,7 @@ export async function domainRoutes(app: FastifyInstance) {
       return { ...base, sections }
     } catch (err) {
       req.log.error({ err }, '[provenance] handler error — returning empty profile')
-      return reply.code(200).send({})
+      return reply.code(200).send({ presentationMode: false, sections: {} })
     }
   })
 
@@ -436,18 +436,33 @@ export async function domainRoutes(app: FastifyInstance) {
   })
 
   app.get('/api/weather/historical', { schema: { tags: ['enrichers'], summary: 'Historical climate data (ERA5 via Open-Meteo)' } }, async (_req, reply) => {
-    const data = getHistoricalWeather()
-    return data ?? reply.code(503).send({ error: 'No historical weather data ingested' })
+    try {
+      const data = getHistoricalWeather()
+      return data ?? reply.code(503).send({ error: 'No historical weather data ingested' })
+    } catch (err) {
+      _req.log.error({ err }, '[weather/historical] enricher read failed')
+      return reply.code(503).send({ error: 'Historical weather data unavailable' })
+    }
   })
 
   app.get('/api/market/fx', { schema: { tags: ['enrichers'], summary: 'BRL/USD exchange rate (BCB PTAX)' } }, async (_req, reply) => {
-    const data = getMarketData('BRL/USD')
-    return data ?? reply.code(503).send({ error: 'No FX data' })
+    try {
+      const data = getMarketData('BRL/USD')
+      return data ?? reply.code(503).send({ error: 'No FX data' })
+    } catch (err) {
+      _req.log.error({ err }, '[market/fx] enricher read failed')
+      return reply.code(503).send({ error: 'FX data unavailable' })
+    }
   })
 
   app.get('/api/market/stock', { schema: { tags: ['enrichers'], summary: 'MEI.AX stock quote (Alpha Vantage)' } }, async (_req, reply) => {
-    const data = getMarketData('MEI.AX')
-    return data ?? reply.code(503).send({ error: 'No stock data' })
+    try {
+      const data = getMarketData('MEI.AX')
+      return data ?? reply.code(503).send({ error: 'No stock data' })
+    } catch (err) {
+      _req.log.error({ err }, '[market/stock] enricher read failed')
+      return reply.code(503).send({ error: 'Stock data unavailable' })
+    }
   })
 
   app.get('/api/seismic/recent', { schema: { tags: ['enrichers'], summary: 'Recent seismic events (USGS)' } }, async () => {
