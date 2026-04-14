@@ -11,10 +11,12 @@
  * A second set of tests mocks the hook to return empty feature collections
  * and exercises the full render path with edge-case env telemetry.
  */
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import type { EnvTelemetry } from '../../../types/telemetry'
+
+const EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] }
 
 vi.mock('react-map-gl/maplibre', () => ({
   default: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
@@ -63,6 +65,21 @@ const WARN_ENV: EnvTelemetry = {
     { springId: 'SP-001', type: 'field_visit', note: 'Flow down 30%', ts: '2025-01-01T00:00:00Z' },
   ],
 }
+
+beforeEach(() => {
+  vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+    const url = typeof input === 'string' || input instanceof URL ? String(input) : input.url
+    const payload = url.includes('/src/data/geojson/') ? EMPTY_GEOJSON : {}
+    return new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }))
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 describe('HydroOverlay — null GeoJSON path (fetch unavailable)', () => {
   it('returns null without throwing when GeoJSON is not yet loaded', async () => {
