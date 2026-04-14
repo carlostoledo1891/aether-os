@@ -150,6 +150,32 @@ describe('Map overlay layer ID contracts', () => {
     )
   })
 
+  it('layer runtime covers every registry layer id', async () => {
+    const runtimeMod = await import('../layerRuntime')
+    const registryMod = await import('../layerRegistry')
+    expect(Object.keys(runtimeMod.LAYER_RUNTIMES).sort()).toEqual(
+      registryMod.ALL_LAYERS.map((layer: { id: string }) => layer.id).sort(),
+    )
+  })
+
+  it('manifest shared-store bindings map to concrete field layer defaults', async () => {
+    const manifestMod = await import('shared/sites/caldeiraLayers')
+    const fieldMod = await import('../../../views/field/fieldMapLayers')
+    const opsKeys = new Set(Object.keys(fieldMod.DEFAULT_FIELD_OPS_LAYERS))
+    const envKeys = new Set(Object.keys(fieldMod.DEFAULT_FIELD_ENV_LAYERS))
+
+    const sharedBindings = manifestMod.CALDEIRA_LAYER_MANIFEST
+      .map((layer: { binding: { kind: string; store?: string; key?: string } }) => layer.binding)
+      .filter((binding: { kind: string }) => binding.kind === 'shared-store')
+
+    expect(sharedBindings).not.toHaveLength(0)
+    expect(sharedBindings.every((binding: { store?: string; key?: string }) => (
+      binding.store === 'ops'
+        ? opsKeys.has(String(binding.key))
+        : envKeys.has(String(binding.key))
+    ))).toBe(true)
+  })
+
   it('all active overlays export a component (function or memo object)', async () => {
     const overlays = [
       () => import('../CaldeiraBoundary'),

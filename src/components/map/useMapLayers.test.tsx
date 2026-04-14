@@ -70,4 +70,18 @@ describe('useLayerSurface', () => {
       expect.arrayContaining(['drillholes', 'buffer']),
     )
   })
+
+  it('keeps local-only terrain toggles local in shared-field mode', () => {
+    const { result } = renderHook(() =>
+      useLayerSurface({ mode: 'shared-field' }),
+    )
+
+    act(() => {
+      result.current.toggle('terrain')
+    })
+
+    expect(result.current.visibleLayerIds).toContain('terrain')
+    expect(sharedLayerStore.getOps()).toEqual(DEFAULT_FIELD_OPS_LAYERS)
+    expect(sharedLayerStore.getEnv()).toEqual(DEFAULT_FIELD_ENV_LAYERS)
+  })
 })

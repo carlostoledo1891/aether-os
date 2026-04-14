@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "verify:release": "npm run lint && npm run test:run && npm run build && npm --prefix server test && npm --prefix engine test",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
@@ -19,6 +20,7 @@
     "build:all": "npm --prefix server run build && npm --prefix engine run build && npm run build",
     "install:all": "npm install && npm --prefix server install && npm --prefix engine install",
     "build:caldeira-geojson": "tsx scripts/caldeira-build/buildCaldeiraGeojson.ts",
+    "build:caldeira-external-snapshots": "tsx scripts/caldeira-build/buildExternalLayerSnapshots.ts",
     "fit:licence-hulls": "node scripts/fit-licence-hulls.mjs",
     "check:pilot-plant-links": "tsx scripts/caldeira-build/checkPilotPlantLinks.ts",
     "validate:pilot-plant": "tsx scripts/caldeira-build/validatePilotPlant.ts",
@@ -31,6 +33,9 @@
       "eslint --fix",
       "bash -c 'npx tsc --noEmit'"
     ]
+  },
+  "engines": {
+    "node": ">=22.12.0 <23"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.156",

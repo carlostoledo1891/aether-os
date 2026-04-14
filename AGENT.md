@@ -23,6 +23,8 @@ The prototype is built to pitch to:
 **Dev server:** `http://localhost:5175/` (frontend via Vite proxy → API at `:3001`)  
 **Working directory:** `/Users/carlostoledo/Documents/Aether Project/aether-os`  
 **Start all:** `npm run dev:all` (concurrently: API server + simulation engine + Vite frontend)  
+**Node version:** `nvm use` (repo pin: `.nvmrc` -> `22.12.0`)  
+**Release check:** `npm run verify:release`
 
 **Marketing / deck copy (iterate in repo):** `docs/messaging-strategy.md` and `src/config/marketing.ts`
 
@@ -57,6 +59,7 @@ To avoid context bloat, read only what you need:
     - Added external-layer capability metadata in `shared/sites/caldeiraLayers.ts`, routed snapshot/live behaviors through `layerRuntime.tsx`, and added proxied ArcGIS identify plus layer-health/status surfaces.
     - Added `/admin/map-layers`, refactored the external snapshot build script to read shared config, and updated integration/data-source docs for snapshot-first plus proxied identify behavior.
     - Simplified the Founders deck, unified all current team presentations behind `src/components/team/TeamShowcase.tsx`, and extended `PasswordGate` session validity to 30 days.
+    - Added repo-side deploy guardrails: Node pinning, Vercel install/build commands, `verify:release`, and stronger map runtime contract coverage.
 *   **Next Steps:**
     - Manually smoke-test `FieldView`, `BuyerView`, `FoundersDeck`, `MeteoricDeck`, and the landing page to confirm external-layer interactions and team-card spacing feel right in the browser.
     - If more approved agencies need live identify, extend `server/src/routes/mapLayers.ts` and the shared layer manifest instead of adding one-off frontend logic.

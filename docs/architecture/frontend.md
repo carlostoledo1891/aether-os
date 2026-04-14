@@ -66,6 +66,25 @@ The frontend is separated into three distinct paradigms, each with a different i
 - **Render path:** native MapLibre `Source` / `Layer` stack for springs (many clickable points), monitoring nodes, and the UDC zone
 - **Exports:** layer IDs and mappers are defined in **`hydroDetailMappers.ts`** / **`hydroLayerIds.ts`**
 
+## Map Layer Contract
+
+The Caldeira map stack is manifest-driven. Treat these files as one contract, not isolated edits:
+
+1. `shared/sites/caldeiraLayers.ts` — canonical layer ids, groups, bindings, and external metadata
+2. `src/components/map/layerRegistry.ts` — UI-facing layer catalog derived from the manifest
+3. `src/components/map/layerRuntime.tsx` — runtime renderer and interactive ids for every `LayerId`
+4. `src/components/map/mapPresets.ts` — surface defaults using concrete `layerIds`
+5. `src/components/map/useMapLayers.ts` and `src/views/field/fieldMapLayers.ts` — local vs shared-store state wiring
+6. `src/components/map/__tests__/overlayContracts.test.ts` and `src/components/map/useMapLayers.test.tsx` — regression coverage
+
+Checklist for any new or renamed layer:
+
+- Update the manifest first.
+- Confirm `LAYER_RUNTIMES` covers the new `LayerId`.
+- Update presets or shared-store bindings if the layer is user-toggleable.
+- Update snapshot/external wiring if the layer is not component-backed.
+- Run `npm run test:run` and `npm run build` before push.
+
 ### `GlassCard`
 - Base style: `background: rgba(255,255,255,0.035)`, `backdropFilter: blur(12px)`, `border: 1px solid rgba(255,255,255,0.08)`, `borderRadius: 14`
 - Glow variants apply `box-shadow` with matching color
