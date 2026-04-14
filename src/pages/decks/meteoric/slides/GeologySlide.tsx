@@ -5,8 +5,10 @@ import { MapBase } from '../../../../components/map/MapBase'
 import { MapOverlays } from '../../../../components/map/MapOverlays'
 import { useMapPreset } from '../../../../components/map/mapPresets'
 import { MapLayerPanel } from '../../../../components/map/MapLayerPanel'
-import { usePresetLayers } from '../../../../components/map/useMapLayers'
+import { useLayerSurface } from '../../../../components/map/useMapLayers'
+import { VISIBLE_LAYER_GROUPS } from '../../../../components/map/layerRegistry'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
+import { ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
 import { LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
 import { DRILL_LAYER_ID, parseLithologyIntervals } from '../../../../components/map/DrillHoleOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
@@ -21,13 +23,13 @@ const CAPAO_DO_MEL = CALDEIRA_GEO.pois.capaoDoMel.coords
 
 export default function GeologySlide() {
   const preset = useMapPreset('deck-geology')
-  const layers = usePresetLayers(preset.overlays)
+  const layers = useLayerSurface({ mode: 'local', initialLayerIds: preset.layerIds })
   const [popup, setPopup] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
 
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
     if (!feats?.length) return
-    const priority = [DRILL_LAYER_ID, LICENSE_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
+    const priority = [DRILL_LAYER_ID, LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
     const feat = priority.reduce<(typeof feats)[number] | undefined>(
       (pick, lid) => pick ?? feats.find(f => f.layer?.id === lid),
       undefined,
@@ -66,6 +68,18 @@ export default function GeologySlide() {
           ],
         },
       })
+    } else if (layerId === ENV_APA_FILL_LAYER_ID) {
+      setPopup({
+        x: px.x, y: px.y,
+        data: {
+          title: String(props.label ?? 'APA Pedra Branca'),
+          accentColor: W.cyan,
+          rows: [
+            { label: 'Kind', value: String(props.kind ?? 'protected-area') },
+            ...(props.note ? [{ label: 'Note', value: String(props.note) }] : []),
+          ],
+        },
+      })
     } else if (layerId === CALDEIRA_BOUNDARY_LAYER_ID) {
       setPopup({
         x: px.x, y: px.y,
@@ -90,7 +104,7 @@ export default function GeologySlide() {
         <MapBase
           id="meteoric-geology-map"
           {...preset.viewProps}
-          interactiveLayerIds={preset.interactiveLayerIds}
+          interactiveLayerIds={layers.interactiveLayerIds}
           cursor={popup ? 'pointer' : ''}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
@@ -135,7 +149,7 @@ export default function GeologySlide() {
               <MapLayerPanel
                 state={layers.state}
                 onToggle={layers.toggle}
-                groups={['base', 'geology', 'terrain']}
+                groups={VISIBLE_LAYER_GROUPS}
                 terrainExaggeration={layers.terrainExaggeration}
                 onTerrainExaggerationChange={layers.setTerrainExaggeration}
               />
@@ -145,6 +159,7 @@ export default function GeologySlide() {
                 {[
                   { label: 'Drill Holes', color: V },
                   { label: 'Mining licences', color: W.violetSoft },
+                  { label: 'APA Boundary', color: W.cyan },
                   { label: 'Caldeira Boundary', color: W.violet },
                   { label: 'SGB/CPRM Geology', color: W.amber },
                 ].map(l => (
@@ -163,7 +178,7 @@ export default function GeologySlide() {
           }}
         >
           <MapOverlays
-            layers={layers.overlayKeys}
+            layers={layers.visibleLayerIds}
             terrainExaggeration={layers.terrainExaggeration}
           />
         </MapBase>

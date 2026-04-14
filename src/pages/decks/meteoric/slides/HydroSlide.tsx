@@ -5,9 +5,11 @@ import { MapBase } from '../../../../components/map/MapBase'
 import { MapOverlays } from '../../../../components/map/MapOverlays'
 import { useMapPreset } from '../../../../components/map/mapPresets'
 import { MapLayerPanel } from '../../../../components/map/MapLayerPanel'
-import { usePresetLayers } from '../../../../components/map/useMapLayers'
+import { useLayerSurface } from '../../../../components/map/useMapLayers'
+import { VISIBLE_LAYER_GROUPS } from '../../../../components/map/layerRegistry'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
 import { ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
+import { LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
 import { SPRING_PIN_LAYER_ID } from '../../../../components/map/SpringPinsOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
@@ -20,7 +22,7 @@ const AnimatedStat = lazy(() => import('../AnimatedStat'))
 
 export default function HydroSlide() {
   const preset = useMapPreset('deck-hydro')
-  const layers = usePresetLayers(preset.overlays)
+  const layers = useLayerSurface({ mode: 'local', initialLayerIds: preset.layerIds })
   const [popup, setPopup] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
   const { env } = useTelemetry()
   const weather = useSiteWeather(30, { enabled: true })
@@ -41,12 +43,10 @@ export default function HydroSlide() {
     scenarioHorizon: '',
   }
 
-  const INTERACTIVE_LAYERS = preset.interactiveLayerIds
-
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
     if (!feats?.length) return
-    const priority = [SPRING_PIN_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
+    const priority = [SPRING_PIN_LAYER_ID, LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
     const feat = priority.reduce<(typeof feats)[number] | undefined>(
       (pick, lid) => pick ?? feats.find(f => f.layer?.id === lid),
       undefined,
@@ -67,6 +67,18 @@ export default function HydroSlide() {
             ...(props.source_label ? [{ label: 'Source', value: String(props.source_label) }] : []),
             ...(props.municipality ? [{ label: 'Municipality', value: String(props.municipality) }] : []),
             { label: 'Network', value: 'CAR Monitored' },
+          ],
+        },
+      })
+    } else if (layerId === LICENSE_LAYER_ID) {
+      setPopup({
+        x: px.x, y: px.y,
+        data: {
+          title: String(props.name ?? props.id ?? ''),
+          accentColor: W.violet,
+          rows: [
+            { label: 'Status', value: String(props.status ?? '—') },
+            { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
           ],
         },
       })
@@ -105,7 +117,7 @@ export default function HydroSlide() {
         <MapBase
           id="meteoric-hydro-map"
           {...preset.viewProps}
-          interactiveLayerIds={INTERACTIVE_LAYERS}
+          interactiveLayerIds={layers.interactiveLayerIds}
           cursor={popup ? 'pointer' : ''}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
@@ -161,9 +173,7 @@ export default function HydroSlide() {
               <MapLayerPanel
                 state={layers.state}
                 onToggle={layers.toggle}
-                groups={['base', 'environment', 'hydrology', 'weather', 'terrain']}
-                weatherOpacity={layers.weatherOpacity}
-                onWeatherOpacityChange={layers.setWeatherOpacity}
+                groups={VISIBLE_LAYER_GROUPS}
                 terrainExaggeration={layers.terrainExaggeration}
                 onTerrainExaggerationChange={layers.setTerrainExaggeration}
               />
@@ -173,8 +183,7 @@ export default function HydroSlide() {
                 {[
                   { label: 'Springs', color: W.cyan },
                   { label: 'APA Boundary', color: W.cyan },
-                  { label: 'Monitoring Zone', color: '#3b82f6' },
-                  { label: 'Buffer Zone', color: `${W.cyan}60` },
+                  { label: 'Mining licences', color: W.violetSoft },
                 ].map(l => (
                   <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 4, background: W.overlay88, padding: '4px 10px', borderRadius: 6, backdropFilter: 'blur(16px)' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color }} />
@@ -186,11 +195,8 @@ export default function HydroSlide() {
           }}
         >
           <MapOverlays
-            layers={layers.overlayKeys}
-            environmentalProps={layers.environmentalProps}
-            weatherOpacity={layers.weatherOpacity}
+            layers={layers.visibleLayerIds}
             terrainExaggeration={layers.terrainExaggeration}
-            activeWeatherLayers={layers.activeWeatherLayers}
           />
         </MapBase>
       </Suspense>

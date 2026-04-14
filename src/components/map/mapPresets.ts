@@ -6,23 +6,11 @@
  *
  * Usage:
  *   const preset = useMapPreset('deck-geology')
- *   <MapBase {...preset.viewProps}>
- *     <MapOverlays layers={preset.overlays} />
- *   </MapBase>
+ *   <MapBase {...preset.viewProps} />
  */
 
 import { useMemo } from 'react'
 import { CALDEIRA_GEO } from 'shared/sites/caldeira'
-
-import { CALDEIRA_BOUNDARY_LAYER_ID } from './CaldeiraBoundary'
-import { LICENSE_LAYER_ID } from './LicenseOverlay'
-import { DRILL_LAYER_ID } from './DrillHoleOverlay'
-import { SPRING_PIN_LAYER_ID } from './SpringPinsOverlay'
-import { ENV_APA_FILL_LAYER_ID } from './EnvironmentalOverlay'
-import { PFS_ENGINEERING_FILL_LAYER_ID } from './PfsEngineeringOverlay'
-import { INFRA_POINT_CORE_LAYER_ID } from './InfraOverlay'
-import { OPS_PLANT_SITE_CORE_LAYER_ID } from './OpsPlantSitesOverlay'
-import { HYDRO_NODE_LAYER_ID } from './hydroLayerIds'
 
 export type MapStyleId = 'satellite' | 'operations' | 'topo'
 
@@ -39,10 +27,9 @@ export type MapPresetKey =
 import type { LayerId } from './layerRegistry'
 
 /**
- * OverlayKey is now an alias for LayerId plus composite keys
- * ('environmental', 'weather') that expand to multiple registry entries.
+ * Presets now describe only the starting layer composition for a surface.
  */
-export type OverlayKey = LayerId | 'environmental' | 'weather'
+export type OverlayKey = LayerId
 
 export interface MapPresetViewProps {
   initialViewState: {
@@ -61,8 +48,7 @@ export interface MapPresetViewProps {
 
 export interface MapPreset {
   viewProps: MapPresetViewProps
-  overlays: OverlayKey[]
-  interactiveLayerIds: string[]
+  layerIds: LayerId[]
   showLayerPicker: boolean
 }
 
@@ -86,15 +72,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: undefined,
     },
-    overlays: ['boundary', 'licenses', 'pfs', 'drillholes', 'plantSites', 'infra'],
-    interactiveLayerIds: [
-      DRILL_LAYER_ID,
-      LICENSE_LAYER_ID,
-      PFS_ENGINEERING_FILL_LAYER_ID,
-      OPS_PLANT_SITE_CORE_LAYER_ID,
-      INFRA_POINT_CORE_LAYER_ID,
-      CALDEIRA_BOUNDARY_LAYER_ID,
-    ],
+    layerIds: ['boundary', 'licenses', 'apa', 'pfs', 'drillholes', 'plantSites', 'infra'],
     showLayerPicker: true,
   },
 
@@ -107,14 +85,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: true,
       forceStyle: undefined,
     },
-    overlays: ['boundary', 'licenses', 'environmental', 'hydroSprings', 'weather'],
-    interactiveLayerIds: [
-      SPRING_PIN_LAYER_ID,
-      HYDRO_NODE_LAYER_ID,
-      ENV_APA_FILL_LAYER_ID,
-      LICENSE_LAYER_ID,
-      CALDEIRA_BOUNDARY_LAYER_ID,
-    ],
+    layerIds: ['boundary', 'licenses', 'apa', 'hydroSprings'],
     showLayerPicker: true,
   },
 
@@ -127,12 +98,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: undefined,
     },
-    overlays: ['boundary', 'licenses', 'drillholes', 'environmental'],
-    interactiveLayerIds: [
-      LICENSE_LAYER_ID,
-      ENV_APA_FILL_LAYER_ID,
-      DRILL_LAYER_ID,
-    ],
+    layerIds: ['boundary', 'licenses', 'drillholes', 'apa'],
     showLayerPicker: true,
   },
 
@@ -145,8 +111,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    overlays: [],
-    interactiveLayerIds: [],
+    layerIds: [],
     showLayerPicker: false,
   },
 
@@ -159,12 +124,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    overlays: ['boundary', 'licenses', 'drillholes', 'cprmGeology'],
-    interactiveLayerIds: [
-      DRILL_LAYER_ID,
-      LICENSE_LAYER_ID,
-      CALDEIRA_BOUNDARY_LAYER_ID,
-    ],
+    layerIds: ['boundary', 'licenses', 'apa', 'drillholes', 'geosgbGeology'],
     showLayerPicker: true,
   },
 
@@ -177,12 +137,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    overlays: ['boundary', 'environmental', 'hydroSprings', 'weather'],
-    interactiveLayerIds: [
-      SPRING_PIN_LAYER_ID,
-      ENV_APA_FILL_LAYER_ID,
-      CALDEIRA_BOUNDARY_LAYER_ID,
-    ],
+    layerIds: ['boundary', 'licenses', 'apa', 'hydroSprings'],
     showLayerPicker: true,
   },
 
@@ -195,8 +150,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: undefined,
     },
-    overlays: ['boundary', 'licenses', 'environmental', 'plantSites'],
-    interactiveLayerIds: [],
+    layerIds: ['boundary', 'licenses', 'apa', 'plantSites'],
     showLayerPicker: false,
   },
 
@@ -209,8 +163,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    overlays: [],
-    interactiveLayerIds: [],
+    layerIds: [],
     showLayerPicker: false,
   },
 }
@@ -224,8 +177,7 @@ export function useMapPreset(
     if (!overrides) return base
     return {
       viewProps: { ...base.viewProps, ...overrides.viewProps },
-      overlays: overrides.overlays ?? base.overlays,
-      interactiveLayerIds: overrides.interactiveLayerIds ?? base.interactiveLayerIds,
+      layerIds: overrides.layerIds ?? base.layerIds,
       showLayerPicker: overrides.showLayerPicker ?? base.showLayerPicker,
     }
   }, [key, overrides])

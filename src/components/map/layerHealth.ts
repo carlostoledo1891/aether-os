@@ -12,6 +12,7 @@ export interface LayerHealthStatus {
 
 const layerHealth = new Map<LayerId, LayerHealthStatus>()
 const listeners = new Set<() => void>()
+let layerHealthSnapshot = new Map<LayerId, LayerHealthStatus>()
 
 function emit() {
   listeners.forEach(listener => listener())
@@ -28,6 +29,7 @@ export function publishLayerHealth(layerId: LayerId, next: LayerHealthStatus) {
     return
   }
   layerHealth.set(layerId, next)
+  layerHealthSnapshot = new Map(layerHealth)
   emit()
 }
 
@@ -37,7 +39,7 @@ export function useLayerHealth() {
       listeners.add(listener)
       return () => listeners.delete(listener)
     },
-    () => new Map(layerHealth),
-    () => new Map(layerHealth),
+    () => layerHealthSnapshot,
+    () => layerHealthSnapshot,
   )
 }

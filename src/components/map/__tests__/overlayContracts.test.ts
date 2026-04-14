@@ -104,12 +104,13 @@ describe('Map overlay layer ID contracts', () => {
   })
 
   it('map presets use concrete layer ids only', async () => {
-    const mod = await import('../mapPresets')
-    const allPresetLayerIds = Object.values(mod.MAP_PRESETS).flatMap(
-      (preset: { layerIds: string[] }) => preset.layerIds,
-    )
-    expect(allPresetLayerIds.includes('environmental')).toBe(false)
+    const presetMod = await import('../mapPresets')
+    const registryMod = await import('../layerRegistry')
+    const validLayerIds = new Set(registryMod.ALL_LAYERS.map((layer: { id: string }) => layer.id))
+    const allPresetLayerIds = Object.values(presetMod.MAP_PRESETS).flatMap(preset => preset.layerIds.map(String))
+    expect(allPresetLayerIds).not.toContain('environmental')
     expect(allPresetLayerIds).toContain('apa')
+    expect(allPresetLayerIds.every(layerId => validLayerIds.has(layerId))).toBe(true)
   })
 
   it('InmetStationOverlay exports INMET_STATION_LAYER_ID', async () => {

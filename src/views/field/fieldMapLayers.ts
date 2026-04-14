@@ -12,10 +12,10 @@ export interface FieldOpsMapLayers {
 
 export const DEFAULT_FIELD_OPS_LAYERS: FieldOpsMapLayers = {
   tenements: true,
-  drillHoles: true,
+  drillHoles: false,
   holeTypeFilter: 'all',
-  pfsEngineering: true,
-  plantSites: true,
+  pfsEngineering: false,
+  plantSites: false,
   infra: false,
 }
 
@@ -28,8 +28,8 @@ export interface FieldEnvMapLayers {
 
 export const DEFAULT_FIELD_ENV_LAYERS: FieldEnvMapLayers = {
   apa: true,
-  buffer: true,
-  monitoring: true,
+  buffer: false,
+  monitoring: false,
   urban: false,
 }
 

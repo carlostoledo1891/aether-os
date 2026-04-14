@@ -6,6 +6,8 @@ import { createMockDataService } from '../../services/mockDataService'
 import type { AetherDataService } from '../../services/dataService'
 import type { ReactNode } from 'react'
 
+const EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] }
+
 vi.mock('react-map-gl/maplibre', () => ({
   default: ({ children }: { children?: ReactNode }) => <div data-testid="map-container">{children}</div>,
   Map: ({ children }: { children?: ReactNode }) => <div data-testid="map-container">{children}</div>,
@@ -35,11 +37,20 @@ function TestWrapper({ children }: { children: ReactNode }) {
 beforeEach(() => {
   vi.useFakeTimers()
   service = createMockDataService()
+  vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+    const url = typeof input === 'string' || input instanceof URL ? String(input) : input.url
+    const payload = url.includes('/src/data/geojson/') ? EMPTY_GEOJSON : {}
+    return new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }))
 })
 
 afterEach(() => {
   cleanup()
   vi.restoreAllMocks()
+  vi.unstubAllGlobals()
   vi.useRealTimers()
 })
 
