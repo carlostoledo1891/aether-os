@@ -8,16 +8,13 @@ RUN npx tsc
 RUN npm prune --production
 
 FROM node:22-alpine
-RUN apk add --no-cache wget && \
-    addgroup -g 1001 -S vero && \
-    adduser -S vero -u 1001 -G vero
+RUN apk add --no-cache wget
 WORKDIR /app
-COPY --from=build --chown=vero:vero /app/node_modules ./node_modules
-COPY --from=build --chown=vero:vero /app/dist ./dist
-COPY --from=build --chown=vero:vero /app/package.json ./
-RUN mkdir -p /app/data /data && chown -R vero:vero /app/data /data
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package.json ./
+RUN mkdir -p /data
 ENV DB_PATH=/data/aether.db
-USER vero
 EXPOSE 3001
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -qO- http://localhost:3001/api/health || exit 1
