@@ -2,8 +2,8 @@
  * MapLayerPanel — unified, grouped layer control for every map surface.
  *
  * Single trigger button (Layers icon) expands into a panel with
- * collapsible sections per LayerGroupId. Weather and terrain groups
- * include opacity / exaggeration sliders.
+ * collapsible sections per LayerGroupId. Terrain retains the
+ * exaggeration slider; weather is no longer a visible layer group.
  */
 
 import { memo, useState, useCallback, Fragment } from 'react'
@@ -14,24 +14,20 @@ import {
   layersByGroup,
   type LayerGroupId,
   type LayerDef,
+  type LayerId,
+  type LayerVisibilityState,
 } from './layerRegistry'
+import { useLayerHealth } from './layerHealth'
 
 // ── Public API ─────────────────────────────────────────────────────────
 
-export interface LayerState {
-  [layerId: string]: boolean
-}
-
 export interface MapLayerPanelProps {
   /** Current on/off state per layer id */
-  state: LayerState
+  state: LayerVisibilityState
   /** Toggle a single layer */
-  onToggle: (id: string) => void
+  onToggle: (id: LayerId) => void
   /** Optional: groups to display (default: all groups that have at least one layer in `state`) */
   groups?: LayerGroupId[]
-  /** Weather tile opacity 0–1 */
-  weatherOpacity?: number
-  onWeatherOpacityChange?: (v: number) => void
   /** Terrain exaggeration 0–3 */
   terrainExaggeration?: number
   onTerrainExaggerationChange?: (v: number) => void
@@ -43,13 +39,12 @@ export const MapLayerPanel = memo(function MapLayerPanel({
   state,
   onToggle,
   groups,
-  weatherOpacity,
-  onWeatherOpacityChange,
   terrainExaggeration,
   onTerrainExaggerationChange,
 }: MapLayerPanelProps) {
   const [open, setOpen] = useState(false)
   const [collapsed, setCollapsed] = useState<Set<LayerGroupId>>(() => new Set())
+  const layerHealth = useLayerHealth()
 
   const toggleSection = useCallback((gid: LayerGroupId) => {
     setCollapsed(prev => {
@@ -162,22 +157,14 @@ export const MapLayerPanel = memo(function MapLayerPanel({
                 {!isCollapsed && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingLeft: 18, paddingBottom: 4 }}>
                     {layers.filter(l => l.available).map(layer => (
-                      <LayerRow key={layer.id} layer={layer} checked={!!state[layer.id]} onToggle={onToggle} />
-                    ))}
-
-                    {/* Weather opacity slider */}
-                    {group.id === 'weather' && weatherOpacity !== undefined && onWeatherOpacityChange && (
-                      <SliderRow
-                        label="Opacity"
-                        value={weatherOpacity}
-                        min={0.1}
-                        max={1}
-                        step={0.05}
-                        displayValue={`${Math.round(weatherOpacity * 100)}%`}
-                        accent={W.cyan}
-                        onChange={onWeatherOpacityChange}
+                      <LayerRow
+                        key={layer.id}
+                        layer={layer}
+                        checked={!!state[layer.id]}
+                        onToggle={onToggle}
+                        health={layerHealth.get(layer.id)}
                       />
-                    )}
+                    ))}
 
                     {/* Terrain exaggeration slider */}
                     {group.id === 'terrain' && terrainExaggeration !== undefined && onTerrainExaggerationChange && (
@@ -205,27 +192,135 @@ export const MapLayerPanel = memo(function MapLayerPanel({
 
 // ── Sub-components ─────────────────────────────────────────────────────
 
-function LayerRow({ layer, checked, onToggle }: { layer: LayerDef; checked: boolean; onToggle: (id: string) => void }) {
+function healthTone(status?: { state: string }) {
+  switch (status?.state) {
+    case 'ready':
+      return W.green
+    case 'loading':
+      return W.amber
+    case 'error':
+      return W.red
+    default:
+      return W.text4
+  }
+}
+
+function healthLabel(status?: { state: string; featureCount?: number; loadedAt?: string }) {
+  if (!status) return null
+  if (status.state === 'ready') {
+    const age = status.loadedAt ? new Date(status.loadedAt).toISOString().slice(0, 10) : 'loaded'
+    return status.featureCount != null ? `${status.featureCount} feat · ${age}` : age
+  }
+  if (status.state === 'loading') return 'loading'
+  if (status.state === 'error') return 'load error'
+  return null
+}
+
+function LayerRow({
+  layer,
+  checked,
+  onToggle,
+  health,
+}: {
+  layer: LayerDef
+  checked: boolean
+  onToggle: (id: LayerId) => void
+  health?: { state: string; featureCount?: number; loadedAt?: string }
+}) {
+  const meta = [
+    layer.provider,
+    layer.renderMode === 'snapshot-geojson'
+      ? 'snapshot'
+      : layer.renderMode === 'live-raster'
+        ? 'live raster'
+        : null,
+    layer.identifyMode === 'arcgis-query'
+      ? 'live identify'
+      : layer.identifyMode === 'snapshot-properties'
+        ? 'snapshot identify'
+        : null,
+  ].filter(Boolean)
+
   return (
     <label
       style={{
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 6,
         fontSize: 10,
         color: checked ? W.text2 : W.text4,
         cursor: 'pointer',
-        padding: '2px 0',
+        padding: '4px 0',
         transition: 'color 0.12s',
+        flexDirection: 'column',
       }}
     >
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={() => onToggle(layer.id)}
-        style={{ accentColor: W.violet, width: 11, height: 11, flexShrink: 0 }}
-      />
-      {layer.label}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, width: '100%' }}>
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={() => onToggle(layer.id)}
+          style={{ accentColor: W.violet, width: 11, height: 11, flexShrink: 0, marginTop: 1 }}
+        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'space-between' }}>
+            <span>{layer.label}</span>
+            {health && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  color: healthTone(health),
+                  fontSize: 8,
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                <span
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: '50%',
+                    background: healthTone(health),
+                    flexShrink: 0,
+                  }}
+                />
+                {health.state}
+              </span>
+            )}
+          </div>
+          {meta.length > 0 && (
+            <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)', lineHeight: 1.35 }}>
+              {meta.join(' · ')}
+            </span>
+          )}
+          {healthLabel(health) && (
+            <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)', lineHeight: 1.35 }}>
+              {healthLabel(health)}
+            </span>
+          )}
+        </div>
+      </div>
+      {checked && layer.legendItems && layer.legendItems.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingLeft: 17 }}>
+          {layer.legendItems.map(item => (
+            <div key={`${layer.id}-${item.label}`} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 8, color: W.text4 }}>
+              <span
+                style={{
+                  width: item.symbol === 'line' ? 12 : 9,
+                  height: item.symbol === 'line' ? 2 : 9,
+                  borderRadius: item.symbol === 'circle' ? '50%' : 2,
+                  background: item.symbol === 'line' ? item.strokeColor ?? item.color ?? W.text4 : item.color ?? 'transparent',
+                  border: item.symbol === 'line' ? undefined : `1px solid ${item.strokeColor ?? item.color ?? W.text4}`,
+                  flexShrink: 0,
+                }}
+              />
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </label>
   )
 }

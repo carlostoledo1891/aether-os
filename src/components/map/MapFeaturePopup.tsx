@@ -2,6 +2,9 @@ import { memo, type CSSProperties } from 'react'
 import { W } from '../../app/canvas/canvasTheme'
 import { Z } from './mapStacking'
 import { LITH_COLORS } from '../charts/lithologyPalette'
+import { DataSourceBadge, type DataSourceKind } from '../ui/DataSourceBadge'
+import { ProvenanceBadge } from '../ui/ProvenanceBadge'
+import type { DataProvenanceKind } from '../../services/dataService'
 
 export interface LithologyBarInterval {
   from_m: number
@@ -16,6 +19,8 @@ export interface MapPopupData {
   footer?: string
   accentColor?: string
   lithologyIntervals?: LithologyBarInterval[]
+  sourceBadge?: { kind: DataSourceKind; label?: string }
+  provenanceBadge?: { kind: DataProvenanceKind; title?: string }
 }
 
 interface MapFeaturePopupProps {
@@ -69,6 +74,16 @@ export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: Map
 
       {/* Content (right) */}
       <div style={{ flex: 1, minWidth: 0 }}>
+        {(data.sourceBadge || data.provenanceBadge) && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 5 }}>
+            {data.sourceBadge && (
+              <DataSourceBadge kind={data.sourceBadge.kind} label={data.sourceBadge.label} />
+            )}
+            {data.provenanceBadge && (
+              <ProvenanceBadge kind={data.provenanceBadge.kind} title={data.provenanceBadge.title} />
+            )}
+          </div>
+        )}
         <div style={{ fontWeight: 700, color: data.accentColor ?? W.violet, marginBottom: data.subtitle ? 2 : 4, fontSize: 11 }}>
           {data.title}
         </div>

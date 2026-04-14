@@ -1,0 +1,14 @@
+{
+  "source_id": "geosgb",
+  "source_label": "GeoSGB geology",
+  "fetched_at": "2026-04-14T14:16:36.446Z",
+  "query_url": "https://geoportal.sgb.gov.br/server/rest/services/geologia/litoestratigrafia_estados/MapServer/8/query?where=1%3D1&returnGeometry=true&outFields=*&geometry=-46.72%2C-22.06%2C-46.39%2C-21.75&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=geojson",
+  "feature_count": 5,
+  "bbox": {
+    "xmin": -46.72,
+    "ymin": -22.06,
+    "xmax": -46.39,
+    "ymax": -21.75,
+    "wkid": 4326
+  }
+}

@@ -7,25 +7,16 @@ import { PilotPlantCard } from '../components/plant/PilotPlantCard'
 import { ControlRoom } from '../components/plant/ControlRoom'
 import { MapBase } from '../components/map/MapBase'
 import { MapOverlays } from '../components/map/MapOverlays'
-import { HydroOverlay, HydroLegend, HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from '../components/map/HydroOverlay'
+import { HydroOverlay, HydroLegend } from '../components/map/HydroOverlay'
 import type { HydroOverlayNodeDetail } from '../components/map/HydroOverlay'
-import { CALDEIRA_BOUNDARY_LAYER_ID } from '../components/map/CaldeiraBoundary'
-import {
-  ENV_APA_FILL_LAYER_ID,
-  ENV_BUFFER_FILL_LAYER_ID,
-  ENV_MONITORING_FILL_LAYER_ID,
-  ENV_URBAN_FILL_LAYER_ID,
-  ENV_URBAN_CENTROID_CORE_LAYER_ID,
-} from '../components/map/EnvironmentalOverlay'
-import { LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
-import { DrillHoleOverlay, DRILL_LAYER_ID } from '../components/map/DrillHoleOverlay'
-import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID } from '../components/map/PfsEngineeringOverlay'
-import { INFRA_POINT_CORE_LAYER_ID } from '../components/map/InfraOverlay'
-import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from '../components/map/OpsPlantSitesOverlay'
+import { DrillHoleOverlay } from '../components/map/DrillHoleOverlay'
+import { PfsEngineeringOverlay } from '../components/map/PfsEngineeringOverlay'
+import { OpsPlantSitesOverlay } from '../components/map/OpsPlantSitesOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPanel } from '../components/map/MapLayerPanel'
-import { useMapLayers } from '../components/map/useMapLayers'
-import type { LayerGroupId } from '../components/map/layerRegistry'
+import { MapBookmarkControl } from '../components/map/MapBookmarkControl'
+import { useLayerSurface } from '../components/map/useMapLayers'
+import { VISIBLE_LAYER_GROUPS } from '../components/map/layerRegistry'
 import { HydroMonitoringCard } from '../components/map/HydroMonitoringCard'
 import { W } from '../app/canvas/canvasTheme'
 import { Z } from '../components/map/mapStacking'
@@ -48,9 +39,6 @@ const TAB_ITEMS: { id: MapTab; label: string; icon: typeof Settings; color: stri
   { id: 'operations',  label: 'Operations', icon: Settings,    color: W.violet },
   { id: 'environment', label: 'Hydro Twin', icon: Layers,      color: W.cyan   },
 ]
-
-const FIELD_OPS_GROUPS: LayerGroupId[] = ['base', 'geology', 'operations', 'terrain']
-const FIELD_ENV_GROUPS: LayerGroupId[] = ['base', 'environment', 'hydrology', 'weather', 'terrain']
 
 function DiamondShape({ color, size = 8 }: { color: string; size?: number }) {
   return (
@@ -127,11 +115,11 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
   const [controlRoomOpen, setControlRoomOpen] = useState(false)
   const [hydroStationOpen, setHydroStationOpen] = useState(false)
   const { opsMapLayers } = useSharedMapLayers()
-  const mapLayers = useMapLayers()
+  const mapLayers = useLayerSurface({ mode: 'shared-field' })
 
   useEffect(() => {
-    mapLayers.setActiveGroups(mapTab === 'operations' ? FIELD_OPS_GROUPS : FIELD_ENV_GROUPS)
-  }, [mapTab, mapLayers])
+    mapLayers.setActiveGroups(VISIBLE_LAYER_GROUPS)
+  }, [mapLayers])
 
   const {
     hoveredNodeId,
@@ -147,35 +135,9 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
     handleMouseMove,
     handleMouseLeave,
     handleMapClick,
-  } = useMapInteraction({ mapTab, opsMapLayers, springsRef })
+  } = useMapInteraction({ mapTab, opsMapLayers, springsRef, visibleLayerIds: mapLayers.visibleLayerIds })
 
   const ls = mapLayers.state
-  const interactiveLayerIds = useMemo(() => {
-    if (mapTab === 'operations') {
-      const ids: string[] = []
-      if (ls.licenses) ids.push(LICENSE_LAYER_ID)
-      if (ls.drillholes) ids.push(DRILL_LAYER_ID)
-      if (ls.pfs) ids.push(PFS_ENGINEERING_FILL_LAYER_ID)
-      if (ls.plantSites) ids.push(OPS_PLANT_SITE_CORE_LAYER_ID)
-      if (ls.infra) ids.push(INFRA_POINT_CORE_LAYER_ID)
-      ids.push(CALDEIRA_BOUNDARY_LAYER_ID)
-      return ids
-    }
-    const e: string[] = [HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID, LICENSE_LAYER_ID]
-    if (ls.apa) e.push(ENV_APA_FILL_LAYER_ID, 'env-apa-label')
-    if (ls.buffer) e.push(ENV_BUFFER_FILL_LAYER_ID)
-    if (ls.monitoring) e.push(ENV_MONITORING_FILL_LAYER_ID)
-    if (ls.urban) {
-      e.push(
-        ENV_URBAN_CENTROID_CORE_LAYER_ID,
-        'env-urban-centroid-label',
-        ENV_URBAN_FILL_LAYER_ID,
-        'env-urban-label',
-      )
-    }
-    e.push(CALDEIRA_BOUNDARY_LAYER_ID)
-    return e
-  }, [mapTab, ls])
 
   const switchTab = useCallback((tab: MapTab) => {
     setMapTab(tab)
@@ -276,7 +238,7 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
           >
             <MapBase
               initialViewState={initialCamera ?? undefined}
-              interactiveLayerIds={interactiveLayerIds}
+              interactiveLayerIds={mapLayers.interactiveLayerIds}
               cursor={isHovering ? 'pointer' : ''}
               highlightWater={mapTab === 'environment'}
               onMouseEnter={handleMouseEnter}
@@ -310,25 +272,23 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                   </>
                 ),
                 topRight: (
-                  <MapLayerPanel
-                    state={fieldPanelState}
-                    onToggle={mapLayers.toggle}
-                    groups={mapTab === 'operations' ? FIELD_OPS_GROUPS : FIELD_ENV_GROUPS}
-                    weatherOpacity={mapLayers.weatherOpacity}
-                    onWeatherOpacityChange={mapLayers.setWeatherOpacity}
-                    terrainExaggeration={mapLayers.terrainExaggeration}
-                    onTerrainExaggerationChange={mapLayers.setTerrainExaggeration}
-                  />
+                  <>
+                    <MapBookmarkControl mapId="aetherField" />
+                    <MapLayerPanel
+                      state={fieldPanelState}
+                      onToggle={mapLayers.toggle}
+                      groups={VISIBLE_LAYER_GROUPS}
+                      terrainExaggeration={mapLayers.terrainExaggeration}
+                      onTerrainExaggerationChange={mapLayers.setTerrainExaggeration}
+                    />
+                  </>
                 ),
                 bottomRight: mapTab === 'operations' ? <FieldOpsLegend /> : <HydroLegend />,
               }}
             >
               <MapOverlays
-                layers={mapLayers.overlayKeys}
-                environmentalProps={mapLayers.environmentalProps}
-                weatherOpacity={mapLayers.weatherOpacity}
+                layers={mapLayers.visibleLayerIds}
                 terrainExaggeration={mapLayers.terrainExaggeration}
-                activeWeatherLayers={mapLayers.activeWeatherLayers}
                 renderOverrides={{
                   drillholes: ls.drillholes ? (
                     <DrillHoleOverlay
@@ -351,6 +311,13 @@ export function FieldView({ highlightFeatureId }: FieldViewProps) {
                     />
                   ) : null,
                   hydroSprings: (ls.hydroSprings || ls.hydroNodes) && mapTab === 'environment' ? (
+                    <HydroOverlay
+                      env={env}
+                      hoveredNodeId={hoveredNodeId}
+                      selectedNodeId={selectedHydroNode?.id ?? null}
+                    />
+                  ) : undefined,
+                  hydroNodes: (ls.hydroSprings || ls.hydroNodes) && mapTab === 'environment' ? (
                     <HydroOverlay
                       env={env}
                       hoveredNodeId={hoveredNodeId}

@@ -19,6 +19,7 @@ import multipart from '@fastify/multipart'
 import { chatRoutes } from './routes/chat.js'
 import { chatUploadRoutes } from './routes/chatUpload.js'
 import { knowledgeAdminRoutes } from './routes/knowledgeAdmin.js'
+import { mapLayerRoutes } from './routes/mapLayers.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
 import { enforceEnvOrExit } from './validateEnv.js'
@@ -156,6 +157,7 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
   await app.register(chatRoutes)
   await app.register(chatUploadRoutes)
   await app.register(knowledgeAdminRoutes)
+  await app.register(mapLayerRoutes)
 
   return app
 }

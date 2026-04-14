@@ -52,18 +52,13 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Field card extraction & marketing polish sprint complete. 109 files changed, ESLint + TypeScript clean, pushed to main.
-*   **Recent Changes (Apr 13 2026):**
-    - **EnvironmentPanel decomposed:** Extracted into 5 standalone cards (WeatherForecastCard, CptecForecastCard, ClimateBaselineCard, SeismicActivityCard, CommunityNoticeCard). EnvironmentPanel dropped ~330 lines.
-    - **Weather refactor:** Split `useSiteWeather` into `weatherMocks.ts` + `weatherServerFetch.ts` modules.
-    - **New components:** PasswordGate (session-gated access), VeroChainLogo brand asset, GeoDataSlide for Meteoric deck.
-    - **Marketing pages refactored:** Shared constants and layout primitives extracted to `shared.tsx` / `sharedConstants.ts`.
-    - **Tests added:** config, lapocAdapter, DataSourceBadge, enricherService tests. Domain thresholds + report primitives helpers extracted.
-    - **Server:** Updated ingest pipeline, chat routes, knowledge admin, seed data. Deleted stale `caldeira-reference-udc.geojson`.
+*   **Focus:** Caldeira maps now support snapshot-first Esri-compatible metadata, identify, legend, and admin catalog flows on top of the manifest-driven runtime.
+*   **Recent Changes (Apr 14 2026):**
+    - Added external-layer capability metadata in `shared/sites/caldeiraLayers.ts`, routed snapshot/live behaviors through `layerRuntime.tsx`, and added proxied ArcGIS identify plus layer-health/status surfaces.
+    - Added `/admin/map-layers`, refactored the external snapshot build script to read shared config, and updated integration/data-source docs for snapshot-first plus proxied identify behavior.
+    - Simplified the Founders deck, unified all current team presentations behind `src/components/team/TeamShowcase.tsx`, and extended `PasswordGate` session validity to 30 days.
 *   **Next Steps:**
-    - Visual smoke test all 7 map surfaces to verify zero overlaps.
-    - Consider deleting legacy per-service overlay files (`CprmGeologyOverlay.tsx`, `MacrostratOverlay.tsx`, `UsgsReeOverlay.tsx`) once `ExternalRasterOverlay` is validated in production.
-    - **API Registry Architecture (deferred):** Design `ApiSourceDef` type + central registry (`shared/apis/registry.ts`) for pluggable external API integration (NOAA, INMET, Open-Meteo, BCB, etc.).
-    - Prepare Meteoric pitch for Apr 16 send.
+    - Manually smoke-test `FieldView`, `BuyerView`, `FoundersDeck`, `MeteoricDeck`, and the landing page to confirm external-layer interactions and team-card spacing feel right in the browser.
+    - If more approved agencies need live identify, extend `server/src/routes/mapLayers.ts` and the shared layer manifest instead of adding one-off frontend logic.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*

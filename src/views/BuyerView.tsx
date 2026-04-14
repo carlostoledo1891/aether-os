@@ -8,14 +8,14 @@ import { CountdownTimer } from '../components/ui/CountdownTimer'
 import { MapBase } from '../components/map/MapBase'
 import { MapOverlays } from '../components/map/MapOverlays'
 import { useMapCameraRestore } from '../hooks/useMapCameraRestore'
-import { LICENSE_LAYER_ID } from '../components/map/LicenseOverlay'
-import { ENV_APA_FILL_LAYER_ID } from '../components/map/EnvironmentalOverlay'
 import { TraceRouteOverlay } from '../components/map/TraceRouteOverlay'
-import { DrillHoleOverlay, DRILL_LAYER_ID } from '../components/map/DrillHoleOverlay'
+import { DrillHoleOverlay } from '../components/map/DrillHoleOverlay'
 import { MapFeaturePopup } from '../components/map/MapFeaturePopup'
 import { MapLayerPanel } from '../components/map/MapLayerPanel'
-import { usePresetLayers } from '../components/map/useMapLayers'
-import { MAP_PRESETS } from '../components/map/mapPresets'
+import { MapBookmarkControl } from '../components/map/MapBookmarkControl'
+import { useMapPreset } from '../components/map/mapPresets'
+import { useLayerSurface } from '../components/map/useMapLayers'
+import { VISIBLE_LAYER_GROUPS } from '../components/map/layerRegistry'
 import { useBuyerMapInteraction } from './buyer/useBuyerMapInteraction'
 import { useServiceQuery } from '../hooks/useServiceQuery'
 import { W } from '../app/canvas/canvasTheme'
@@ -42,6 +42,7 @@ const STEP_STATUS_COLORS: Record<string, string> = {
 export function BuyerView() {
   const initialCamera = useMapCameraRestore('buyerField')
   const maps = useMap()
+  const preset = useMapPreset('buyer')
 
   const { data: batches } = useServiceQuery('batches', s => s.getBatches())
   const [batchIndex, setBatchIndex] = useState(0)
@@ -49,6 +50,7 @@ export function BuyerView() {
   const [activeTab, setActiveTab] = useState<BuyerTab>('traceability')
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
   const [showMarkers] = useState(true)
+  const mapLayers = useLayerSurface({ mode: 'local', initialLayerIds: preset.layerIds })
 
   const {
     hoveredHoleId,
@@ -56,9 +58,8 @@ export function BuyerView() {
     setPopupData,
     handleBuyerMouseEnter,
     handleBuyerMouseLeave,
-  } = useBuyerMapInteraction()
-
-  const mapLayers = usePresetLayers(MAP_PRESETS['buyer'].overlays)
+    handleBuyerMapClick,
+  } = useBuyerMapInteraction(mapLayers.visibleLayerIds)
   const ls = mapLayers.state
 
   const handleStepClick = useCallback((index: number) => {
@@ -69,8 +70,6 @@ export function BuyerView() {
     setSelectedStepIndex(prev => prev === index ? null : index)
     setActiveTab('traceability')
   }, [])
-
-  const buyerInteractiveLayerIds = [LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID, DRILL_LAYER_ID]
 
   const exportTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   useEffect(() => () => { if (exportTimerRef.current) clearTimeout(exportTimerRef.current) }, [])
@@ -139,25 +138,28 @@ export function BuyerView() {
             <MapBase
               id="buyerField"
               initialViewState={initialCamera ?? undefined}
-              interactiveLayerIds={buyerInteractiveLayerIds}
+              interactiveLayerIds={mapLayers.interactiveLayerIds}
               cursor={popupData ? 'pointer' : ''}
               onMouseEnter={handleBuyerMouseEnter}
               onMouseLeave={handleBuyerMouseLeave}
+              onClick={handleBuyerMapClick}
               controlSlots={{
                 topRight: (
-                  <MapLayerPanel
-                    state={ls}
-                    onToggle={mapLayers.toggle}
-                    groups={['base', 'environment']}
-                  />
+                  <>
+                    <MapBookmarkControl mapId="buyerField" />
+                    <MapLayerPanel
+                      state={ls}
+                      onToggle={mapLayers.toggle}
+                      groups={VISIBLE_LAYER_GROUPS}
+                    />
+                  </>
                 ),
                 bottomRight: <BuyerMapLegend />,
               }}
             >
               <MapOverlays
-                layers={mapLayers.overlayKeys}
+                layers={mapLayers.visibleLayerIds}
                 licenseProps={{ highlightId: originLicenseId }}
-                environmentalProps={{ showApa: true, showBuffer: true, showMonitoring: false, showUrban: false }}
                 renderOverrides={{
                   drillholes: (selectedStepIndex === 0 || selectedStepIndex === null) ? (
                     <DrillHoleOverlay depositFilter={activeDrills ? null : originDepositId} drillIds={activeDrills ?? null} hoveredHoleId={hoveredHoleId} />

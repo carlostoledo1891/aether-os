@@ -16,7 +16,7 @@ export const CALDEIRA_BOUNDARY_LAYER_ID = 'caldeira-boundary-line'
  * Rendered first inside <MapBase> so it sits below all node/edge overlays.
  */
 export const CaldeiraBoundary = memo(function CaldeiraBoundary() {
-  const data = useGeoJsonFeatureCollection(GEO.boundary.url)
+  const { data } = useGeoJsonFeatureCollection(GEO.boundary.url)
   if (!data) return null
 
   return (

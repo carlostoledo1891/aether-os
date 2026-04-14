@@ -254,6 +254,18 @@ export default function KnowledgePage() {
             <RefreshCw size={12} className={reindexing ? 'animate-spin' : ''} />
             Re-index
           </button>
+          <a
+            href="/admin/map-layers"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '6px 12px', fontSize: 11, fontWeight: 600,
+              background: W.glass04, border: W.chromeBorder, borderRadius: W.radius.sm,
+              color: W.text2, textDecoration: 'none',
+            }}
+          >
+            <Globe size={12} />
+            Map Layers
+          </a>
           <button
             onClick={() => { resetForm(); setModal('url') }}
             style={{

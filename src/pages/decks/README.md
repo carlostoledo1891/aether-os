@@ -66,4 +66,4 @@ Base chrome comes from the design system. The deck only customizes accent colors
 | `caldeira-exec` | dashboard | Investor executive summary with metrics and timeline | `/deck/caldeira-exec` |
 | `compliance-snapshot` | dashboard | ESG coverage, DPP readiness, batch tracking | `/deck/compliance-snapshot` |
 | `meteoric` | slides | 18-slide Meteoric pitch deck | `/deck/meteoric` |
-| `founders` | slides | 28-slide Founders pitch deck | `/deck/founders` |
+| `founders` | slides | 22-slide Founders pitch deck | `/deck/founders` |

@@ -18,174 +18,194 @@ export interface EnvironmentalOverlayProps {
   showUrban?: boolean
 }
 
+export const ApaOverlay = memo(function ApaOverlay() {
+  const { data: apa } = useGeoJsonFeatureCollection(GEO.apa.url)
+  if (!apa) return null
+
+  return (
+    <Source id="caldeira-env-apa" type="geojson" data={apa}>
+      <Layer
+        id={ENV_APA_FILL_LAYER_ID}
+        type="fill"
+        filter={['==', ['get', 'kind'], 'protected-area']}
+        paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
+      />
+      <Layer
+        id="env-apa-line"
+        type="line"
+        filter={['==', ['get', 'kind'], 'protected-area']}
+        paint={{
+          'line-color': W.cyan,
+          'line-width': 1,
+          'line-opacity': 0.55,
+        }}
+      />
+      <Layer
+        id="env-apa-label"
+        type="symbol"
+        filter={['==', ['get', 'kind'], 'protected-area']}
+        layout={{
+          'text-field': ['get', 'label'],
+          'text-font': ['Open Sans Semibold'],
+          'text-size': 10,
+          'text-allow-overlap': true,
+        }}
+        paint={{
+          'text-color': 'rgba(0,212,200,0.75)',
+          'text-halo-color': 'rgba(6,6,16,0.95)',
+          'text-halo-width': 1.2,
+        }}
+      />
+    </Source>
+  )
+})
+
+export const BufferOverlay = memo(function BufferOverlay() {
+  const { data: buffer } = useGeoJsonFeatureCollection(GEO.buffer.url)
+  if (!buffer) return null
+
+  return (
+    <Source id="caldeira-env-buffer" type="geojson" data={buffer}>
+      <Layer
+        id={ENV_BUFFER_FILL_LAYER_ID}
+        type="fill"
+        filter={['==', ['get', 'kind'], 'buffer-zone']}
+        paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.03 }}
+      />
+      <Layer
+        id="env-buffer-line"
+        type="line"
+        filter={['==', ['get', 'kind'], 'buffer-zone']}
+        paint={{
+          'line-color': W.cyan,
+          'line-width': 1,
+          'line-opacity': 0.35,
+          'line-dasharray': [4, 4],
+        }}
+      />
+    </Source>
+  )
+})
+
+export const MonitoringOverlay = memo(function MonitoringOverlay() {
+  const { data: monitoring } = useGeoJsonFeatureCollection(GEO.monitoring.url)
+  if (!monitoring) return null
+
+  return (
+    <Source id="caldeira-env-monitoring" type="geojson" data={monitoring}>
+      <Layer
+        id={ENV_MONITORING_FILL_LAYER_ID}
+        type="fill"
+        filter={['==', ['get', 'kind'], 'monitoring-zone']}
+        paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
+      />
+      <Layer
+        id="env-monitoring-line"
+        type="line"
+        filter={['==', ['get', 'kind'], 'monitoring-zone']}
+        paint={{
+          'line-color': W.cyan,
+          'line-width': 1.2,
+          'line-opacity': 0.5,
+          'line-dasharray': [3, 2.5],
+        }}
+      />
+    </Source>
+  )
+})
+
+export const UrbanOverlay = memo(function UrbanOverlay() {
+  const { data: urban } = useGeoJsonFeatureCollection(GEO.urban.url)
+  if (!urban) return null
+
+  return (
+    <Source id="caldeira-env-urban" type="geojson" data={urban}>
+      <Layer
+        id={ENV_URBAN_FILL_LAYER_ID}
+        type="fill"
+        filter={['==', ['get', 'kind'], 'urban-context']}
+        paint={{ 'fill-color': W.text1, 'fill-opacity': 0.04 }}
+      />
+      <Layer
+        id="env-urban-line"
+        type="line"
+        filter={['==', ['get', 'kind'], 'urban-context']}
+        paint={{
+          'line-color': 'rgba(236,236,248,0.35)',
+          'line-width': 1,
+          'line-opacity': 0.5,
+          'line-dasharray': [2, 2],
+        }}
+      />
+      <Layer
+        id="env-urban-label"
+        type="symbol"
+        filter={['==', ['get', 'kind'], 'urban-context']}
+        layout={{
+          'text-field': ['get', 'label'],
+          'text-size': 9,
+          'text-font': ['Open Sans Regular'],
+        }}
+        paint={{
+          'text-color': 'rgba(236,236,248,0.5)',
+          'text-halo-color': W.mapHalo,
+          'text-halo-width': 1,
+        }}
+      />
+      <Layer
+        id="env-urban-centroid-glow"
+        type="circle"
+        filter={['==', ['get', 'kind'], 'urban-centroid']}
+        paint={{
+          'circle-radius': 14,
+          'circle-color': W.text1,
+          'circle-opacity': 0.08,
+        }}
+      />
+      <Layer
+        id={ENV_URBAN_CENTROID_CORE_LAYER_ID}
+        type="circle"
+        filter={['==', ['get', 'kind'], 'urban-centroid']}
+        paint={{
+          'circle-radius': 6,
+          'circle-color': W.mapSecondary,
+          'circle-opacity': 0.55,
+          'circle-stroke-color': W.mapHalo,
+          'circle-stroke-width': 1.5,
+        }}
+      />
+      <Layer
+        id="env-urban-centroid-label"
+        type="symbol"
+        filter={['==', ['get', 'kind'], 'urban-centroid']}
+        layout={{
+          'text-field': ['get', 'label'],
+          'text-size': 9,
+          'text-offset': [0, 1.15],
+          'text-font': ['Open Sans Regular'],
+        }}
+        paint={{
+          'text-color': 'rgba(236,236,248,0.55)',
+          'text-halo-color': W.mapHalo,
+          'text-halo-width': 1.2,
+        }}
+      />
+    </Source>
+  )
+})
+
 export const EnvironmentalOverlay = memo(function EnvironmentalOverlay({
   showApa = true,
   showBuffer = true,
   showMonitoring = true,
   showUrban = false,
 }: EnvironmentalOverlayProps) {
-  const apa = useGeoJsonFeatureCollection(GEO.apa.url)
-  const buffer = useGeoJsonFeatureCollection(GEO.buffer.url)
-  const monitoring = useGeoJsonFeatureCollection(GEO.monitoring.url)
-  const urban = useGeoJsonFeatureCollection(GEO.urban.url)
-
   return (
     <>
-      {showApa && apa && (
-        <Source id="caldeira-env-apa" type="geojson" data={apa}>
-          <Layer
-            id={ENV_APA_FILL_LAYER_ID}
-            type="fill"
-            filter={['==', ['get', 'kind'], 'protected-area']}
-            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
-          />
-          <Layer
-            id="env-apa-line"
-            type="line"
-            filter={['==', ['get', 'kind'], 'protected-area']}
-            paint={{
-              'line-color': W.cyan,
-              'line-width': 1,
-              'line-opacity': 0.55,
-            }}
-          />
-          <Layer
-            id="env-apa-label"
-            type="symbol"
-            filter={['==', ['get', 'kind'], 'protected-area']}
-            layout={{
-              'text-field': ['get', 'label'],
-              'text-font': ['Open Sans Semibold'],
-              'text-size': 10,
-              'text-allow-overlap': true,
-            }}
-            paint={{
-              'text-color': 'rgba(0,212,200,0.75)',
-              'text-halo-color': 'rgba(6,6,16,0.95)',
-              'text-halo-width': 1.2,
-            }}
-          />
-        </Source>
-      )}
-
-      {showBuffer && buffer && (
-        <Source id="caldeira-env-buffer" type="geojson" data={buffer}>
-          <Layer
-            id={ENV_BUFFER_FILL_LAYER_ID}
-            type="fill"
-            filter={['==', ['get', 'kind'], 'buffer-zone']}
-            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.03 }}
-          />
-          <Layer
-            id="env-buffer-line"
-            type="line"
-            filter={['==', ['get', 'kind'], 'buffer-zone']}
-            paint={{
-              'line-color': W.cyan,
-              'line-width': 1,
-              'line-opacity': 0.35,
-              'line-dasharray': [4, 4],
-            }}
-          />
-        </Source>
-      )}
-
-      {showMonitoring && monitoring && (
-        <Source id="caldeira-env-monitoring" type="geojson" data={monitoring}>
-          <Layer
-            id={ENV_MONITORING_FILL_LAYER_ID}
-            type="fill"
-            filter={['==', ['get', 'kind'], 'monitoring-zone']}
-            paint={{ 'fill-color': W.cyan, 'fill-opacity': 0.06 }}
-          />
-          <Layer
-            id="env-monitoring-line"
-            type="line"
-            filter={['==', ['get', 'kind'], 'monitoring-zone']}
-            paint={{
-              'line-color': W.cyan,
-              'line-width': 1.2,
-              'line-opacity': 0.5,
-              'line-dasharray': [3, 2.5],
-            }}
-          />
-        </Source>
-      )}
-
-      {showUrban && urban && (
-        <Source id="caldeira-env-urban" type="geojson" data={urban}>
-          <Layer
-            id={ENV_URBAN_FILL_LAYER_ID}
-            type="fill"
-            filter={['==', ['get', 'kind'], 'urban-context']}
-            paint={{ 'fill-color': W.text1, 'fill-opacity': 0.04 }}
-          />
-          <Layer
-            id="env-urban-line"
-            type="line"
-            filter={['==', ['get', 'kind'], 'urban-context']}
-            paint={{
-              'line-color': 'rgba(236,236,248,0.35)',
-              'line-width': 1,
-              'line-opacity': 0.5,
-              'line-dasharray': [2, 2],
-            }}
-          />
-          <Layer
-            id="env-urban-label"
-            type="symbol"
-            filter={['==', ['get', 'kind'], 'urban-context']}
-            layout={{
-              'text-field': ['get', 'label'],
-              'text-size': 9,
-              'text-font': ['Open Sans Regular'],
-            }}
-            paint={{
-              'text-color': 'rgba(236,236,248,0.5)',
-              'text-halo-color': W.mapHalo,
-              'text-halo-width': 1,
-            }}
-          />
-          <Layer
-            id="env-urban-centroid-glow"
-            type="circle"
-            filter={['==', ['get', 'kind'], 'urban-centroid']}
-            paint={{
-              'circle-radius': 14,
-              'circle-color': W.text1,
-              'circle-opacity': 0.08,
-            }}
-          />
-          <Layer
-            id={ENV_URBAN_CENTROID_CORE_LAYER_ID}
-            type="circle"
-            filter={['==', ['get', 'kind'], 'urban-centroid']}
-            paint={{
-              'circle-radius': 6,
-              'circle-color': W.mapSecondary,
-              'circle-opacity': 0.55,
-              'circle-stroke-color': W.mapHalo,
-              'circle-stroke-width': 1.5,
-            }}
-          />
-          <Layer
-            id="env-urban-centroid-label"
-            type="symbol"
-            filter={['==', ['get', 'kind'], 'urban-centroid']}
-            layout={{
-              'text-field': ['get', 'label'],
-              'text-size': 9,
-              'text-offset': [0, 1.15],
-              'text-font': ['Open Sans Regular'],
-            }}
-            paint={{
-              'text-color': 'rgba(236,236,248,0.55)',
-              'text-halo-color': W.mapHalo,
-              'text-halo-width': 1.2,
-            }}
-          />
-        </Source>
-      )}
+      {showApa && <ApaOverlay />}
+      {showBuffer && <BufferOverlay />}
+      {showMonitoring && <MonitoringOverlay />}
+      {showUrban && <UrbanOverlay />}
     </>
   )
 })

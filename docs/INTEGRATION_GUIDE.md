@@ -143,6 +143,17 @@ GET /api/seismic/recent             # USGS seismic events
 GET /api/lapoc/latest               # LAPOC field instruments
 ```
 
+Source governance policy for map layers:
+- **Geology:** GeoSGB, SIGMINE, ANM
+- **Hydrology:** SNIRH Hidroweb, CNEN/LAPOC
+- **Weather:** INMET, OpenWeather, Open-Meteo
+- Deprecated geology overlays (Macrostrat, USGS REE) are no longer part of supported integrations.
+- The frontend should consume Caldeira geology/hydrology overlays from normalized local snapshots, not direct browser WMS/ArcGIS requests.
+- Where richer inspection is required, the app may issue server-proxied ArcGIS identify/query requests for approved layers while keeping the rendered layer snapshot-backed.
+- External layer capabilities now live in the shared Caldeira layer manifest: render mode, identify mode, legend metadata, and snapshot source ids are declared per layer.
+- If an upstream refresh fails, keep serving the last successful snapshot instead of falling back to the live provider.
+- Refresh the current external layer snapshots with `npm run build:caldeira-external-snapshots`.
+
 ### Audit & Integrity
 
 ```http

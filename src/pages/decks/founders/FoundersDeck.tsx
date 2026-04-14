@@ -16,20 +16,13 @@ const ArchitectureSlide = lazy(() => import('./slides/ArchitectureSlide'))
 const CodeQualitySlide = lazy(() => import('./slides/CodeQualitySlide'))
 const DataServiceSlide = lazy(() => import('./slides/DataServiceSlide'))
 const AiAgentSlide     = lazy(() => import('./slides/AiAgentSlide'))
-const DigitalTwinSlide = lazy(() => import('./slides/DigitalTwinSlide'))
 const LapocSlide       = lazy(() => import('./slides/LapocSlide'))
 const ReportsSlide     = lazy(() => import('./slides/ReportsSlide'))
 const MoatSlide        = lazy(() => import('./slides/MoatSlide'))
 const RevenueSlide     = lazy(() => import('./slides/FinancialsSlides').then(m => ({ default: m.RevenueSlide })))
-const ValuationSlide   = lazy(() => import('./slides/FinancialsSlides').then(m => ({ default: m.ValuationSlide })))
-const RiskSlide        = lazy(() => import('./slides/RiskSlide'))
-const ExitSlide        = lazy(() => import('./slides/ExitSlide'))
 const TeamSlide        = lazy(() => import('./slides/TeamSlide'))
 const WhyYouSlide      = lazy(() => import('./slides/WhyYouSlide'))
-const WhyINeedYouSlide = lazy(() => import('./slides/WhyINeedYouSlide'))
-const AskSlide         = lazy(() => import('./slides/AskSlide'))
 const MeteorPlaySlide  = lazy(() => import('./slides/MeteorSlides').then(m => ({ default: m.MeteorPlaySlide })))
-const WhyBeforeMeteorSlide = lazy(() => import('./slides/MeteorSlides').then(m => ({ default: m.WhyBeforeMeteorSlide })))
 const RoadmapSlide     = lazy(() => import('./slides/RoadmapSlides').then(m => ({ default: m.RoadmapSlide })))
 const TimelineSlide    = lazy(() => import('./slides/RoadmapSlides').then(m => ({ default: m.TimelineSlide })))
 const CloseSlide       = lazy(() => import('./slides/BookendSlides').then(m => ({ default: m.CloseSlide })))
@@ -52,17 +45,10 @@ const slides: LazySlide[] = [
   ReportsSlide,
   MoatSlide,
   RevenueSlide,
-  ValuationSlide,
-  RiskSlide,
-  ExitSlide,
   TeamSlide,
   WhyYouSlide,
-  WhyINeedYouSlide,
-  AskSlide,
   MeteorPlaySlide,
-  WhyBeforeMeteorSlide,
   CaldeiraSlide,
-  DigitalTwinSlide,
   RoadmapSlide,
   TimelineSlide,
   CloseSlide,

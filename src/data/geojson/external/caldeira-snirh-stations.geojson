@@ -1,0 +1,804 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source_id": "snapshot:snirh-hidroweb",
+    "source_label": "SNIRH Hidroweb stations",
+    "fetched_at": "2026-04-14T14:16:38.135Z",
+    "feature_count": 28,
+    "bbox": {
+      "xmin": -46.72,
+      "ymin": -22.06,
+      "xmax": -46.39,
+      "ymax": -21.75,
+      "wkid": 4326
+    },
+    "provider": "ANA / SNIRH",
+    "geometry_kind": "point"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.43333333299995,
+          -21.91666666699996
+        ]
+      },
+      "properties": {
+        "id": "61801500",
+        "label": "61801500 · GRANJA BELA VISTA",
+        "station_code": "61801500",
+        "station_name": "GRANJA BELA VISTA",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO SOBERBO",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 92.8,
+        "altitude_m": 0,
+        "latitude": -21.9166666666667,
+        "longitude": -46.4333333333333,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.583333332999985,
+          -21.866666666999947
+        ]
+      },
+      "properties": {
+        "id": "61803000",
+        "label": "61803000 · ALCOMINAS",
+        "station_code": "61803000",
+        "station_name": "ALCOMINAS",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 175,
+        "altitude_m": 1238,
+        "latitude": -21.8666666666667,
+        "longitude": -46.5833333333333,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.61359999999996,
+          -21.861099999999965
+        ]
+      },
+      "properties": {
+        "id": "61804000",
+        "label": "61804000 · PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I)  RES CIPÓ",
+        "station_code": "61804000",
+        "station_name": "PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I)  RES CIPÓ",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DO CIPÓ",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 455,
+        "altitude_m": 1265,
+        "latitude": -21.8611,
+        "longitude": -46.6136,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60219999999998,
+          -21.83499999999998
+        ]
+      },
+      "properties": {
+        "id": "61805000",
+        "label": "61805000 · BARREIRA FISCAL",
+        "station_code": "61805000",
+        "station_name": "BARREIRA FISCAL",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 307,
+        "altitude_m": 0,
+        "latitude": -21.835,
+        "longitude": -46.6022,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.63719999999995,
+          -21.788299999999936
+        ]
+      },
+      "properties": {
+        "id": "61805900",
+        "label": "61805900 · PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) RES BORTOLAN",
+        "station_code": "61805900",
+        "station_name": "PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) RES BORTOLAN",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 455,
+        "altitude_m": 1250,
+        "latitude": -21.7883,
+        "longitude": -46.6372,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.61669999999998,
+          -21.78329999999994
+        ]
+      },
+      "properties": {
+        "id": "61806080",
+        "label": "61806080 · PCH ANTAS I (DME)",
+        "station_code": "61806080",
+        "station_name": "PCH ANTAS I (DME)",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 374,
+        "altitude_m": 0,
+        "latitude": -21.7833,
+        "longitude": -46.6167,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.602799999999945,
+          -21.775799999999947
+        ]
+      },
+      "properties": {
+        "id": "61806100",
+        "label": "61806100 · PCH WALTER ROSSI (ANTAS II)  RIBEIRÃO DOS POÇOS",
+        "station_code": "61806100",
+        "station_name": "PCH WALTER ROSSI (ANTAS II)  RIBEIRÃO DOS POÇOS",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO CALDAS OU DOS POÇOS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 1.7,
+        "altitude_m": 1160,
+        "latitude": -21.7758,
+        "longitude": -46.6028,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60439999999994,
+          -21.771699999999953
+        ]
+      },
+      "properties": {
+        "id": "61806200",
+        "label": "61806200 · PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) MONTANTE",
+        "station_code": "61806200",
+        "station_name": "PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) MONTANTE",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 455,
+        "altitude_m": 1186,
+        "latitude": -21.7717,
+        "longitude": -46.6044,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60749999999996,
+          -21.767799999999966
+        ]
+      },
+      "properties": {
+        "id": "61806300",
+        "label": "61806300 · PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) BARRAMENTO",
+        "station_code": "61806300",
+        "station_name": "PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) BARRAMENTO",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 455,
+        "altitude_m": 1173,
+        "latitude": -21.7678,
+        "longitude": -46.6075,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60499999999996,
+          -21.76329999999996
+        ]
+      },
+      "properties": {
+        "id": "61806350",
+        "label": "61806350 · PCH WALTER ROSSI (ANTAS II)  BARRAMENTO",
+        "station_code": "61806350",
+        "station_name": "PCH WALTER ROSSI (ANTAS II)  BARRAMENTO",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 1.7,
+        "altitude_m": 1087,
+        "latitude": -21.7633,
+        "longitude": -46.605,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60939999999994,
+          -21.852799999999945
+        ]
+      },
+      "properties": {
+        "id": "61806380",
+        "label": "61806380 · PCH WALTER ROSSI (ANTAS II) BARRAGEM DO CIPÓ",
+        "station_code": "61806380",
+        "station_name": "PCH WALTER ROSSI (ANTAS II) BARRAGEM DO CIPÓ",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DO CIPÓ",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1268,
+        "latitude": -21.8528,
+        "longitude": -46.6094,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.549999999999955,
+          -21.78329999999994
+        ]
+      },
+      "properties": {
+        "id": "2146048",
+        "label": "2146048 · POÇOS DE CALDAS",
+        "station_code": "2146048",
+        "station_name": "POÇOS DE CALDAS",
+        "station_type": "Pluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1150,
+        "latitude": -21.7833,
+        "longitude": -46.55,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.69999999999993,
+          -21.86669999999998
+        ]
+      },
+      "properties": {
+        "id": "2146057",
+        "label": "2146057 · CASCATA (CMEF)",
+        "station_code": "2146057",
+        "station_name": "CASCATA (CMEF)",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "ÁGUAS DA PRATA",
+        "state": "SÃO PAULO",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1220,
+        "latitude": -21.8667,
+        "longitude": -46.7,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.666699999999935,
+          -21.98329999999993
+        ]
+      },
+      "properties": {
+        "id": "2146058",
+        "label": "2146058 · FAZENDA PRATINHA",
+        "station_code": "2146058",
+        "station_name": "FAZENDA PRATINHA",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "ÁGUAS DA PRATA",
+        "state": "SÃO PAULO",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 970,
+        "latitude": -21.9833,
+        "longitude": -46.6667,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.666699999999935,
+          -21.766699999999958
+        ]
+      },
+      "properties": {
+        "id": "2146060",
+        "label": "2146060 · FAZENDA SANTA ALINA",
+        "station_code": "2146060",
+        "station_name": "FAZENDA SANTA ALINA",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "SÃO SEBASTIÃO DA GRAMA",
+        "state": "SÃO PAULO",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1100,
+        "latitude": -21.7667,
+        "longitude": -46.6667,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.683299999999974,
+          -21.966699999999946
+        ]
+      },
+      "properties": {
+        "id": "2146064",
+        "label": "2146064 · FAZENDA RETIRO",
+        "station_code": "2146064",
+        "station_name": "FAZENDA RETIRO",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "ÁGUAS DA PRATA",
+        "state": "SÃO PAULO",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 900,
+        "latitude": -21.9667,
+        "longitude": -46.6833,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.683299999999974,
+          -21.949999999999932
+        ]
+      },
+      "properties": {
+        "id": "2146067",
+        "label": "2146067 · FONTE PLATINA",
+        "station_code": "2146067",
+        "station_name": "FONTE PLATINA",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "ÁGUAS DA PRATA",
+        "state": "SÃO PAULO",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 930,
+        "latitude": -21.95,
+        "longitude": -46.6833,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56669999999997,
+          -21.799999999999955
+        ]
+      },
+      "properties": {
+        "id": "2146076",
+        "label": "2146076 · POÇOS DE CALDAS - CESP",
+        "station_code": "2146076",
+        "station_name": "POÇOS DE CALDAS - CESP",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 0,
+        "latitude": -21.8,
+        "longitude": -46.5667,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56669999999997,
+          -21.799999999999955
+        ]
+      },
+      "properties": {
+        "id": "2146077",
+        "label": "2146077 · ESTAÇÃO EXPERIMENTAL V. ENOLOGIA",
+        "station_code": "2146077",
+        "station_name": "ESTAÇÃO EXPERIMENTAL V. ENOLOGIA",
+        "station_type": "Pluviométrica",
+        "operating": "Não",
+        "municipality": "CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 0,
+        "latitude": -21.8,
+        "longitude": -46.5667,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60919999999993,
+          -21.797499999999957
+        ]
+      },
+      "properties": {
+        "id": "2146082",
+        "label": "2146082 · SE POÇOS DE CALDAS",
+        "station_code": "2146082",
+        "station_name": "SE POÇOS DE CALDAS",
+        "station_type": "Pluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 0,
+        "latitude": -21.7975,
+        "longitude": -46.6092,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60749999999996,
+          -21.767799999999966
+        ]
+      },
+      "properties": {
+        "id": "2146111",
+        "label": "2146111 · PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) BARRAMENTO",
+        "station_code": "2146111",
+        "station_name": "PCH PEDRO AFFONSO JUNQUEIRA (ANTAS I) BARRAMENTO",
+        "station_type": "Pluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1173,
+        "latitude": -21.7678,
+        "longitude": -46.6075,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.60939999999994,
+          -21.852799999999945
+        ]
+      },
+      "properties": {
+        "id": "2146112",
+        "label": "2146112 · PCH WALTER ROSSI (ANTAS II) BARRAGEM DO CIPÓ",
+        "station_code": "2146112",
+        "station_name": "PCH WALTER ROSSI (ANTAS II) BARRAGEM DO CIPÓ",
+        "station_type": "Pluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1268,
+        "latitude": -21.8528,
+        "longitude": -46.6094,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58329999999995,
+          -21.799999999999955
+        ]
+      },
+      "properties": {
+        "id": "61999080",
+        "label": "61999080 · FOZ DO RIO GRANDE",
+        "station_code": "61999080",
+        "station_name": "FOZ DO RIO GRANDE",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "INDIAPORÃ",
+        "state": "SÃO PAULO",
+        "river": "RIO GRANDE",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 0,
+        "latitude": -21.8,
+        "longitude": -46.5833,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56719999999996,
+          -22.056099999999958
+        ]
+      },
+      "properties": {
+        "id": "2246146",
+        "label": "2246146 · ANDRADAS",
+        "station_code": "2246146",
+        "station_name": "ANDRADAS",
+        "station_type": "Pluviométrica",
+        "operating": "Sim",
+        "municipality": "ANDRADAS",
+        "state": "MINAS GERAIS",
+        "river": null,
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 0,
+        "latitude": -22.0561,
+        "longitude": -46.5672,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.601099999999974,
+          -21.75029999999998
+        ]
+      },
+      "properties": {
+        "id": "61806400",
+        "label": "61806400 · CÓRREGO D'ANTAS",
+        "station_code": "61806400",
+        "station_name": "CÓRREGO D'ANTAS",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIO LAMBARI",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 463,
+        "altitude_m": 0,
+        "latitude": -21.7503,
+        "longitude": -46.6011,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.621699999999976,
+          -21.78359999999998
+        ]
+      },
+      "properties": {
+        "id": "61807000",
+        "label": "61807000 · USINA POÇOS DE CALDAS",
+        "station_code": "61807000",
+        "station_name": "USINA POÇOS DE CALDAS",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 374,
+        "altitude_m": 0,
+        "latitude": -21.7836,
+        "longitude": -46.6217,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.53333333299997,
+          -21.76666666699998
+        ]
+      },
+      "properties": {
+        "id": "61807300",
+        "label": "61807300 · VILA CRUZ",
+        "station_code": "61807300",
+        "station_name": "VILA CRUZ",
+        "station_type": "Fluviométrica",
+        "operating": "Não",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO CALDAS OU DOS POÇOS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 3.3,
+        "altitude_m": 0,
+        "latitude": -21.7666666666667,
+        "longitude": -46.5333333333333,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.58569799999998,
+          -21.929425999999978
+        ]
+      },
+      "properties": {
+        "id": "61891130",
+        "label": "61891130 · RIBEIRÃO DAS ANTAS (mont. Poços de Caldas)",
+        "station_code": "61891130",
+        "station_name": "RIBEIRÃO DAS ANTAS (mont. Poços de Caldas)",
+        "station_type": "Fluviométrica",
+        "operating": "Sim",
+        "municipality": "POÇOS DE CALDAS",
+        "state": "MINAS GERAIS",
+        "river": "RIBEIRÃO DAS ANTAS",
+        "basin": "RIO PARANÁ",
+        "sub_basin": "RIO GRANDE",
+        "drainage_area_km2": 0,
+        "altitude_m": 1287,
+        "latitude": -21.929426,
+        "longitude": -46.585698,
+        "source_ref": "snirh_estacoes_hidrometeorologicas"
+      }
+    }
+  ]
+}

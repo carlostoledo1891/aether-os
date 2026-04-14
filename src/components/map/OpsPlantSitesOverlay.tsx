@@ -36,7 +36,7 @@ export const OpsPlantSitesOverlay = memo(function OpsPlantSitesOverlay({
   hoveredId = null,
   selectedId = null,
 }: OpsPlantSitesOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<OpsPlantFeature>(GEO.plantSites.url)
+  const { data: raw } = useGeoJsonFeatureCollection<OpsPlantFeature>(GEO.plantSites.url)
 
   const data = useMemo<FeatureCollection<OpsPlantFeature> | null>(() => {
     if (!raw) return null

@@ -2171,3 +2171,27 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Extracted marketing shared constants/layouts. Added domainThresholds and reportPrimitivesHelpers modules.
 - Added tests: config, lapocAdapter, DataSourceBadge, enricherService. Updated server ingest pipeline, chat routes, knowledge admin, seed.
 - Committed 109 files (ESLint + TypeScript clean) and pushed to main.
+
+### Session Log — 2026-04-14
+- Refactored the map layer catalog/state so visible layers are grouped, scoped, and default off across map surfaces.
+- Removed Weather from the user-facing map layer UI while keeping API-oriented plumbing/registry work available for backend or agent use.
+- Added snapshot-oriented source scaffolding and provenance docs for Caldeira external layers.
+- Confirmed current raster-layer failures come from remote browser fetches (CORS/TLS) and identified a separate `TerrainOverlay` hillshade ordering bug.
+
+### Session Log — 2026-04-14
+- Swapped Caldeira external geology/hydrology overlays from browser raster/WMS loading to local snapshot-backed GeoJSON overlays.
+- Added `npm run build:caldeira-external-snapshots` plus raw provider dumps in `data/caldeira/snapshots/` and normalized frontend GeoJSON in `src/data/geojson/external/`.
+- Fixed `TerrainOverlay` hillshade insertion so missing `waterway` layers no longer throw in styles that lack that anchor.
+- Updated overlay contract tests and integration/data-source docs to codify the snapshot-first, last-good-data policy.
+
+### Session Log — 2026-04-14
+- Implemented the v2 map layer architecture around `shared/sites/caldeiraLayers.ts` as the canonical manifest for layer identity, defaults, provenance, and bindings.
+- Removed the `environmental` composite layer, switched presets to concrete layer ids, and refactored `MapOverlays` to use a runtime resolver in `layerRuntime.tsx`.
+- Added `useLayerSurface()` as the normalized layer API and migrated field, buyer, deck, and prefeitura map consumers onto shared `visibleLayerIds` and `interactiveLayerIds` behavior.
+- Verified the refactor with `npx tsc --noEmit`, focused overlay contract tests, and targeted ESLint on touched files.
+
+### Session Log — 2026-04-14
+- Added Esri-compatible external-layer capabilities: manifest metadata, snapshot/live identify routing, layer health, legend metadata, and `/admin/map-layers`.
+- Refactored external snapshot ingestion to read shared layer config and added a proxied ArcGIS identify/status route on the server.
+- Simplified the Founders deck by removing requested slides, updated the roadmap timeline copy, and unified current team sections behind `TeamShowcase`.
+- Extended `PasswordGate` session validity from 24 hours to 30 days and re-validated with `npx tsc --noEmit`, `npm run test:run`, and the server build.

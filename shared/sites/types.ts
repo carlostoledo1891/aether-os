@@ -35,7 +35,34 @@ export interface SiteIdentity {
   accentColor: string
 }
 
-export type SiteLayerSourceType = 'arcgis-rest' | 'wms' | 'xyz-raster' | 'geojson-component'
+export type SiteLayerSourceType =
+  | 'arcgis-rest'
+  | 'wms'
+  | 'xyz-raster'
+  | 'geojson-component'
+  | 'geojson-snapshot'
+
+export type SiteExternalLayerRenderMode =
+  | 'snapshot-geojson'
+  | 'live-raster'
+
+export type SiteExternalLayerIdentifyMode =
+  | 'none'
+  | 'snapshot-properties'
+  | 'arcgis-query'
+
+export type SiteExternalLayerLegendSymbol =
+  | 'fill'
+  | 'line'
+  | 'circle'
+  | 'raster'
+
+export interface SiteExternalLayerLegendItem {
+  label: string
+  symbol: SiteExternalLayerLegendSymbol
+  color?: string
+  strokeColor?: string
+}
 
 export interface SiteExternalLayer {
   id: string
@@ -45,6 +72,22 @@ export interface SiteExternalLayer {
   url?: string
   attribution: string
   defaultOn?: boolean
+  provider?: string
+  datasetId?: string
+  logicalSourceId?: string
+  renderMode?: SiteExternalLayerRenderMode
+  identifyMode?: SiteExternalLayerIdentifyMode
+  supportsLegend?: boolean
+  supportsHealth?: boolean
+  apiSourceId?: string
+  serviceBaseUrl?: string
+  queryUrl?: string
+  layerId?: number
+  sublayerIds?: number[]
+  legendUrl?: string
+  legendItems?: SiteExternalLayerLegendItem[]
+  snapshotPath?: string
+  snapshotSourceId?: string
 }
 
 export interface SiteConfig {

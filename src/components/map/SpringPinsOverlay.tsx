@@ -12,7 +12,7 @@ export const SPRING_PIN_LAYER_ID = 'spring-pins-core'
  * without requiring live EnvTelemetry data.
  */
 export const SpringPinsOverlay = memo(function SpringPinsOverlay() {
-  const data = useGeoJsonFeatureCollection(GEO.hydroSprings.url)
+  const { data } = useGeoJsonFeatureCollection(GEO.hydroSprings.url)
   if (!data) return null
 
   return (

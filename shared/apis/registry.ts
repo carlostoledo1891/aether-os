@@ -180,9 +180,9 @@ export const API_REGISTRY = {
     consumers: ['server'],
   },
 
-  'cprm-geology': {
-    id: 'cprm-geology',
-    name: 'SGB/CPRM Geological Map',
+  'geosgb-geology': {
+    id: 'geosgb-geology',
+    name: 'GeoSGB Geological Map Services',
     provider: 'Serviço Geológico do Brasil',
     category: 'geology',
     baseUrl: 'https://geoportal.sgb.gov.br/server/rest/services/dados_plataforma/geologia/MapServer',
@@ -192,28 +192,65 @@ export const API_REGISTRY = {
     consumers: ['frontend'],
   },
 
-  'macrostrat': {
-    id: 'macrostrat',
-    name: 'Macrostrat Geological Tiles',
-    provider: 'Macrostrat',
+  sigmine: {
+    id: 'sigmine',
+    name: 'SIGMINE Mining Cadastre',
+    provider: 'ANM',
     category: 'geology',
-    baseUrl: 'https://tiles.macrostrat.org/carto',
+    baseUrl: 'https://geo.anm.gov.br/arcgis/rest/services/SIGMINE/dados_anm/FeatureServer',
     authMethod: 'none',
-    docsUrl: 'https://macrostrat.org/map',
+    docsUrl: 'https://www.gov.br/anm/pt-br/assuntos/sistemas/sigmine',
     tier: 'free',
     consumers: ['frontend'],
   },
 
-  'usgs-ree-wms': {
-    id: 'usgs-ree-wms',
-    name: 'USGS REE Deposit WMS',
-    provider: 'U.S. Geological Survey',
+  'anm-geoscience': {
+    id: 'anm-geoscience',
+    name: 'ANM Geoscience Layers',
+    provider: 'Agencia Nacional de Mineracao',
     category: 'geology',
-    baseUrl: 'https://mrdata.usgs.gov/services/ree',
+    baseUrl: 'https://geo.anm.gov.br/arcgis/rest/services/SIGMINE/geociencias/MapServer',
     authMethod: 'none',
-    docsUrl: 'https://mrdata.usgs.gov/ree/',
+    docsUrl: 'https://www.gov.br/anm/pt-br/assuntos/dados-abertos',
     tier: 'free',
     consumers: ['frontend'],
+  },
+
+  'snirh-hidroweb': {
+    id: 'snirh-hidroweb',
+    name: 'SNIRH Hidroweb',
+    provider: 'ANA / SNIRH',
+    category: 'environmental',
+    baseUrl: 'https://portal1.snirh.gov.br/server/rest/services/Esta%C3%A7%C3%B5es_Hidrometeorol%C3%B3gicas_SNIRH/FeatureServer',
+    authMethod: 'none',
+    docsUrl: 'https://www.snirh.gov.br/hidroweb/mapa',
+    tier: 'free',
+    consumers: ['frontend'],
+  },
+
+  inmet: {
+    id: 'inmet',
+    name: 'INMET Weather Stations',
+    provider: 'INMET',
+    category: 'weather',
+    baseUrl: 'https://portal.inmet.gov.br',
+    authMethod: 'none',
+    docsUrl: 'https://portal.inmet.gov.br/dadoshistoricos',
+    tier: 'free',
+    consumers: ['frontend'],
+  },
+
+  'cnen-lapoc': {
+    id: 'cnen-lapoc',
+    name: 'CNEN LAPOC Field Data',
+    provider: 'CNEN / LAPOC',
+    category: 'environmental',
+    baseUrl: '/ingest/lapoc',
+    authMethod: 'header-custom',
+    docsUrl: 'docs/data/caldeira/LAPOC_INGESTION.md',
+    tier: 'free',
+    consumers: ['engine', 'server'],
+    ingestEndpoint: '/ingest/lapoc',
   },
 } as const satisfies Record<string, ApiSourceDef>
 

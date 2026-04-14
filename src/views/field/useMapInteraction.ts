@@ -6,9 +6,6 @@ import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../components/map/CaldeiraBoundar
 import {
   ENV_APA_FILL_LAYER_ID,
   ENV_BUFFER_FILL_LAYER_ID,
-  ENV_MONITORING_FILL_LAYER_ID,
-  ENV_URBAN_FILL_LAYER_ID,
-  ENV_URBAN_CENTROID_CORE_LAYER_ID,
   parseEnvMapFeature,
 } from '../../components/map/EnvironmentalOverlay'
 import { LICENSE_LAYER_ID, toLicenseDetail } from '../../components/map/LicenseOverlay'
@@ -24,6 +21,11 @@ import {
   type FieldMapGeoSelection,
 } from './fieldMapGeoSelection'
 import type { SpringTelemetry } from '../../types/telemetry'
+import type { LayerId } from '../../components/map/layerRegistry'
+import {
+  buildExternalPresentationFromRenderedFeature,
+  requestExternalIdentify,
+} from '../../components/map/externalLayerIdentify'
 
 const OPS_LAYER_PRIORITY = [
   OPS_PLANT_SITE_CORE_LAYER_ID,
@@ -37,14 +39,9 @@ const OPS_LAYER_PRIORITY = [
 const ENV_LAYER_PRIORITY = [
   HYDRO_SPRING_LAYER_ID,
   HYDRO_NODE_LAYER_ID,
-  ENV_URBAN_CENTROID_CORE_LAYER_ID,
-  ENV_URBAN_FILL_LAYER_ID,
-  'env-urban-label',
-  'env-urban-centroid-label',
   ENV_APA_FILL_LAYER_ID,
   'env-apa-label',
   ENV_BUFFER_FILL_LAYER_ID,
-  ENV_MONITORING_FILL_LAYER_ID,
   LICENSE_LAYER_ID,
 ] as const
 
@@ -64,6 +61,7 @@ export interface UseMapInteractionParams {
   mapTab: MapTab
   opsMapLayers: FieldOpsMapLayers
   springsRef: React.RefObject<SpringTelemetry[]>
+  visibleLayerIds: LayerId[]
 }
 
 export interface UseMapInteractionReturn {
@@ -87,6 +85,7 @@ export function useMapInteraction({
   mapTab,
   opsMapLayers,
   springsRef,
+  visibleLayerIds,
 }: UseMapInteractionParams): UseMapInteractionReturn {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [mapHoverHint, setMapHoverHint] = useState<string | null>(null)
@@ -205,6 +204,20 @@ export function useMapInteraction({
         return
       }
 
+      if (layerId && props) {
+        const externalPresentation = buildExternalPresentationFromRenderedFeature(layerId, props)
+        if (externalPresentation) {
+          setHoveredNodeId(null)
+          setMapHoverHint(null)
+          setPopupData({
+            x: px.x,
+            y: px.y,
+            data: externalPresentation,
+          })
+          return
+        }
+      }
+
       setHoveredNodeId(null)
       setPopupData(null)
       const label = props?.label ?? props?.name ?? props?.id
@@ -227,7 +240,7 @@ export function useMapInteraction({
   }, [])
 
   const handleMapClick = useCallback(
-    (e: MapLayerMouseEvent) => {
+    async (e: MapLayerMouseEvent) => {
       const feats = e.features
 
       const nonBoundaryFeat = feats?.find(f => f.layer?.id !== CALDEIRA_BOUNDARY_LAYER_ID)
@@ -249,6 +262,42 @@ export function useMapInteraction({
               },
         )
         return
+      }
+
+      const externalFeat = feats?.find(f => {
+        const layerId = f.layer?.id
+        return typeof layerId === 'string' && !!f.properties && buildExternalPresentationFromRenderedFeature(layerId, f.properties as Record<string, unknown>)
+      })
+      if (externalFeat?.properties && typeof externalFeat.layer?.id === 'string') {
+        const snapshotPresentation = buildExternalPresentationFromRenderedFeature(
+          externalFeat.layer.id,
+          externalFeat.properties as Record<string, unknown>,
+        )
+        if (snapshotPresentation) {
+          setSelectedHydroNode(null)
+          try {
+            const livePresentation = visibleLayerIds.includes(snapshotPresentation.layerId as LayerId)
+              ? await requestExternalIdentify(
+                  snapshotPresentation.layerId,
+                  e.lngLat.lng,
+                  e.lngLat.lat,
+                )
+              : null
+            const nextPresentation = livePresentation ?? snapshotPresentation
+            setGeoSelection(g =>
+              g?.kind === 'external' && g.detail.layerId === nextPresentation.layerId && g.detail.title === nextPresentation.title
+                ? null
+                : { kind: 'external', detail: nextPresentation },
+            )
+          } catch {
+            setGeoSelection(g =>
+              g?.kind === 'external' && g.detail.layerId === snapshotPresentation.layerId && g.detail.title === snapshotPresentation.title
+                ? null
+                : { kind: 'external', detail: snapshotPresentation },
+            )
+          }
+          return
+        }
       }
 
       if (mapTab === 'operations') {
@@ -358,6 +407,7 @@ export function useMapInteraction({
       opsMapLayers.plantSites,
       opsMapLayers.infra,
       springsRef,
+      visibleLayerIds,
     ],
   )
 

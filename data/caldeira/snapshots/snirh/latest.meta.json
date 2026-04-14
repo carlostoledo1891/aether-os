@@ -1,0 +1,14 @@
+{
+  "source_id": "snirh",
+  "source_label": "SNIRH Hidroweb stations",
+  "fetched_at": "2026-04-14T14:16:38.135Z",
+  "query_url": "https://portal1.snirh.gov.br/server/rest/services/Esta%C3%A7%C3%B5es_Hidrometeorol%C3%B3gicas_SNIRH/FeatureServer/0/query?where=1%3D1&returnGeometry=true&outFields=*&geometry=-46.72%2C-22.06%2C-46.39%2C-21.75&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=geojson",
+  "feature_count": 28,
+  "bbox": {
+    "xmin": -46.72,
+    "ymin": -22.06,
+    "xmax": -46.39,
+    "ymax": -21.75,
+    "wkid": 4326
+  }
+}

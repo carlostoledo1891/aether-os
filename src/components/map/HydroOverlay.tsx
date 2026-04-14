@@ -160,8 +160,8 @@ interface HydroOverlayProps {
 
 export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, selectedNodeId }: HydroOverlayProps) {
   const { current: mapRef } = useMap()
-  const staticNodes = useGeoJsonFeatureCollection<HydroNodeFeature>(GEO.hydroNodes.url)
-  const staticSprings = useGeoJsonFeatureCollection<HydroSpringFeature>(GEO.hydroSprings.url)
+  const { data: staticNodes } = useGeoJsonFeatureCollection<HydroNodeFeature>(GEO.hydroNodes.url)
+  const { data: staticSprings } = useGeoJsonFeatureCollection<HydroSpringFeature>(GEO.hydroSprings.url)
 
   const sensorMap = useMemo(() => {
     const byId: Record<string, EnvTelemetry['aquifer']['sensors'][number]> = {}

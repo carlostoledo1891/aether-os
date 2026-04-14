@@ -55,6 +55,7 @@ describe('useMapInteraction', () => {
         mapTab: 'operations' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
     expect(result.current.hoveredNodeId).toBeNull()
@@ -70,6 +71,7 @@ describe('useMapInteraction', () => {
         mapTab: 'operations' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
 
@@ -91,6 +93,7 @@ describe('useMapInteraction', () => {
         mapTab: 'environment' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
 
@@ -112,6 +115,7 @@ describe('useMapInteraction', () => {
         mapTab: 'operations' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
 
@@ -136,6 +140,7 @@ describe('useMapInteraction', () => {
         mapTab: 'operations' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
 
@@ -157,6 +162,7 @@ describe('useMapInteraction', () => {
         mapTab: 'operations' as MapTab,
         opsMapLayers: DEFAULT_LAYERS,
         springsRef: springsRef as React.RefObject<never[]>,
+        visibleLayerIds: [],
       }),
     )
 

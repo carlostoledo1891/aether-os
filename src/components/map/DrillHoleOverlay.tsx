@@ -120,7 +120,7 @@ export const DrillHoleOverlay = memo(function DrillHoleOverlay({
   holeTypeFilter = 'all',
   drillIds = null,
 }: DrillHoleOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<DrillHoleFeature>(GEO.drillholes.url)
+  const { data: raw } = useGeoJsonFeatureCollection<DrillHoleFeature>(GEO.drillholes.url)
 
   const data = useMemo<FeatureCollection<DrillHoleFeature> | null>(() => {
     if (!raw) return null

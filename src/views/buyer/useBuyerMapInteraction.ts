@@ -4,8 +4,13 @@ import type { MapPopupData } from '../../components/map/MapFeaturePopup'
 import { DRILL_LAYER_ID } from '../../components/map/DrillHoleOverlay'
 import { LICENSE_LAYER_ID } from '../../components/map/LicenseOverlay'
 import { W } from '../../app/canvas/canvasTheme'
+import type { LayerId } from '../../components/map/layerRegistry'
+import {
+  buildExternalPresentationFromRenderedFeature,
+  requestExternalIdentify,
+} from '../../components/map/externalLayerIdentify'
 
-export function useBuyerMapInteraction() {
+export function useBuyerMapInteraction(visibleLayerIds: LayerId[]) {
   const [hoveredHoleId, setHoveredHoleId] = useState<string | null>(null)
   const [popupData, setPopupData] = useState<{ data: MapPopupData; x: number; y: number } | null>(null)
 
@@ -46,9 +51,58 @@ export function useBuyerMapInteraction() {
       })
       return
     }
+
+    if (layerId && props) {
+      const externalPresentation = buildExternalPresentationFromRenderedFeature(layerId, props)
+      if (externalPresentation) {
+        setHoveredHoleId(null)
+        setPopupData({
+          x: px.x,
+          y: px.y,
+          data: externalPresentation,
+        })
+        return
+      }
+    }
     setPopupData(null)
     setHoveredHoleId(null)
   }, [])
+
+  const handleBuyerMapClick = useCallback(async (e: MapLayerMouseEvent) => {
+    const feat = e.features?.find(feature =>
+      typeof feature.layer?.id === 'string'
+      && !!feature.properties
+      && !!buildExternalPresentationFromRenderedFeature(feature.layer.id, feature.properties as Record<string, unknown>),
+    )
+    if (!feat?.properties || typeof feat.layer?.id !== 'string') return
+
+    const snapshotPresentation = buildExternalPresentationFromRenderedFeature(
+      feat.layer.id,
+      feat.properties as Record<string, unknown>,
+    )
+    if (!snapshotPresentation) return
+
+    try {
+      const livePresentation = visibleLayerIds.includes(snapshotPresentation.layerId as LayerId)
+        ? await requestExternalIdentify(
+            snapshotPresentation.layerId,
+            e.lngLat.lng,
+            e.lngLat.lat,
+          )
+        : null
+      setPopupData({
+        x: e.point.x,
+        y: e.point.y,
+        data: livePresentation ?? snapshotPresentation,
+      })
+    } catch {
+      setPopupData({
+        x: e.point.x,
+        y: e.point.y,
+        data: snapshotPresentation,
+      })
+    }
+  }, [visibleLayerIds])
 
   const handleBuyerMouseLeave = useCallback(() => {
     setPopupData(null)
@@ -61,5 +115,6 @@ export function useBuyerMapInteraction() {
     setPopupData,
     handleBuyerMouseEnter,
     handleBuyerMouseLeave,
+    handleBuyerMapClick,
   }
 }

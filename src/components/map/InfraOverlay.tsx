@@ -54,7 +54,7 @@ interface InfraOverlayProps {
 }
 
 export const InfraOverlay = memo(function InfraOverlay({ highlightId = null }: InfraOverlayProps) {
-  const raw = useGeoJsonFeatureCollection(GEO.infra.url)
+  const { data: raw } = useGeoJsonFeatureCollection(GEO.infra.url)
 
   const points = useMemo(() => {
     if (!raw) return null

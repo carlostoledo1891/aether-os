@@ -4,7 +4,7 @@ import { W } from '../app/canvas/canvasTheme'
 const V = W.violet
 
 const STORAGE_KEY = 'verochain_session'
-const SESSION_TTL = 24 * 60 * 60 * 1000 // 24 hours in ms
+const SESSION_TTL = 30 * 24 * 60 * 60 * 1000 // 30 days in ms
 const SITE_PASSWORD = import.meta.env.VITE_SITE_PASSWORD ?? '65d5191ed4e2'
 
 function isSessionValid(): boolean {
@@ -147,7 +147,7 @@ export function PasswordGate({ children }: { children: ReactNode }) {
         </button>
 
         <p style={{ fontSize: 11, color: W.text4, marginTop: 24, lineHeight: 1.5 }}>
-          Session expires after 24 hours.
+          Session expires after 30 days.
         </p>
       </div>
 

@@ -75,7 +75,7 @@ export const LicenseOverlay = memo(function LicenseOverlay({
   selectedLicenseId = null,
   highlightId = null,
 }: LicenseOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<LicenseFeature>(GEO.licenses.url)
+  const { data: raw } = useGeoJsonFeatureCollection<LicenseFeature>(GEO.licenses.url)
 
   const data = useMemo<FeatureCollection<LicenseFeature> | null>(() => {
     if (!raw) return null

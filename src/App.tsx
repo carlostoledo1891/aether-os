@@ -31,6 +31,7 @@ const CaldeiraExecDeck = lazy(() => import('./pages/views/caldeira-exec/Caldeira
 const ComplianceSnapshotDeck = lazy(() => import('./pages/views/compliance-snapshot/ComplianceSnapshotDeck'))
 
 const KnowledgePage = lazy(() => import('./pages/admin/KnowledgePage'))
+const MapLayersPage = lazy(() => import('./pages/admin/MapLayersPage'))
 
 const EnvironmentReport = lazy(() => import('./components/reports/EnvironmentReport'))
 const OperationsReport = lazy(() => import('./components/reports/OperationsReport'))
@@ -209,6 +210,7 @@ export default function App() {
             <Route path="/views/compliance-snapshot" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><ComplianceSnapshotDeck /></Suspense></ErrorBoundary>} />
             
             <Route path="/admin/knowledge" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><KnowledgePage /></Suspense></ErrorBoundary>} />
+            <Route path="/admin/map-layers" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MapLayersPage /></Suspense></ErrorBoundary>} />
             
             <Route path="/*" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
           </Routes>

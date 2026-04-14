@@ -70,7 +70,7 @@ export const PfsEngineeringOverlay = memo(function PfsEngineeringOverlay({
   hoveredId = null,
   selectedId = null,
 }: PfsEngineeringOverlayProps) {
-  const raw = useGeoJsonFeatureCollection<PfsFeature>(GEO.pfs.url)
+  const { data: raw } = useGeoJsonFeatureCollection<PfsFeature>(GEO.pfs.url)
 
   const data = useMemo<FeatureCollection<PfsFeature> | null>(() => {
     if (!raw) return null

@@ -36,6 +36,37 @@ Single index for GeoJSON layers and issuer metrics. Extend this table when addin
 - WebLink PDFs: `https://wcsecure.weblink.com.au/pdf/MEI/` (multiple announcement IDs)
 - CETEM / seminar PDF: `https://www.gov.br/cetem/pt-br/assuntos/VI-Seminario-Brasileiro-de-Terras-Raras/MeteoricProjetoCaldeira_CTEM.pdf`
 - Simexmin 2024: https://simexmin.org.br/2024/wp-content/uploads/2024/06/10h10-Simexmin-2024.pdf
+- GeoSGB geology services: https://geoportal.sgb.gov.br
+- ANM SIGMINE: https://www.gov.br/anm/pt-br/assuntos/sistemas/sigmine
+- SNIRH Hidroweb map: https://www.snirh.gov.br/hidroweb/mapa
+- INMET weather portal: https://portal.inmet.gov.br
+- OpenWeather weather maps: https://openweathermap.org/api/weathermaps
+- CNEN/LAPOC ingest spec: [`LAPOC_INGESTION.md`](LAPOC_INGESTION.md)
+
+## Approved external API policy (2026-04 sprint)
+
+- Geology map sources are limited to **GeoSGB**, **SIGMINE**, and **ANM** layers.
+- Hydrology/water source layers are limited to **SNIRH Hidroweb** and **CNEN/LAPOC**.
+- Weather layers are limited to **INMET** and **OpenWeather** (plus Open-Meteo for ingest time-series APIs).
+- Deprecated geology providers (Macrostrat, USGS REE WMS) were removed from runtime layer registries.
+
+## Snapshot-backed layer policy
+
+- The frontend should prefer local normalized GeoJSON snapshots over live third-party map services whenever practical.
+- Approved external layers can still use live server-proxied ArcGIS identify/query for popup enrichment without switching the rendered layer away from snapshots.
+- Raw daily downloads belong under `data/caldeira/snapshots/`.
+- Frontend-ready normalized derivatives belong under `src/data/geojson/external/`.
+- Snapshot-backed logical ids should remain stable even if the app later switches from repo-local files to server-cached endpoints.
+- If a daily refresh fails, the app should continue serving the last successful normalized snapshot rather than failing open to a live provider.
+- Rebuild the current Caldeira external layer snapshots with `npm run build:caldeira-external-snapshots`.
+- Review operational freshness and provider metadata in the internal catalog at `/admin/map-layers`.
+
+## Planned snapshot targets
+
+- `snapshot:geosgb-geology` → `src/data/geojson/external/caldeira-geosgb-geology.geojson`
+- `snapshot:sigmine-tenements` → `src/data/geojson/external/caldeira-sigmine-tenements.geojson`
+- `snapshot:anm-geology` → `src/data/geojson/external/caldeira-anm-geology.geojson`
+- `snapshot:snirh-hidroweb` → `src/data/geojson/external/caldeira-snirh-stations.geojson`
 
 ## Refresh checklist
 
@@ -44,3 +75,5 @@ Single index for GeoJSON layers and issuer metrics. Extend this table when addin
 3. New FEAM/COPAM map → re-georeference APA/pits/plant; bump `retrieved_on` and `confidence` here.
 4. New ASX collar / intercept appendix → extend [`data/caldeira/staging/`](../../../data/caldeira/staging/) → `npm run build:caldeira-geojson` → commit GeoJSON + bump rows in this table (`retrieved_on`).
 5. New pilot plant data → update `data/caldeira/pilot-plant-mirror.json` (add source to `sources`, update `design_basis` / `process_stages` as needed) → `npm run validate:pilot-plant` → bump `meta.last_reviewed` → re-run `npm run check:pilot-plant-links` if URLs changed.
+6. External geology/hydrology refresh → run `npm run build:caldeira-external-snapshots`; commit both the raw provider payloads under `data/caldeira/snapshots/` and the normalized GeoJSON under `src/data/geojson/external/` only after spot-checking feature counts and provenance metadata.
+7. New government ArcGIS/WMS candidate → preview the service URL in `/admin/map-layers`, then register the approved source in the typed Caldeira manifest before enabling it in the runtime.

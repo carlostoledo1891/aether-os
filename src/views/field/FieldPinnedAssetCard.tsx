@@ -321,6 +321,26 @@ export const FieldPinnedAssetCard = memo(function FieldPinnedAssetCard({
               </div>
             </div>
           )}
+
+          {geoSelection.kind === 'external' && (
+            <div className="flex flex-col gap-1 text-[11px]" style={{ color: W.text2 }}>
+              <div className="font-bold text-[var(--w-text1)]">{geoSelection.detail.title}</div>
+              <div style={{ color: W.text4 }}>
+                {geoSelection.detail.subtitle ?? geoSelection.detail.layerLabel}
+              </div>
+              {geoSelection.detail.rows.map(row => (
+                <div key={`${geoSelection.detail.layerId}-${row.label}`} className="flex justify-between gap-2">
+                  <span style={{ color: W.text4 }}>{row.label}</span>
+                  <span className="text-right font-mono text-[10px]" style={{ color: W.text2 }}>{row.value}</span>
+                </div>
+              ))}
+              {(geoSelection.detail.provider || geoSelection.detail.footer) && (
+                <div className="font-mono text-[9px]" style={{ color: W.text4 }}>
+                  {[geoSelection.detail.provider, geoSelection.detail.footer].filter(Boolean).join(' · ')}
+                </div>
+              )}
+            </div>
+          )}
         </>
       ) : activeNode ? (() => {
         const accentColor = mapTab === 'operations' ? W.violetSoft : W.cyan

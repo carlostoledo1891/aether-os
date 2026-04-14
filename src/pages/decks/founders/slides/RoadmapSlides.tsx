@@ -36,8 +36,7 @@ export function RoadmapSlide() {
 
 const MILESTONES = [
   { date: 'Apr 16', label: 'Demo to Meteoric Resources', status: 'next' as const },
-  { date: 'Apr 21', label: 'Term sheet with angel investors', status: 'next' as const },
-  { date: 'May', label: 'LAPOC connected — field-verified', status: 'pending' as const },
+  { date: 'May', label: 'All national regulatory agencies plugged in — ANM, ANA, ANSN, etc.', status: 'pending' as const },
   { date: 'Jun', label: 'Meteoric pilot — $102k/yr', status: 'pending' as const },
   { date: 'Jul-Sep', label: 'Seed $1-2M · 3 pilots', status: 'pending' as const },
   { date: 'Feb 2027', label: 'EU DPP — market 3x', status: 'pending' as const },
@@ -45,7 +44,11 @@ const MILESTONES = [
 
 export function TimelineSlide() {
   return (<>
-    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 40 }}>What Happens Next</h2>
+    <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 40, textAlign: 'center' }}>
+      What Happens
+      <br />
+      Next
+    </h2>
     <div style={{ maxWidth: 600, width: '100%', position: 'relative', margin: '0 auto' }}>
       {/* Vertical Line */}
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 2, background: `linear-gradient(180deg, ${V}80 0%, ${V}20 100%)` }} />
