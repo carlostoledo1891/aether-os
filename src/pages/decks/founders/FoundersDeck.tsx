@@ -4,7 +4,7 @@ import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
 /* ── Lazy Slide Imports ───────────────────────────────────── */
 
-const DisclaimerSlide  = lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Guilherme | Juliano" /> })))
+const DisclaimerSlide  = lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default /> })))
 const CoverSlide       = lazy(() => import('./slides/BookendSlides').then(m => ({ default: m.CoverSlide })))
 const ProblemSlide     = lazy(() => import('./slides/ProblemSlide'))
 const WhiteBoxSlide    = lazy(() => import('../../../components/deck/slides/WhiteBoxSlide'))
@@ -21,8 +21,6 @@ const ReportsSlide     = lazy(() => import('./slides/ReportsSlide'))
 const MoatSlide        = lazy(() => import('./slides/MoatSlide'))
 const RevenueSlide     = lazy(() => import('./slides/FinancialsSlides').then(m => ({ default: m.RevenueSlide })))
 const TeamSlide        = lazy(() => import('./slides/TeamSlide'))
-const WhyYouSlide      = lazy(() => import('./slides/WhyYouSlide'))
-const MeteorPlaySlide  = lazy(() => import('./slides/MeteorSlides').then(m => ({ default: m.MeteorPlaySlide })))
 const RoadmapSlide     = lazy(() => import('./slides/RoadmapSlides').then(m => ({ default: m.RoadmapSlide })))
 const TimelineSlide    = lazy(() => import('./slides/RoadmapSlides').then(m => ({ default: m.TimelineSlide })))
 const CloseSlide       = lazy(() => import('./slides/BookendSlides').then(m => ({ default: m.CloseSlide })))
@@ -46,8 +44,6 @@ const slides: LazySlide[] = [
   MoatSlide,
   RevenueSlide,
   TeamSlide,
-  WhyYouSlide,
-  MeteorPlaySlide,
   CaldeiraSlide,
   RoadmapSlide,
   TimelineSlide,

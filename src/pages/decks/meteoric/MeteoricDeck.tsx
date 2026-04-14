@@ -3,7 +3,7 @@ import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
 const slides: LazySlide[] = [
-  lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default names="Dr. Marcelo de Carvalho" /> }))),
+  lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default /> }))),
   lazy(() => import('./slides/CoverSlide')),
   lazy(() => import('../../../components/deck/slides/WhiteBoxSlide')),
   lazy(() => import('./slides/BuiltStatsSlide')),

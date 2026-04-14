@@ -20,27 +20,27 @@ export default function WhyYouSlide() {
       <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'left' }}>
         <div style={{ width: 8, height: 2, background: V, borderRadius: 1, marginBottom: 14 }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 2 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: W.text1 }}>Juliano Dutra</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: W.text1 }}>Technical Advisory</div>
           <PitchingBadge />
         </div>
         <div style={{ fontSize: 11, color: V, fontWeight: 600, marginBottom: 12 }}>CTO Lens</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. Gringo CTO. Highly respected tech speaker and engineering leader.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>The critical minerals and rare earth markets are entering a regulatory inflection — EU DPP, IRA/FEOC, Australian ESG. I need a technical co-pilot to scale an already robust codebase into an enterprise-grade platform serving this global wave.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric Resources is our first live demo — Apr 16. The architecture is already built to serve 150+ critical mineral projects worldwide. Your validation ensures we hit audit-grade at scale.</p>
+          <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>Senior engineering guidance for architecture review, product quality, and scaling decisions.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Critical minerals compliance is entering a regulatory inflection. I need a technical sounding board that helps harden the platform for enterprise-grade deployments without slowing execution.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric Resources is the first live demo. The architecture is already built to serve many critical mineral projects; the advisory role is to validate the engineering path and keep the bar high.</p>
         </div>
       </div>
       <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'left' }}>
         <div style={{ width: 8, height: 2, background: V, borderRadius: 1, marginBottom: 14 }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 2 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: W.text1 }}>Guilherme Bonifácio</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: W.text1 }}>Commercial Advisory</div>
           <PitchingBadge />
         </div>
         <div style={{ fontSize: 11, color: V, fontWeight: 600, marginBottom: 12 }}>Business Lens</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>iFood co-founder. Kanoa Capital. 110+ angel investments. Master at GTM & revenue engines.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Critical minerals compliance is a $4.8 B market growing at 8.9% CAGR. I need a commercial powerhouse to structure pricing, open your investor network, and architect term sheets for this space.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric Resources is our first live demo — Apr 16. Rare earth and lithium projects across ASX, TSX, and SEC are the pipeline behind it. Your name on the cap table signals trust to every one of them.</p>
+          <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>Go-to-market, pricing, fundraising, and investor-facing support for the next stage of growth.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Critical minerals compliance is a fast-forming market. I need commercial leverage to structure pricing, sharpen positioning, and open the right investor and customer conversations.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric is the first live demo. The next step is turning that credibility into pipeline momentum across rare earth and lithium operators that need traceability and trust infrastructure.</p>
         </div>
       </div>
     </div>

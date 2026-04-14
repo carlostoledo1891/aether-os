@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useRef, useState, useMemo } from 'react'
+import type { ReactNode } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AlertItem, ReportType, ViewMode } from './types/telemetry'
@@ -27,8 +28,6 @@ const FoundersDeck = lazy(() => import('./pages/decks/founders/FoundersDeck'))
 const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
 
 const PrefeituraPage = lazy(() => import('./pages/views/prefeitura/PrefeituraPage').then(m => ({ default: m.PrefeituraPage })))
-const CaldeiraExecDeck = lazy(() => import('./pages/views/caldeira-exec/CaldeiraExecDeck'))
-const ComplianceSnapshotDeck = lazy(() => import('./pages/views/compliance-snapshot/ComplianceSnapshotDeck'))
 
 const KnowledgePage = lazy(() => import('./pages/admin/KnowledgePage'))
 const MapLayersPage = lazy(() => import('./pages/admin/MapLayersPage'))
@@ -37,10 +36,28 @@ const EnvironmentReport = lazy(() => import('./components/reports/EnvironmentRep
 const OperationsReport = lazy(() => import('./components/reports/OperationsReport'))
 const DrillTestsReport = lazy(() => import('./components/reports/DrillTestsReport'))
 
-const REPORT_MANIFESTS: Record<string, DeckManifest> = {
-  environment:   { id: 'report-environment',  title: 'Environmental & Community Report', subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <EnvironmentReport range={range} /> },
-  operations:    { id: 'report-operations',   title: 'Operations Report',                subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <OperationsReport range={range} /> },
-  'drill-tests': { id: 'report-drill-tests', title: 'Drill Tests & Resource Report',   subtitle: 'Caldeira Project', mode: 'report', theme: 'light', timeRange: true, printable: true, portal: true, renderContent: (range) => <DrillTestsReport range={range} /> },
+function createReportManifest(
+  id: string,
+  title: string,
+  renderContent: DeckManifest['renderContent'],
+): DeckManifest {
+  return {
+    id,
+    title,
+    subtitle: 'Caldeira Project',
+    mode: 'report',
+    theme: 'light',
+    timeRange: true,
+    printable: true,
+    portal: true,
+    renderContent,
+  }
+}
+
+const REPORT_MANIFESTS: Record<ReportType, DeckManifest> = {
+  environment: createReportManifest('report-environment', 'Environmental & Community Report', range => <EnvironmentReport range={range} />),
+  operations: createReportManifest('report-operations', 'Operations Report', range => <OperationsReport range={range} />),
+  'drill-tests': createReportManifest('report-drill-tests', 'Drill Tests & Resource Report', range => <DrillTestsReport range={range} />),
 }
 
 const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
@@ -188,6 +205,16 @@ const PageFallback = () => (
   </div>
 )
 
+function renderPage(page: ReactNode) {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<PageFallback />}>
+        {page}
+      </Suspense>
+    </ErrorBoundary>
+  )
+}
+
 export default function App() {
   const service = useMemo(() => createDataService(), [])
 
@@ -196,23 +223,21 @@ export default function App() {
       <MapProvider>
         <MapCameraProvider>
           <Routes>
-            <Route path="/" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+            <Route path="/" element={renderPage(<LandingPage />)} />
             <Route path="/app/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
-            <Route path="/business" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><BusinessPage /></Suspense></ErrorBoundary>} />
-            <Route path="/tech" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TechPage /></Suspense></ErrorBoundary>} />
-            <Route path="/trust" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><TrustCenterPage /></Suspense></ErrorBoundary>} />
+            <Route path="/business" element={renderPage(<BusinessPage />)} />
+            <Route path="/tech" element={renderPage(<TechPage />)} />
+            <Route path="/trust" element={renderPage(<TrustCenterPage />)} />
             
-            <Route path="/deck/founders" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><FoundersDeck /></Suspense></ErrorBoundary>} />
-            <Route path="/deck/meteoric" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MeteoricDeck /></Suspense></ErrorBoundary>} />
+            <Route path="/deck/founders" element={renderPage(<FoundersDeck />)} />
+            <Route path="/deck/meteoric" element={renderPage(<MeteoricDeck />)} />
             
-            <Route path="/views/prefeitura" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><PrefeituraPage /></Suspense></ErrorBoundary>} />
-            <Route path="/views/caldeira-exec" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><CaldeiraExecDeck /></Suspense></ErrorBoundary>} />
-            <Route path="/views/compliance-snapshot" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><ComplianceSnapshotDeck /></Suspense></ErrorBoundary>} />
+            <Route path="/views/prefeitura" element={renderPage(<PrefeituraPage />)} />
             
-            <Route path="/admin/knowledge" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><KnowledgePage /></Suspense></ErrorBoundary>} />
-            <Route path="/admin/map-layers" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><MapLayersPage /></Suspense></ErrorBoundary>} />
+            <Route path="/admin/knowledge" element={renderPage(<KnowledgePage />)} />
+            <Route path="/admin/map-layers" element={renderPage(<MapLayersPage />)} />
             
-            <Route path="/*" element={<ErrorBoundary><Suspense fallback={<PageFallback />}><LandingPage /></Suspense></ErrorBoundary>} />
+            <Route path="/*" element={renderPage(<LandingPage />)} />
           </Routes>
         </MapCameraProvider>
       </MapProvider>

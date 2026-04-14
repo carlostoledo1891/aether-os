@@ -36,8 +36,8 @@ export default function LapocSlide() {
       {'}'})
     </Terminal>
     <div style={{ marginTop: 16, maxWidth: 600, textAlign: 'center' }}>
-      <p style={{ fontSize: 12, color: W.text2 }}><strong style={{ color: V }}>Dr. Heber Caponi</strong> — Scientific Advisor. Decades of Caldeira research.</p>
-      <p style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>LAPOC instruments are the first live data channel. The scientist who studied this deposit validates every field reading.</p>
+      <p style={{ fontSize: 12, color: W.text2 }}><strong style={{ color: V }}>Scientific Advisor</strong> — Decades of Caldeira field research.</p>
+      <p style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>LAPOC instruments are the first live data channel. Independent field science validates every reading as the platform moves from simulated to live evidence.</p>
     </div>
   </>)
 }

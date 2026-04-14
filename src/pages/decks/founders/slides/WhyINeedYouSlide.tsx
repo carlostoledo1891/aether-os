@@ -7,7 +7,7 @@ const FOCUS_ITEMS = [
   'Caldeira pilot — Meteoric demo, field integration, LAPOC instruments',
   'Dev pipeline — new features, regulatory datasets, DPP compliance fields',
   'Field work — geology, hydrology, plant commissioning, community dashboards',
-  'Science — Dr. Caponi coordination, instrument validation, data provenance',
+  'Science — field validation, instrument coordination, data provenance',
 ]
 
 const CANNOT_ITEMS = [
@@ -20,8 +20,8 @@ const CANNOT_ITEMS = [
 ]
 
 const LANES = [
-  { who: 'Juliano', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
-  { who: 'Guilherme', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
+  { who: 'Technical Advisory', lane: 'Tech Mentorship', detail: 'Architecture review, hiring bar, scaling guidance' },
+  { who: 'Commercial Advisory', lane: 'Commercial Front', detail: 'GTM, investor pipeline, revenue strategy' },
 ]
 
 export default function WhyINeedYouSlide() {

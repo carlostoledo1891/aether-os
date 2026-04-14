@@ -1,6 +1,6 @@
 # Deck Templates
 
-Every deck in this directory follows the same contract. A deck is any outbound content artifact rendered by the Deck Engine — pitch decks, public dashboards, compliance snapshots, investor summaries.
+Every deck in this directory follows the same contract. For the current public surface, only the Founders and Meteoric slide decks are exposed under `/deck/*`.
 
 ## Template Contract
 
@@ -58,12 +58,11 @@ Every deck template should use `W.*` tokens (dark) or `WL.*` tokens (light) for 
 
 Base chrome comes from the design system. The deck only customizes accent colors, logo, and fonts.
 
-## Current Templates
+## Current Public Decks
 
 | ID | Mode | Description | Route |
 |----|------|-------------|-------|
-| `prefeitura` | dashboard | Portuguese-language public dashboard for Poços de Caldas | `/deck/prefeitura` |
-| `caldeira-exec` | dashboard | Investor executive summary with metrics and timeline | `/deck/caldeira-exec` |
-| `compliance-snapshot` | dashboard | ESG coverage, DPP readiness, batch tracking | `/deck/compliance-snapshot` |
-| `meteoric` | slides | 18-slide Meteoric pitch deck | `/deck/meteoric` |
-| `founders` | slides | 22-slide Founders pitch deck | `/deck/founders` |
+| `meteoric` | slides | Active public pitch deck | `/deck/meteoric` |
+| `founders` | slides | Active public pitch deck | `/deck/founders` |
+
+Dashboard-style presentation surfaces may still exist elsewhere in the codebase for internal or future use, but they are not part of the current public deck route set.

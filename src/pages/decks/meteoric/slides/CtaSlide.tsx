@@ -8,38 +8,31 @@ const DeckCountdown = lazy(() => import('../DeckCountdown'))
 export default function CtaSlide() {
   return (
     <>
-      <h2 style={{ fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 24, background: `linear-gradient(135deg, ${W.text1} 40%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-        First Movers Set The Standard
+      <h2 style={{ fontSize: 'clamp(32px, 5.5vw, 56px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 8, color: W.text1 }}>
+        This is not a deck.
       </h2>
-      <div style={{ marginBottom: 20 }}>
+      <h2 style={{ fontSize: 'clamp(32px, 5.5vw, 56px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 28, background: `linear-gradient(135deg, ${W.text4} 30%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        It's not a prototype.
+      </h2>
+      <p style={{ fontSize: 'clamp(15px, 2vw, 20px)', color: W.text3, maxWidth: 520, lineHeight: 1.6, marginBottom: 28, textAlign: 'center' }}>
+        Live geological data. Environmental compliance telemetry. A domain-grounded AI trained on the Caldeira's own datasets. It's running — go in and see.
+      </p>
+      <div style={{ marginBottom: 28 }}>
         <Suspense fallback={null}>
           <DeckCountdown target={EU_DPP_DATE} label="Until EU DPP enforcement — shape the schema, don't chase it" />
         </Suspense>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, width: '100%', maxWidth: 720, marginBottom: 32 }}>
-        {[
-          { label: 'Compliance', value: 'EU DPP Ready' },
-          { label: 'Audit Trail', value: 'SHA-256' },
-          { label: 'Field Data', value: 'LAPOC Ready' }
-        ].map(s => (
-          <div key={s.label} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '16px', textAlign: 'center' }}>
-            <div style={{ fontSize: 12, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>{s.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: W.text1, fontFamily: 'var(--font-mono)' }}>{s.value}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{ maxWidth: 760, display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36, textAlign: 'left' }}>
+      <div style={{ maxWidth: 700, display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36, textAlign: 'left' }}>
         <Bullet>The Caldeira is a globally strategic asset. A flagship trust layer protects its valuation at every stage — PFS, DFS, and construction.</Bullet>
-        <Bullet>The platform is production-ready: live geological data, environmental compliance telemetry, and a domain-grounded AI trained on the Caldeira's own datasets.</Bullet>
-        <Bullet>The team brings iFood-scale engineering, 40 years of Caldeira context, and active LAPOC/ANSN field science.</Bullet>
-        <Bullet accent={W.green}>Let's make it official. $102k/yr at 0.013% of NPV — less than one week of DFS consultant fees.</Bullet>
+        <Bullet>The team brings production-grade engineering, 40 years of Caldeira context, and active LAPOC/ANSN field science.</Bullet>
+        <Bullet accent={W.green}>$102k/yr at 0.013% of NPV — less than one week of DFS consultant fees.</Bullet>
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
-          Open Platform
+        <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '16px 40px', borderRadius: 8, fontSize: 16, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.01em' }}>
+          Enter the Platform
         </a>
       </div>
-      <p style={{ fontSize: 12, color: W.text4, marginTop: 16 }}>carlos@verochain.co</p>
+      <p style={{ fontSize: 12, color: W.text4, marginTop: 20 }}>carlos@verochain.co</p>
     </>
   )
 }
