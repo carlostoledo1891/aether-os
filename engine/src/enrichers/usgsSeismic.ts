@@ -1,11 +1,14 @@
 import { ENGINE_CONFIG, ingestHeaders } from '../config.js'
+import { getEngineApiSource } from '../apiRegistry.js'
+
+const { baseUrl: USGS_BASE } = getEngineApiSource('usgs-seismic')
 
 export async function fetchAndIngestSeismic(): Promise<void> {
   const { latitude, longitude, radiusKm } = ENGINE_CONFIG.usgs
   const startDate = new Date()
   startDate.setFullYear(startDate.getFullYear() - 1)
 
-  const url = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=${latitude}&longitude=${longitude}&maxradiuskm=${radiusKm}&starttime=${startDate.toISOString().slice(0, 10)}&limit=50`
+  const url = `${USGS_BASE}?format=geojson&latitude=${latitude}&longitude=${longitude}&maxradiuskm=${radiusKm}&starttime=${startDate.toISOString().slice(0, 10)}&limit=50`
 
   const res = await fetch(url)
   if (!res.ok) throw new Error(`USGS HTTP ${res.status}`)

@@ -361,6 +361,7 @@ export function MapBase({
   onClick,
 }: MapBaseProps) {
   const [styleId, setStyleId] = useState<MapStyleId>(getInitialStyle)
+  const [mapIdle, setMapIdle] = useState(false)
   const nativeMapRef = useRef<maplibregl.Map | null>(null)
 
   const activeStyleId = forceStyle ?? styleId
@@ -400,6 +401,8 @@ export function MapBase({
         onMouseLeave={interactive ? onMouseLeave : undefined}
         onMouseMove={interactive ? onMouseMove : undefined}
         onClick={interactive ? onClick : undefined}
+        onIdle={() => setMapIdle(true)}
+        onLoad={() => setMapIdle(false)}
       >
         <StyleController maptilerKey={MAPTILER_KEY} mapId={id} highlightWater={highlightWater} activeStyleId={activeStyleId} />
         {flyTo && <FlyToController mapId={id} target={flyTo} />}
@@ -436,6 +439,7 @@ export function MapBase({
           </>
         }
       />
+      {mapIdle && <div data-testid="map-idle" style={{ display: 'none' }} />}
     </div>
   )
 }

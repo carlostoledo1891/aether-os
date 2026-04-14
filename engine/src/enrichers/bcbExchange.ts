@@ -1,4 +1,7 @@
 import { ENGINE_CONFIG, ingestHeaders } from '../config.js'
+import { getEngineApiSource } from '../apiRegistry.js'
+
+const { baseUrl: BCB_BASE } = getEngineApiSource('bcb-ptax')
 
 function formatDateForBcb(date: Date): string {
   const mm = String(date.getMonth() + 1).padStart(2, '0')
@@ -9,7 +12,7 @@ function formatDateForBcb(date: Date): string {
 
 export async function fetchAndIngestFx(): Promise<void> {
   const dateStr = formatDateForBcb(new Date())
-  const url = `https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${dateStr}'&$format=json`
+  const url = `${BCB_BASE}/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${dateStr}'&$format=json`
 
   const res = await fetch(url)
   if (!res.ok) throw new Error(`BCB HTTP ${res.status}`)

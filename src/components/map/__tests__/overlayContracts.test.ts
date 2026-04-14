@@ -46,19 +46,11 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.PFS_ENGINEERING_FILL_LAYER_ID).toBe('pfs-engineering-fill')
   })
 
-  it('MacrostratOverlay exports MACROSTRAT_LAYER_ID', async () => {
-    const mod = await import('../MacrostratOverlay')
-    expect(mod.MACROSTRAT_LAYER_ID).toBe('macrostrat-carto')
-  })
-
-  it('UsgsReeOverlay exports USGS_REE_LAYER_ID', async () => {
-    const mod = await import('../UsgsReeOverlay')
-    expect(mod.USGS_REE_LAYER_ID).toBe('usgs-ree')
-  })
-
-  it('CprmGeologyOverlay exports CPRM_GEOLOGY_LAYER_ID', async () => {
-    const mod = await import('../CprmGeologyOverlay')
+  it('layerRegistry exports external raster layer IDs', async () => {
+    const mod = await import('../layerRegistry')
     expect(mod.CPRM_GEOLOGY_LAYER_ID).toBe('cprm-geology')
+    expect(mod.MACROSTRAT_LAYER_ID).toBe('macrostrat-carto')
+    expect(mod.USGS_REE_LAYER_ID).toBe('usgs-ree')
   })
 
   it('InmetStationOverlay exports INMET_STATION_LAYER_ID', async () => {
@@ -83,7 +75,7 @@ describe('Map overlay layer ID contracts', () => {
     }
   })
 
-  it('all overlays export a component (function or memo object)', async () => {
+  it('all active overlays export a component (function or memo object)', async () => {
     const overlays = [
       () => import('../CaldeiraBoundary'),
       () => import('../LicenseOverlay'),
@@ -93,9 +85,6 @@ describe('Map overlay layer ID contracts', () => {
       () => import('../InfraOverlay'),
       () => import('../OpsPlantSitesOverlay'),
       () => import('../PfsEngineeringOverlay'),
-      () => import('../MacrostratOverlay'),
-      () => import('../UsgsReeOverlay'),
-      () => import('../CprmGeologyOverlay'),
       () => import('../InmetStationOverlay'),
       () => import('../TerrainOverlay'),
     ]

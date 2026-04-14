@@ -1,8 +1,11 @@
 import { ENGINE_CONFIG, ingestHeaders } from '../config.js'
+import { getEngineApiSource } from '../apiRegistry.js'
+
+const { baseUrl: AV_BASE } = getEngineApiSource('alpha-vantage')
 
 export async function fetchAndIngestStock(): Promise<void> {
   const { apiKey, symbol } = ENGINE_CONFIG.alphaVantage
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`
+  const url = `${AV_BASE}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`
 
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Alpha Vantage HTTP ${res.status}`)

@@ -1,6 +1,7 @@
 import { ENGINE_CONFIG, ingestHeaders } from '../config.js'
+import { getEngineApiSource } from '../apiRegistry.js'
 
-const ARCHIVE_BASE = 'https://archive-api.open-meteo.com/v1/archive'
+const { baseUrl: ARCHIVE_BASE } = getEngineApiSource('open-meteo-archive')
 
 const DAILY_FIELDS = [
   'temperature_2m_max',

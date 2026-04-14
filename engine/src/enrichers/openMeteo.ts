@@ -1,6 +1,7 @@
 import { ENGINE_CONFIG, ingestHeaders } from '../config.js'
+import { getEngineApiSource } from '../apiRegistry.js'
 
-const FORECAST_BASE = 'https://api.open-meteo.com/v1/forecast'
+const { baseUrl: FORECAST_BASE } = getEngineApiSource('open-meteo-current')
 
 interface DailyPrecipSeries { time: string[]; precipitation_sum: number[] }
 

@@ -111,6 +111,12 @@ export type LayerId = (typeof _ALL_LAYERS)[number]['id']
 
 export const ALL_LAYERS: LayerDef[] = [..._ALL_LAYERS]
 
+// ── External raster layer IDs (formerly in per-service overlay files) ──
+
+export const CPRM_GEOLOGY_LAYER_ID = 'cprm-geology'
+export const MACROSTRAT_LAYER_ID = 'macrostrat-carto'
+export const USGS_REE_LAYER_ID = 'usgs-ree'
+
 // ── Helpers ────────────────────────────────────────────────────────────
 
 export function layersByGroup(group: LayerGroupId): LayerDef[] {

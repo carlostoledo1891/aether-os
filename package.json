@@ -11,6 +11,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "server": "npm --prefix server run dev",
     "engine": "npm --prefix engine run dev",
     "dev:all": "concurrently -n api,engine,ui -c blue,magenta,green \"npm run server\" \"npm run engine\" \"npm run dev\"",
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
