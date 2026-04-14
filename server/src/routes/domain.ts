@@ -305,7 +305,7 @@ export async function domainRoutes(app: FastifyInstance) {
   })
 
   /* ─── Stakeholders ─────────────────────────────────────────────────── */
-  app.get('/api/stakeholders', { schema: { tags: ['domain'], summary: 'Stakeholder register' } }, async () => getDomainState('stakeholder_register') ?? {})
+  app.get('/api/stakeholders', { schema: { tags: ['domain'], summary: 'Stakeholder register' } }, async () => getDomainState('stakeholder_register') ?? { groups: [], last_updated: '' })
 
   /* ─── Issuer & Spatial ──────────────────────────────────────────────── */
   app.get('/api/issuer-snapshot', { schema: { tags: ['domain'], summary: 'Issuer snapshot (ASX citation)' } }, async () => getDomainState('issuer_snapshot') ?? {})

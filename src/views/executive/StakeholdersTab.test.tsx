@@ -49,4 +49,15 @@ describe('StakeholdersTab', () => {
     expect(screen.getByText('FEAM')).toBeInTheDocument()
     expect(screen.getByText('Approved')).toBeInTheDocument()
   })
+
+  it('does not crash when register has no groups (empty API response)', async () => {
+    service = {
+      ...createMockDataService(),
+      getStakeholderRegister: () => ({} as unknown as ReturnType<AetherDataService['getStakeholderRegister']>),
+    }
+    const { StakeholdersTab } = await import('./StakeholdersTab')
+    expect(() => {
+      render(<TestWrapper><StakeholdersTab /></TestWrapper>)
+    }).not.toThrow()
+  })
 })

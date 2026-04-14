@@ -54,7 +54,7 @@ export function StakeholdersTab() {
   const { data: register, isLoading, error } = useServiceQuery('stakeholder-register', s => s.getStakeholderRegister())
 
   if (error) return <ErrorFallback error={error} label="Stakeholder register" />
-  if (isLoading || !register) {
+  if (isLoading || !register?.groups) {
     return <LoadingSkeleton variant="card" label="Loading stakeholders..." />
   }
 
