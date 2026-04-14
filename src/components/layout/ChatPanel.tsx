@@ -9,6 +9,9 @@ import { KIND_COLOR } from '../ui/provenanceColors'
 import type { DataProvenanceKind } from '../../services/dataService'
 import styles from './ChatPanel.module.css'
 
+const CHAT_API_KEY = import.meta.env.VITE_CHAT_API_KEY as string | undefined
+const AUTH_HEADERS: Record<string, string> = CHAT_API_KEY ? { 'x-api-key': CHAT_API_KEY } : {}
+
 interface ChatPanelProps {
   isOpen: boolean
   onClose: () => void
@@ -177,7 +180,7 @@ function getMessageText(parts: Array<{ type: string; text?: string }>): string {
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    transport: new DefaultChatTransport({ api: '/api/chat', headers: AUTH_HEADERS }),
   })
   const [input, setInput] = useState('')
   const isLoading = status === 'streaming' || status === 'submitted'
@@ -253,7 +256,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const headers: Record<string, string> = {}
+      const headers: Record<string, string> = { ...AUTH_HEADERS }
       if (sessionIdRef.current) headers['x-chat-session'] = sessionIdRef.current
       const res = await fetch('/api/chat/upload', { method: 'POST', body: formData, headers })
       if (!res.ok) throw new Error(`Upload failed: ${res.status}`)

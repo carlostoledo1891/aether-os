@@ -121,7 +121,10 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
 
     if (req.url.startsWith('/api/chat')) {
       if (!CHAT_API_KEY) {
-        if (!IS_PRODUCTION) return
+        if (IS_PRODUCTION) {
+          return reply.code(503).send({ error: 'Chat auth disabled — CHAT_API_KEY not configured' })
+        }
+        return
       }
       const key = req.headers['x-api-key']
       if (key !== CHAT_API_KEY) {
