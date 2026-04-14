@@ -5,7 +5,6 @@ import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { W } from '../../app/canvas/canvasTheme'
 import { ProvenanceBadge } from '../ui/ProvenanceBadge'
-import { KIND_COLOR } from '../ui/provenanceColors'
 import type { DataProvenanceKind } from '../../services/dataService'
 import styles from './ChatPanel.module.css'
 
@@ -119,7 +118,7 @@ function ToolProvenance({ tools }: { tools: ToolPart[] }) {
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
       >
-        <Database size={10} style={{ color: W.violet, flexShrink: 0 }} />
+        <Database size={10} style={{ color: W.text2, flexShrink: 0 }} />
         <span className={styles.provenanceLabel}>Sources: {label}</span>
         {expanded
           ? <ChevronDown size={10} style={{ color: W.text4 }} />
@@ -145,7 +144,7 @@ function ToolProvenance({ tools }: { tools: ToolPart[] }) {
                         <span style={{ color: W.text2 }}>{r.title}</span>
                         {r.source_url && (
                           <a href={r.source_url} target="_blank" rel="noopener noreferrer"
-                            style={{ color: `${KIND_COLOR[r.provenance_kind as DataProvenanceKind] ?? W.text4}`, fontSize: 8 }}>
+                            style={{ color: W.text3, fontSize: 8 }}>
                             [link]
                           </a>
                         )}

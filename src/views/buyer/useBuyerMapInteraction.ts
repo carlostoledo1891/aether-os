@@ -3,6 +3,7 @@ import type { MapLayerMouseEvent } from '../../components/map/MapBase'
 import type { MapPopupData } from '../../components/map/MapFeaturePopup'
 import { DRILL_LAYER_ID } from '../../components/map/DrillHoleOverlay'
 import { LICENSE_LAYER_ID } from '../../components/map/LicenseOverlay'
+import { SPRING_PIN_LAYER_ID } from '../../components/map/SpringPinsOverlay'
 import { W } from '../../app/canvas/canvasTheme'
 import type { LayerId } from '../../components/map/layerRegistry'
 import {
@@ -47,6 +48,24 @@ export function useBuyerMapInteraction(visibleLayerIds: LayerId[]) {
             { label: 'Status', value: String(props.status ?? '—') },
             { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
           ],
+        },
+      })
+      return
+    }
+
+    if (layerId === SPRING_PIN_LAYER_ID && props) {
+      setHoveredHoleId(null)
+      setPopupData({
+        x: px.x,
+        y: px.y,
+        data: {
+          title: String(props.name ?? props.id ?? 'Spring'),
+          rows: [
+            { label: 'Spring ID', value: String(props.id ?? '—') },
+            ...(props.source_label ? [{ label: 'Source', value: String(props.source_label) }] : []),
+            ...(props.municipality ? [{ label: 'Municipality', value: String(props.municipality) }] : []),
+          ],
+          footer: 'SISEMA / MG spring reference geometry',
         },
       })
       return

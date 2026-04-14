@@ -382,9 +382,9 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{p.id}</span>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: strokeColor, letterSpacing: '0.07em', textTransform: 'uppercase' }}>spring</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: W.text3, letterSpacing: '0.07em', textTransform: 'uppercase' }}>spring</span>
                 </div>
-                <p style={{ margin: '0 0 3px', fontSize: 11, fontWeight: 600, color: strokeColor }}>{p.name ?? p.id}</p>
+                <p style={{ margin: '0 0 3px', fontSize: 11, fontWeight: 600, color: W.text1 }}>{p.name ?? p.id}</p>
                 <p style={{ margin: '0 0 6px', fontSize: 9, color: W.text4, lineHeight: 1.35 }}>
                   {p.monitoringLabel} · {p.methodDisplay}
                 </p>
@@ -393,7 +393,7 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
                 </div>
                 {recent && (
                   <div style={{ fontSize: 9, color: W.text3, marginBottom: 6, padding: '4px 6px', background: W.glass04, borderRadius: W.radius.sm }}>
-                    <span style={{ color: W.cyan }}>{recent.type}</span>
+                    <span style={{ color: W.text2 }}>{recent.type}</span>
                     {' · '}{recent.note}
                   </div>
                 )}
@@ -424,13 +424,13 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                 <span style={{ fontSize: 10, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{hoveredNode.properties.id}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: hoveredNode.properties.labelColor, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{hoveredNode.properties.nodeType}</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: W.text3, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{hoveredNode.properties.nodeType}</span>
               </div>
-              <p style={{ margin: '0 0 3px', fontSize: 11, fontWeight: 600, color: hoveredNode.properties.labelColor }}>{hoveredNode.properties.label}</p>
+              <p style={{ margin: '0 0 3px', fontSize: 11, fontWeight: 600, color: W.text1 }}>{hoveredNode.properties.label}</p>
               <p style={{ margin: '0 0 7px', fontSize: 10, color: W.text4 }}>{hoveredNode.properties.sublabel}</p>
               {hoveredSensor && (
                 <div style={{ padding: '4px 8px', background: `${hoveredNode.properties.strokeColor}10`, border: `1px solid ${hoveredNode.properties.strokeColor}28`, borderRadius: W.radius.sm, marginBottom: 6 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: hoveredNode.properties.labelColor, fontFamily: 'var(--font-mono)' }}>{hoveredSensor.depth_meters.toFixed(1)} m</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: W.text1, fontFamily: 'var(--font-mono)' }}>{hoveredSensor.depth_meters.toFixed(1)} m</span>
                   <span style={{ fontSize: 10, color: W.text4, marginLeft: 6 }}>
                     D{(hoveredSensor.depth_meters - hoveredSensor.baseline_meters) >= 0 ? '+' : ''}{(hoveredSensor.depth_meters - hoveredSensor.baseline_meters).toFixed(1)} m
                   </span>

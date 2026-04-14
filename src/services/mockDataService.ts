@@ -183,8 +183,11 @@ function loadDrillFeatures(): Promise<void> {
   return drillFetchPromise
 }
 
-// Kick off fetch immediately so it's ready by the time the UI needs batches
-loadDrillFeatures()
+function ensureDrillFeaturesLoading() {
+  if (!drillFeatures && !drillFetchPromise) {
+    void loadDrillFeatures()
+  }
+}
 
 function pickRandomDrills(depositId: string, count: number): string[] {
   if (!drillFeatures) return []
@@ -225,6 +228,7 @@ function enrichBatch(batch: ComplianceLedger): ComplianceLedger {
 }
 
 function getEnrichedBatches(): ComplianceLedger[] {
+  ensureDrillFeaturesLoading()
   return BATCHES.map(enrichBatch)
 }
 

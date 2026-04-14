@@ -80,7 +80,6 @@ export default function GeoDataSlide() {
             const accent = i === 0 ? W.text4 : i === 1 ? V : W.green
             return (
               <div key={t.horizon} style={{ background: W.glass04, border: `1px solid ${i === 1 ? V : W.glass06}`, borderRadius: 10, padding: '16px 18px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
-                {i === 1 && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: V }} />}
                 <div style={{ fontSize: 10, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
                   {t.horizon}
                 </div>

@@ -3,11 +3,11 @@ import { W } from '../../app/canvas/canvasTheme'
 
 export type DataSourceKind = 'api' | 'simulated' | 'seed' | 'mock'
 
-const KIND_MAP: Record<DataSourceKind, { color: string; defaultLabel: string }> = {
-  api:       { color: W.cyan,  defaultLabel: 'API' },
-  simulated: { color: W.amber, defaultLabel: 'Simulated' },
-  seed:      { color: W.text4, defaultLabel: 'Seed Data' },
-  mock:      { color: W.text3, defaultLabel: 'Mock' },
+const KIND_MAP: Record<DataSourceKind, { defaultLabel: string }> = {
+  api:       { defaultLabel: 'API' },
+  simulated: { defaultLabel: 'Simulated' },
+  seed:      { defaultLabel: 'Seed Data' },
+  mock:      { defaultLabel: 'Mock' },
 }
 
 interface DataSourceBadgeProps {
@@ -17,7 +17,7 @@ interface DataSourceBadgeProps {
 }
 
 export function DataSourceBadge({ kind, label, style }: DataSourceBadgeProps) {
-  const { color, defaultLabel } = KIND_MAP[kind]
+  const { defaultLabel } = KIND_MAP[kind]
   const text = label ?? defaultLabel
 
   return (
@@ -34,8 +34,9 @@ export function DataSourceBadge({ kind, label, style }: DataSourceBadgeProps) {
         textTransform: 'uppercase',
         padding: '1px 5px',
         borderRadius: W.radius.xs,
-        background: `${color}15`,
-        color,
+        background: W.glass04,
+        color: W.text3,
+        border: `1px solid ${W.glass06}`,
         ...style,
       }}
     >
@@ -44,7 +45,7 @@ export function DataSourceBadge({ kind, label, style }: DataSourceBadgeProps) {
           width: 5,
           height: 5,
           borderRadius: '50%',
-          background: color,
+          background: W.text4,
           flexShrink: 0,
         }}
       />

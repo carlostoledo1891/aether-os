@@ -5,15 +5,22 @@ import { createMockDataService } from './mockDataService'
 import type { AetherDataService } from './dataService'
 import type { ReactNode } from 'react'
 
+const EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] }
+
 describe('DataServiceProvider', () => {
   let service: AetherDataService
 
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(EMPTY_GEOJSON), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })))
     service = createMockDataService()
   })
 
   afterEach(() => {
+    vi.unstubAllGlobals()
     vi.useRealTimers()
   })
 

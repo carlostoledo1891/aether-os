@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MapFeaturePopup } from './MapFeaturePopup'
+import { W } from '../../app/canvas/canvasTheme'
 
 describe('MapFeaturePopup', () => {
   it('renders null when data is null', () => {
@@ -41,7 +42,7 @@ describe('MapFeaturePopup', () => {
     expect(popup.style.top).toBe('142px')
   })
 
-  it('applies accent color to title when provided', () => {
+  it('keeps popup title on the light text scale even when an accent color is provided', () => {
     render(
       <MapFeaturePopup
         data={{ title: 'Colored', rows: [], accentColor: '#FF0000' }}
@@ -50,6 +51,6 @@ describe('MapFeaturePopup', () => {
       />,
     )
     const title = screen.getByText('Colored')
-    expect(title.style.color).toBe('#FF0000')
+    expect(title.style.color).toBe(W.text1)
   })
 })

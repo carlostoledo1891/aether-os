@@ -42,7 +42,7 @@ export function TeamShowcase({
         </h2>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, width: '100%', alignItems: 'stretch' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 16, width: '100%', alignItems: 'stretch' }}>
         {TEAM.map((member, index) => {
           const isOnboarding = member.onboarding
           return (
@@ -64,39 +64,25 @@ export function TeamShowcase({
                 flexDirection: 'column',
               }}
             >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 3,
-                  background: isOnboarding
-                    ? `linear-gradient(90deg, ${member.accent}40, ${member.accent}, ${member.accent}40)`
-                    : member.accent,
-                  opacity: isOnboarding ? 0.7 : 1,
-                }}
-              />
-
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
                 <div style={{ paddingRight: 4 }}>
                   <div style={{ fontSize: 14, fontWeight: 700, color: W.text1, marginBottom: 4, lineHeight: 1.25 }}>{member.name}</div>
-                  <div style={{ fontSize: 11, color: member.accent, fontWeight: 600, lineHeight: 1.45 }}>{member.role}</div>
+                  <div style={{ fontSize: 11, color: W.text2, fontWeight: 600, lineHeight: 1.45 }}>{member.role}</div>
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    background: isOnboarding ? `${member.accent}20` : `${W.green}20`,
-                    border: `1px solid ${isOnboarding ? `${member.accent}40` : `${W.green}40`}`,
-                    padding: '3px 7px',
-                    borderRadius: 5,
-                    flexShrink: 0,
-                    marginTop: 1,
-                  }}
-                >
-                  {isOnboarding ? (
+                {isOnboarding && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      background: `${member.accent}20`,
+                      border: `1px solid ${member.accent}40`,
+                      padding: '3px 7px',
+                      borderRadius: 5,
+                      flexShrink: 0,
+                      marginTop: 1,
+                    }}
+                  >
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
@@ -104,21 +90,19 @@ export function TeamShowcase({
                     >
                       <Loader2 size={10} strokeWidth={3} />
                     </motion.div>
-                  ) : (
-                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: W.green, boxShadow: `0 0 6px ${W.green}` }} />
-                  )}
-                  <span
-                    style={{
-                      fontSize: 8,
-                      fontWeight: 800,
-                      color: isOnboarding ? member.accent : W.green,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    {isOnboarding ? 'Pitching' : 'Active'}
-                  </span>
-                </div>
+                    <span
+                      style={{
+                        fontSize: 8,
+                        fontWeight: 800,
+                        color: member.accent,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                      }}
+                    >
+                      Pitching
+                    </span>
+                  </div>
+                )}
               </div>
 
               <p style={{ fontSize: 11, color: W.text3, lineHeight: 1.6, margin: 0 }}>

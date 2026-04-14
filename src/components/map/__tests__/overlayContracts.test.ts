@@ -148,6 +148,9 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.collectInteractiveLayerIds(['sigmine'])).toEqual(
       expect.arrayContaining(['ext-snapshot-sigmine-fill', 'ext-snapshot-sigmine-line']),
     )
+    expect(mod.collectInteractiveLayerIds(['hydroSprings'])).toEqual(
+      expect.arrayContaining(['spring-pins-core', 'hydro-springs']),
+    )
   })
 
   it('layer runtime covers every registry layer id', async () => {

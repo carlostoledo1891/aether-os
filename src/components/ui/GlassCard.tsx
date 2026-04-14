@@ -28,9 +28,10 @@ export function GlassCard({
     backdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
     WebkitBackdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
     border: 'var(--w-glass-card-border, var(--w-border-chrome))',
-    borderTop: glow !== 'none' ? `1px solid ${colorMap[glow]}` : undefined,
     borderRadius: W.radius.lg,
-    boxShadow: `0 4px 12px rgba(0,0,0,0.1)`,
+    boxShadow: glow !== 'none'
+      ? `0 0 0 1px ${colorMap[glow]}24, 0 4px 12px rgba(0,0,0,0.1)`
+      : `0 4px 12px rgba(0,0,0,0.1)`,
     ...style,
   }
 

@@ -23,7 +23,7 @@ import { OpsPlantSitesOverlay, OPS_PLANT_SITE_CORE_LAYER_ID } from './OpsPlantSi
 import { TerrainOverlay } from './TerrainOverlay'
 import { ExternalSnapshotOverlay } from './ExternalSnapshotOverlay'
 import { ExternalRasterOverlay } from './ExternalRasterOverlay'
-import { HYDRO_NODE_LAYER_ID } from './hydroLayerIds'
+import { HYDRO_NODE_LAYER_ID, HYDRO_SPRING_LAYER_ID } from './hydroLayerIds'
 import { getExternalSnapshotInteractiveLayerIds } from '../../data/geo/externalRegistry'
 
 export interface LayerRuntimeContext {
@@ -145,7 +145,7 @@ export const LAYER_RUNTIMES: Record<LayerId, LayerRuntimeDef> = {
   },
   hydroSprings: {
     hostKey: 'hydrology',
-    interactiveLayerIds: [SPRING_PIN_LAYER_ID],
+    interactiveLayerIds: [SPRING_PIN_LAYER_ID, HYDRO_SPRING_LAYER_ID],
     render: () => <SpringPinsOverlay />,
   },
   hydroNodes: {

@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { createMockDataService } from './mockDataService'
 import type { AetherDataService } from './dataService'
 
+const EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] }
+
 /**
  * Helper to call mock service methods and narrow the MaybeAsync<T> to T.
  * Mock service is always synchronous, so we can safely cast.
@@ -16,10 +18,15 @@ describe('createMockDataService', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(EMPTY_GEOJSON), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })))
     svc = createMockDataService()
   })
 
   afterEach(() => {
+    vi.unstubAllGlobals()
     vi.useRealTimers()
   })
 

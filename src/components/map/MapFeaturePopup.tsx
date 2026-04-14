@@ -84,7 +84,7 @@ export const MapFeaturePopup = memo(function MapFeaturePopup({ data, x, y }: Map
             )}
           </div>
         )}
-        <div style={{ fontWeight: 700, color: data.accentColor ?? W.violet, marginBottom: data.subtitle ? 2 : 4, fontSize: 11 }}>
+        <div style={{ fontWeight: 700, color: W.text1, marginBottom: data.subtitle ? 2 : 4, fontSize: 11 }}>
           {data.title}
         </div>
         {data.subtitle && (

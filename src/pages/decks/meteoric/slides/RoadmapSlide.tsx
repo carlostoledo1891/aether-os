@@ -36,7 +36,6 @@ export default function RoadmapSlide() {
                 border: `1px solid ${phase.status === 'active' ? V : W.glass06}`,
                 borderRadius: 12, padding: '14px 18px', position: 'relative', overflow: 'hidden',
               }}>
-                {phase.status === 'active' && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: V }} />}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: accent }}>{phase.title}</span>
                   <span style={{

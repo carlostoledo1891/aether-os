@@ -110,7 +110,6 @@ export default function LandingPage() {
               <Stagger key={ind.title} i={i}>
                 <motion.div whileHover={{ y: -4, borderColor: V + '40' }} transition={{ duration: 0.2 }}
                   style={{ ...glass, display: 'flex', flexDirection: 'column', height: '100%' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: V, opacity: 0.6 }} />
                   <div style={{ fontSize: 15, fontWeight: 700, color: W.text1, marginBottom: 8 }}>{ind.title}</div>
                   <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0 }}>{ind.desc}</p>
                 </motion.div>
@@ -140,7 +139,6 @@ export default function LandingPage() {
               <Stagger key={c.tag} i={idx}>
                 <motion.div whileHover={{ y: -4, borderColor: V + '40' }} transition={{ duration: 0.2 }}
                   style={{ ...glass, display: 'flex', flexDirection: 'column', height: '100%' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: V, opacity: 0.7 }} />
                   <div style={{ ...label, marginBottom: 4 }}>{c.tag}</div>
                   <h3 style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.25, marginBottom: 10 }}>{c.headline}</h3>
                   <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, marginBottom: 20 }}>{c.desc}</p>
@@ -232,7 +230,6 @@ export default function LandingPage() {
               <Stagger key={node.label} i={i}>
                 <motion.div whileHover={{ scale: 1.04, borderColor: V }} transition={{ duration: 0.2 }}
                   style={{ ...glass, padding: '18px 14px', textAlign: 'center' }}>
-                  <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 40, height: 2, background: V, opacity: 0.6 }} />
                   <div style={{ fontSize: 20, marginBottom: 8 }}>{node.icon}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: W.text1, marginBottom: 3 }}>{node.label}</div>
                   <div style={{ fontSize: 10, color: W.text4, lineHeight: 1.4 }}>{node.sub}</div>
@@ -419,7 +416,6 @@ export default function LandingPage() {
               <Stagger key={r.name} i={i}>
                 <motion.div whileHover={{ y: -4, borderColor: r.accent + '40' }} transition={{ duration: 0.2 }}
                   style={{ ...glass, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: r.accent, opacity: 0.7 }} />
                   <div style={{ fontSize: 16, fontWeight: 700, color: r.accent, marginBottom: 8 }}>{r.name}</div>
                   <p style={{ fontSize: 13, color: W.text3, lineHeight: 1.6, margin: 0 }}>{r.desc}</p>
                 </motion.div>

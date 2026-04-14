@@ -7,6 +7,8 @@ import { ErrorFallback } from '../components/ui/ErrorFallback'
 import type { AetherDataService, MaybeAsync, RiskItem } from '../services/dataService'
 import type { ReactNode } from 'react'
 
+const EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] }
+
 let mockService: AetherDataService
 
 function wrapper({ children }: { children: ReactNode }) {
@@ -15,9 +17,14 @@ function wrapper({ children }: { children: ReactNode }) {
 
 beforeEach(() => {
   vi.useFakeTimers()
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(EMPTY_GEOJSON), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })))
   mockService = createMockDataService()
 })
 afterEach(() => {
+  vi.unstubAllGlobals()
   vi.useRealTimers()
 })
 
