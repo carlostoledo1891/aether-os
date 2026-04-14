@@ -6,7 +6,8 @@
  * Frontend, server, and engine all derive their values from here.
  */
 
-import type { SiteConfig, SiteGeo, SiteThresholds, SiteIdentity, SiteExternalLayer } from './types.js'
+import type { SiteConfig, SiteGeo, SiteThresholds, SiteIdentity } from './types.js'
+import { buildCaldeiraExternalLayers } from './caldeiraLayers.js'
 
 export const CALDEIRA_IDENTITY: SiteIdentity = {
   siteId: 'caldeira',
@@ -40,43 +41,7 @@ export const CALDEIRA_THRESHOLDS: SiteThresholds = {
 
 export const CALDEIRA_SPRING_COUNT = 1092
 
-export const CALDEIRA_EXTERNAL_LAYERS: SiteExternalLayer[] = [
-  {
-    id: 'cprmGeology',
-    group: 'geology',
-    label: 'Geological map (SGB)',
-    sourceType: 'arcgis-rest',
-    url: 'https://geoportal.sgb.gov.br/server/rest/services/dados_plataforma/geologia/MapServer/export?bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=256,256&format=png32&transparent=true&f=image',
-    attribution: 'Fonte: SGB/CPRM',
-    defaultOn: false,
-  },
-  {
-    id: 'macrostrat',
-    group: 'geology',
-    label: 'Macrostrat (global, external)',
-    sourceType: 'xyz-raster',
-    url: 'https://tiles.macrostrat.org/carto/{z}/{x}/{y}.png',
-    attribution: '© Macrostrat',
-    defaultOn: false,
-  },
-  {
-    id: 'usgsRee',
-    group: 'geology',
-    label: 'USGS REE deposits',
-    sourceType: 'wms',
-    url: 'https://mrdata.usgs.gov/services/ree?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=REE&SRS=EPSG:3857&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256&FORMAT=image/png&TRANSPARENT=TRUE',
-    attribution: '© USGS MRData',
-    defaultOn: false,
-  },
-  {
-    id: 'inmetStations',
-    group: 'weather',
-    label: 'INMET stations (BR)',
-    sourceType: 'geojson-component',
-    attribution: 'Fonte: INMET',
-    defaultOn: false,
-  },
-]
+export const CALDEIRA_EXTERNAL_LAYERS = buildCaldeiraExternalLayers()
 
 export const CALDEIRA: SiteConfig = {
   identity: CALDEIRA_IDENTITY,

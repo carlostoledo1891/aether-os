@@ -4,12 +4,15 @@ import { X, Send, Sparkles, Paperclip, FileText, ChevronDown, ChevronRight, Data
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { W } from '../../app/canvas/canvasTheme'
+import { buildApiUrl } from '../../config/env'
 import { ProvenanceBadge } from '../ui/ProvenanceBadge'
 import type { DataProvenanceKind } from '../../services/dataService'
 import styles from './ChatPanel.module.css'
 
 const CHAT_API_KEY = import.meta.env.VITE_CHAT_API_KEY as string | undefined
 const AUTH_HEADERS: Record<string, string> = CHAT_API_KEY ? { 'x-api-key': CHAT_API_KEY } : {}
+const CHAT_API_URL = buildApiUrl('/api/chat')
+const CHAT_UPLOAD_API_URL = buildApiUrl('/api/chat/upload')
 
 interface ChatPanelProps {
   isOpen: boolean
@@ -179,7 +182,7 @@ function getMessageText(parts: Array<{ type: string; text?: string }>): string {
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: '/api/chat', headers: AUTH_HEADERS }),
+    transport: new DefaultChatTransport({ api: CHAT_API_URL, headers: AUTH_HEADERS }),
   })
   const [input, setInput] = useState('')
   const isLoading = status === 'streaming' || status === 'submitted'
@@ -257,7 +260,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
       formData.append('file', file)
       const headers: Record<string, string> = { ...AUTH_HEADERS }
       if (sessionIdRef.current) headers['x-chat-session'] = sessionIdRef.current
-      const res = await fetch('/api/chat/upload', { method: 'POST', body: formData, headers })
+      const res = await fetch(CHAT_UPLOAD_API_URL, { method: 'POST', body: formData, headers })
       if (!res.ok) throw new Error(`Upload failed: ${res.status}`)
       const sid = res.headers.get('x-chat-session')
       if (sid) sessionIdRef.current = sid

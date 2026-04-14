@@ -53,16 +53,19 @@ export function CloseSlide() {
       style={{ marginBottom: 32 }}>
       <VeroChainLogo iconOnly size={56} />
     </motion.div>
-    <h2 style={{ fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 20, background: `linear-gradient(135deg, ${W.text1} 40%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-      The product is better than the pitch.
+    <h2 style={{ fontSize: 'clamp(32px, 5.5vw, 56px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 8, color: W.text1 }}>
+      This is not a deck.
     </h2>
-    <p style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', color: W.text3, maxWidth: 500, lineHeight: 1.6, marginBottom: 40 }}>
-      Come see it. NIST 800-53 mapped. SHA-256 audit chain. Full pilot plant digital twin. 9 stakeholders at 9.4/10.
+    <h2 style={{ fontSize: 'clamp(32px, 5.5vw, 56px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 28, background: `linear-gradient(135deg, ${W.text4} 30%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      It's not a prototype.
+    </h2>
+    <p style={{ fontSize: 'clamp(15px, 2vw, 20px)', color: W.text3, maxWidth: 480, lineHeight: 1.6, marginBottom: 40, textAlign: 'center' }}>
+      NIST 800-53 mapped. SHA-256 audit chain. Pilot plant digital twin. Domain-grounded AI. 9 stakeholders at 9.4/10. It's live — go in and see.
     </p>
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-      <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>Open Platform</a>
-      <a href="/" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>Website</a>
+      <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '16px 40px', borderRadius: 8, fontSize: 16, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.01em' }}>Enter the Platform</a>
+      <a href="/" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '16px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none', background: 'transparent' }}>Website</a>
     </div>
-    <p style={{ fontSize: 12, color: W.text4, marginTop: 16 }}>carlos@verochain.co</p>
+    <p style={{ fontSize: 12, color: W.text4, marginTop: 20 }}>carlos@verochain.co</p>
   </>)
 }

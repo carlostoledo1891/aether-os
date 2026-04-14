@@ -7,58 +7,58 @@
 - CI reads `.nvmrc`.
 - Vercel should use the same Node version in project settings.
 
-## Required Vercel Settings
+## Supported Topology
+
+The supported deployment model is:
+
+- Local frontend -> Vite proxy -> local API/WebSocket server
+- Hosted staging frontend -> explicit `VITE_API_BASE_URL` / optional `VITE_WS_URL` -> staging API
+- Hosted production frontend -> explicit `VITE_API_BASE_URL` / optional `VITE_WS_URL` -> production API
+
+`vercel.json` is no longer allowed to proxy `/api/*` to a fixed backend. Hosted builds must declare their backend targets through environment variables so staging and production can be isolated.
+
+## Environment Matrix
+
+| Environment | Branch | Frontend host | Backend host | Database | Frontend env | Server env |
+|-------------|--------|---------------|--------------|----------|--------------|------------|
+| Local | any local branch | `http://localhost:5175` | `http://localhost:3001` | local SQLite | leave `VITE_API_BASE_URL` / `VITE_WS_URL` empty | `CORS_ORIGIN` optional |
+| Staging | `staging` | staging Vercel domain | staging Railway/service URL | staging DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the staging frontend origin |
+| Production | `main` | primary Vercel domain | production Railway/service URL | production DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the production frontend origin |
+
+Rules:
+
+- `staging` must never point at the production API or production DB.
+- `main` must never point at the staging API or staging DB.
+- If `VITE_WS_URL` is omitted, the frontend derives it from `VITE_API_BASE_URL`.
+- Only leave `VITE_API_BASE_URL` empty when the host really reverse-proxies `/api` and `/ws`.
+
+## Vercel Settings
 
 - Production branch: `main`
 - Install command: `npm ci`
 - Build command: `npm run build`
 - Node version: `22.12.0` or the current repo `.nvmrc` value
+- Production env vars should target only the production backend
+- Preview/staging env vars should target only the staging backend
 
-`vercel.json` also pins the install and build commands so repo defaults match the dashboard.
+Recommended domain mapping:
 
-## Staging Setup
+- Primary production domain -> `main`
+- Staging domain -> `staging`
+- Do not point branded staging or production domains at feature branches
 
-Use the same Vercel project for both production and staging during demo week:
+## Railway / API Settings
 
-- Production branch/domain: `main`
-- Staging branch/domain: `staging`
-- All other branches: preview deployments only
+For each hosted API environment:
 
-Branch dropdown guidance in Vercel:
-
-- For the production domain, choose `main`
-- For the staging domain, choose `staging`
-- Do not point either domain at `dependabot/...` or feature branches
-
-Recommended sequence:
-
-1. Create `staging` from the current `main`.
-2. Assign `staging.<your-domain>` to branch `staging` in Vercel Domains.
-3. Keep the primary production domain attached to `main`.
-4. Validate demo-critical routes on `staging` before promoting anything to `main`.
-
-## Preview Workaround
-
-If you cannot create a dedicated Vercel staging environment, use the existing `Preview` environment as a low-risk workaround:
-
-1. Keep `Production` unchanged on branch `main`.
-2. Leave `Preview` branch tracking on `All unassigned branches`.
-3. Use the latest deployment for branch `staging` in the Vercel Deployments list as the staging URL.
-4. Validate the demo-critical routes on that `staging` preview deployment before promoting anything to `main`.
-
-This keeps production stable and avoids rewiring Preview behavior for every other branch during demo week.
-
-### Optional branded staging link
-
-Only after the plain `staging` Preview URL is working, you can attach `staging.verochain.co` to the existing `Preview` environment as a temporary branded demo URL.
-
-### Temporary fallback
-
-If a branded staging link is mandatory and you accept the tradeoff, temporarily change `Preview` branch tracking from `All unassigned branches` to `staging`, attach `staging.verochain.co`, and restore the old Preview behavior after demo week.
+- Use a separate database path or managed database
+- Set `CORS_ORIGIN` to the matching frontend origin
+- Set `CHAT_API_KEY`, `INGEST_API_KEY`, and admin secrets independently per environment
+- Keep staging and production secrets separate
 
 ## Local Release Checklist
 
-Run this before pushing anything intended for production:
+Run this before pushing anything intended for staging or production:
 
 ```sh
 npm run verify:release
@@ -68,11 +68,41 @@ That command runs:
 
 - `npm run lint`
 - `npm run test:run`
+- `npm run check:deploy-config`
 - `npm run build`
 - `npm --prefix server test`
 - `npm --prefix engine test`
 
 The default `server` test script excludes the live Gemini hallucination suite so release verification stays deterministic. Run `npm --prefix server run test:ai` separately when you explicitly want to exercise the live model.
+
+## Staging Smoke Check
+
+After the `staging` deployment is live, verify that the deployed frontend exposes the expected backend target:
+
+```sh
+PLAYWRIGHT_BASE_URL="https://staging.example.com" \
+EXPECTED_API_BASE_URL="https://staging-api.example.com" \
+FORBIDDEN_API_BASE_URL="https://prod-api.example.com" \
+npm run test:e2e:deployment
+```
+
+This smoke test checks:
+
+- the frontend runtime config points at the expected API origin
+- the runtime config does not point at a forbidden API origin
+- the configured backend responds on `/api/health`
+
+## Promotion Runbook
+
+1. Branch from `main` for feature work.
+2. Merge releasable work into `staging`.
+3. Run `npm run verify:release`.
+4. Deploy `staging` and run the staging smoke check.
+5. Manually click through `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck`.
+6. Promote `staging` to `main`.
+7. Watch the new Vercel production deployment for the promoted SHA.
+8. Re-run the same manual smoke on production.
+9. After any production hotfix, re-sync `staging` from `main` immediately.
 
 ## Map Layer Change Checklist
 
@@ -92,15 +122,18 @@ The Caldeira map system is a multi-file contract. For any layer change, update a
 Triage in this order:
 
 1. Capture the failing deploy SHA and exact log.
-2. Confirm the failing SHA matches what is on `main`.
+2. Confirm the failing SHA matches what is on `main` or `staging`.
 3. Re-run `npm run verify:release` locally under the repo Node version.
-4. If `tsc` fails, check map layer manifest/runtime/preset drift first.
-5. If local is green but Vercel is red, check Node version and install/build command parity in Vercel.
-6. Only redeploy after the local release path is green.
+4. If `npm run check:deploy-config` fails, fix deployment wiring before redeploying.
+5. If `tsc` fails, check map layer manifest/runtime/preset drift first.
+6. If local is green but Vercel is red, check Node version plus Vercel env vars for the target environment.
+7. Only redeploy after the local release path is green.
 
 ## Send Live Safely
 
 1. Run `npm run verify:release`.
 2. Push only the releasable files.
-3. Watch the new Vercel production deployment for the pushed SHA.
-4. Click through the live app and at minimum verify `FieldView`, `BuyerView`, and the Meteoric deck map slides.
+3. Verify the `staging` deployment uses the staging backend.
+4. Promote to `main` only after staging is green.
+5. Watch the new Vercel production deployment for the pushed SHA.
+6. Confirm production uses the production backend and passes the manual smoke path.

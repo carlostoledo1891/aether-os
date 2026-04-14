@@ -28,6 +28,12 @@
 
 ---
 
+### Session Log — 2026-04-14
+- Hardened deploy/release flow for Vercel and pushed the production-safe map/runtime fixes to `main`.
+- Simplified public team/deck content: Carlos only by name, anonymous advisors, Founders deck shortened, and public deck routes reduced to Founders + Meteoric.
+- Removed top-accent card chrome, constrained color emphasis toward provenance metadata, and restored spring hover cards on the map surfaces.
+- Fixed frontend test noise caused by eager mock GeoJSON fetches; full frontend/server/engine verification passed before push.
+
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
 Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~9.4 / 10** (v15 — post Online Report Templates). Five personas at code ceiling (10.0): Chairman, CEO, Chief Geologist, SCADA, Journalist. Valuation analysis: `docs/VALUATION.md`. The top gaps that should drive the next iteration:

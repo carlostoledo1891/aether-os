@@ -28,6 +28,13 @@ The prototype is built to pitch to:
 
 **Marketing / deck copy (iterate in repo):** `docs/messaging-strategy.md` and `src/config/marketing.ts`
 
+## Deployment Model
+
+- **Local:** leave `VITE_API_BASE_URL` / `VITE_WS_URL` empty and use the Vite proxy at `localhost:5175`.
+- **Hosted staging/prod:** set `VITE_API_BASE_URL` explicitly per environment; `VITE_WS_URL` is only needed when websockets live on a different origin.
+- **Release path:** merge to `staging`, smoke-test the staging deployment, then promote to `main`.
+- **Reference doc:** `docs/DEPLOYMENT.md`
+
 ## Documentation Map
 
 To avoid context bloat, read only what you need:
@@ -54,14 +61,14 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Caldeira maps now support snapshot-first Esri-compatible metadata, identify, legend, and admin catalog flows on top of the manifest-driven runtime.
+*   **Focus:** Public demo surfaces are now narrowed to the active decks, with map/runtime stability and cleaner UI chrome prioritized over adding new presentation branches.
 *   **Recent Changes (Apr 14 2026):**
-    - Added external-layer capability metadata in `shared/sites/caldeiraLayers.ts`, routed snapshot/live behaviors through `layerRuntime.tsx`, and added proxied ArcGIS identify plus layer-health/status surfaces.
-    - Added `/admin/map-layers`, refactored the external snapshot build script to read shared config, and updated integration/data-source docs for snapshot-first plus proxied identify behavior.
-    - Simplified the Founders deck, unified all current team presentations behind `src/components/team/TeamShowcase.tsx`, and extended `PasswordGate` session validity to 30 days.
-    - Added repo-side deploy guardrails: Node pinning, Vercel install/build commands, `verify:release`, and stronger map runtime contract coverage.
+    - Shipped the Vercel/deploy hardening pass: Node pinning, explicit Vercel install/build commands, release verification, and map runtime regression coverage; `main` and `staging` were pushed and used as the demo release path.
+    - Simplified public team/deck content so Carlos is the only named public team member, advisor references are anonymous, Founders deck slides 17/18 were removed from the active sequence, and only Founders + Meteoric remain as the public deck routes.
+    - Removed template-like top card accents, tightened color usage so provenance remains the main colored metadata signal, restored spring hover cards across map surfaces, and eliminated frontend test noise from eager mock GeoJSON fetches.
 *   **Next Steps:**
-    - Manually smoke-test `FieldView`, `BuyerView`, `FoundersDeck`, `MeteoricDeck`, and the landing page to confirm external-layer interactions and team-card spacing feel right in the browser.
-    - If more approved agencies need live identify, extend `server/src/routes/mapLayers.ts` and the shared layer manifest instead of adding one-off frontend logic.
+    - Manually smoke-test `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck` in-browser to confirm spacing, hover cards, and neutral text hierarchy feel right visually.
+    - If hydrology needs richer federal context, reuse the existing ANA/SNIRH Hidroweb station pipeline for spring enrichment instead of replacing the MG spring geometry source.
+    - Review the remaining local-only edits in `shared/sites/caldeira.ts` and `src/pages/decks/founders/slides/BookendSlides.tsx` before the next commit so they do not drift unnoticed.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*

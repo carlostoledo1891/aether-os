@@ -1,4 +1,4 @@
-import { getPresentationMode, getDisclosureMode, getWsUrl } from '../config/env'
+import { buildApiUrl, buildWsTelemetryUrl, getPresentationMode, getDisclosureMode } from '../config/env'
 import type {
   AetherDataService, DataContext, ConnectionStatus, ProvenanceProfile, RegulatoryExportBundle,
   TelemetryCallback, Unsubscribe, TimeRangeKey, HistoricalTelemetry,
@@ -17,8 +17,6 @@ import type {
 import type { DepositRecord } from '../data/domain/deposits'
 import type { ComplianceLedger, SpringEvent } from '../types/telemetry'
 import type { IssuerSnapshot } from '../data/caldeira/issuerSnapshot'
-
-const BASE = ''
 
 /* ─── Connection status tracking ───────────────────────────────────────── */
 let _connectionStatus: ConnectionStatus = 'connected'
@@ -52,7 +50,7 @@ const TTL_MS = 30_000
 const NO_CACHE = 0
 
 async function api<T>(path: string, ttl = TTL_MS): Promise<T> {
-  const url = `${BASE}${path}`
+  const url = buildApiUrl(path)
   const hit = cache.get(url)
   if (hit && Date.now() - hit.at < ttl) return hit.data as T
 
@@ -82,23 +80,13 @@ function createWsTelemetryStream() {
   let lastTick: TelemetryTick | null = null
   let retryCount = 0
 
-  function buildWsUrl(): string {
-    const envWs = getWsUrl()
-    if (envWs) {
-      const base = envWs.replace(/\/+$/, '')
-      return base.endsWith('/ws') ? `${base}/telemetry` : `${base}/ws/telemetry`
-    }
-    const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
-    return `${protocol}//${location.host}/ws/telemetry`
-  }
-
   function nextRetryMs(): number {
     const base = Math.min(1000 * Math.pow(2, retryCount), 30_000)
     return Math.round(base * (0.5 + Math.random() * 0.5))
   }
 
   function connect() {
-    ws = new WebSocket(buildWsUrl())
+    ws = new WebSocket(buildWsTelemetryUrl())
 
     ws.onopen = () => {
       retryCount = 0
@@ -287,11 +275,11 @@ export function createLiveDataService(): AetherDataService {
     },
 
     dismissAlert(id: string) {
-      fetch(`${BASE}/api/alerts/dismiss/${id}`, { method: 'POST' }).catch(() => {})
+      fetch(buildApiUrl(`/api/alerts/dismiss/${id}`), { method: 'POST' }).catch(() => {})
     },
 
     dismissAllAlerts() {
-      fetch(`${BASE}/api/alerts/dismiss-all`, { method: 'POST' }).catch(() => {})
+      fetch(buildApiUrl('/api/alerts/dismiss-all'), { method: 'POST' }).catch(() => {})
     },
   }
 }

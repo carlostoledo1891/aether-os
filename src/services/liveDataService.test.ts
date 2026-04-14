@@ -58,6 +58,7 @@ describe('liveDataService — api() cache + connection status', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.unstubAllEnvs()
   })
 
   it('transitions to degraded when fetch fails but cache exists', async () => {
@@ -114,5 +115,17 @@ describe('liveDataService — api() cache + connection status', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('', { status: 500 }))
 
     await expect(svc.getDepositData()).rejects.toThrow(/API 500/)
+  })
+
+  it('uses VITE_API_BASE_URL when fetching live endpoints', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'https://staging-api.example.com/')
+    const svc = createLiveDataService()
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify([{ id: 'risk-1' }]), { status: 200 }),
+    )
+
+    await svc.getRiskRegister()
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://staging-api.example.com/api/risks')
   })
 })

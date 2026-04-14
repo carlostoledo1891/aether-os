@@ -26,7 +26,7 @@ CI (GitHub Actions) runs `lint`, `test:run`, and `build` on push and pull reques
 |----------|---------|
 | `VITE_MAPTILER_KEY` | MapTiler vector + terrain (optional; falls back to CARTO Dark Matter) |
 | `VITE_DATA_MODE` | `mock` (default) or `live` — live uses `createLiveDataService()` (demo pipeline + honest banner until real ingestion) |
-| `VITE_API_BASE_URL` / `VITE_WS_URL` | Reserved for future HTTP/WebSocket wiring |
+| `VITE_API_BASE_URL` / `VITE_WS_URL` | Hosted backend targets. Leave empty locally to use the Vite proxy; set them on staging/prod when the frontend and API are on different origins |
 | `VITE_WEATHER_ENABLED` | `1` or `true` to fetch precip from Open-Meteo for the Hydro Twin site point |
 | `VITE_PRESENTATION_MODE` | `1` or `true` for stakeholder-demo banner copy (mixed illustrative / agency rehearsal) |
 
