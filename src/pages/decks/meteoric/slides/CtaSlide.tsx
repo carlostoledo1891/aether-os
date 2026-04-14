@@ -35,7 +35,7 @@ export default function CtaSlide() {
         <Bullet accent={W.green}>Let's make it official. $102k/yr at 0.013% of NPV — less than one week of DFS consultant fees.</Bullet>
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <a href="/" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
+        <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '14px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
           Open Platform
         </a>
       </div>
