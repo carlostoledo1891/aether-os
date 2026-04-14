@@ -37,6 +37,25 @@ Recommended sequence:
 3. Keep the primary production domain attached to `main`.
 4. Validate demo-critical routes on `staging` before promoting anything to `main`.
 
+## Preview Workaround
+
+If you cannot create a dedicated Vercel staging environment, use the existing `Preview` environment as a low-risk workaround:
+
+1. Keep `Production` unchanged on branch `main`.
+2. Leave `Preview` branch tracking on `All unassigned branches`.
+3. Use the latest deployment for branch `staging` in the Vercel Deployments list as the staging URL.
+4. Validate the demo-critical routes on that `staging` preview deployment before promoting anything to `main`.
+
+This keeps production stable and avoids rewiring Preview behavior for every other branch during demo week.
+
+### Optional branded staging link
+
+Only after the plain `staging` Preview URL is working, you can attach `staging.verochain.co` to the existing `Preview` environment as a temporary branded demo URL.
+
+### Temporary fallback
+
+If a branded staging link is mandatory and you accept the tradeoff, temporarily change `Preview` branch tracking from `All unassigned branches` to `staging`, attach `staging.verochain.co`, and restore the old Preview behavior after demo week.
+
 ## Local Release Checklist
 
 Run this before pushing anything intended for production:
