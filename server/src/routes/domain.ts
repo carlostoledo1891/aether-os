@@ -228,37 +228,42 @@ export async function domainRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get('/api/provenance', { schema: { tags: ['domain'], summary: 'Provenance profile with enricher-aware sections' } }, async () => {
-    const base = getDomainState<{ presentationMode: boolean; sections: Record<string, { kind: string; hint: string }> }>('provenance_profile')
-    if (!base) return {}
+  app.get('/api/provenance', { schema: { tags: ['domain'], summary: 'Provenance profile with enricher-aware sections' } }, async (req, reply) => {
+    try {
+      const base = getDomainState<{ presentationMode: boolean; sections: Record<string, { kind: string; hint: string }> }>('provenance_profile')
+      if (!base) return {}
 
-    const weather = getLatestWeather()
-    const forecast = getLatestForecast()
-    const historical = getHistoricalWeather()
-    const fx = getMarketData('BRL/USD')
-    const lapoc = getLatestLapocIngest()
+      const weather = getLatestWeather()
+      const forecast = getLatestForecast()
+      const historical = getHistoricalWeather()
+      const fx = getMarketData('BRL/USD')
+      const lapoc = getLatestLapocIngest()
 
-    const sections = { ...base.sections }
-    if (weather) {
-      sections['precip_field'] = { kind: 'verified_real', hint: `Open-Meteo live data (updated ${weather.updatedAt})` }
-      sections['hydro_spring_status'] = { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay — modeled with real precip input from Open-Meteo' }
-    }
-    if (forecast) {
-      sections['weather_forecast'] = { kind: 'modeled', hint: `Open-Meteo ${forecast.forecastDays}-day forecast — numerical weather prediction model (updated ${forecast.updatedAt})` }
-      sections['spring_health_prediction'] = { kind: 'ai_predicted', hint: 'Spring health forecast based on predicted precipitation and historical correlation — indicative only' }
-    }
-    if (historical) {
-      sections['climate_baseline'] = { kind: 'from_public_record', hint: `ECMWF ERA5 reanalysis — ${historical.dayCount} days (${historical.startDate} to ${historical.endDate})` }
-    }
-    if (fx) {
-      sections['fx_rate'] = { kind: 'verified_real', hint: `BCB PTAX rate (updated ${fx.updatedAt})` }
-    }
-    if (lapoc && lapoc.provenance === 'verified_real') {
-      sections['hydro_spring_status'] = { kind: 'verified_real', hint: `LAPOC Field instruments (updated ${lapoc.timestamp})` }
-      sections['water_quality'] = { kind: 'verified_real', hint: `LAPOC Lab results (updated ${lapoc.timestamp})` }
-    }
+      const sections = { ...base.sections }
+      if (weather) {
+        sections['precip_field'] = { kind: 'verified_real', hint: `Open-Meteo live data (updated ${weather.updatedAt})` }
+        sections['hydro_spring_status'] = { kind: 'modeled', hint: 'Active/Reduced/Suppressed overlay — modeled with real precip input from Open-Meteo' }
+      }
+      if (forecast) {
+        sections['weather_forecast'] = { kind: 'modeled', hint: `Open-Meteo ${forecast.forecastDays}-day forecast — numerical weather prediction model (updated ${forecast.updatedAt})` }
+        sections['spring_health_prediction'] = { kind: 'ai_predicted', hint: 'Spring health forecast based on predicted precipitation and historical correlation — indicative only' }
+      }
+      if (historical) {
+        sections['climate_baseline'] = { kind: 'from_public_record', hint: `ECMWF ERA5 reanalysis — ${historical.dayCount} days (${historical.startDate} to ${historical.endDate})` }
+      }
+      if (fx) {
+        sections['fx_rate'] = { kind: 'verified_real', hint: `BCB PTAX rate (updated ${fx.updatedAt})` }
+      }
+      if (lapoc && lapoc.provenance === 'verified_real') {
+        sections['hydro_spring_status'] = { kind: 'verified_real', hint: `LAPOC Field instruments (updated ${lapoc.timestamp})` }
+        sections['water_quality'] = { kind: 'verified_real', hint: `LAPOC Lab results (updated ${lapoc.timestamp})` }
+      }
 
-    return { ...base, sections }
+      return { ...base, sections }
+    } catch (err) {
+      req.log.error({ err }, '[provenance] handler error — returning empty profile')
+      return reply.code(200).send({})
+    }
   })
 
   /* ─── Security SBOM ──────────────────────────────────────────────────── */
