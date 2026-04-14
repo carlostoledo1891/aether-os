@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+import { readFileSync } from 'node:fs'
 import {
   getDomainState, getLatestWeather, getLatestForecast, getHistoricalWeather,
   getMarketData, getRecentSeismic,
@@ -270,11 +271,15 @@ export async function domainRoutes(app: FastifyInstance) {
   }, async () => {
     let depCount = 0
     try {
-      const rootPkg = await import('../../../package.json', { with: { type: 'json' } }).catch(() => null)
-      const serverPkg = await import('../../package.json', { with: { type: 'json' } }).catch(() => null)
-      const countDeps = (pkg: { default?: { dependencies?: Record<string, string>; devDependencies?: Record<string, string> } } | null) => {
-        if (!pkg?.default) return 0
-        return Object.keys(pkg.default.dependencies ?? {}).length + Object.keys(pkg.default.devDependencies ?? {}).length
+      const readPkg = (p: string) => {
+        try { return JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8')) as { dependencies?: Record<string, string>; devDependencies?: Record<string, string> } }
+        catch { return null }
+      }
+      const rootPkg = readPkg('../../../package.json')
+      const serverPkg = readPkg('../../package.json')
+      const countDeps = (pkg: { dependencies?: Record<string, string>; devDependencies?: Record<string, string> } | null) => {
+        if (!pkg) return 0
+        return Object.keys(pkg.dependencies ?? {}).length + Object.keys(pkg.devDependencies ?? {}).length
       }
       depCount = countDeps(rootPkg) + countDeps(serverPkg)
     } catch { /* fallback */ }

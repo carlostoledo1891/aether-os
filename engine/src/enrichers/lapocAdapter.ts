@@ -124,9 +124,9 @@ export function startLapocSimulator() {
       try {
         const checkRes = await fetch(`${ENGINE_CONFIG.apiBaseUrl}/api/lapoc/latest`)
         if (checkRes.ok) {
-          const latest = await checkRes.json()
+          const latest = await checkRes.json() as { provenance?: string; timestamp?: string } | null
           if (latest && latest.provenance === 'verified_real') {
-            const ageMs = Date.now() - new Date(latest.timestamp).getTime()
+            const ageMs = Date.now() - new Date(latest.timestamp!).getTime()
             if (ageMs < 24 * 60 * 60 * 1000) {
               console.log(`[lapoc] Yielding to real LAPOC data (age: ${Math.round(ageMs / 60000)}m)`)
               return

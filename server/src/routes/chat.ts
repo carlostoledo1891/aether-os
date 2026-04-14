@@ -353,9 +353,9 @@ function buildTools() {
         const forecast = getLatestForecast()
         const thresholds = getDomainState<Record<string, unknown>>('thresholds')
 
-        const sulfate = telemetry?.env?.sulfate_ppm ?? null
-        const nitrate = telemetry?.env?.nitrate_ppm ?? null
-        const pH = telemetry?.env?.ph ?? null
+        const sulfate = telemetry?.env?.water_quality?.sulfate_ppm ?? null
+        const nitrate = telemetry?.env?.water_quality?.nitrate_ppm ?? null
+        const pH = telemetry?.env?.water_quality?.ph_groundwater ?? null
         const forecastPrecip = forecast?.totalPrecipMm ?? null
 
         const risks: string[] = []
