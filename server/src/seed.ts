@@ -5,7 +5,7 @@
  * Canonical thresholds and geography live in shared/sites/caldeira.ts.
  * This file is a thin orchestrator — it never defines domain literals.
  */
-import { getDb, setDomainState, getDomainState } from './store/db.js'
+import { getDb, setDomainState, getDomainState, upsertMarket } from './store/db.js'
 import { appendAuditEvent } from './store/auditChain.js'
 import { CALDEIRA_SEED, CALDEIRA_AUDIT_SEED } from './sites/caldeiraSeed.js'
 
@@ -39,6 +39,20 @@ export function seedIfNeeded() {
   for (const evt of CALDEIRA_AUDIT_SEED) {
     appendAuditEvent(evt)
   }
+
+  // Seed fallback market data so /api/market/* never 503s on a fresh DB.
+  // Real enricher data (Alpha Vantage, BCB) overwrites via ON CONFLICT upsert.
+  upsertMarket({
+    symbol: 'MEI.AX', source: 'seed', provenance: 'simulated',
+    timestamp: new Date().toISOString(), kind: 'stock',
+    value: 0.029, currency: 'AUD',
+    detail: { open: 0.028, high: 0.030, low: 0.027, volume: 312000 },
+  })
+  upsertMarket({
+    symbol: 'BRL/USD', source: 'seed', provenance: 'simulated',
+    timestamp: new Date().toISOString(), kind: 'fx',
+    value: 5.68, currency: 'BRL',
+  })
 
   console.log('[seed] Domain state seeded successfully.')
 }

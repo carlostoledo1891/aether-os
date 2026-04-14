@@ -137,7 +137,7 @@ describe('enricher endpoints — API shape contracts', () => {
       const body = res.json()
       expect(body.series).toBeDefined()
       expect(typeof body.dayCount).toBe('number')
-      expect(typeof body.updated_at).toBe('string')
+      expect(typeof body.updatedAt).toBe('string')
     }
   })
 
@@ -146,8 +146,8 @@ describe('enricher endpoints — API shape contracts', () => {
     expect([200, 503]).toContain(res.statusCode)
     if (res.statusCode === 200) {
       const body = res.json()
-      expect(typeof body.rate).toBe('number')
-      expect(typeof body.updated_at).toBe('string')
+      expect(typeof body.value).toBe('number')
+      expect(typeof body.updatedAt).toBe('string')
     }
   })
 
@@ -156,8 +156,8 @@ describe('enricher endpoints — API shape contracts', () => {
     expect([200, 503]).toContain(res.statusCode)
     if (res.statusCode === 200) {
       const body = res.json()
-      expect(typeof body.price).toBe('number')
-      expect(typeof body.updated_at).toBe('string')
+      expect(typeof body.value).toBe('number')
+      expect(typeof body.updatedAt).toBe('string')
     }
   })
 
