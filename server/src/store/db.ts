@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { mkdirSync } from 'node:fs'
 import type {
   PlantTelemetry, EnvTelemetry, EsgScore, AlertItem,
   TelemetryTick, HistoricalTelemetry, TimeRangeKey,
@@ -10,12 +11,14 @@ import type {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DB_PATH = process.env.DB_PATH
-  ?? path.join(__dirname, '..', '..', 'aether.db')
+  ?? path.join(__dirname, '..', '..', 'data', 'aether.db')
 
 let db: Database.Database
 
 export function getDb(): Database.Database {
   if (!db) {
+    mkdirSync(path.dirname(DB_PATH), { recursive: true })
+    console.log(`[db] Opening database at ${DB_PATH}`)
     db = new Database(DB_PATH)
     db.pragma('journal_mode = WAL')
     db.pragma('synchronous = NORMAL')

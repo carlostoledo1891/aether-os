@@ -15,7 +15,8 @@ WORKDIR /app
 COPY --from=build --chown=vero:vero /app/node_modules ./node_modules
 COPY --from=build --chown=vero:vero /app/dist ./dist
 COPY --from=build --chown=vero:vero /app/package.json ./
-RUN mkdir -p /app/data && chown vero:vero /app/data
+RUN mkdir -p /app/data /data && chown -R vero:vero /app/data /data
+ENV DB_PATH=/data/aether.db
 USER vero
 EXPOSE 3001
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
