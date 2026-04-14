@@ -450,7 +450,10 @@ export async function domainRoutes(app: FastifyInstance) {
     return data ?? reply.code(503).send({ error: 'No stock data' })
   })
 
-  app.get('/api/seismic/recent', { schema: { tags: ['enrichers'], summary: 'Recent seismic events (USGS)' } }, async () => getRecentSeismic(20))
+  app.get('/api/seismic/recent', { schema: { tags: ['enrichers'], summary: 'Recent seismic events (USGS)' } }, async () => {
+    const rows = getRecentSeismic(20)
+    return { events: rows, source: rows.length > 0 ? 'usgs' : 'mock', updated_at: new Date().toISOString() }
+  })
 
   /* ─── LAPOC latest ───────────────────────────────────────────────────── */
   app.get('/api/lapoc/latest', { schema: { tags: ['enrichers'], summary: 'Latest LAPOC field instrument data' } }, async (_req, reply) => {

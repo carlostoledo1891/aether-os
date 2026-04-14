@@ -7,7 +7,7 @@ import type { SeismicSnapshot } from '../../services/dataService'
 import css from './EnvironmentPanel.module.css'
 
 export function SeismicActivityCard({ data }: { data: SeismicSnapshot }) {
-  const events = data.events.slice(0, 5)
+  const events = (data.events ?? []).slice(0, 5)
   const maxMag = events.length > 0 ? Math.max(...events.map(e => e.magnitude)) : 0
 
   return (

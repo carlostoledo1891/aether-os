@@ -297,7 +297,7 @@ export const HydroStation = memo(function HydroStation({ onClose }: HydroStation
               <div className={css.cellLabel}>Temp Trend</div>
               <div className={css.cellValue} style={{ fontSize: 12, display: 'flex', alignItems: 'center', gap: 3 }}>
                 {(() => {
-                  const temps = forecast.series.temperature_2m_max.slice(0, 7)
+                  const temps = (forecast.series.temperature_2m_max ?? []).slice(0, 7)
                   if (temps.length < 2) return <><Minus size={10} style={{ color: W.text4 }} /><span style={{ color: W.text4 }}>Stable</span></>
                   const first = (temps[0]! + temps[1]!) / 2
                   const last = (temps[temps.length - 1]! + temps[temps.length - 2]!) / 2

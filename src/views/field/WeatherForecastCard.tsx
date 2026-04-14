@@ -12,7 +12,7 @@ function formatDate(iso: string): string {
 }
 
 export function WeatherForecastCard({ forecast }: { forecast: ReturnType<typeof useSiteForecast> }) {
-  const days = forecast.series.time.slice(0, 7)
+  const days = (forecast.series?.time ?? []).slice(0, 7)
 
   return (
     <GlassCard animate={false} glow="cyan" className={css.cardBody}>

@@ -363,7 +363,7 @@ export const HydroOverlay = memo(function HydroOverlay({ env, hoveredNodeId, sel
           if (hoveredSpring) {
             const p = hoveredSpring.properties
             const strokeColor = p.color
-            const recent = env.springEvents?.filter(e => e.springId === p.id).slice(-1)[0]
+            const recent = env.springEvents?.filter(e => e.springId === p.id)?.slice(-1)[0]
             return (
               <motion.div
                 key={p.id}
