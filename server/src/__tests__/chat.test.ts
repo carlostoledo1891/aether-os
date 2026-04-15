@@ -17,14 +17,31 @@ afterAll(async () => {
 })
 
 describe('POST /api/chat', () => {
+  it('allows CORS preflight OPTIONS without API key', async () => {
+    const res = await app.inject({
+      method: 'OPTIONS',
+      url: '/api/chat',
+      headers: {
+        origin: 'https://verochain.co',
+        'access-control-request-method': 'POST',
+        'access-control-request-headers': 'content-type,x-api-key',
+      },
+    })
+    expect(res.statusCode).toBe(204)
+    expect(res.headers['access-control-allow-origin']).toBeDefined()
+    expect(String(res.headers['access-control-allow-methods'] ?? '')).toContain('POST')
+  })
+
   it('rejects requests without x-api-key', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/chat',
+      headers: { origin: 'https://verochain.co' },
       payload: { messages: [{ role: 'user', content: 'Hello' }] },
     })
     expect(res.statusCode).toBe(401)
     expect(res.json().error).toMatch(/API key/i)
+    expect(res.headers['access-control-allow-origin']).toBeDefined()
   })
 
   it('rejects requests with wrong x-api-key', async () => {

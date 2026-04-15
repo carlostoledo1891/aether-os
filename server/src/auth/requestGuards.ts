@@ -27,6 +27,9 @@ function validateApiKey(
 
 export function registerRequestGuards(app: FastifyInstance) {
   app.addHook('onRequest', async (req, reply) => {
+    // Let CORS preflight requests pass through untouched.
+    if (req.method === 'OPTIONS') return
+
     const isProduction = process.env.NODE_ENV === 'production'
     const ingestApiKey = process.env.INGEST_API_KEY ?? ''
     const chatApiKey = process.env.CHAT_API_KEY ?? ''

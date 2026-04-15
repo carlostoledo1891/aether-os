@@ -96,6 +96,19 @@ This smoke test checks:
 
 This deployment smoke is currently a manual or scheduled check (not part of the default pull request CI lane).
 
+## Chat CORS Debug Checklist
+
+If chat fails from `verochain.co` with a browser CORS error:
+
+1. Check runtime config in browser console: `window.__VERO_RUNTIME_CONFIG__` and confirm `apiBaseUrl` points to production API.
+2. Verify production API preflight responds with CORS headers:
+   - `OPTIONS /api/chat` with `Origin: https://verochain.co`
+   - `Access-Control-Request-Method: POST`
+   - `Access-Control-Request-Headers: content-type,x-api-key`
+3. Confirm `CORS_ORIGIN` includes exact production origin(s) (and `www` variant only if used).
+4. Confirm `CHAT_API_KEY` on API matches frontend `VITE_CHAT_API_KEY` expectation.
+5. Distinguish true CORS from auth failures by inspecting response status/body (`401`/`503` can appear as CORS in DevTools if headers are missing).
+
 ## Promotion Runbook
 
 1. Branch from `main` for feature work.
