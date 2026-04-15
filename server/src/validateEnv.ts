@@ -4,6 +4,8 @@
  * In development: warns but continues.
  */
 
+import { getDefaultProductionOrigins, parseCorsOrigins } from './corsOrigins.js'
+
 interface EnvSchema {
   PORT: number
   HOST: string
@@ -79,9 +81,18 @@ export function validateServerEnv(): ValidationResult {
     const allowLocalhostCors = ['1', 'true'].includes(
       (process.env.ALLOW_LOCALHOST_CORS_IN_PRODUCTION ?? '').toLowerCase(),
     )
+    const configuredOrigins = parseCorsOrigins(process.env.CORS_ORIGIN)
+    const hasCanonicalProductionOrigin = configuredOrigins.some((origin) =>
+      getDefaultProductionOrigins().includes(origin),
+    )
+
     if (!process.env.CORS_ORIGIN && !allowLocalhostCors) {
-      errors.push(
-        'CORS_ORIGIN is required in production unless ALLOW_LOCALHOST_CORS_IN_PRODUCTION=1 is explicitly set',
+      warnings.push(
+        `CORS_ORIGIN not set — falling back to canonical production origins (${getDefaultProductionOrigins().join(', ')})`,
+      )
+    } else if (configuredOrigins.length > 0 && !hasCanonicalProductionOrigin) {
+      warnings.push(
+        `CORS_ORIGIN does not include a canonical production origin (${getDefaultProductionOrigins().join(', ')})`,
       )
     }
   }

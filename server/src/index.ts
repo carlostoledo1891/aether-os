@@ -24,6 +24,7 @@ import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
 import { enforceEnvOrExit } from './validateEnv.js'
 import { registerRequestGuards } from './auth/requestGuards.js'
+import { resolveCorsOrigins } from './corsOrigins.js'
 
 enforceEnvOrExit()
 
@@ -32,18 +33,17 @@ const HOST = process.env.HOST ?? '0.0.0.0'
 
 export async function buildApp(opts: { logger?: boolean } = {}) {
   const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-  const DEFAULT_ORIGINS = ['http://localhost:5175', 'http://localhost:5173']
   const ALLOW_LOCALHOST_CORS_IN_PRODUCTION = ['1', 'true'].includes(
     (process.env.ALLOW_LOCALHOST_CORS_IN_PRODUCTION ?? '').toLowerCase(),
   )
-  const CORS_ORIGIN: string[] | string = process.env.CORS_ORIGIN
-    ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-    : (IS_PRODUCTION && !ALLOW_LOCALHOST_CORS_IN_PRODUCTION
-        ? []
-        : (IS_PRODUCTION ? DEFAULT_ORIGINS : '*' as unknown as string))
+  const CORS_ORIGIN = resolveCorsOrigins({
+    isProduction: IS_PRODUCTION,
+    allowLocalhostInProduction: ALLOW_LOCALHOST_CORS_IN_PRODUCTION,
+    configuredOrigins: process.env.CORS_ORIGIN,
+  })
   const app = Fastify({ logger: opts.logger ?? true })
 
-  await app.register(cors, { origin: CORS_ORIGIN as string | string[] })
+  await app.register(cors, { origin: CORS_ORIGIN })
   await app.register(rateLimit, { global: true, max: 120, timeWindow: '1 minute' })
   await app.register(websocket)
   await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } })
