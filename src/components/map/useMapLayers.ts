@@ -8,7 +8,7 @@ import {
   useSharedMapLayers,
   type FieldEnvMapLayers,
   type FieldOpsMapLayers,
-} from '../../views/field/fieldMapLayers'
+} from './sharedLayerStore'
 import {
   ALL_LAYERS,
   type LayerGroupId,

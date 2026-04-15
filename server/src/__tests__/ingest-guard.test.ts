@@ -1,11 +1,6 @@
 import { describe, it, expect, afterAll, beforeAll } from 'vitest'
-import Fastify from 'fastify'
-import cors from '@fastify/cors'
-import websocket from '@fastify/websocket'
-import { telemetryIngestRoutes } from '../ingest/telemetryHook.js'
-import { telemetryWsRoutes } from '../ws/telemetryChannel.js'
-import { seedIfNeeded } from '../seed.js'
 import type { FastifyInstance } from 'fastify'
+import { createTestApp } from './helpers.js'
 
 const INGEST_KEY = 'test-secret-key-123'
 
@@ -13,24 +8,7 @@ let app: FastifyInstance
 
 beforeAll(async () => {
   process.env.INGEST_API_KEY = INGEST_KEY
-
-  app = Fastify({ logger: false })
-  await app.register(cors, { origin: true })
-  await app.register(websocket)
-  seedIfNeeded()
-
-  app.addHook('onRequest', async (req, reply) => {
-    if (req.url.startsWith('/ingest/')) {
-      const key = req.headers['x-api-key']
-      if (key !== INGEST_KEY) {
-        return reply.code(401).send({ error: 'Invalid or missing API key' })
-      }
-    }
-  })
-
-  await app.register(telemetryIngestRoutes)
-  await app.register(telemetryWsRoutes)
-  await app.ready()
+  app = await createTestApp()
 })
 
 afterAll(async () => {

@@ -31,10 +31,18 @@ if (!envExample.includes('VITE_API_BASE_URL=')) {
 if (!envExample.includes('VITE_WS_URL=')) {
   errors.push('`.env.example` must document `VITE_WS_URL`.')
 }
+if (!envExample.includes('ALLOW_LOCALHOST_CORS_IN_PRODUCTION')) {
+  errors.push('`.env.example` must document `ALLOW_LOCALHOST_CORS_IN_PRODUCTION`.')
+}
 
 const readme = read('README.md')
 if (readme.includes('Reserved for future HTTP/WebSocket wiring')) {
   errors.push('`README.md` still describes `VITE_API_BASE_URL`/`VITE_WS_URL` as future-only.')
+}
+
+const deploymentDoc = read('docs/DEPLOYMENT.md')
+if (deploymentDoc.includes('staging.example.com') || deploymentDoc.includes('prod-api.example.com')) {
+  errors.push('`docs/DEPLOYMENT.md` still uses placeholder staging/prod smoke URLs.')
 }
 
 if (errors.length) {

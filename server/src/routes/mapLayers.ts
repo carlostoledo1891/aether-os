@@ -2,29 +2,13 @@ import type { FastifyInstance } from 'fastify'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { requireAdminKey } from '../auth/adminApiKey.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SNAPSHOT_ROOT = resolve(__dirname, '..', '..', '..', 'data', 'caldeira', 'snapshots')
 
 const EXTERNAL_IDENTIFY_QUERY_URL: Record<string, string> = {
   sigmine: 'https://geo.anm.gov.br/arcgis/rest/services/SIGMINE/dados_anm/FeatureServer/0/query',
-}
-
-function requireAdminKey(req: { headers: Record<string, string | undefined> }, reply: { code: (n: number) => { send: (o: unknown) => unknown } }): boolean {
-  const key = process.env.ADMIN_API_KEY || process.env.INGEST_API_KEY || ''
-  const isProduction = process.env.NODE_ENV === 'production'
-  if (!key) {
-    if (isProduction) {
-      reply.code(503).send({ error: 'Admin API disabled — ADMIN_API_KEY not configured' })
-      return false
-    }
-    return true
-  }
-  if (req.headers['x-api-key'] !== key) {
-    reply.code(401).send({ error: 'Unauthorized' })
-    return false
-  }
-  return true
 }
 
 function buildArcGisPointQueryUrl(baseUrl: string, lng: number, lat: number) {

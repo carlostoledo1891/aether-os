@@ -5,26 +5,10 @@ import { fileURLToPath } from 'node:url'
 import { ingestFile, ingestUrl, reindexAll } from '../knowledge/ingestPipeline.js'
 import { getAllChunkCounts, deleteDocChunks } from '../store/knowledgeStore.js'
 import { appendAuditEvent } from '../store/auditChain.js'
+import { requireAdminKey } from '../auth/adminApiKey.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const INDEX_PATH = resolve(__dirname, '..', '..', '..', 'data', 'knowledge', 'index.json')
-
-function requireAdminKey(req: { headers: Record<string, string | undefined> }, reply: { code: (n: number) => { send: (o: unknown) => unknown } }): boolean {
-  const key = process.env.ADMIN_API_KEY || process.env.INGEST_API_KEY || ''
-  const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-  if (!key) {
-    if (IS_PRODUCTION) {
-      reply.code(503).send({ error: 'Admin API disabled — ADMIN_API_KEY not configured' })
-      return false
-    }
-    return true
-  }
-  if (req.headers['x-api-key'] !== key) {
-    reply.code(401).send({ error: 'Unauthorized' })
-    return false
-  }
-  return true
-}
 
 export async function knowledgeAdminRoutes(app: FastifyInstance) {
   app.get('/api/admin/knowledge', {

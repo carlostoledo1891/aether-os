@@ -3,6 +3,9 @@ import { createTestApp } from './helpers.js'
 
 const app = await createTestApp()
 afterAll(() => app.close())
+const ingestHeaders = process.env.INGEST_API_KEY
+  ? { 'x-api-key': process.env.INGEST_API_KEY }
+  : undefined
 
 const MOCK_TICK = {
   source: 'test-engine',
@@ -37,6 +40,7 @@ describe('telemetry round-trip', () => {
       method: 'POST',
       url: '/ingest/telemetry',
       payload: MOCK_TICK,
+      headers: ingestHeaders,
     })
     expect(res.statusCode).toBe(200)
     const body = res.json()
@@ -71,6 +75,7 @@ describe('telemetry round-trip', () => {
       method: 'POST',
       url: '/ingest/telemetry',
       payload: { source: 'bad', timestamp: new Date().toISOString() },
+      headers: ingestHeaders,
     })
     expect(res.statusCode).toBe(400)
   })

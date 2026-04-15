@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, master]
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 1'
 
 jobs:
   check:
@@ -73,3 +76,27 @@ jobs:
             sbom-server.cdx.json
             sbom-engine.cdx.json
           retention-days: 90
+
+  deployment-parity:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run deployment parity smoke (optional)
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+          EXPECTED_API_BASE_URL: ${{ secrets.EXPECTED_API_BASE_URL }}
+          EXPECTED_WS_URL: ${{ secrets.EXPECTED_WS_URL }}
+          FORBIDDEN_API_BASE_URL: ${{ secrets.FORBIDDEN_API_BASE_URL }}
+        run: |
+          if [ -z "$PLAYWRIGHT_BASE_URL" ] || [ -z "$EXPECTED_API_BASE_URL" ]; then
+            echo "Skipping deployment parity smoke: required secrets are not configured."
+            exit 0
+          fi
+          npm run test:e2e:deployment

@@ -5,7 +5,7 @@ import {
   DEFAULT_FIELD_ENV_LAYERS,
   DEFAULT_FIELD_OPS_LAYERS,
   sharedLayerStore,
-} from '../../views/field/fieldMapLayers'
+} from './sharedLayerStore'
 
 vi.mock('react-map-gl/maplibre', () => ({
   default: () => null,

@@ -22,8 +22,8 @@ The supported deployment model is:
 | Environment | Branch | Frontend host | Backend host | Database | Frontend env | Server env |
 |-------------|--------|---------------|--------------|----------|--------------|------------|
 | Local | any local branch | `http://localhost:5175` | `http://localhost:3001` | local SQLite | leave `VITE_API_BASE_URL` / `VITE_WS_URL` empty | `CORS_ORIGIN` optional |
-| Staging | `staging` | staging Vercel domain | staging Railway/service URL | staging DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the staging frontend origin |
-| Production | `main` | primary Vercel domain | production Railway/service URL | production DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the production frontend origin |
+| Staging | `staging` | `https://aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app` | `https://aether-api-staging.up.railway.app` | staging DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the staging frontend origin |
+| Production | `main` | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | production DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the production frontend origin |
 
 Rules:
 
@@ -53,6 +53,7 @@ For each hosted API environment:
 
 - Use a separate database path or managed database
 - Set `CORS_ORIGIN` to the matching frontend origin
+- In production, `CORS_ORIGIN` must be explicit. Localhost fallback requires explicit override via `ALLOW_LOCALHOST_CORS_IN_PRODUCTION=1` (debug-only).
 - Set `CHAT_API_KEY`, `INGEST_API_KEY`, and admin secrets independently per environment
 - Keep staging and production secrets separate
 
@@ -80,9 +81,9 @@ The default `server` test script excludes the live Gemini hallucination suite so
 After the `staging` deployment is live, verify that the deployed frontend exposes the expected backend target:
 
 ```sh
-PLAYWRIGHT_BASE_URL="https://staging.example.com" \
-EXPECTED_API_BASE_URL="https://staging-api.example.com" \
-FORBIDDEN_API_BASE_URL="https://prod-api.example.com" \
+PLAYWRIGHT_BASE_URL="https://aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app" \
+EXPECTED_API_BASE_URL="https://aether-api-staging.up.railway.app" \
+FORBIDDEN_API_BASE_URL="https://aether-api-production-295d.up.railway.app" \
 npm run test:e2e:deployment
 ```
 
@@ -91,6 +92,8 @@ This smoke test checks:
 - the frontend runtime config points at the expected API origin
 - the runtime config does not point at a forbidden API origin
 - the configured backend responds on `/api/health`
+
+This deployment smoke is currently a manual or scheduled check (not part of the default pull request CI lane).
 
 ## Promotion Runbook
 

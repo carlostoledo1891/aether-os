@@ -23,7 +23,7 @@ import { mapLayerRoutes } from './routes/mapLayers.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
 import { enforceEnvOrExit } from './validateEnv.js'
-import { appendAuditEvent } from './store/auditChain.js'
+import { registerRequestGuards } from './auth/requestGuards.js'
 
 enforceEnvOrExit()
 
@@ -33,12 +33,14 @@ const HOST = process.env.HOST ?? '0.0.0.0'
 export async function buildApp(opts: { logger?: boolean } = {}) {
   const IS_PRODUCTION = process.env.NODE_ENV === 'production'
   const DEFAULT_ORIGINS = ['http://localhost:5175', 'http://localhost:5173']
+  const ALLOW_LOCALHOST_CORS_IN_PRODUCTION = ['1', 'true'].includes(
+    (process.env.ALLOW_LOCALHOST_CORS_IN_PRODUCTION ?? '').toLowerCase(),
+  )
   const CORS_ORIGIN: string[] | string = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-    : (IS_PRODUCTION ? DEFAULT_ORIGINS : '*' as unknown as string)
-  const INGEST_API_KEY = process.env.INGEST_API_KEY ?? ''
-  const CHAT_API_KEY = process.env.CHAT_API_KEY ?? ''
-
+    : (IS_PRODUCTION && !ALLOW_LOCALHOST_CORS_IN_PRODUCTION
+        ? []
+        : (IS_PRODUCTION ? DEFAULT_ORIGINS : '*' as unknown as string))
   const app = Fastify({ logger: opts.logger ?? true })
 
   await app.register(cors, { origin: CORS_ORIGIN as string | string[] })
@@ -96,53 +98,7 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
 
   seedIfNeeded()
 
-  app.addHook('onRequest', async (req, reply) => {
-    if (req.url.startsWith('/ingest/')) {
-      if (!INGEST_API_KEY) {
-        if (IS_PRODUCTION) {
-          return reply.code(503).send({ error: 'Ingest disabled — INGEST_API_KEY not configured' })
-        }
-        return
-      }
-      const key = req.headers['x-api-key']
-      if (key !== INGEST_API_KEY) {
-        try {
-          appendAuditEvent({
-            event_id: `auth-fail-${Date.now()}`,
-            timestamp: new Date().toISOString(),
-            type: 'auth_failure',
-            actor: req.ip ?? 'unknown',
-            action: 'ingest_auth_rejected',
-            detail: `Failed auth on ${req.method} ${req.url}`,
-          })
-        } catch { /* best-effort */ }
-        return reply.code(401).send({ error: 'Invalid or missing API key' })
-      }
-    }
-
-    if (req.url.startsWith('/api/chat')) {
-      if (!CHAT_API_KEY) {
-        if (IS_PRODUCTION) {
-          return reply.code(503).send({ error: 'Chat auth disabled — CHAT_API_KEY not configured' })
-        }
-        return
-      }
-      const key = req.headers['x-api-key']
-      if (key !== CHAT_API_KEY) {
-        try {
-          appendAuditEvent({
-            event_id: `auth-fail-${Date.now()}`,
-            timestamp: new Date().toISOString(),
-            type: 'auth_failure',
-            actor: req.ip ?? 'unknown',
-            action: 'chat_auth_rejected',
-            detail: `Failed auth on ${req.method} ${req.url}`,
-          })
-        } catch { /* best-effort */ }
-        return reply.code(401).send({ error: 'Invalid or missing API key' })
-      }
-    }
-  })
+  registerRequestGuards(app)
 
   await app.register(healthRoutes)
   await app.register(telemetryRoutes)

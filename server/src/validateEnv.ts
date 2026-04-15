@@ -15,6 +15,7 @@ interface EnvSchema {
   GOOGLE_GENERATIVE_AI_API_KEY: string
   ADMIN_API_KEY: string
   DB_PATH: string
+  ALLOW_LOCALHOST_CORS_IN_PRODUCTION: string
 }
 
 interface ValidationResult {
@@ -29,7 +30,7 @@ const REQUIRED_IN_PRODUCTION: Array<keyof EnvSchema> = [
 ]
 
 const RECOMMENDED: Array<[keyof EnvSchema, string]> = [
-  ['CORS_ORIGIN', 'CORS will use restrictive defaults'],
+  ['CORS_ORIGIN', 'CORS allowlist should match hosted frontend origins'],
   ['GOOGLE_GENERATIVE_AI_API_KEY', 'AI chat will return 501'],
   ['CHAT_API_KEY', 'Chat endpoint unprotected in production'],
   ['WS_API_KEY', 'WebSocket endpoint unprotected in production (falls back to INGEST_API_KEY)'],
@@ -51,6 +52,7 @@ export function validateServerEnv(): ValidationResult {
     GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY ?? '',
     ADMIN_API_KEY: process.env.ADMIN_API_KEY ?? '',
     DB_PATH: process.env.DB_PATH ?? '',
+    ALLOW_LOCALHOST_CORS_IN_PRODUCTION: process.env.ALLOW_LOCALHOST_CORS_IN_PRODUCTION ?? '',
   }
 
   if (isNaN(values.PORT as number) || (values.PORT as number) < 1 || (values.PORT as number) > 65535) {
@@ -70,6 +72,17 @@ export function validateServerEnv(): ValidationResult {
   for (const [key, hint] of RECOMMENDED) {
     if (!process.env[key]) {
       warnings.push(`${key} not set — ${hint}`)
+    }
+  }
+
+  if (isProduction) {
+    const allowLocalhostCors = ['1', 'true'].includes(
+      (process.env.ALLOW_LOCALHOST_CORS_IN_PRODUCTION ?? '').toLowerCase(),
+    )
+    if (!process.env.CORS_ORIGIN && !allowLocalhostCors) {
+      errors.push(
+        'CORS_ORIGIN is required in production unless ALLOW_LOCALHOST_CORS_IN_PRODUCTION=1 is explicitly set',
+      )
     }
   }
 

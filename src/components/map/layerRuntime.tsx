@@ -66,6 +66,17 @@ function getExternalInteractiveLayerIds(layerId: string) {
   return getExternalSnapshotInteractiveLayerIds(layerId)
 }
 
+function renderTerrainHost(context: LayerRuntimeContext) {
+  return (
+    <TerrainOverlay
+      mapId={context.mapId}
+      terrain={context.visibleLayerIds.has('terrain')}
+      hillshade={context.visibleLayerIds.has('hillshade')}
+      exaggeration={context.terrainExaggeration}
+    />
+  )
+}
+
 export const LAYER_RUNTIMES: Record<LayerId, LayerRuntimeDef> = {
   boundary: {
     hostKey: 'boundary',
@@ -161,26 +172,12 @@ export const LAYER_RUNTIMES: Record<LayerId, LayerRuntimeDef> = {
   terrain: {
     hostKey: 'terrain',
     interactiveLayerIds: NO_INTERACTIVE_LAYER_IDS,
-    render: ({ visibleLayerIds, mapId, terrainExaggeration }) => (
-      <TerrainOverlay
-        mapId={mapId}
-        terrain={visibleLayerIds.has('terrain')}
-        hillshade={visibleLayerIds.has('hillshade')}
-        exaggeration={terrainExaggeration}
-      />
-    ),
+    render: renderTerrainHost,
   },
   hillshade: {
     hostKey: 'terrain',
     interactiveLayerIds: NO_INTERACTIVE_LAYER_IDS,
-    render: ({ visibleLayerIds, mapId, terrainExaggeration }) => (
-      <TerrainOverlay
-        mapId={mapId}
-        terrain={visibleLayerIds.has('terrain')}
-        hillshade={visibleLayerIds.has('hillshade')}
-        exaggeration={terrainExaggeration}
-      />
-    ),
+    render: renderTerrainHost,
   },
 }
 

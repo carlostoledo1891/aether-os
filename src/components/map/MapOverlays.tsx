@@ -30,21 +30,36 @@ export function MapOverlays({
   renderOverrides,
 }: MapOverlaysProps) {
   const visibleLayerIds = new Set(layers)
-  const renderedHosts = new Set<string>()
+  const runtimeByLayerId = new Map(layers.map(layerId => [layerId, resolveLayerRuntime(layerId)]))
+  const hostEntries = new Map<string, { layerId: LayerId; override: ReactNode | undefined }>()
+
+  for (const layerId of layers) {
+    const runtime = runtimeByLayerId.get(layerId)
+    if (!runtime || hostEntries.has(runtime.hostKey)) continue
+    hostEntries.set(runtime.hostKey, { layerId, override: renderOverrides?.[layerId] })
+  }
+
+  for (const layerId of layers) {
+    const runtime = runtimeByLayerId.get(layerId)
+    if (!runtime) continue
+    const override = renderOverrides?.[layerId]
+    if (override === undefined) continue
+    const hostEntry = hostEntries.get(runtime.hostKey)
+    if (!hostEntry || hostEntry.override === undefined) {
+      hostEntries.set(runtime.hostKey, { layerId, override })
+    }
+  }
 
   return (
     <>
-      {layers.map(layerId => {
-        const runtime = resolveLayerRuntime(layerId)
-        if (renderedHosts.has(runtime.hostKey)) return null
-        renderedHosts.add(runtime.hostKey)
-
-        const overrideLayerId = layers.find(id => resolveLayerRuntime(id).hostKey === runtime.hostKey && renderOverrides?.[id] !== undefined)
-        const override = overrideLayerId ? renderOverrides?.[overrideLayerId] : undefined
+      {[...hostEntries.entries()].map(([hostKey, hostEntry]) => {
+        const runtime = runtimeByLayerId.get(hostEntry.layerId)
+        if (!runtime) return null
+        const override = hostEntry.override
         if (override !== undefined) return <Fragment key={runtime.hostKey}>{override}</Fragment>
 
         return (
-          <Fragment key={runtime.hostKey}>
+          <Fragment key={hostKey}>
             {runtime.render({
               visibleLayerIds,
               mapId,
