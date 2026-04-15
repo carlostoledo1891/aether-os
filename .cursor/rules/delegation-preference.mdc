@@ -1,0 +1,12 @@
+---
+description: Default to handling release operations for the user
+alwaysApply: true
+---
+
+# Delegation Preference
+
+The user prefers the agent to carry out operational steps directly instead of asking them to run commands manually.
+
+- By default, handle commits, pushes, deploys, and release verification when the user asks for work that implies shipping.
+- Only pause to ask when a required secret, approval, or external account action is genuinely missing.
+- Keep the user informed of what was run and the outcome, but do not bounce routine execution back to them unnecessarily.

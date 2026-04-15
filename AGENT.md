@@ -31,8 +31,8 @@ The prototype is built to pitch to:
 ## Deployment Model
 
 - **Local:** leave `VITE_API_BASE_URL` / `VITE_WS_URL` empty and use the Vite proxy at `localhost:5175`.
-- **Hosted staging/prod:** set `VITE_API_BASE_URL` explicitly per environment; `VITE_WS_URL` is only needed when websockets live on a different origin.
-- **Release path:** merge to `staging`, smoke-test the staging deployment, then promote to `main`.
+- **Hosted production:** set `VITE_API_BASE_URL` explicitly to the production API; `VITE_WS_URL` is only needed when websockets live on a different origin.
+- **Release path:** push releasable work to `main`, then run the prod-only rollout helper.
 - **Reference doc:** `docs/DEPLOYMENT.md`
 - **One-command rollout helper:** `npm run update:all` (see `docs/UPDATE_ALL.md`)
 
@@ -41,16 +41,15 @@ The prototype is built to pitch to:
 | Environment | Frontend origin | Backend origin | Notes |
 |-------------|------------------|----------------|-------|
 | Local | `http://localhost:5175` | `http://localhost:3001` | Use Vite proxy; keep `VITE_API_BASE_URL` and `VITE_WS_URL` empty. |
-| Staging (preview) | `https://aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app` | `https://aether-api-staging.up.railway.app` | `server` `CORS_ORIGIN` should include staging preview origin. |
-| Production | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | Keep production domains and secrets isolated from staging. |
+| Production | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | Keep production domains and secrets isolated from local development. |
 
 ### Deployment Parity Done Checklist
 
 - `npm run verify:release` passes locally under repo Node version.
-- Vercel deploys for `staging`/preview and `main`/production are green.
+- Vercel production deploy is green for the intended SHA.
 - Runtime config confirms expected backend target (`__VERO_RUNTIME_CONFIG__`).
-- Hosted API `/api/health` responds from the expected backend.
-- API CORS allows the intended frontend origin(s) for each environment.
+- Hosted production API `/api/health` responds from the expected backend.
+- API CORS allows the intended production frontend origin(s).
 - Manual smoke passes on `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck`.
 
 ## Documentation Map
@@ -79,17 +78,16 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Chat reliability in production (CORS + auth-key parity) and smoother rollout automation.
+*   **Focus:** Production-only reliability, including chat auth parity and a simpler rollout path.
 *   **Recent Changes (Apr 14 2026):**
     - Hardened `requestGuards` to bypass `OPTIONS` preflight, added chat CORS regression tests, and documented a chat CORS debug checklist in deployment docs.
-    - Verified both prod and staging `/api/chat` preflight responses return `204` with correct `Access-Control-Allow-Origin`; no current preflight CORS regression.
-    - Added and shipped `npm run update:all` automation with docs and auth-wall-aware staging smoke skip support.
+    - Verified production `/api/chat` preflight returns `204` with correct `Access-Control-Allow-Origin`; no current preflight CORS regression.
+    - Simplified `npm run update:all` and deployment guidance around a production-only release flow.
 *   **Next Steps:**
     - Confirm `VITE_CHAT_API_KEY` (frontend) and `CHAT_API_KEY` (API) parity for the active production deployment; current browser failure pattern is 401 auth, not missing CORS headers.
-    - Manually smoke-test chat send + upload flows on production and staging preview after each rollout.
-    - Optionally make `update:all` resilient to dual staging token contexts (primary token fallback) to avoid partial Railway failures.
+    - Manually smoke-test chat send + upload flows on production after each rollout.
+    - Re-introduce staging only if production deploys become routine enough to justify the extra surface area.
 *   **Open Decisions:**
-    - Keep staging CORS preview-only or allow both preview + `aether-os-blond`.
     - Keep mandatory chat API key in production UX or introduce a safer, origin-bound alternative auth pattern.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*
