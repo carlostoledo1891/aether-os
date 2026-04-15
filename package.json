@@ -28,6 +28,7 @@
     "validate:pilot-plant": "tsx scripts/caldeira-build/validatePilotPlant.ts",
     "ingest:knowledge": "tsx scripts/ingest-knowledge.ts",
     "backfill:drill-assays": "tsx scripts/backfill-drill-assays.ts",
+    "update:all": "bash scripts/update-all.sh",
     "prepare": "husky"
   },
   "lint-staged": {

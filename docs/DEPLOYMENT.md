@@ -6,6 +6,7 @@
 - Use `nvm use` at the repo root before running release commands.
 - CI reads `.nvmrc`.
 - Vercel should use the same Node version in project settings.
+- Optional one-command rollout helper: `npm run update:all` (setup + caveats in `docs/UPDATE_ALL.md`).
 
 ## Supported Topology
 
