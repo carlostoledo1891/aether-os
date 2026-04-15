@@ -97,7 +97,7 @@ describe('DeckRunner — dashboard mode', () => {
     const lightManifest: DeckManifest = { ...manifest, theme: 'light' }
     const { container } = wrap(<DeckRunner manifest={lightManifest} />)
     const root = container.firstChild as HTMLElement
-    expect(root.style.background).toBe('#ffffff')
+    expect(root.style.background.toLowerCase()).toBe('#ffffff')
   })
 })
 

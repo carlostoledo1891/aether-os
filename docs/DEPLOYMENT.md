@@ -22,7 +22,7 @@ The supported deployment model is:
 | Environment | Branch | Frontend host | Backend host | Database | Frontend env | Server env |
 |-------------|--------|---------------|--------------|----------|--------------|------------|
 | Local | any local branch | `http://localhost:5175` | `http://localhost:3001` | local SQLite | leave `VITE_API_BASE_URL` / `VITE_WS_URL` empty | `CORS_ORIGIN` optional |
-| Production | `main` | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | production DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the production frontend origin |
+| Production | `main` | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | production DB only | set `VITE_API_BASE_URL`; set `VITE_WS_URL` only if WS origin differs | set `CORS_ORIGIN` to the production frontend origin; server also falls back to canonical Vero production domains |
 
 Rules:
 
@@ -48,7 +48,8 @@ For the hosted production API:
 
 - Use the production database path or managed database
 - Set `CORS_ORIGIN` to the matching frontend origin
-- In production, `CORS_ORIGIN` must be explicit. Localhost fallback requires explicit override via `ALLOW_LOCALHOST_CORS_IN_PRODUCTION=1` (debug-only).
+- In production, the server always allows the canonical Vero domains (`https://verochain.co`, `https://www.verochain.co`) and can optionally merge additional origins from `CORS_ORIGIN`.
+- Localhost fallback still requires explicit override via `ALLOW_LOCALHOST_CORS_IN_PRODUCTION=1` (debug-only).
 - Set `CHAT_API_KEY`, `INGEST_API_KEY`, and admin secrets explicitly for production
 
 ## Local Release Checklist
@@ -70,18 +71,27 @@ That command runs:
 
 The default `server` test script excludes the live Gemini hallucination suite so release verification stays deterministic. Run `npm --prefix server run test:ai` separately when you explicitly want to exercise the live model.
 
-## Chat CORS Debug Checklist
+## Production CORS Debug Checklist
 
-If chat fails from `verochain.co` with a browser CORS error:
+If chat, Operations, Hydro Twin, telemetry history, provenance, or market reads fail from `verochain.co` with a browser CORS error:
 
 1. Check runtime config in browser console: `window.__VERO_RUNTIME_CONFIG__` and confirm `apiBaseUrl` points to production API.
-2. Verify production API preflight responds with CORS headers:
+2. Verify production API responds with `Access-Control-Allow-Origin: https://verochain.co` on both preflight and normal reads:
    - `OPTIONS /api/chat` with `Origin: https://verochain.co`
    - `Access-Control-Request-Method: POST`
    - `Access-Control-Request-Headers: content-type,x-api-key`
-3. Confirm `CORS_ORIGIN` includes exact production origin(s) (and `www` variant only if used).
+   - `GET /api/project/hydrology`
+   - `GET /api/telemetry/history?range=24h`
+   - `GET /api/provenance`
+3. Confirm `CORS_ORIGIN` only adds extra hosted origins you actually need; the canonical Vero domains are already allowed in production.
 4. Confirm `CHAT_API_KEY` on API matches frontend `VITE_CHAT_API_KEY` expectation.
 5. Distinguish true CORS from auth failures by inspecting response status/body (`401`/`503` can appear as CORS in DevTools if headers are missing).
+
+## CSP Eval Audit
+
+- The production bundle was scanned for `eval`, `new Function`, and string-based `setTimeout` / `setInterval` usage after the theme/runtime changes.
+- No matches were found in `src`, `dist`, or installed dependencies.
+- Current interpretation: if DevTools still reports an `unsafe-eval` warning, treat it as a runtime/browser instrumentation warning first and capture the exact offending stack before relaxing `script-src`.
 
 ## Promotion Runbook
 

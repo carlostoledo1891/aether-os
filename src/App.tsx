@@ -9,7 +9,8 @@ import { DataServiceProvider, useDataService } from './services/DataServiceProvi
 import { createMockDataService } from './services/mockDataService'
 import { createLiveDataService } from './services/liveDataService'
 import { getDataMode } from './config/env'
-import { W } from './app/canvas/canvasTheme'
+import { ThemeScope } from './theme/ThemeProvider'
+import { useThemeTokens } from './theme/useTheme'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { HeaderStrip } from './components/layout/HeaderStrip'
 import { DataModeBanner } from './components/layout/DataModeBanner'
@@ -71,6 +72,7 @@ function createDataService() {
 }
 
 function AppShell() {
+  const theme = useThemeTokens()
   const [view, setView] = useState<ViewMode>('operator')
   const [reportOpen, setReportOpen] = useState<ReportType | null>(null)
   const [alertOpen, setAlertOpen] = useState(false)
@@ -123,7 +125,7 @@ function AppShell() {
           fallback={(
             <div
               style={{
-                background: W.bg,
+                background: theme.bg,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -135,16 +137,16 @@ function AppShell() {
             >
               <div style={{
                 width: 36, height: 36,
-                background: W.violet,
-                borderRadius: W.radius.sm,
+                background: theme.violet,
+                borderRadius: theme.radius.sm,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 16, fontWeight: 800, color: W.textInverse, letterSpacing: '-0.03em',
+                fontSize: 16, fontWeight: 800, color: theme.textInverse, letterSpacing: '-0.03em',
                 animation: 'pulse 1.5s ease-in-out infinite',
               }}>
                 V
               </div>
               <span style={{
-                color: W.text4,
+                color: theme.text4,
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
                 letterSpacing: '0.06em',
@@ -199,19 +201,24 @@ function AppShell() {
   )
 }
 
-const PageFallback = () => (
-  <div style={{ background: W.bg, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: W.text1 }}>
-    Loading…
-  </div>
-)
-
-function renderPage(page: ReactNode) {
+const PageFallback = () => {
+  const theme = useThemeTokens()
   return (
-    <ErrorBoundary>
-      <Suspense fallback={<PageFallback />}>
-        {page}
-      </Suspense>
-    </ErrorBoundary>
+    <div style={{ background: theme.bg, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: theme.text1 }}>
+      Loading…
+    </div>
+  )
+}
+
+function renderPage(page: ReactNode, theme: 'dark' | 'light' = 'dark') {
+  return (
+    <ThemeScope theme={theme} style={{ minHeight: '100vh', background: 'var(--w-bg)', color: 'var(--w-text1)' }}>
+      <ErrorBoundary>
+        <Suspense fallback={<PageFallback />}>
+          {page}
+        </Suspense>
+      </ErrorBoundary>
+    </ThemeScope>
   )
 }
 
@@ -224,7 +231,7 @@ export default function App() {
         <MapCameraProvider>
           <Routes>
             <Route path="/" element={renderPage(<LandingPage />)} />
-            <Route path="/app/*" element={<ErrorBoundary><AppShell /></ErrorBoundary>} />
+            <Route path="/app/*" element={<ThemeScope theme="dark" style={{ height: '100vh' }}><ErrorBoundary><AppShell /></ErrorBoundary></ThemeScope>} />
             <Route path="/business" element={renderPage(<BusinessPage />)} />
             <Route path="/tech" element={renderPage(<TechPage />)} />
             <Route path="/trust" element={renderPage(<TrustCenterPage />)} />
