@@ -34,6 +34,12 @@
 - Removed top-accent card chrome, constrained color emphasis toward provenance metadata, and restored spring hover cards on the map surfaces.
 - Fixed frontend test noise caused by eager mock GeoJSON fetches; full frontend/server/engine verification passed before push.
 
+### Session Log — 2026-04-14 (handoff)
+- Added explicit hosted API targeting, deployment guardrails, and the staging/prod parity runbook; local `verify:release` passed cleanly.
+- Pushed commit `0082788` to both `main` and `staging` so both remote branches now reference the same release candidate.
+- Confirmed both Railway APIs are healthy; production CORS is correct, but staging API still needs a redeploy to emit `access-control-allow-origin` for the staging Vercel preview URL.
+- Production frontend domains were still serving the previous asset bundle at handoff time, and the staging Vercel preview remained auth-protected from external smoke access.
+
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
 Nine stakeholder personas have been evaluated against the current release (see `docs/Personas.md`). **Weighted average score: ~9.4 / 10** (v15 — post Online Report Templates). Five personas at code ceiling (10.0): Chairman, CEO, Chief Geologist, SCADA, Journalist. Valuation analysis: `docs/VALUATION.md`. The top gaps that should drive the next iteration:
@@ -2201,3 +2207,15 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Refactored external snapshot ingestion to read shared layer config and added a proxied ArcGIS identify/status route on the server.
 - Simplified the Founders deck by removing requested slides, updated the roadmap timeline copy, and unified current team sections behind `TeamShowcase`.
 - Extended `PasswordGate` session validity from 24 hours to 30 days and re-validated with `npx tsc --noEmit`, `npm run test:run`, and the server build.
+
+### Session Log — 2026-04-14 (Deployment Parity Rollout)
+- Switched CLI auth to the correct Vercel account, redeployed production and staging-preview domains, and confirmed both domains now serve the refreshed frontend bundle.
+- Verified public runtime config is in `live` mode and points to production Railway API/WS targets.
+- Set Railway staging `aether-api` `CORS_ORIGIN` to the staging preview Vercel origin and redeployed the service.
+- Rechecked live health/CORS behavior: staging preview origin is now explicitly allowed on staging API; production CORS remains aligned to production-facing domains.
+
+### Session Log — 2026-04-14 (Chat CORS Hardening + Rollout Automation)
+- Diagnosed prod chat failures and confirmed active preflight responses now include correct CORS headers; current failing pattern resolves to chat auth key mismatch (`401`) rather than missing CORS.
+- Hardened server request guards to bypass `OPTIONS` preflight and added regression coverage for chat preflight + denied auth responses with CORS headers.
+- Added a deployment troubleshooting checklist for chat CORS/auth in `docs/DEPLOYMENT.md`.
+- Added `npm run update:all` automation (`scripts/update-all.sh`, `docs/UPDATE_ALL.md`) with explicit confirmation, token-based Railway deploys, and staging smoke skip handling for Vercel auth walls.

@@ -7,17 +7,24 @@ if [[ "${CONFIRM_UPDATE_ALL:-}" != "YES" ]]; then
   exit 1
 fi
 
-required_vars=(
-  STAGING_RAILWAY_TOKEN
-  PRODUCTION_RAILWAY_TOKEN
-)
+staging_token="${STAGING_RAILWAY_TOKEN:-${RAILWAY_TOKEN:-}}"
+production_token="${PRODUCTION_RAILWAY_TOKEN:-${RAILWAY_TOKEN:-}}"
 
-for var_name in "${required_vars[@]}"; do
-  if [[ -z "${!var_name:-}" ]]; then
-    echo "Missing required env var: ${var_name}"
-    exit 1
-  fi
-done
+if [[ -z "${staging_token}" ]]; then
+  echo "Missing Railway token for staging."
+  echo "Set STAGING_RAILWAY_TOKEN or RAILWAY_TOKEN."
+  exit 1
+fi
+
+if [[ -z "${production_token}" ]]; then
+  echo "Missing Railway token for production."
+  echo "Set PRODUCTION_RAILWAY_TOKEN or RAILWAY_TOKEN."
+  exit 1
+fi
+
+if [[ -n "${RAILWAY_TOKEN:-}" ]] && [[ -z "${STAGING_RAILWAY_TOKEN:-}" ]] && [[ -z "${PRODUCTION_RAILWAY_TOKEN:-}" ]]; then
+  echo "Using shared RAILWAY_TOKEN for staging and production."
+fi
 
 echo "==> Running local release gate"
 npm run verify:release
@@ -29,12 +36,8 @@ echo "==> Redeploying Vercel staging preview alias"
 npx vercel redeploy "aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app"
 
 echo "==> Redeploying Railway staging API"
-RAILWAY_TOKEN="${STAGING_RAILWAY_TOKEN}" \
-  npx @railway/cli link \
-    --project 8762bf41-052b-422e-b910-a9eb0118cb7e \
-    --environment staging \
-    --service aether-api >/dev/null
-RAILWAY_TOKEN="${STAGING_RAILWAY_TOKEN}" \
+RAILWAY_TOKEN="${staging_token}" \
+RAILWAY_API_TOKEN="${staging_token}" \
   npx @railway/cli redeploy --service aether-api --yes
 
 STAGING_BASE_URL="https://aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app"
@@ -60,12 +63,8 @@ else
 fi
 
 echo "==> Redeploying Railway production API"
-RAILWAY_TOKEN="${PRODUCTION_RAILWAY_TOKEN}" \
-  npx @railway/cli link \
-    --project 8762bf41-052b-422e-b910-a9eb0118cb7e \
-    --environment production \
-    --service aether-api >/dev/null
-RAILWAY_TOKEN="${PRODUCTION_RAILWAY_TOKEN}" \
+RAILWAY_TOKEN="${production_token}" \
+RAILWAY_API_TOKEN="${production_token}" \
   npx @railway/cli redeploy --service aether-api --yes
 
 echo "==> update:all completed"

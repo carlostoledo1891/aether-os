@@ -77,8 +77,8 @@ export const TEAM: TeamMember[] = [
   {
     name: 'Carlos Toledo',
     role: 'Founder · Product & Technical Lead',
-    desc: 'Air Force pilot, full-stack engineer, product designer. Built the entire platform solo — production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
-    bg: 'Air Force pilot, full-stack engineer, product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
+    desc: 'Full-stack engineer and product designer. Built the entire platform solo — production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
+    bg: 'Full-stack engineer and product designer. Born and raised in the Caldeira — 40 years of local context. Built the entire platform solo: production architecture, full pilot plant digital twin, NIST 800-53 mapped.',
     accent: V,
     onboarding: false,
   },

@@ -20,9 +20,15 @@ Use this when you want staging and production refreshed after local changes are 
 ## Required env vars
 
 ```bash
+export RAILWAY_TOKEN="<token-with-staging-and-production-access>"
+export CONFIRM_UPDATE_ALL=YES
+```
+
+Optional overrides (only if you want different tokens per environment):
+
+```bash
 export STAGING_RAILWAY_TOKEN="<staging-token>"
 export PRODUCTION_RAILWAY_TOKEN="<production-token>"
-export CONFIRM_UPDATE_ALL=YES
 ```
 
 Optional:

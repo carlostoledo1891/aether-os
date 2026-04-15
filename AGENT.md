@@ -34,6 +34,24 @@ The prototype is built to pitch to:
 - **Hosted staging/prod:** set `VITE_API_BASE_URL` explicitly per environment; `VITE_WS_URL` is only needed when websockets live on a different origin.
 - **Release path:** merge to `staging`, smoke-test the staging deployment, then promote to `main`.
 - **Reference doc:** `docs/DEPLOYMENT.md`
+- **One-command rollout helper:** `npm run update:all` (see `docs/UPDATE_ALL.md`)
+
+### Canonical Environment Matrix
+
+| Environment | Frontend origin | Backend origin | Notes |
+|-------------|------------------|----------------|-------|
+| Local | `http://localhost:5175` | `http://localhost:3001` | Use Vite proxy; keep `VITE_API_BASE_URL` and `VITE_WS_URL` empty. |
+| Staging (preview) | `https://aether-os-git-staging-carlos-toledos-projects-840d56ff.vercel.app` | `https://aether-api-staging.up.railway.app` | `server` `CORS_ORIGIN` should include staging preview origin. |
+| Production | `https://verochain.co` | `https://aether-api-production-295d.up.railway.app` | Keep production domains and secrets isolated from staging. |
+
+### Deployment Parity Done Checklist
+
+- `npm run verify:release` passes locally under repo Node version.
+- Vercel deploys for `staging`/preview and `main`/production are green.
+- Runtime config confirms expected backend target (`__VERO_RUNTIME_CONFIG__`).
+- Hosted API `/api/health` responds from the expected backend.
+- API CORS allows the intended frontend origin(s) for each environment.
+- Manual smoke passes on `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck`.
 
 ## Documentation Map
 
@@ -61,14 +79,17 @@ To avoid context bloat, read only what you need:
 
 ## Current Status & Sprint Focus
 
-*   **Focus:** Public demo surfaces are now narrowed to the active decks, with map/runtime stability and cleaner UI chrome prioritized over adding new presentation branches.
+*   **Focus:** Chat reliability in production (CORS + auth-key parity) and smoother rollout automation.
 *   **Recent Changes (Apr 14 2026):**
-    - Shipped the Vercel/deploy hardening pass: Node pinning, explicit Vercel install/build commands, release verification, and map runtime regression coverage; `main` and `staging` were pushed and used as the demo release path.
-    - Simplified public team/deck content so Carlos is the only named public team member, advisor references are anonymous, Founders deck slides 17/18 were removed from the active sequence, and only Founders + Meteoric remain as the public deck routes.
-    - Removed template-like top card accents, tightened color usage so provenance remains the main colored metadata signal, restored spring hover cards across map surfaces, and eliminated frontend test noise from eager mock GeoJSON fetches.
+    - Hardened `requestGuards` to bypass `OPTIONS` preflight, added chat CORS regression tests, and documented a chat CORS debug checklist in deployment docs.
+    - Verified both prod and staging `/api/chat` preflight responses return `204` with correct `Access-Control-Allow-Origin`; no current preflight CORS regression.
+    - Added and shipped `npm run update:all` automation with docs and auth-wall-aware staging smoke skip support.
 *   **Next Steps:**
-    - Manually smoke-test `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck` in-browser to confirm spacing, hover cards, and neutral text hierarchy feel right visually.
-    - If hydrology needs richer federal context, reuse the existing ANA/SNIRH Hidroweb station pipeline for spring enrichment instead of replacing the MG spring geometry source.
-    - Review the remaining local-only edits in `shared/sites/caldeira.ts` and `src/pages/decks/founders/slides/BookendSlides.tsx` before the next commit so they do not drift unnoticed.
+    - Confirm `VITE_CHAT_API_KEY` (frontend) and `CHAT_API_KEY` (API) parity for the active production deployment; current browser failure pattern is 401 auth, not missing CORS headers.
+    - Manually smoke-test chat send + upload flows on production and staging preview after each rollout.
+    - Optionally make `update:all` resilient to dual staging token contexts (primary token fallback) to avoid partial Railway failures.
+*   **Open Decisions:**
+    - Keep staging CORS preview-only or allow both preview + `aether-os-blond`.
+    - Keep mandatory chat API key in production UX or introduce a safer, origin-bound alternative auth pattern.
 
 *(Update this section during session handoffs using the `.cursor/skills/handoff` skill)*
