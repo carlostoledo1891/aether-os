@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { usePrefersReducedMotion } from '../../../hooks/usePrefersReducedMotion'
 import { W } from '../../../theme/publicTheme'
 
 const wrap: CSSProperties = {
@@ -23,13 +24,15 @@ const wrap: CSSProperties = {
   pointerEvents: 'none',
 }
 
-const dot: CSSProperties = {
-  width: 6,
-  height: 6,
-  borderRadius: '50%',
-  background: W.violet,
-  boxShadow: `0 0 8px ${W.violet}`,
-  animation: 'provenancePulse 2.4s ease-in-out infinite',
+function dotStyle(reducedMotion: boolean): CSSProperties {
+  return {
+    width: 6,
+    height: 6,
+    borderRadius: '50%',
+    background: W.violet,
+    boxShadow: `0 0 8px ${W.violet}`,
+    animation: reducedMotion ? undefined : 'provenancePulse 2.4s ease-in-out infinite',
+  }
 }
 
 /**
@@ -38,11 +41,12 @@ const dot: CSSProperties = {
  * the brand pulse.
  */
 export function ProvenanceChip({ note = 'synthetic data · v0.1' }: { note?: string }) {
+  const reducedMotion = usePrefersReducedMotion()
   return (
     <div style={wrap}>
-      <span style={dot} />
+      <span data-testid="provenance-chip-dot" style={dotStyle(reducedMotion)} />
       <span>demo</span>
-      <span style={{ color: W.text4, fontWeight: 500, textTransform: 'none', letterSpacing: '0.04em' }}>· {note}</span>
+      <span style={{ color: W.text3, fontWeight: 500, textTransform: 'none', letterSpacing: '0.04em' }}>· {note}</span>
       <style>{`
         @keyframes provenancePulse {
           0%, 100% { opacity: 1; transform: scale(1); }

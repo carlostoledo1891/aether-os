@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { W } from '../../../theme/publicTheme'
 import { subscribeToProgress } from './globeBus'
+import { MARKETING_CHAPTER_RANGES } from './marketingScrollChapterModel'
 import { useScrollDriver } from './useScrollDriver'
 import { RequestDemoButton } from '../RequestDemo'
 
@@ -64,7 +65,7 @@ const TRACK_VH = 1300
 const BEATS: Beat[] = [
   {
     id: 'thesis',
-    range: [0.00, 0.16],
+    range: [...MARKETING_CHAPTER_RANGES[0]],
     fade: 0.04,
     align: 'left',
     hero: true,
@@ -86,7 +87,7 @@ const BEATS: Beat[] = [
   },
   {
     id: 'pulse',
-    range: [0.19, 0.34],
+    range: [...MARKETING_CHAPTER_RANGES[1]],
     fade: 0.04,
     align: 'left',
     eyebrow: 'act i · the pulse',
@@ -101,7 +102,7 @@ const BEATS: Beat[] = [
   },
   {
     id: 'chain',
-    range: [0.37, 0.51],
+    range: [...MARKETING_CHAPTER_RANGES[2]],
     fade: 0.04,
     align: 'left',
     eyebrow: 'act ii · the chain',
@@ -116,7 +117,7 @@ const BEATS: Beat[] = [
   },
   {
     id: 'transit',
-    range: [0.54, 0.69],
+    range: [...MARKETING_CHAPTER_RANGES[3]],
     fade: 0.05,
     align: 'center',
     eyebrow: 'act iii · cross-tenant',
@@ -130,7 +131,7 @@ const BEATS: Beat[] = [
   },
   {
     id: 'caldeira',
-    range: [0.71, 0.84],
+    range: [...MARKETING_CHAPTER_RANGES[4]],
     fade: 0.04,
     align: 'left',
     eyebrow: 'act iv · the field',
@@ -145,7 +146,7 @@ const BEATS: Beat[] = [
   },
   {
     id: 'promise',
-    range: [0.87, 1.00],
+    range: [...MARKETING_CHAPTER_RANGES[5]],
     fade: 0.04,
     align: 'left',
     eyebrow: 'act v · the promise',
@@ -173,6 +174,7 @@ export function ScrollyExperience() {
     <>
       <div
         ref={trackRef}
+        data-marketing-track
         style={{
           position: 'relative',
           height: `${TRACK_VH}vh`,
@@ -282,8 +284,12 @@ function panelStyle(align: Beat['align'], hero: boolean): CSSProperties {
   if (hero) {
     return {
       width: 'min(720px, 100%)',
-      padding: '8px 0',
-      background: 'transparent',
+      padding: '22px 28px 28px 24px',
+      borderRadius: 16,
+      background:
+        align === 'center'
+          ? 'radial-gradient(ellipse 85% 75% at 50% 45%, rgba(6,9,24,0.82) 0%, rgba(6,9,24,0.35) 55%, rgba(6,9,24,0) 100%)'
+          : 'linear-gradient(90deg, rgba(6,9,24,0.88) 0%, rgba(6,9,24,0.58) 45%, rgba(6,9,24,0.14) 72%, rgba(6,9,24,0) 100%)',
       border: 'none',
       boxShadow: 'none',
       textAlign: align === 'center' ? 'center' : 'left',
@@ -306,7 +312,7 @@ const eyebrowStyle: CSSProperties = {
   fontSize: 10,
   fontWeight: 700,
   letterSpacing: '0.18em',
-  color: W.text4,
+  color: W.text3,
   textTransform: 'uppercase',
   marginBottom: 14,
   fontFamily: 'var(--font-mono)',

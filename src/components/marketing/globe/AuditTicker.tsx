@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { usePrefersReducedMotion } from '../../../hooks/usePrefersReducedMotion'
 import { W } from '../../../theme/publicTheme'
 import {
   getRecentChain,
@@ -49,7 +50,7 @@ const headerStyle: CSSProperties = {
   fontSize: 9,
   fontWeight: 600,
   letterSpacing: '0.14em',
-  color: W.text4,
+  color: W.text3,
   textTransform: 'uppercase',
   borderBottom: `1px solid ${W.glass08}`,
 }
@@ -83,12 +84,19 @@ const KIND_LABEL: Record<ChainEvent['kind'], string> = {
   assay: 'ASY',
 }
 
-function ChainRow({ ev, fresh }: { ev: ChainEvent; fresh: boolean }) {
+function chainRowLabel(ev: ChainEvent): string {
+  const kind = KIND_LABEL[ev.kind]
+  return `Open provenance receipt, ${kind} ${ev.kind}, block ${ev.block.toLocaleString()}`
+}
+
+function ChainRow({ ev, fresh, reducedMotion }: { ev: ChainEvent; fresh: boolean; reducedMotion: boolean }) {
   const color = KIND_COLOR[ev.kind]
   const preview = ev.hash.slice(0, 6) + '…' + ev.hash.slice(-4)
   return (
     <button
       type="button"
+      className="audit-chain-row"
+      aria-label={chainRowLabel(ev)}
       onClick={() => {
         // Open the provenance card. The camera is purely scroll-driven,
         // so we deliberately don't move it on click — the card is a
@@ -110,7 +118,7 @@ function ChainRow({ ev, fresh }: { ev: ChainEvent; fresh: boolean }) {
         textAlign: 'left',
         cursor: 'pointer',
         transition: 'background 200ms ease',
-        animation: fresh ? 'rowIn 380ms ease-out' : undefined,
+        animation: fresh && !reducedMotion ? 'rowIn 380ms ease-out' : undefined,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = 'rgba(22, 28, 50, 0.85)'
@@ -143,7 +151,7 @@ function ChainRow({ ev, fresh }: { ev: ChainEvent; fresh: boolean }) {
       >
         0x{preview}
       </span>
-      <span style={{ color: W.text4, fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
+      <span style={{ color: W.text3, fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
         #{ev.block.toLocaleString()}
       </span>
     </button>
@@ -151,6 +159,7 @@ function ChainRow({ ev, fresh }: { ev: ChainEvent; fresh: boolean }) {
 }
 
 export function AuditTicker() {
+  const reducedMotion = usePrefersReducedMotion()
   const [events, setEvents] = useState<ChainEvent[]>(() => getRecentChain())
   const [latestId, setLatestId] = useState<string | null>(null)
 
@@ -174,13 +183,17 @@ export function AuditTicker() {
       </div>
       <div style={streamStyle}>
         {events.map((ev) => (
-          <ChainRow key={ev.hash} ev={ev} fresh={ev.hash === latestId} />
+          <ChainRow key={ev.hash} ev={ev} fresh={ev.hash === latestId} reducedMotion={reducedMotion} />
         ))}
       </div>
       <style>{`
         @keyframes rowIn {
           from { opacity: 0; transform: translateY(-10px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        .audit-chain-row:focus-visible {
+          outline: 2px solid var(--w-violet);
+          outline-offset: 2px;
         }
       `}</style>
     </div>

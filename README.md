@@ -52,6 +52,7 @@ CI (GitHub Actions) runs `lint`, `test:run`, and `build` on push and pull reques
 
 | Variable | Purpose |
 |----------|---------|
+| `VITE_PUBLIC_SITE_URL` | Optional. Canonical origin for Open Graph `og:url` (defaults to `https://verochain.co/`). Set on preview/staging deploys so social cards match the host. |
 | `VITE_MAPTILER_KEY` | MapTiler vector + terrain (optional; falls back to CARTO Dark Matter) |
 | `VITE_DATA_MODE` | `mock` (default) or `live` — live uses `createLiveDataService()` (demo pipeline + honest banner until real ingestion) |
 | `VITE_API_BASE_URL` / `VITE_WS_URL` | Hosted backend targets. Leave empty locally to use the Vite proxy; set them on staging/prod when the frontend and API are on different origins |

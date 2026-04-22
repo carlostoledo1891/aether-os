@@ -13,16 +13,10 @@ interface MarketingNavProps {
   links?: NavLink[]
   cta?: { label: string; href: string; variant?: 'primary' | 'ghost' }
   onScrollTo?: (id: string) => void
+  /** When true, show Trust + Product links (homepage / marketing chrome). */
+  siteLinks?: boolean
 }
 
-/**
- * Transparent topbar with the Vero logo centered. The CTA + section
- * links have been pulled — primary action lives in the hero copy now,
- * and below-the-hero anchors don't exist in the globe-led layout.
- *
- * `links` / `cta` props are kept on the API so existing call sites in
- * deck routes (`/deck/*`) don't break — they're simply ignored.
- */
 const navStyle: CSSProperties = {
   position: 'fixed',
   top: 0,
@@ -30,12 +24,27 @@ const navStyle: CSSProperties = {
   right: 0,
   zIndex: 100,
   background: 'transparent',
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+  alignItems: 'center',
+  height: 56,
+  padding: '0 20px',
+  pointerEvents: 'none',
+}
+
+const siteLinkStyle: CSSProperties = {
+  color: W.text2,
+  fontSize: 13,
+  fontWeight: 600,
+  textDecoration: 'none',
+  padding: '10px 12px',
+  borderRadius: 8,
+  minHeight: 44,
+  minWidth: 44,
+  display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: 56,
-  padding: '0 24px',
-  pointerEvents: 'none',
+  pointerEvents: 'auto',
 }
 
 const logoLinkStyle: CSSProperties = {
@@ -45,19 +54,56 @@ const logoLinkStyle: CSSProperties = {
   textDecoration: 'none',
   color: 'inherit',
   pointerEvents: 'auto',
+  justifySelf: 'center',
 }
 
-export function MarketingNav({ section }: MarketingNavProps) {
+export function MarketingNav({ section, siteLinks = false }: MarketingNavProps) {
   return (
     <nav style={navStyle}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          justifySelf: 'start',
+          pointerEvents: 'auto',
+        }}
+      >
+        {siteLinks && (
+          <>
+            <a href="/trust" style={siteLinkStyle}>
+              Trust
+            </a>
+            <a href="/app" style={siteLinkStyle}>
+              Product
+            </a>
+          </>
+        )}
+      </div>
+
       <a href="/" style={logoLinkStyle}>
         <VeroChainLogo size={24} textColor={W.text1} />
         {section && (
-          <span style={{ color: W.text4, fontSize: 12, marginLeft: 4, fontFamily: 'var(--font-mono)' }}>
+          <span style={{ color: W.text3, fontSize: 12, marginLeft: 4, fontFamily: 'var(--font-mono)' }}>
             / {section}
           </span>
         )}
       </a>
+
+      <span aria-hidden style={{ justifySelf: 'end' }} />
+
+      <style>{`
+        nav a[href="/trust"]:hover,
+        nav a[href="/app"]:hover {
+          color: var(--w-text1);
+          background: rgba(255, 255, 255, 0.05);
+        }
+        nav a[href="/trust"]:focus-visible,
+        nav a[href="/app"]:focus-visible {
+          outline: 2px solid var(--w-violet);
+          outline-offset: 2px;
+        }
+      `}</style>
     </nav>
   )
 }

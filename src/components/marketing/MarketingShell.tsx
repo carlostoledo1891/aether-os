@@ -8,6 +8,7 @@ import {
   MarketingGlobe,
   ProvenanceCardOverlay,
   ProvenanceChip,
+  StoryChapterRail,
 } from './globe'
 
 interface MarketingShellProps {
@@ -21,6 +22,10 @@ interface MarketingShellProps {
    * Defaults to true for the landing experience.
    */
   experience?: boolean
+  /** Trust / Product links in the nav (off when embedded). Default: `!embedded`. */
+  showSiteLinks?: boolean
+  /** Bottom chapter dots for the scrolly globe track (landing only). */
+  showStoryChapterRail?: boolean
   children: ReactNode
 }
 
@@ -41,9 +46,12 @@ export function MarketingShell({
   section,
   embedded = false,
   experience = true,
+  showSiteLinks: showSiteLinksProp,
+  showStoryChapterRail = false,
   children,
 }: MarketingShellProps) {
   useUnlockScroll()
+  const showSiteLinks = showSiteLinksProp ?? !embedded
 
   return (
     <div
@@ -65,12 +73,41 @@ export function MarketingShell({
       <MarketingGlobe />
 
       {!embedded && (
+        <a
+          href="#marketing-main-scroll"
+          className="marketing-skip-to-story"
+          style={{
+            position: 'fixed',
+            left: 12,
+            top: 12,
+            zIndex: 200,
+            padding: '10px 14px',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            textDecoration: 'none',
+            color: W.text1,
+            background: W.surfaceHigh,
+            border: `1px solid ${W.glass12}`,
+            boxShadow: W.shadowMd,
+            transform: 'translateY(-160%)',
+            transition: 'transform 0.18s ease-out',
+            pointerEvents: 'auto',
+          }}
+        >
+          Skip to story
+        </a>
+      )}
+
+      {!embedded && (
         <div style={{ position: 'relative', zIndex: 4 }}>
-          <MarketingNav section={section} />
+          <MarketingNav section={section} siteLinks={showSiteLinks} />
         </div>
       )}
 
       <div
+        id="marketing-main-scroll"
+        tabIndex={-1}
         data-scroll-container
         style={{
           position: 'relative',
@@ -98,6 +135,15 @@ export function MarketingShell({
           <ProvenanceCardOverlay />
         </>
       )}
+
+      {showStoryChapterRail && experience && !embedded && <StoryChapterRail />}
+
+      <style>{`
+        .marketing-skip-to-story:focus,
+        .marketing-skip-to-story:focus-visible {
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   )
 }

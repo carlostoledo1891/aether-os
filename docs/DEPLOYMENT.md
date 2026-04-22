@@ -36,6 +36,7 @@ Rules:
 - Build command: `npm run build`
 - Node version: `22.12.0` or the current repo `.nvmrc` value
 - Production env vars should target only the production backend
+- **Preview / staging:** set `VITE_PUBLIC_SITE_URL` to the preview origin (e.g. `https://aether-os-git-bayatto-team.vercel.app`) so `og:url` matches the deployment. Omit on production if the default `https://verochain.co/` is correct.
 
 Recommended domain mapping:
 

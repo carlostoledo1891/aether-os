@@ -6,6 +6,7 @@ import {
   useState,
   type CSSProperties,
   type FormEvent,
+  type MutableRefObject,
   type ReactNode,
 } from 'react'
 import { W, V } from '../../theme/publicTheme'
@@ -13,6 +14,7 @@ import {
   REQUEST_DEMO_OPEN_EVENT,
   REQUEST_DEMO_CLOSE_EVENT,
   openRequestDemo,
+  type RequestDemoOpenDetail,
 } from './requestDemoBus'
 import { RequestDemoContext } from './useRequestDemo'
 
@@ -20,12 +22,22 @@ type DemoStatus = 'idle' | 'sending' | 'sent' | 'error'
 
 export function RequestDemoProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
+  const returnFocusRef = useRef<HTMLElement | null>(null)
 
   const open = useCallback(() => setIsOpen(true), [])
   const close = useCallback(() => setIsOpen(false), [])
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = (e: Event) => {
+      const detail = (e as CustomEvent<RequestDemoOpenDetail>).detail
+      const fromDetail = detail?.relatedTarget
+      const active =
+        typeof document !== 'undefined' && document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null
+      returnFocusRef.current = fromDetail ?? active
+      setIsOpen(true)
+    }
     const handleClose = () => setIsOpen(false)
     window.addEventListener(REQUEST_DEMO_OPEN_EVENT, handleOpen)
     window.addEventListener(REQUEST_DEMO_CLOSE_EVENT, handleClose)
@@ -40,7 +52,7 @@ export function RequestDemoProvider({ children }: { children: ReactNode }) {
   return (
     <RequestDemoContext.Provider value={value}>
       {children}
-      {isOpen && <RequestDemoOverlay onClose={close} />}
+      {isOpen && <RequestDemoOverlay onClose={close} returnFocusRef={returnFocusRef} />}
     </RequestDemoContext.Provider>
   )
 }
@@ -94,27 +106,73 @@ const inputBase: CSSProperties = {
   transition: 'border-color 120ms ease',
 }
 
-function RequestDemoOverlay({ onClose }: { onClose: () => void }) {
+function getFocusableDialogElements(root: HTMLElement): HTMLElement[] {
+  const sel = [
+    'a[href]',
+    'button:not([disabled])',
+    'textarea:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(', ')
+  return Array.from(root.querySelectorAll<HTMLElement>(sel)).filter(
+    (el) => el.offsetParent !== null || el.getClientRects().length > 0,
+  )
+}
+
+function RequestDemoOverlay({
+  onClose,
+  returnFocusRef,
+}: {
+  onClose: () => void
+  returnFocusRef: MutableRefObject<HTMLElement | null>
+}) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<DemoStatus>('idle')
   const [error, setError] = useState<string | null>(null)
   const firstFieldRef = useRef<HTMLInputElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
+    const dialog = dialogRef.current
     firstFieldRef.current?.focus()
+
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
+      if (e.key !== 'Tab' || !dialog) return
+      const focusables = getFocusableDialogElements(dialog)
+      if (focusables.length === 0) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      const active = document.activeElement as HTMLElement | null
+      if (e.shiftKey) {
+        if (active === first || !dialog.contains(active)) {
+          e.preventDefault()
+          last.focus()
+        }
+      } else {
+        if (active === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
+
     window.addEventListener('keydown', handleKey)
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       window.removeEventListener('keydown', handleKey)
       document.body.style.overflow = prevOverflow
+      const restore = returnFocusRef.current
+      returnFocusRef.current = null
+      if (restore?.isConnected) {
+        restore.focus()
+      }
     }
-  }, [onClose])
+  }, [onClose, returnFocusRef])
 
   const submit = useCallback(async (e: FormEvent) => {
     e.preventDefault()
@@ -149,6 +207,7 @@ function RequestDemoOverlay({ onClose }: { onClose: () => void }) {
       <button
         type="button"
         aria-label="Close request demo dialog"
+        tabIndex={-1}
         onClick={onClose}
         style={{
           position: 'absolute',
@@ -161,10 +220,12 @@ function RequestDemoOverlay({ onClose }: { onClose: () => void }) {
         }}
       />
       <div
+        ref={dialogRef}
         style={{ ...cardStyle, position: 'relative' }}
         role="dialog"
         aria-modal="true"
         aria-label="Request a demo"
+        aria-describedby={status === 'sent' ? 'request-demo-sent-desc' : 'request-demo-form-desc'}
       >
         <button
           type="button"
@@ -199,7 +260,10 @@ function RequestDemoOverlay({ onClose }: { onClose: () => void }) {
             <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 12px', color: W.text1 }}>
               Thanks — we'll be in touch.
             </h2>
-            <p style={{ fontSize: 14, color: W.text3, lineHeight: 1.5, margin: '0 auto 24px', maxWidth: 360 }}>
+            <p
+              id="request-demo-sent-desc"
+              style={{ fontSize: 14, color: W.text3, lineHeight: 1.5, margin: '0 auto 24px', maxWidth: 360 }}
+            >
               Carlos will reply directly with a calendar link and a short demo agenda. Usually within 1 business day.
             </p>
             <button
@@ -227,7 +291,7 @@ function RequestDemoOverlay({ onClose }: { onClose: () => void }) {
             <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 6px', color: W.text1 }}>
               Request a demo
             </h2>
-            <p style={{ fontSize: 13, color: W.text3, margin: '0 0 22px', lineHeight: 1.5 }}>
+            <p id="request-demo-form-desc" style={{ fontSize: 13, color: W.text3, margin: '0 0 22px', lineHeight: 1.5 }}>
               Tell us about the operation you want to instrument. We'll send a short walkthrough and a calendar link.
             </p>
 
@@ -362,7 +426,7 @@ export function RequestDemoButton({
       type="button"
       onClick={(e) => {
         e.stopPropagation()
-        openRequestDemo()
+        openRequestDemo(e.currentTarget)
       }}
       style={{ ...base, ...variantStyle, ...style }}
     >

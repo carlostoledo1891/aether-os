@@ -18,7 +18,7 @@ import { ScrollyExperience } from '../../components/marketing/globe'
  */
 export default function LandingPage({ embedded = false }: { embedded?: boolean }) {
   return (
-    <MarketingShell embedded={embedded} experience={!embedded}>
+    <MarketingShell embedded={embedded} experience={!embedded} showStoryChapterRail={!embedded}>
       <ScrollyExperience />
     </MarketingShell>
   )

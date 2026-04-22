@@ -4,6 +4,7 @@ export { LiveCounter } from './LiveCounter'
 export { ProvenanceChip } from './ProvenanceChip'
 export { ProvenanceCardOverlay } from './ProvenanceCardOverlay'
 export { ScrollyExperience } from './ScrollyExperience'
+export { StoryChapterRail } from './StoryChapterRail'
 export { CameraDriver } from './CameraDriver'
 export { useScrollDriver } from './useScrollDriver'
 export {
