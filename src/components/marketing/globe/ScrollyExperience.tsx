@@ -6,6 +6,7 @@ import { MARKETING_CHAPTER_RANGES } from './marketingScrollChapterModel'
 import { useScrollDriver } from './useScrollDriver'
 import { RequestDemoButton } from '../RequestDemo'
 import { MarketingBorderBeam } from '../MarketingBorderBeam'
+import { GradualBlur } from '../GradualBlur'
 
 /**
  * Scroll-driven scrollytelling for the marketing globe.
@@ -196,6 +197,18 @@ export function ScrollyExperience() {
           {BEATS.map((beat) => (
             <BeatPanel key={beat.id} beat={beat} />
           ))}
+          {/* Soft foot to the scroll track: blurs the globe under the panel edge between story acts and the coda. */}
+          <GradualBlur
+            target="parent"
+            position="bottom"
+            height="6rem"
+            strength={2}
+            divCount={5}
+            curve="bezier"
+            exponential
+            opacity={1}
+            zIndex={4}
+          />
         </div>
       </div>
       <FinalCoda />
@@ -364,9 +377,26 @@ function FinalCoda() {
         padding: '80px 56px 220px',
         position: 'relative',
         zIndex: 2,
+        overflow: 'hidden',
       }}
     >
-      <MarketingBorderBeam size="md" strength={0.54} style={{ display: 'block', width: 'min(620px, 100%)' }}>
+      {/* Top of the lower page: blur the busy globe so the receipt panel reads clearly. */}
+      <GradualBlur
+        target="parent"
+        position="top"
+        height="10rem"
+        strength={3.25}
+        divCount={8}
+        curve="bezier"
+        exponential
+        opacity={1}
+        zIndex={1}
+      />
+      <MarketingBorderBeam
+        size="md"
+        strength={0.54}
+        style={{ display: 'block', width: 'min(620px, 100%)', position: 'relative', zIndex: 2 }}
+      >
         <div
           style={{
             ...panelStyle('left', false),
