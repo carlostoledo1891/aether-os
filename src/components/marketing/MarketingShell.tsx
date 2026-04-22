@@ -77,8 +77,14 @@ export function MarketingShell({
           zIndex: 2,
           height: '100vh',
           overflowY: 'auto',
+          // No CSS scroll-snap: this is a continuous scrollytelling track,
+          // not a snap-to-section deck. The story progress is driven by
+          // useScrollDriver with an inertial smoothing pass so the camera
+          // glides instead of jumping per wheel tick.
           scrollPaddingTop: MARKETING_NAV_HEIGHT,
+          scrollBehavior: 'smooth',
           WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain',
         }}
       >
         {children}

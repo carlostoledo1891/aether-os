@@ -44,13 +44,18 @@ interface Beat {
   cta?: 'demo' | 'see'
 }
 
-const TRACK_VH = 620
+/**
+ * Total scroll height of the story track, in viewport heights. Spreads the
+ * six beats across more pixels so the camera moves slowly per scroll tick
+ * and the cross-fades have room to breathe. Bump this for a slower read.
+ */
+const TRACK_VH = 880
 
 const BEATS: Beat[] = [
   {
     id: 'thesis',
     range: [0.00, 0.18],
-    fade: 0.04,
+    fade: 0.06,
     align: 'left',
     hero: true,
     eyebrow: 'thesis',
@@ -72,7 +77,7 @@ const BEATS: Beat[] = [
   {
     id: 'pulse',
     range: [0.18, 0.32],
-    fade: 0.035,
+    fade: 0.05,
     align: 'left',
     eyebrow: 'act i · the pulse',
     headline: <>Every motion is a witnessed event.</>,
@@ -87,7 +92,7 @@ const BEATS: Beat[] = [
   {
     id: 'chain',
     range: [0.32, 0.46],
-    fade: 0.035,
+    fade: 0.05,
     align: 'left',
     eyebrow: 'act ii · the chain',
     headline: <>Each trail is a SHA-chain block.</>,
@@ -102,7 +107,7 @@ const BEATS: Beat[] = [
   {
     id: 'transit',
     range: [0.46, 0.62],
-    fade: 0.05,
+    fade: 0.07,
     align: 'center',
     eyebrow: 'act iii · cross-tenant',
     headline: <>One ledger. Crosses oceans.</>,
@@ -116,7 +121,7 @@ const BEATS: Beat[] = [
   {
     id: 'caldeira',
     range: [0.62, 0.82],
-    fade: 0.04,
+    fade: 0.06,
     align: 'left',
     eyebrow: 'act iv · the field',
     headline: <>Same ledger. Different field.</>,
@@ -131,7 +136,7 @@ const BEATS: Beat[] = [
   {
     id: 'promise',
     range: [0.82, 1.00],
-    fade: 0.05,
+    fade: 0.07,
     align: 'left',
     eyebrow: 'act v · the promise',
     headline: (

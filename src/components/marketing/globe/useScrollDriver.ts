@@ -13,9 +13,16 @@ interface ScrollDriverOptions {
    * meets the bottom of the container's viewport, t = 1.
    */
   trackRef: RefObject<HTMLElement | null>
-  /** Smoothing factor in [0..1]. Higher = snappier; lower = more inertial. */
+  /**
+   * Smoothing factor in [0..1]. Higher = snappier; lower = more inertial.
+   * Default 0.08 is a luxurious glide; 0.18+ feels snappy/jumpy.
+   */
   smoothing?: number
-  /** Disable easing (snap to scroll). Use for prefers-reduced-motion. */
+  /**
+   * Disable easing entirely (snap progress to scroll position). When
+   * omitted, the hook honours `prefers-reduced-motion: reduce` so that
+   * users who opted out of motion still get a stutter-free experience.
+   */
   reducedMotion?: boolean
 }
 
@@ -35,8 +42,8 @@ interface ScrollDriverOptions {
 export function useScrollDriver({
   containerRef,
   trackRef,
-  smoothing = 0.18,
-  reducedMotion = false,
+  smoothing = 0.08,
+  reducedMotion,
 }: ScrollDriverOptions): void {
   useEffect(() => {
     const track = trackRef.current
@@ -47,6 +54,12 @@ export function useScrollDriver({
       document.scrollingElement ??
       document.documentElement
     if (!container) return
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        : false
+    const noEasing = reducedMotion ?? prefersReducedMotion
 
     let raf = 0
     let running = true
@@ -74,7 +87,7 @@ export function useScrollDriver({
 
     const tick = () => {
       if (!running) return
-      if (reducedMotion) {
+      if (noEasing) {
         current = target
       } else {
         current += (target - current) * smoothing
