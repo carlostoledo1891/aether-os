@@ -223,7 +223,7 @@ describe('transitionUnit', () => {
 
     const trail = getAuditTrail({ type: 'unit_transition' })
     expect(trail.length).toBeGreaterThanOrEqual(1)
-    expect(trail[0].related_entity_id ?? trail[0].relatedEntityId).toBe('TEST-001')
+    expect(trail[0].relatedEntityId).toBe('TEST-001')
   })
 
   it('updates severity based on target state', () => {

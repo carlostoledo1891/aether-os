@@ -27,4 +27,4 @@ export type {
   EvidenceBundleDetail,
   Lens,
   TransitionValidationResult,
-} from '../../../shared/units/types.js'
+} from '../_shared/units/types.js'

@@ -3,14 +3,14 @@ import { getDb } from './db.js'
 import {
   canonicalEventJson,
   chainHashInput,
-} from '../../../shared/audit/canonicalJson.js'
+} from '../_shared/audit/canonicalJson.js'
 import {
   GENESIS_HASH,
   type AuditEventInput,
   type AuditEventRow,
   type AuditEventType,
   type ChainVerification,
-} from '../../../shared/audit/types.js'
+} from '../_shared/audit/types.js'
 
 /* ─── Re-exports for backwards compatibility ──────────────────────────────── */
 
