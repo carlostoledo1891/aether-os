@@ -16,6 +16,7 @@ import { useInstance } from '../../contexts/InstanceContext'
 import { rememberInstance, SELECTABLE_INSTANCES } from '../../config/instances'
 import type { InstanceConfig } from '../../config/instances'
 import { InstanceShellChrome } from './InstanceShellChrome'
+import { MarketingBorderBeam } from '../../components/marketing/MarketingBorderBeam'
 
 export default function EmptyShellPage() {
   const instance = useInstance()
@@ -63,18 +64,24 @@ export default function EmptyShellPage() {
           pointerEvents: 'none',
         }}
       >
-        <GlassCard
-          glow="violet"
-          animate={false}
-          style={{
-            pointerEvents: 'auto',
-            width: 'min(880px, 100%)',
-            padding: '32px 36px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 24,
-          }}
+        {/* Same restrained beam as marketing: directional accent on the shell picker only (not the map). */}
+        <MarketingBorderBeam
+          size="md"
+          strength={0.58}
+          style={{ display: 'block', width: 'min(880px, 100%)', pointerEvents: 'auto' }}
         >
+          <GlassCard
+            glow="violet"
+            animate={false}
+            style={{
+              pointerEvents: 'auto',
+              width: '100%',
+              padding: '32px 36px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 24,
+            }}
+          >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span
               style={{
@@ -235,6 +242,7 @@ export default function EmptyShellPage() {
             either instance verify at the same /verify/&lt;hash&gt; URL.
           </div>
         </GlassCard>
+        </MarketingBorderBeam>
       </div>
     </div>
   )

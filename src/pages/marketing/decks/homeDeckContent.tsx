@@ -7,6 +7,7 @@ import { marketingStyles } from '../../../components/layout/MarketingShared'
 import { ease, V } from '../sharedConstants'
 import { Terminal } from '../shared'
 import { RequestDemoButton } from '../../../components/marketing/RequestDemo'
+import { MarketingBorderBeam } from '../../../components/marketing/MarketingBorderBeam'
 import {
   HERO_STATS,
   INDUSTRIES,
@@ -46,7 +47,10 @@ export function HomeHeroSlide() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5, ease }}
           style={{ display: 'flex', gap: 12, position: 'relative', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <RequestDemoButton size="lg" />
+          {/* Live edge on the in-page primary CTA (compact beam; hero already has soft radial scrim). */}
+          <MarketingBorderBeam size="sm" strength={0.55} style={{ display: 'inline-block' }}>
+            <RequestDemoButton size="lg" />
+          </MarketingBorderBeam>
         </motion.div>
       </section>
 

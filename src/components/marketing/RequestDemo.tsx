@@ -17,6 +17,7 @@ import {
   type RequestDemoOpenDetail,
 } from './requestDemoBus'
 import { RequestDemoContext } from './useRequestDemo'
+import { MarketingBorderBeam } from './MarketingBorderBeam'
 
 type DemoStatus = 'idle' | 'sending' | 'sent' | 'error'
 
@@ -219,164 +220,167 @@ function RequestDemoOverlay({
           cursor: 'default',
         }}
       />
-      <div
-        ref={dialogRef}
-        style={{ ...cardStyle, position: 'relative' }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Request a demo"
-        aria-describedby={status === 'sent' ? 'request-demo-sent-desc' : 'request-demo-form-desc'}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            width: 28,
-            height: 28,
-            borderRadius: 8,
-            border: `1px solid ${W.glass08}`,
-            background: 'transparent',
-            color: W.text3,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 16,
-            lineHeight: 1,
-          }}
+      {/* Border-beam live edge: high-signal bordered panel (not the globe shell). Static ocean + reduced-motion → `active` keeps it decorative-only. */}
+      <MarketingBorderBeam size="md" activateOnHover={false}>
+        <div
+          ref={dialogRef}
+          style={{ ...cardStyle, position: 'relative' }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Request a demo"
+          aria-describedby={status === 'sent' ? 'request-demo-sent-desc' : 'request-demo-form-desc'}
         >
-          ×
-        </button>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              position: 'absolute',
+              top: 14,
+              right: 14,
+              width: 28,
+              height: 28,
+              borderRadius: 8,
+              border: `1px solid ${W.glass08}`,
+              background: 'transparent',
+              color: W.text3,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 16,
+              lineHeight: 1,
+            }}
+          >
+            ×
+          </button>
 
-        {status === 'sent' ? (
-          <div style={{ textAlign: 'center', padding: '24px 8px 8px' }}>
-            <div style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', color: V, marginBottom: 12 }}>
-              Request received
-            </div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 12px', color: W.text1 }}>
-              Thanks — we'll be in touch.
-            </h2>
-            <p
-              id="request-demo-sent-desc"
-              style={{ fontSize: 14, color: W.text3, lineHeight: 1.5, margin: '0 auto 24px', maxWidth: 360 }}
-            >
-              Carlos will reply directly with a calendar link and a short demo agenda. Usually within 1 business day.
-            </p>
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                background: V,
-                color: '#fff',
-                border: 'none',
-                padding: '12px 28px',
-                borderRadius: 8,
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              Close
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={submit}>
-            <div style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', color: V, marginBottom: 8 }}>
-              Vero
-            </div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 6px', color: W.text1 }}>
-              Request a demo
-            </h2>
-            <p id="request-demo-form-desc" style={{ fontSize: 13, color: W.text3, margin: '0 0 22px', lineHeight: 1.5 }}>
-              Tell us about the operation you want to instrument. We'll send a short walkthrough and a calendar link.
-            </p>
-
-            <div style={{ marginBottom: 14 }}>
-              <div style={labelStyle}>Name</div>
-              <input
-                ref={firstFieldRef}
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your full name"
-                style={inputBase}
-                autoComplete="name"
-              />
-            </div>
-
-            <div style={{ marginBottom: 14 }}>
-              <div style={labelStyle}>Email</div>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                style={inputBase}
-                autoComplete="email"
-              />
-            </div>
-
-            <div style={{ marginBottom: 18 }}>
-              <div style={labelStyle}>Message</div>
-              <textarea
-                required
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Operation, vertical, what you want to see in the demo."
-                rows={4}
-                style={{ ...inputBase, resize: 'vertical', minHeight: 96, fontFamily: 'inherit' }}
-              />
-            </div>
-
-            {error && (
-              <div style={{ fontSize: 12, color: W.red, marginBottom: 14 }}>{error}</div>
-            )}
-
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', alignItems: 'center' }}>
+          {status === 'sent' ? (
+            <div style={{ textAlign: 'center', padding: '24px 8px 8px' }}>
+              <div style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', color: V, marginBottom: 12 }}>
+                Request received
+              </div>
+              <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 12px', color: W.text1 }}>
+                Thanks — we'll be in touch.
+              </h2>
+              <p
+                id="request-demo-sent-desc"
+                style={{ fontSize: 14, color: W.text3, lineHeight: 1.5, margin: '0 auto 24px', maxWidth: 360 }}
+              >
+                Carlos will reply directly with a calendar link and a short demo agenda. Usually within 1 business day.
+              </p>
               <button
                 type="button"
                 onClick={onClose}
                 style={{
-                  background: 'transparent',
-                  color: W.text3,
-                  border: `1px solid ${W.glass08}`,
-                  padding: '10px 18px',
+                  background: V,
+                  color: '#fff',
+                  border: 'none',
+                  padding: '12px 28px',
                   borderRadius: 8,
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={status === 'sending'}
-                style={{
-                  background: V,
-                  color: '#fff',
-                  border: 'none',
-                  padding: '10px 22px',
-                  borderRadius: 8,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: status === 'sending' ? 'wait' : 'pointer',
-                  opacity: status === 'sending' ? 0.7 : 1,
-                  letterSpacing: '0.01em',
-                }}
-              >
-                {status === 'sending' ? 'Sending…' : 'Send'}
+                Close
               </button>
             </div>
-          </form>
-        )}
-      </div>
+          ) : (
+            <form onSubmit={submit}>
+              <div style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', color: V, marginBottom: 8 }}>
+                Vero
+              </div>
+              <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 6px', color: W.text1 }}>
+                Request a demo
+              </h2>
+              <p id="request-demo-form-desc" style={{ fontSize: 13, color: W.text3, margin: '0 0 22px', lineHeight: 1.5 }}>
+                Tell us about the operation you want to instrument. We'll send a short walkthrough and a calendar link.
+              </p>
+
+              <div style={{ marginBottom: 14 }}>
+                <div style={labelStyle}>Name</div>
+                <input
+                  ref={firstFieldRef}
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your full name"
+                  style={inputBase}
+                  autoComplete="name"
+                />
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <div style={labelStyle}>Email</div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
+                  style={inputBase}
+                  autoComplete="email"
+                />
+              </div>
+
+              <div style={{ marginBottom: 18 }}>
+                <div style={labelStyle}>Message</div>
+                <textarea
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Operation, vertical, what you want to see in the demo."
+                  rows={4}
+                  style={{ ...inputBase, resize: 'vertical', minHeight: 96, fontFamily: 'inherit' }}
+                />
+              </div>
+
+              {error && (
+                <div style={{ fontSize: 12, color: W.red, marginBottom: 14 }}>{error}</div>
+              )}
+
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  style={{
+                    background: 'transparent',
+                    color: W.text3,
+                    border: `1px solid ${W.glass08}`,
+                    padding: '10px 18px',
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={status === 'sending'}
+                  style={{
+                    background: V,
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 22px',
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: status === 'sending' ? 'wait' : 'pointer',
+                    opacity: status === 'sending' ? 0.7 : 1,
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {status === 'sending' ? 'Sending…' : 'Send'}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </MarketingBorderBeam>
     </div>
   )
 }

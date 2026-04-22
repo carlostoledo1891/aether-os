@@ -5,6 +5,7 @@ import { subscribeToProgress } from './globeBus'
 import { MARKETING_CHAPTER_RANGES } from './marketingScrollChapterModel'
 import { useScrollDriver } from './useScrollDriver'
 import { RequestDemoButton } from '../RequestDemo'
+import { MarketingBorderBeam } from '../MarketingBorderBeam'
 
 /**
  * Scroll-driven scrollytelling for the marketing globe.
@@ -261,20 +262,30 @@ function BeatPanel({ beat }: { beat: Beat }) {
       <div
         ref={wrapRef}
         style={{
-          ...panelStyle(align, beat.hero ?? false),
           willChange: 'opacity, transform',
           opacity: 0,
           transform: 'translateY(18px)',
+          display: 'inline-block',
+          maxWidth: '100%',
+          verticalAlign: 'top',
         }}
       >
-        <div style={eyebrowStyle}>{beat.eyebrow}</div>
-        <h2 style={headlineStyle}>{beat.headline}</h2>
-        <p style={bodyStyle}>{beat.body}</p>
-        {beat.cta === 'demo' && (
-          <div style={{ marginTop: 22 }}>
-            <RequestDemoButton size="lg" label="Request a demo" />
+        <MarketingBorderBeam
+          size="md"
+          strength={beat.hero ? 0.48 : 0.56}
+          style={{ display: 'block', maxWidth: '100%' }}
+        >
+          <div style={panelStyle(align, beat.hero ?? false)}>
+            <div style={eyebrowStyle}>{beat.eyebrow}</div>
+            <h2 style={headlineStyle}>{beat.headline}</h2>
+            <p style={bodyStyle}>{beat.body}</p>
+            {beat.cta === 'demo' && (
+              <div style={{ marginTop: 22 }}>
+                <RequestDemoButton size="lg" label="Request a demo" />
+              </div>
+            )}
           </div>
-        )}
+        </MarketingBorderBeam>
       </div>
     </div>
   )
@@ -355,38 +366,40 @@ function FinalCoda() {
         zIndex: 2,
       }}
     >
-      <div
-        style={{
-          ...panelStyle('left', false),
-          width: 'min(620px, 100%)',
-          background: 'rgba(8, 11, 22, 0.6)',
-        }}
-      >
-        <div style={eyebrowStyle}>your visit · receipt</div>
+      <MarketingBorderBeam size="md" strength={0.54} style={{ display: 'block', width: 'min(620px, 100%)' }}>
         <div
           style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 12,
-            color: W.text2,
-            wordBreak: 'break-all',
-            lineHeight: 1.6,
-            background: 'rgba(0,0,0,0.35)',
-            border: `1px solid ${W.glass08}`,
-            borderRadius: 10,
-            padding: '12px 14px',
-            marginBottom: 16,
+            ...panelStyle('left', false),
+            width: '100%',
+            background: 'rgba(8, 11, 22, 0.6)',
           }}
         >
-          0x{visitHash}
+          <div style={eyebrowStyle}>your visit · receipt</div>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              color: W.text2,
+              wordBreak: 'break-all',
+              lineHeight: 1.6,
+              background: 'rgba(0,0,0,0.35)',
+              border: `1px solid ${W.glass08}`,
+              borderRadius: 10,
+              padding: '12px 14px',
+              marginBottom: 16,
+            }}
+          >
+            0x{visitHash}
+          </div>
+          <p style={{ ...bodyStyle, textAlign: 'left', maxWidth: 'none' }}>
+            We hashed your visit the same way Vero hashes a field event —
+            deterministic, signed, replayable. Want one for your fleet?
+          </p>
+          <div style={{ marginTop: 18, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <RequestDemoButton size="lg" />
+          </div>
         </div>
-        <p style={{ ...bodyStyle, textAlign: 'left', maxWidth: 'none' }}>
-          We hashed your visit the same way Vero hashes a field event —
-          deterministic, signed, replayable. Want one for your fleet?
-        </p>
-        <div style={{ marginTop: 18, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <RequestDemoButton size="lg" />
-        </div>
-      </div>
+      </MarketingBorderBeam>
     </section>
   )
 }

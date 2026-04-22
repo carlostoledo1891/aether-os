@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { usePrefersReducedMotion } from '../../../hooks/usePrefersReducedMotion'
 import { W } from '../../../theme/publicTheme'
+import { MarketingBorderBeam } from '../MarketingBorderBeam'
 import { subscribeToProgress } from './globeBus'
 import {
   getMarketingBeatCount,
@@ -71,7 +72,8 @@ export function StoryChapterRail() {
 
   return (
     <nav className="story-chapter-rail" style={wrap} aria-label="Story chapters">
-      <div style={inner}>
+      <MarketingBorderBeam size="sm" strength={0.44} style={{ display: 'inline-block' }}>
+        <div style={inner}>
         {Array.from({ length: count }, (_, i) => (
           <button
             key={i}
@@ -106,7 +108,8 @@ export function StoryChapterRail() {
             />
           </button>
         ))}
-      </div>
+        </div>
+      </MarketingBorderBeam>
       <style>{`
         .story-chapter-rail button:focus-visible {
           outline: 2px solid var(--w-violet);

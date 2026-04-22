@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { W } from '../../../theme/publicTheme'
+import { MarketingBorderBeam } from '../MarketingBorderBeam'
 import { subscribeToChain, type ChainEvent } from './globeBus'
 
-const wrap: CSSProperties = {
-  position: 'fixed',
-  top: 70,
-  left: 20,
-  zIndex: 6,
+const card: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   gap: 4,
@@ -18,7 +15,6 @@ const wrap: CSSProperties = {
   backdropFilter: 'blur(12px)',
   WebkitBackdropFilter: 'blur(12px)',
   fontFamily: 'var(--font-mono)',
-  pointerEvents: 'none',
   minWidth: 160,
 }
 
@@ -56,9 +52,21 @@ export function LiveCounter() {
   }, [])
 
   return (
-    <div style={wrap}>
-      <div style={labelStyle}>signed this visit</div>
-      <div style={numStyle}>{count.toLocaleString()}</div>
-    </div>
+    <MarketingBorderBeam
+      size="sm"
+      strength={0.52}
+      style={{
+        position: 'fixed',
+        top: 70,
+        left: 20,
+        zIndex: 6,
+        pointerEvents: 'auto',
+      }}
+    >
+      <div style={card}>
+        <div style={labelStyle}>signed this visit</div>
+        <div style={numStyle}>{count.toLocaleString()}</div>
+      </div>
+    </MarketingBorderBeam>
   )
 }

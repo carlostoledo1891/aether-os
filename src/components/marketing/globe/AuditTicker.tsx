@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { usePrefersReducedMotion } from '../../../hooks/usePrefersReducedMotion'
 import { W } from '../../../theme/publicTheme'
+import { MarketingBorderBeam } from '../MarketingBorderBeam'
 import {
   getRecentChain,
   openProvenance,
@@ -28,6 +29,20 @@ const COLUMN_WIDTH = 280
 // Generous cap — the stream is mask-faded at the bottom and clips
 // overflow, so we let it grow tall enough to fill any viewport.
 const VISIBLE_ROWS = 32
+
+const columnChrome: CSSProperties = {
+  flex: 1,
+  minHeight: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  borderRadius: 14,
+  border: `1px solid ${W.glass08}`,
+  background: 'rgba(8, 11, 22, 0.42)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
+  padding: '10px 10px 12px',
+  overflow: 'hidden',
+}
 
 const wrap: CSSProperties = {
   position: 'fixed',
@@ -175,17 +190,30 @@ export function AuditTicker() {
 
   return (
     <div style={wrap}>
-      <div style={{ ...headerStyle, pointerEvents: 'auto' }}>
-        <span>chain · live</span>
-        <span style={{ color: W.text2, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>
-          {headBlock}
-        </span>
-      </div>
-      <div style={streamStyle}>
-        {events.map((ev) => (
-          <ChainRow key={ev.hash} ev={ev} fresh={ev.hash === latestId} reducedMotion={reducedMotion} />
-        ))}
-      </div>
+      <MarketingBorderBeam
+        size="md"
+        strength={0.5}
+        style={{
+          flex: 1,
+          minHeight: 0,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div style={columnChrome}>
+          <div style={{ ...headerStyle, pointerEvents: 'auto' }}>
+            <span>chain · live</span>
+            <span style={{ color: W.text2, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>
+              {headBlock}
+            </span>
+          </div>
+          <div style={streamStyle}>
+            {events.map((ev) => (
+              <ChainRow key={ev.hash} ev={ev} fresh={ev.hash === latestId} reducedMotion={reducedMotion} />
+            ))}
+          </div>
+        </div>
+      </MarketingBorderBeam>
       <style>{`
         @keyframes rowIn {
           from { opacity: 0; transform: translateY(-10px); }
