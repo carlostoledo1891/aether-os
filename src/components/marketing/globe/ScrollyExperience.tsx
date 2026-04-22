@@ -49,13 +49,23 @@ interface Beat {
  * six beats across more pixels so the camera moves slowly per scroll tick
  * and the cross-fades have room to breathe. Bump this for a slower read.
  */
-const TRACK_VH = 880
+const TRACK_VH = 1300
 
+/**
+ * Beat layout convention (Pudding/NYT scrollytelling):
+ *
+ *   [a, b] is the beat's *active* progress window. Inside [a + fade, b - fade]
+ *   the panel is fully visible (the "hold" — when the user reads). Between
+ *   consecutive beats we leave a small gap (≈ 0.03 of progress, about 40vh of
+ *   scroll at TRACK_VH=1300) so the camera flies the user to the next vista
+ *   without any text demanding attention. This is what gives each blurb a
+ *   proper dwell instead of crossfading into the next one mid-read.
+ */
 const BEATS: Beat[] = [
   {
     id: 'thesis',
-    range: [0.00, 0.18],
-    fade: 0.06,
+    range: [0.00, 0.16],
+    fade: 0.04,
     align: 'left',
     hero: true,
     eyebrow: 'thesis',
@@ -76,8 +86,8 @@ const BEATS: Beat[] = [
   },
   {
     id: 'pulse',
-    range: [0.18, 0.32],
-    fade: 0.05,
+    range: [0.19, 0.34],
+    fade: 0.04,
     align: 'left',
     eyebrow: 'act i · the pulse',
     headline: <>Every motion is a witnessed event.</>,
@@ -91,8 +101,8 @@ const BEATS: Beat[] = [
   },
   {
     id: 'chain',
-    range: [0.32, 0.46],
-    fade: 0.05,
+    range: [0.37, 0.51],
+    fade: 0.04,
     align: 'left',
     eyebrow: 'act ii · the chain',
     headline: <>Each trail is a SHA-chain block.</>,
@@ -106,8 +116,8 @@ const BEATS: Beat[] = [
   },
   {
     id: 'transit',
-    range: [0.46, 0.62],
-    fade: 0.07,
+    range: [0.54, 0.69],
+    fade: 0.05,
     align: 'center',
     eyebrow: 'act iii · cross-tenant',
     headline: <>One ledger. Crosses oceans.</>,
@@ -120,8 +130,8 @@ const BEATS: Beat[] = [
   },
   {
     id: 'caldeira',
-    range: [0.62, 0.82],
-    fade: 0.06,
+    range: [0.71, 0.84],
+    fade: 0.04,
     align: 'left',
     eyebrow: 'act iv · the field',
     headline: <>Same ledger. Different field.</>,
@@ -135,8 +145,8 @@ const BEATS: Beat[] = [
   },
   {
     id: 'promise',
-    range: [0.82, 1.00],
-    fade: 0.07,
+    range: [0.87, 1.00],
+    fade: 0.04,
     align: 'left',
     eyebrow: 'act v · the promise',
     headline: (
