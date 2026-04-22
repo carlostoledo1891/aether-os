@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 
 const V = W.violet
+export const MARKETING_NAV_HEIGHT = 56
 
 export function useUnlockScroll() {
   useEffect(() => {
@@ -18,5 +19,51 @@ export const marketingStyles = {
   body:    { fontSize: 17, color: W.text3, lineHeight: 1.7, maxWidth: 640 } as React.CSSProperties,
   glass:   { background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 16, padding: '28px 24px', position: 'relative', overflow: 'hidden' } as React.CSSProperties,
   glow:    { position: 'absolute', inset: 0, pointerEvents: 'none', background: `radial-gradient(ellipse at 50% 40%, ${V}05 0%, transparent 55%)` } as React.CSSProperties,
-  page:    { background: W.bg, color: W.text1, fontFamily: 'var(--font-sans)', minHeight: '100vh' } as React.CSSProperties,
+  page:    { background: W.bg, color: W.text1, fontFamily: 'var(--font-sans)', height: '100vh', overflow: 'hidden' } as React.CSSProperties,
+  /** Transparent variant for pages that want the marketing globe visible behind them. */
+  pageTransparent: { background: 'transparent', color: W.text1, fontFamily: 'var(--font-sans)', height: '100vh', overflow: 'hidden' } as React.CSSProperties,
+  // Simple vertical scroll container — no snap, no forced heights. Just fluid scroll.
+  snapScroller: {
+    height: '100vh',
+    overflowY: 'auto',
+    scrollPaddingTop: MARKETING_NAV_HEIGHT,
+    WebkitOverflowScrolling: 'touch',
+  } as React.CSSProperties,
+  // Natural-height section with generous vertical rhythm. Content is vertically
+  // centered within the section: short content sits centered inside a full
+  // viewport, tall content grows the section naturally. Bottom padding is kept
+  // larger than the internal `gap` in MarketingSlideRoot (96px) so transitions
+  // between page sections always read as bigger breaks than internal ones.
+  snapSection: {
+    minHeight: '100vh',
+    boxSizing: 'border-box',
+    background: W.bg,
+    paddingTop: MARKETING_NAV_HEIGHT + 112,
+    paddingBottom: 160,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  } as React.CSSProperties,
+  /** Transparent variant — content reads on top of the marketing globe. */
+  snapSectionTransparent: {
+    minHeight: '100vh',
+    boxSizing: 'border-box',
+    background: 'transparent',
+    paddingTop: MARKETING_NAV_HEIGHT + 112,
+    paddingBottom: 160,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  } as React.CSSProperties,
+  /** Hero section: fully transparent so the globe is the visual hero. */
+  heroSectionTransparent: {
+    minHeight: '100vh',
+    boxSizing: 'border-box',
+    background: 'transparent',
+    paddingTop: MARKETING_NAV_HEIGHT + 64,
+    paddingBottom: 160,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  } as React.CSSProperties,
 } as const

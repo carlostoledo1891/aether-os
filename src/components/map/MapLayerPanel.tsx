@@ -9,6 +9,7 @@
 import { memo, useState, useCallback, Fragment } from 'react'
 import { Layers, X, ChevronRight } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
+import { usePopoverDismiss } from '../../hooks/usePopoverDismiss'
 import {
   LAYER_GROUPS,
   layersByGroup,
@@ -18,6 +19,16 @@ import {
   type LayerVisibilityState,
 } from './layerRegistry'
 import { useLayerHealth } from './layerHealth'
+import {
+  mapControlAnchorStyle,
+  getMapControlTriggerStyle,
+  mapControlCloseButtonStyle,
+  mapControlHeaderLabelStyle,
+  mapControlHeaderStyle,
+  mapControlMetaTextStyle,
+  mapControlPanelStyle,
+  mapControlSidePopoverStyle,
+} from './mapControlStyles'
 
 // ── Public API ─────────────────────────────────────────────────────────
 
@@ -45,6 +56,8 @@ export const MapLayerPanel = memo(function MapLayerPanel({
   const [open, setOpen] = useState(false)
   const [collapsed, setCollapsed] = useState<Set<LayerGroupId>>(() => new Set())
   const layerHealth = useLayerHealth()
+  const handleClose = useCallback(() => setOpen(false), [])
+  const anchorRef = usePopoverDismiss<HTMLDivElement>({ open, onClose: handleClose })
 
   const toggleSection = useCallback((gid: LayerGroupId) => {
     setCollapsed(prev => {
@@ -61,25 +74,14 @@ export const MapLayerPanel = memo(function MapLayerPanel({
   })
 
   return (
-    <>
+    <div ref={anchorRef} style={mapControlAnchorStyle}>
       {/* ── Trigger button ─────────────────────────── */}
       <button
+        type="button"
         onClick={() => setOpen(o => !o)}
         aria-label="Toggle map layers"
         aria-expanded={open}
-        style={{
-          width: 29,
-          height: 29,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 4,
-          border: W.mapControlBorder,
-          background: W.mapControlBg,
-          cursor: 'pointer',
-          color: open ? W.violet : W.text2,
-          transition: 'color 0.15s',
-        }}
+        style={getMapControlTriggerStyle(open)}
         title="Map layers"
       >
         <Layers size={14} />
@@ -89,27 +91,21 @@ export const MapLayerPanel = memo(function MapLayerPanel({
       {open && (
         <div
           style={{
-            background: W.mapControlBg,
-            border: W.mapControlBorder,
-            borderRadius: 8,
-            padding: '8px 10px',
-            minWidth: 190,
+            ...mapControlPanelStyle,
+            ...mapControlSidePopoverStyle,
+            minWidth: 220,
             maxHeight: 'min(420px, 70vh)',
             overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Layers
-            </span>
+          <div style={mapControlHeaderStyle}>
+            <span style={mapControlHeaderLabelStyle}>Layers</span>
             <button
+              type="button"
               onClick={() => setOpen(false)}
               aria-label="Close"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: W.text4, padding: 0, display: 'flex' }}
+              style={mapControlCloseButtonStyle}
             >
               <X size={12} />
             </button>
@@ -130,12 +126,13 @@ export const MapLayerPanel = memo(function MapLayerPanel({
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 5,
-                    padding: '4px 2px',
-                    background: 'none',
-                    border: 'none',
+                    gap: 6,
+                    padding: '6px 8px',
+                    background: isCollapsed ? 'transparent' : W.glass03,
+                    border: `1px solid ${isCollapsed ? 'transparent' : W.border}`,
+                    borderRadius: W.radius.sm,
                     cursor: 'pointer',
-                    color: W.text3,
+                    color: W.text2,
                     width: '100%',
                     textAlign: 'left',
                   }}
@@ -148,14 +145,14 @@ export const MapLayerPanel = memo(function MapLayerPanel({
                       flexShrink: 0,
                     }}
                   />
-                  <Icon size={11} style={{ color: group.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <Icon size={11} style={{ color: group.accent, opacity: 0.85, flexShrink: 0 }} />
+                  <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', flex: 1 }}>
                     {group.label}
                   </span>
                 </button>
 
                 {!isCollapsed && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingLeft: 18, paddingBottom: 4 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2, paddingLeft: 18, paddingBottom: 6 }}>
                     {layers.filter(l => l.available).map(layer => (
                       <LayerRow
                         key={layer.id}
@@ -175,7 +172,7 @@ export const MapLayerPanel = memo(function MapLayerPanel({
                         max={3}
                         step={0.1}
                         displayValue={`${terrainExaggeration.toFixed(1)}x`}
-                        accent={W.amber}
+                        accent={W.text2}
                         onChange={onTerrainExaggerationChange}
                       />
                     )}
@@ -186,7 +183,7 @@ export const MapLayerPanel = memo(function MapLayerPanel({
           })}
         </div>
       )}
-    </>
+    </div>
   )
 })
 
@@ -245,14 +242,17 @@ function LayerRow({
     <label
       style={{
         display: 'flex',
-        alignItems: 'flex-start',
-        gap: 6,
+        alignItems: 'stretch',
+        gap: 4,
         fontSize: 10,
         color: checked ? W.text2 : W.text4,
         cursor: 'pointer',
-        padding: '4px 0',
+        padding: '6px 8px',
         transition: 'color 0.12s',
         flexDirection: 'column',
+        borderRadius: W.radius.sm,
+        background: checked ? W.glass03 : 'transparent',
+        border: `1px solid ${checked ? W.border : 'transparent'}`,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, width: '100%' }}>
@@ -260,11 +260,12 @@ function LayerRow({
           type="checkbox"
           checked={checked}
           onChange={() => onToggle(layer.id)}
-          style={{ accentColor: W.violet, width: 11, height: 11, flexShrink: 0, marginTop: 1 }}
+          aria-label={layer.label}
+          style={{ accentColor: W.text2, width: 11, height: 11, flexShrink: 0, marginTop: 1 }}
         />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'space-between' }}>
-            <span>{layer.label}</span>
+            <span style={{ color: checked ? W.text1 : W.text2 }}>{layer.label}</span>
             {health && (
               <span
                 style={{
@@ -291,36 +292,17 @@ function LayerRow({
             )}
           </div>
           {meta.length > 0 && (
-            <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)', lineHeight: 1.35 }}>
+            <span style={mapControlMetaTextStyle}>
               {meta.join(' · ')}
             </span>
           )}
           {healthLabel(health) && (
-            <span style={{ fontSize: 8, color: W.text4, fontFamily: 'var(--font-mono)', lineHeight: 1.35 }}>
+            <span style={mapControlMetaTextStyle}>
               {healthLabel(health)}
             </span>
           )}
         </div>
       </div>
-      {checked && layer.legendItems && layer.legendItems.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingLeft: 17 }}>
-          {layer.legendItems.map(item => (
-            <div key={`${layer.id}-${item.label}`} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 8, color: W.text4 }}>
-              <span
-                style={{
-                  width: item.symbol === 'line' ? 12 : 9,
-                  height: item.symbol === 'line' ? 2 : 9,
-                  borderRadius: item.symbol === 'circle' ? '50%' : 2,
-                  background: item.symbol === 'line' ? item.strokeColor ?? item.color ?? W.text4 : item.color ?? 'transparent',
-                  border: item.symbol === 'line' ? undefined : `1px solid ${item.strokeColor ?? item.color ?? W.text4}`,
-                  flexShrink: 0,
-                }}
-              />
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      )}
     </label>
   )
 }
@@ -336,11 +318,12 @@ function SliderRow({
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 4,
+        gap: 6,
         fontSize: 9,
         color: W.text4,
         fontFamily: 'var(--font-ui)',
-        marginTop: 4,
+        marginTop: 6,
+        padding: '4px 8px 0',
       }}
     >
       {label}

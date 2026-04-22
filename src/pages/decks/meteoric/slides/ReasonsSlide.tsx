@@ -6,11 +6,11 @@ const DeckCountdown = lazy(() => import('../DeckCountdown'))
 
 const REASONS = [
   'The DFS lands mid-2026. The dashboard needs to be live before it does — not after.',
-  'VeroChain becomes the data standard every subsequent REE project adopts. Meteoric shapes the schema, not inherits it.',
-  'Every investor question has a dashboard answer. Due diligence rounds close faster when your data is auditable and interactive.',
-  'Competitive positioning. An interactive digital twin with geological and environmental provenance that Lynas and MP Materials do not have.',
-  'Scientific credibility. LAPOC/ANSN data integration means field-verified readings carry the authority of Brazil\'s nuclear safety research institute.',
-  'Community license. The Prefeitura dashboard is already built — Poços de Caldas sees environmental transparency in Portuguese, in real time.',
+  'Vero is positioned to become a reference data layer for REE projects — and a live Atlantic Maritime ISR sibling already proves the runtime travels across verticals. Meteoric helps shape the schema rather than inheriting one set elsewhere.',
+  'Most investor questions can map to a dashboard answer. Due diligence rounds close faster when the underlying data is auditable and interactive.',
+  'Differentiated positioning. An interactive digital twin with geological and environmental provenance is rare in the REE peer set today.',
+  'Scientific credibility. LAPOC/ANSN integration is mapped — once live, field readings inherit the chain of custody of Brazil\'s nuclear safety research institute.',
+  'Community license. The Prefeitura dashboard surface is built — designed to give Poços de Caldas environmental transparency in Portuguese as live channels connect.',
 ]
 
 export default function ReasonsSlide() {

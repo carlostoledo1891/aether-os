@@ -1,4 +1,4 @@
-import type { LicenseDetail } from '../../components/map/LicenseOverlay'
+import type { LicenseDetail } from './licenseDetail'
 import type { DrillHoleDetail } from '../../components/map/DrillHoleOverlay'
 import type { PfsEngineeringDetail } from '../../components/map/PfsEngineeringOverlay'
 import type { ExternalLayerPresentation } from '../../components/map/externalLayerPresentation'
@@ -96,3 +96,4 @@ export type FieldMapGeoSelection =
   | { kind: 'licenceEnvelope'; detail: LicenceEnvelopeMapDetail }
   | { kind: 'boundary'; detail: BoundaryMapDetail }
   | { kind: 'external'; detail: ExternalLayerPresentation }
+  | { kind: 'unit'; unitId: string }

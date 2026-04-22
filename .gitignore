@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# TypeScript build artifacts in shared/ (source of truth is .ts)
+shared/**/*.js
+shared/**/*.d.ts
+shared/**/*.js.map
+
+# Playwright outputs (results are ephemeral; snapshots under e2e/*-snapshots/ stay tracked)
+playwright-report/
+test-results/
+
 # SQLite database (generated at runtime by the server)
 *.db
 *.db-shm

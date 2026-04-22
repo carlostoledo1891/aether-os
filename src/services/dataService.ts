@@ -562,4 +562,16 @@ export interface AetherDataService {
 
   dismissAlert(id: string): void
   dismissAllAlerts(): void
+
+  /* ─── Unit Model ──────────────────────────────────────────────────────── */
+  getUnits(filters?: { typeId?: string; state?: string; severity?: string }): MaybeAsync<import('shared/units/types').UnitSummary[]>
+  getUnit(id: string): MaybeAsync<import('shared/units/types').UnitDetail | null>
+  getUnitByPlace(placeId: string): MaybeAsync<import('shared/units/types').UnitDetail | null>
+  getUnitStats(): MaybeAsync<Record<string, Record<string, number>>>
+  getUnitTypes(): MaybeAsync<import('shared/units/types').UnitTypeDef[]>
+  transitionUnit(id: string, toState: string, actor: string, reason?: string): Promise<import('shared/units/types').TransitionRecord>
+  getUnitTransitions(unitId: string): MaybeAsync<import('shared/units/types').TransitionRecord[]>
+  getUnitEvidence(unitId: string): MaybeAsync<import('shared/units/types').EvidenceRef[]>
+  getUnitEdges(unitId: string): MaybeAsync<{ incoming: import('shared/units/types').EdgeSummary[]; outgoing: import('shared/units/types').EdgeSummary[] }>
+  getUnitConsequences(unitId: string, maxDepth?: number): MaybeAsync<import('shared/units/types').ConsequenceNode[]>
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'motion/react'
-import { W } from '../../../app/canvas/canvasTheme'
+import { W } from '../../../theme/publicTheme'
 
 const V = W.violet
 
@@ -43,7 +43,7 @@ export default function AnimatedStat({ value, label, sub, prefix = '', suffix = 
         {prefix}{display}{suffix}
       </div>
       <div style={{ fontSize: 13, fontWeight: 600, color: W.text1, marginTop: 6 }}>{label}</div>
-      {sub && <div style={{ fontSize: 11, color: W.text4, marginTop: 2 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: 11, color: W.text3, marginTop: 2 }}>{sub}</div>}
     </motion.div>
   )
 }

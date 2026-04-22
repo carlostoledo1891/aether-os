@@ -3,7 +3,7 @@ import { W, V } from './shared'
 const DATAVIZ_ITEMS = [
   '3D terrain maps with custom GeoJSON overlays',
   'Process flow digital twins with animated connections',
-  'Time series charts with live data binding',
+  'Time series charts with live data binding (modeled today, swap on connect)',
   'Gauge dashboards for sensor monitoring',
   'Bar / line / area charts for financial scenarios',
   'Heatmaps and contour overlays for geological data',
@@ -24,7 +24,7 @@ export default function DataVizSlide() {
         ))}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: `${V}08`, border: `1px dashed ${V}60`, borderRadius: 10, padding: '12px 16px', textAlign: 'left' }}>
           <div style={{ fontSize: 16, flexShrink: 0 }}>+</div>
-          <span style={{ fontSize: 13, color: V, fontWeight: 600 }}>Connect any dataset, API, or sensor feed to extend the platform for your project</span>
+          <span style={{ fontSize: 13, color: V, fontWeight: 600 }}>Designed to ingest additional datasets, APIs, or sensor feeds as the Caldeira project scopes them in</span>
         </div>
       </div>
     </>

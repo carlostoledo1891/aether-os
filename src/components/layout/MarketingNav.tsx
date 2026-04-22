@@ -1,8 +1,6 @@
 import type { CSSProperties } from 'react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 import { VeroChainLogo } from '../brand/VeroChainLogo'
-
-const V = W.violet
 
 export interface NavLink {
   label: string
@@ -12,47 +10,54 @@ export interface NavLink {
 
 interface MarketingNavProps {
   section?: string
-  links: NavLink[]
+  links?: NavLink[]
   cta?: { label: string; href: string; variant?: 'primary' | 'ghost' }
   onScrollTo?: (id: string) => void
 }
 
+/**
+ * Transparent topbar with the Vero logo centered. The CTA + section
+ * links have been pulled — primary action lives in the hero copy now,
+ * and below-the-hero anchors don't exist in the globe-led layout.
+ *
+ * `links` / `cta` props are kept on the API so existing call sites in
+ * deck routes (`/deck/*`) don't break — they're simply ignored.
+ */
 const navStyle: CSSProperties = {
-  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-  background: W.navScrim, backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-  borderBottom: `1px solid ${W.glass06}`, height: 56,
-  display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px',
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 100,
+  background: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: 56,
+  padding: '0 24px',
+  pointerEvents: 'none',
 }
 
-const linkStyle: CSSProperties = {
-  color: W.text3, fontSize: 13, fontWeight: 500, textDecoration: 'none',
+const logoLinkStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  textDecoration: 'none',
+  color: 'inherit',
+  pointerEvents: 'auto',
 }
 
-export function MarketingNav({ section, links, cta, onScrollTo }: MarketingNavProps) {
+export function MarketingNav({ section }: MarketingNavProps) {
   return (
     <nav style={navStyle}>
-      <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'inherit' }}>
+      <a href="/" style={logoLinkStyle}>
         <VeroChainLogo size={24} textColor={W.text1} />
         {section && (
-          <span style={{ color: W.text4, fontSize: 12, marginLeft: 4, fontFamily: 'var(--font-mono)' }}>/ {section}</span>
+          <span style={{ color: W.text4, fontSize: 12, marginLeft: 4, fontFamily: 'var(--font-mono)' }}>
+            / {section}
+          </span>
         )}
       </a>
-      <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-        {links.map(n => {
-          if (n.href) {
-            return <a key={n.href} href={n.href} style={linkStyle}>{n.label}</a>
-          }
-          return (
-            <a key={n.id} href={`#${n.id}`} onClick={e => { e.preventDefault(); onScrollTo?.(n.id!) }}
-              style={linkStyle}>{n.label}</a>
-          )
-        })}
-        {cta && (
-          cta.variant === 'ghost'
-            ? <a href={cta.href} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '7px 16px', borderRadius: 7, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{cta.label}</a>
-            : <a href={cta.href} style={{ background: V, color: '#fff', padding: '8px 18px', borderRadius: 7, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{cta.label}</a>
-        )}
-      </div>
     </nav>
   )
 }

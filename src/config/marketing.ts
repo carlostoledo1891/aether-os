@@ -1,58 +1,97 @@
-import { W } from '../app/canvas/canvasTheme'
+import { W } from '../theme/publicTheme'
 
 const V = W.violet
 
 export const HERO_STATS = [
-  { value: 'Strict', label: 'TypeScript', sub: 'Zero errors, CI-enforced' },
-  { value: 'Live', label: 'Sensor Ingestion' },
-  { value: 'Dynamic', label: 'Provenance' },
-  { value: '< 2 s', label: 'Data Refresh' },
+  { value: 'Geofenced', label: 'Every Asset', sub: 'Typed unit · spatial layer · bound-aware' },
+  { value: 'Real-Time', label: 'Every Sensor', sub: 'REST · WebSocket · CSV · SCADA-ready' },
+  { value: 'SHA-256', label: 'Evidence Chain', sub: 'Append-only · downstream-verifiable' },
+  { value: '5-Mode', label: 'Provenance', sub: 'Mock · modeled · simulated · live · field-verified' },
 ]
 
-export const INDUSTRIES = [
-  { title: 'Critical Minerals', desc: 'Rare earth, lithium, cobalt — from drill collar to compliance passport. Field ops, Digital Product Passports, and audit-ready provenance.', accent: V },
-  { title: 'Oil & Gas', desc: 'Production monitoring, SCADA integration, environmental compliance, and community engagement dashboards for upstream operations.', accent: V },
-  { title: 'Renewable Energy', desc: 'Wind and solar asset monitoring, supply chain traceability, carbon audit trails, and regulatory reporting across geographies.', accent: V },
-  { title: 'Defense & Procurement', desc: 'FEOC supply chain verification, security-hardened architecture, and origin tracking for strategic material procurement.', accent: V },
+export type IndustryTier = 'lead' | 'adjacent'
+
+export const INDUSTRIES: Array<{ title: string; tier: IndustryTier; tagline: string; desc: string; useCases: string[]; accent: string }> = [
+  {
+    title: 'Mining & Critical Minerals',
+    tier: 'lead',
+    tagline: 'Lead vertical · Caldeira reference deployment',
+    desc: 'Drill collars, license polygons, permit evidence, JORC-grade reports. The deployed reference for rare earth, lithium, and battery metals.',
+    useCases: ['Drill collar telemetry', 'License & permit evidence', 'JORC resource dossiers', 'FEOC origin tracking'],
+    accent: V,
+  },
+  {
+    title: 'Agriculture & Water',
+    tier: 'lead',
+    tagline: 'Lead vertical · Hydrology stack ready',
+    desc: 'Paddocks, soil moisture, irrigation events, organic and regenerative certification chain. Built on the same hydrology and environmental layers as Caldeira.',
+    useCases: ['Paddock geofencing', 'Soil & water monitoring', 'Organic / regenerative certification chain', 'Water-rights compliance evidence'],
+    accent: V,
+  },
+  {
+    title: 'Defense & Public Sector',
+    tier: 'lead',
+    tagline: 'Lead vertical · NIST 800-53 + CMMC L2 mapped',
+    desc: 'Areas of interest, sensor feeds, asset state changes, audit-chain reporting. Security posture mapped for federal procurement pathways.',
+    useCases: ['AOI geofencing', 'Asset state monitoring', 'Audit-chain reporting', 'FEOC / supply-chain assurance'],
+    accent: V,
+  },
+  {
+    title: 'Logistics & Cold Chain',
+    tier: 'adjacent',
+    tagline: 'Also runs on Vero',
+    desc: 'Routes, batch handoffs, cold-chain telemetry, delivery evidence. The same typed-unit + audit-chain pattern handles batch lots and fleet assets.',
+    useCases: ['Batch handoff ledger', 'Cold-chain telemetry', 'Delivery evidence dossiers'],
+    accent: V,
+  },
+  {
+    title: 'Transportation & Infrastructure',
+    tier: 'adjacent',
+    tagline: 'Also runs on Vero',
+    desc: 'Asset registries, permit evidence, change logs for roads, rail, pipelines, and grid build-outs. Map-first inspection workflows with provenance.',
+    useCases: ['Asset registries', 'Inspection workflows', 'Permit & change-log evidence'],
+    accent: V,
+  },
+  {
+    title: 'Industrial Operations',
+    tier: 'adjacent',
+    tagline: 'Also runs on Vero',
+    desc: 'Process plant telemetry, equipment lifecycle, batch traceability, and HSE evidence — for any operation that has to prove what happened, when.',
+    useCases: ['Equipment lifecycle', 'Batch traceability', 'HSE evidence dossiers'],
+    accent: V,
+  },
 ]
 
 export const CAPABILITIES = [
   {
-    tag: 'Ingest',
-    headline: 'Connect any data source',
-    desc: 'Seamlessly transition from synthetic modeling to real-world sensor telemetry (SCADA/LAPOC) with zero architectural changes.',
-    features: ['Live Sensor Ingestion (LAPOC)', 'REST / WebSocket / MQTT connectors', 'Hybrid real/simulated telemetry', 'CSV / Excel batch upload'],
-    metrics: [{ value: 'REST + WS', label: 'API' }, { value: 'Multi-source', label: 'Enrichers' }, { value: '< 2s', label: 'Refresh' }],
+    tag: 'Map & Geofence',
+    headline: 'Every asset on the map. Every boundary as a unit.',
+    desc: 'Typed operational units — drill collars, paddocks, AOIs, license polygons, equipment, batches, springs — with spatial layers, geofencing, and per-vertical lenses. Map-first by default; tabular when you need it.',
+    features: ['Typed units with state machines', 'Spatial layers (vector + raster)', 'Geofencing with bound alerts', 'Vertical-specific lenses (mining / ag / defense)'],
+    metrics: [{ value: 'Typed', label: 'Records' }, { value: 'Geo', label: 'Aware' }, { value: 'Per-Vertical', label: 'Lenses' }],
   },
   {
-    tag: 'Visualize',
-    headline: 'Maps, charts, digital twins',
-    desc: 'Interactive 3D terrain, process flow diagrams, time series, and custom overlays — all driven by your data, not our templates.',
-    features: ['3D terrain with custom overlays', 'Process flow digital twins', 'Time series & gauge dashboards', 'Custom view builder (JSON-driven)'],
-    metrics: [{ value: 'Full', label: 'Digital Twin' }, { value: 'Multi-layer', label: 'Map Engine' }, { value: 'Real-time', label: 'Dashboards' }],
+    tag: 'Monitor & Verify',
+    headline: 'Stream every sensor. Hash every change.',
+    desc: 'Ingestion from REST, WebSocket, CSV, and SCADA-ready adapters. Every reading lands as a typed unit with a provenance label. Every state change appends to a SHA-256 audit chain that anyone can verify — without trusting our database.',
+    features: ['REST · WebSocket · CSV · SCADA-ready', 'SHA-256 append-only audit chain', 'Provenance label on every reading', 'Self-verifying snapshot exports'],
+    metrics: [{ value: 'SHA-256', label: 'Hash Chain' }, { value: 'Verify', label: 'API' }, { value: '5-Mode', label: 'Provenance' }],
   },
   {
-    tag: 'Verify',
-    headline: 'Prove it with evidence',
-    desc: 'SHA-256 audit chains, schema-validated compliance exports, and dynamic provenance labeling for real-time trust.',
-    features: ['Dynamic Provenance badges', 'SHA-256 append-only audit ledger', 'EU DPP JSON export (22 fields)', 'Explicit data honesty labels'],
-    metrics: [{ value: 'SHA-256', label: 'Audit' }, { value: '22', label: 'DPP Fields' }, { value: 'JSON', label: 'Schema Export' }],
-  },
-  {
-    tag: 'Environment',
-    headline: 'Predictive environmental intelligence',
-    desc: 'Forecast horizons and ERA5-backed baselines connect weather, hydrology, and risk to operations — not generic dashboard widgets.',
-    features: ['16-day weather forecast', '5-year ERA5 climate history', 'Environmental risk analysis', 'Spring health prediction'],
-    metrics: [{ value: '16-day', label: 'Forecast' }, { value: 'ERA5', label: 'Baseline' }, { value: 'Predictive', label: 'Risk Model' }],
+    tag: 'Decide & Report',
+    headline: 'Tool-grounded AI. Exportable evidence.',
+    desc: 'A domain-grounded AI agent that cites the unit and evidence record behind every answer. One scene runtime renders the operator workspace, the marketing site, and pitch decks — and exports light-mode evidence dossiers (PDF) from any unit type.',
+    features: ['Tool-grounded AI agent (no speculation)', 'One scene runtime — app · decks · site', 'Evidence dossiers · 1-click PDF', 'Disclosure-safe board mode'],
+    metrics: [{ value: 'Tool', label: 'Grounded' }, { value: 'One', label: 'Runtime' }, { value: 'Export', label: 'Ready' }],
   },
 ]
 
 export const ARCH_NODES = [
   { label: 'Fastify API', sub: 'REST + WebSocket', icon: '⚡' },
-  { label: 'Simulation Engine', sub: '2s tick · 4 enrichers', icon: '🔄' },
+  { label: 'Ingestion Engine', sub: '2s tick · 4 enrichers', icon: '🔄' },
   { label: 'React 19 Frontend', sub: 'MapLibre GL · Recharts', icon: '🖥' },
   { label: 'SQLite + Cache', sub: 'Ring buffer · TTL', icon: '🗄' },
-  { label: 'AI Agent', sub: 'Domain-grounded', icon: '🤖' },
+  { label: 'AI Agent', sub: 'Tool-grounded', icon: '🤖' },
   { label: 'OpenAPI Spec', sub: 'Auto-generated', icon: '📄' },
 ]
 
@@ -109,10 +148,10 @@ export const TEAM: TeamMember[] = [
 ]
 
 export const AI_TOOLS = [
+  { cat: 'Operations', tools: 'unit lookup, state transitions, dependency graph, evidence query' },
+  { cat: 'Compliance', tools: 'audit chain queries, evidence verification, schema validation' },
   { cat: 'Geology', tools: 'deposits, resources, lithology, drill logs, JORC classification' },
   { cat: 'Financial', tools: 'scenario modeling, NPV sensitivity, CAPEX tracking, DSCR projections' },
-  { cat: 'Compliance', tools: 'DPP validation, FEOC verification, SHA-256 audit chain' },
-  { cat: 'Operations', tools: 'plant telemetry, equipment status, sensor channels' },
   { cat: 'Environmental', tools: 'water quality, springs monitoring, hydrology scenarios' },
   { cat: 'Market', tools: 'sizing, pricing, benchmarks, comparable analysis' },
   { name: 'queryWeatherForecast', label: '16-Day Weather Forecast', category: 'Environmental Intelligence' },
@@ -128,22 +167,24 @@ export const MARKET_DATA = [
 ]
 
 export const REPORT_CARDS = [
-  { name: 'Environment', desc: 'APA zones, water quality, springs monitoring, permitting timeline, community acceptance. Light mode PDF export.', accent: W.green },
-  { name: 'Operations', desc: 'NPV/IRR, CAPEX breakdown, C1/AISC costs, process flow, pilot plant recovery data.', accent: V },
-  { name: 'Drill Tests', desc: 'JORC table, grade distribution, RE recovery, lithology summary, Pilot vs ANSTO comparisons.', accent: W.cyan },
+  { name: 'Technical Appendix', desc: 'Light-mode, printable evidence dossier — drill grade distribution, lithology summary, lab validation references, and a one-click PDF export. Same template adapts to any unit type.', accent: W.cyan },
 ]
 
 export const MARKETING_COPY = {
-  heroTagline: 'Verified Origin. Trusted Supply.',
-  heroHeadline: 'The trust layer for critical operations',
-  heroSubhead: 'Predictive environmental intelligence on a hybrid telemetry engine — digital twins, proven compliance, and a clear path from simulation to live field data.',
-  heroFooter: 'TypeScript strict · CI quality gates · NIST 800-53 mapped · SBOM on every build · Provenance on every data point',
+  heroTagline: 'One runtime. Two live instances. Your category-defining platform.',
+  heroHeadline: 'Map every asset. Stream every sensor. Prove every change.',
+  heroSubhead: 'Vero is the field-operations command center for regulated industries — and your instance of a category-defining platform. The same runtime that powers Meteoric\'s Caldeira mining workspace also runs an Atlantic Maritime ISR sibling: typed units on a map, sensor streams in real time, and a SHA-256 evidence chain on every change.',
+  heroFooter: 'Two live instances on one runtime · Mining, agriculture, defense lead · Logistics, transportation, infrastructure ride · NIST 800-53 + CMMC L2 mapped',
 
   dppFieldCount: '22',
 
-  platformTagline: 'Ingest. Visualize. Verify.',
-  aiTagline: 'Domain-grounded AI. Every response cites its source.',
-  architectureTagline: 'Production-grade hybrid architecture',
+  platformTagline: 'Map. Monitor. Decide. With evidence.',
+  pillarsLabel: 'Three Capability Pillars',
+  industriesLabel: 'Built for regulated field operations',
+  industriesHeadline: 'Same platform. Different field.',
+  industriesBody: 'GIS shows you where things are. Telemetry shows you what they are doing. Vero shows you both — and proves the data did not change without an audit trail. Two live instances today (Caldeira mining, Atlantic Maritime ISR) running on a single runtime; the same primitives run any field operation.',
+  aiTagline: 'Tool-grounded AI. Every response cites its source.',
+  architectureTagline: 'One scene-first runtime over a production-grade evidence stack',
   marketTagline: 'Regulation creates the market',
   forecastHorizon: '16-day',
   climateBaseline: '5yr ERA5',

@@ -33,7 +33,7 @@ describe('Caldeira GeoJSON schema', () => {
   it('caldeira-drillholes features have hole_type DD|AC|AUGER and source_ref', () => {
     const fc = loadJson('caldeira-drillholes.geojson') as {
       type: string
-      metadata?: { feature_count?: number; crs_pipeline?: string }
+      metadata?: { feature_count?: number; crs_pipeline?: string; preserved_fields?: string[] }
       features: {
         properties: Record<string, unknown>
         geometry: { type: string; coordinates: number[] }
@@ -43,6 +43,9 @@ describe('Caldeira GeoJSON schema', () => {
     expect(fc.features.length).toBeGreaterThan(0)
     expect(fc.metadata?.crs_pipeline).toMatch(/EPSG:31983/)
     expect(fc.metadata?.feature_count).toBe(fc.features.length)
+    expect(fc.metadata?.preserved_fields).toEqual(
+      expect.arrayContaining(['hmreo_ppm', 'prnd_ppm', 'lithology_intervals']),
+    )
 
     const ids = new Set<string>()
     for (const f of fc.features) {
@@ -66,6 +69,9 @@ describe('Caldeira GeoJSON schema', () => {
         expect(typeof p.hmreo_ppm).toBe('number')
         expect(typeof p.prnd_ppm).toBe('number')
       }
+      if (p.lithology_intervals != null) {
+        expect(Array.isArray(p.lithology_intervals)).toBe(true)
+      }
     }
   })
 
@@ -78,6 +84,18 @@ describe('Caldeira GeoJSON schema', () => {
     const [lon, lat] = f!.geometry.coordinates
     expect(lon).toBeCloseTo(-46.586, 2)
     expect(lat).toBeCloseTo(-21.911, 2)
+  })
+
+  it('user-visible exploration highlight ids resolve to real drill features', () => {
+    const fc = loadJson('caldeira-drillholes.geojson') as {
+      features: { properties: { id?: string } }[]
+    }
+    const ids = new Set(fc.features.map(feature => feature.properties.id))
+    expect(ids.has('CVSDD0001')).toBe(true)
+    expect(ids.has('BDPDD0001')).toBe(true)
+    expect(ids.has('PIADD0001')).toBe(true)
+    expect(ids.has('CDMDD0011')).toBe(true)
+    expect(ids.has('AGOAC0107')).toBe(true)
   })
 
   it('split environmental / PFS GeoJSON are valid FeatureCollections', () => {

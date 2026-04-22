@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
-import { W } from '../../../app/canvas/canvasTheme'
+import { W } from '../../../theme/publicTheme'
 import { Tag, SlidePanel } from '../index'
 
 const V = W.violet
@@ -52,7 +52,7 @@ function OrganogramEdge({ x1, y1, x2, y2, delay }: { x1: number, y1: number, x2:
 export default function WhiteBoxSlide() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', height: '100%', justifyContent: 'center', width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', width: '100%', maxWidth: 1080, margin: '0 auto', gap: 60 }}>
+      <div style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 1080, margin: '0 auto', gap: 60 }}>
         {/* Left Column: Content */}
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, textAlign: 'left' }}>
           <div style={{ marginBottom: 24 }}>

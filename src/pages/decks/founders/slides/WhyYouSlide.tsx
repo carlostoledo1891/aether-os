@@ -27,7 +27,7 @@ export default function WhyYouSlide() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>Senior engineering guidance for architecture review, product quality, and scaling decisions.</p>
           <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Critical minerals compliance is entering a regulatory inflection. I need a technical sounding board that helps harden the platform for enterprise-grade deployments without slowing execution.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric Resources is the first live demo. The architecture is already built to serve many critical mineral projects; the advisory role is to validate the engineering path and keep the bar high.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric is the first reference deployment and pilot candidate. The architecture is designed to serve many critical mineral projects; the advisory role is to validate the engineering path and keep the bar high.</p>
         </div>
       </div>
       <div style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '24px 20px', textAlign: 'left' }}>
@@ -40,7 +40,7 @@ export default function WhyYouSlide() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>Go-to-market, pricing, fundraising, and investor-facing support for the next stage of growth.</p>
           <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Critical minerals compliance is a fast-forming market. I need commercial leverage to structure pricing, sharpen positioning, and open the right investor and customer conversations.</p>
-          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric is the first live demo. The next step is turning that credibility into pipeline momentum across rare earth and lithium operators that need traceability and trust infrastructure.</p>
+          <p style={{ fontSize: 12, color: W.text2, lineHeight: 1.5, margin: 0 }}>Meteoric is the first pilot-candidate demo. The next step is turning that credibility into pipeline momentum across rare earth and lithium operators that need traceability and trust infrastructure.</p>
         </div>
       </div>
     </div>

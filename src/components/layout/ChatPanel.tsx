@@ -336,8 +336,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 <div className={styles.emptyState}>
                   <Sparkles size={28} style={{ opacity: 0.4 }} />
                   <p>
-                    Ask about Caldeira project data: financials, deposits,
-                    pilot plant KPIs, compliance batches, risks, or telemetry.
+                    Ask about your project data: financials, deposits,
+                    plant KPIs, compliance batches, risks, or telemetry.
                   </p>
                 </div>
               )}

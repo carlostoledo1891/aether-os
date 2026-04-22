@@ -7,22 +7,27 @@
 :root,
 [data-theme='dark'] {
   /* Surfaces */
-  --w-bg:           #07070E;
-  --w-canvas:       #060610;
-  --w-panel:        #0D0D1C;
-  --w-surface:      #121228;
-  --w-surface-high: #181834;
+  --w-bg:           #181724;
+  --w-canvas:       #1B1A27;
+  --w-panel:        #201F2C;
+  --w-surface:      #232230;
+  --w-surface-high: #282736;
+  --w-card:         #232230;
+  --w-card-hover:   #2A2937;
+  --w-inset:        #1E1D2A;
 
   /* Borders */
-  --w-border:       #20203A;
-  --w-border2:      #2E2E52;
-  --w-border3:      #424270;
+  --w-border:       #2B2A39;
+  --w-border2:      #333142;
+  --w-border3:      #3D3A4C;
 
   /* Text */
-  --w-text1:        #ECECF8;
-  --w-text2:        #A0A0C8;
-  --w-text3:        #8888B8;
-  --w-text4:        #7878B0;
+  --w-text1:        #E7E4EE;
+  --w-text2:        #B5B1C1;
+  --w-text3:        #8A8698;
+  --w-text4:        #676372;
+  --w-icon:         #A39FB0;
+  --w-icon-muted:   #7B7788;
 
   /* Accents */
   --w-violet:        #7C5CFC;
@@ -47,17 +52,20 @@
   --w-red-subtle:    rgba(255, 77, 77, 0.10);
 
   /* Glass (parity with canvasTheme W) */
-  --w-glass:         rgba(255, 255, 255, 0.035);
-  --w-glass-hover:   rgba(255, 255, 255, 0.06);
-  --w-glass-02:      rgba(255, 255, 255, 0.02);
-  --w-glass-03:      rgba(255, 255, 255, 0.03);
-  --w-glass-04:      rgba(255, 255, 255, 0.04);
-  --w-glass-05:      rgba(255, 255, 255, 0.05);
-  --w-glass-06:      rgba(255, 255, 255, 0.06);
-  --w-glass-07:      rgba(255, 255, 255, 0.07);
-  --w-glass-08:      rgba(255, 255, 255, 0.08);
-  --w-glass-12:      rgba(255, 255, 255, 0.12);
-  --w-overlay-88:    rgba(6, 6, 16, 0.88);
+  --w-glass:         rgba(255, 255, 255, 0.018);
+  --w-glass-hover:   rgba(255, 255, 255, 0.042);
+  --w-glass-02:      rgba(255, 255, 255, 0.01);
+  --w-glass-03:      rgba(255, 255, 255, 0.014);
+  --w-glass-04:      rgba(255, 255, 255, 0.022);
+  --w-glass-05:      rgba(255, 255, 255, 0.03);
+  --w-glass-06:      rgba(255, 255, 255, 0.04);
+  --w-glass-07:      rgba(255, 255, 255, 0.05);
+  --w-glass-08:      rgba(255, 255, 255, 0.06);
+  --w-glass-12:      rgba(255, 255, 255, 0.09);
+  --w-overlay-88:    rgba(24, 23, 36, 0.88);
+  --w-shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.18);
+  --w-shadow-md:     0 6px 18px rgba(0, 0, 0, 0.22);
+  --w-shadow-lg:     0 10px 28px rgba(0, 0, 0, 0.26);
 
   /* Map-specific */
   --w-map-water-fill:    #0A1A28;
@@ -65,7 +73,7 @@
   --w-map-commercial:    #8B1538;
   --w-map-secondary:     #B8B8D8;
 
-  --w-app-shell-grid: rgba(255, 255, 255, 0.012);
+  --w-app-shell-grid: rgba(255, 255, 255, 0.016);
   --w-map-hud-panel: rgba(5, 5, 16, 0.82);
   --w-map-hud-wq: rgba(0, 212, 200, 0.08);
   --w-map-hud-wq-warn: rgba(245, 166, 35, 0.12);
@@ -73,18 +81,18 @@
   --w-map-hud-border-cyan-strong: 1px solid rgba(0, 212, 200, 0.2);
   --w-map-hud-border-amber: 1px solid rgba(245, 166, 35, 0.28);
   --w-map-hud-border-red: 1px solid rgba(255, 77, 77, 0.25);
-  --w-map-control-bg: rgba(18, 10, 40, 0.94);
+  --w-map-control-bg: rgba(32, 31, 44, 0.96);
   --w-map-control-border: 1px solid rgba(124, 92, 252, 0.15);
 
   /* Chrome / layout (for CSS-only rules & future themes) */
-  --w-chrome-header-bg: rgba(13, 13, 28, 0.95);
-  --w-scrim:             rgba(0, 0, 0, 0.5);
-  --w-border-hairline:   1px solid rgba(255, 255, 255, 0.06);
-  --w-border-chrome:     1px solid rgba(255, 255, 255, 0.08);
-  --w-banner-bg-mock:    rgba(0, 212, 200, 0.06);
-  --w-banner-bg-live:    rgba(245, 166, 35, 0.08);
-  --w-banner-edge-mock:  rgba(0, 212, 200, 0.12);
-  --w-banner-edge-live:  rgba(245, 166, 35, 0.2);
+  --w-chrome-header-bg: rgba(24, 23, 36, 0.88);
+  --w-scrim:             rgba(8, 8, 13, 0.62);
+  --w-border-hairline:   1px solid rgba(255, 255, 255, 0.04);
+  --w-border-chrome:     1px solid rgba(255, 255, 255, 0.06);
+  --w-banner-bg-mock:    rgba(255, 255, 255, 0.02);
+  --w-banner-bg-live:    rgba(255, 255, 255, 0.028);
+  --w-banner-edge-mock:  rgba(255, 255, 255, 0.07);
+  --w-banner-edge-live:  rgba(255, 255, 255, 0.09);
 
   /* Alert / inverse (parity with canvasTheme W) */
   --w-text-inverse:      #ffffff;
@@ -103,20 +111,25 @@
 }
 
 [data-theme='light'] {
-  --w-bg:           #FFFFFF;
-  --w-canvas:       #FAFAFD;
-  --w-panel:        #F5F5FA;
-  --w-surface:      #EDEDF5;
-  --w-surface-high: #E4E4F0;
+  --w-bg:           #F4F2F7;
+  --w-canvas:       #F7F6FA;
+  --w-panel:        #FFFFFF;
+  --w-surface:      #F2F0F5;
+  --w-surface-high: #EBE7F0;
+  --w-card:         #FFFFFF;
+  --w-card-hover:   #F6F3F8;
+  --w-inset:        #EFEDF3;
 
-  --w-border:       #D8D8E8;
-  --w-border2:      #C8C8DC;
-  --w-border3:      #B0B0CC;
+  --w-border:       #D8D2DE;
+  --w-border2:      #C7C0CE;
+  --w-border3:      #B2AABA;
 
-  --w-text1:        #1A1A2E;
-  --w-text2:        #4A4A6A;
-  --w-text3:        #6A6A8A;
-  --w-text4:        #9A9AB0;
+  --w-text1:        #2B2732;
+  --w-text2:        #5B5665;
+  --w-text3:        #837D90;
+  --w-text4:        #A39CAB;
+  --w-icon:         #797387;
+  --w-icon-muted:   #A39CAB;
 
   --w-violet:        #7C5CFC;
   --w-violet-soft:   #9D80FF;
@@ -139,24 +152,27 @@
   --w-red-glow:      rgba(220, 53, 69, 0.12);
   --w-red-subtle:    rgba(220, 53, 69, 0.06);
 
-  --w-glass:         rgba(0, 0, 0, 0.025);
+  --w-glass:         rgba(0, 0, 0, 0.022);
   --w-glass-hover:   rgba(0, 0, 0, 0.06);
-  --w-glass-02:      rgba(0, 0, 0, 0.02);
-  --w-glass-03:      rgba(0, 0, 0, 0.03);
-  --w-glass-04:      rgba(0, 0, 0, 0.04);
+  --w-glass-02:      rgba(0, 0, 0, 0.014);
+  --w-glass-03:      rgba(0, 0, 0, 0.02);
+  --w-glass-04:      rgba(0, 0, 0, 0.03);
   --w-glass-05:      rgba(0, 0, 0, 0.05);
   --w-glass-06:      rgba(0, 0, 0, 0.06);
   --w-glass-07:      rgba(0, 0, 0, 0.07);
   --w-glass-08:      rgba(0, 0, 0, 0.08);
   --w-glass-12:      rgba(0, 0, 0, 0.12);
-  --w-overlay-88:    rgba(250, 250, 253, 0.88);
+  --w-overlay-88:    rgba(244, 242, 247, 0.9);
+  --w-shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.08);
+  --w-shadow-md:     0 6px 18px rgba(0, 0, 0, 0.12);
+  --w-shadow-lg:     0 10px 28px rgba(0, 0, 0, 0.16);
 
   --w-map-water-fill:    #D8ECF8;
   --w-map-halo:          #FFFFFF;
   --w-map-commercial:    #A8325A;
   --w-map-secondary:     #6A6A8A;
 
-  --w-app-shell-grid: rgba(26, 26, 46, 0.05);
+  --w-app-shell-grid: rgba(43, 39, 50, 0.05);
   --w-map-hud-panel: rgba(255, 255, 255, 0.92);
   --w-map-hud-wq: rgba(0, 168, 158, 0.08);
   --w-map-hud-wq-warn: rgba(212, 137, 10, 0.12);
@@ -167,14 +183,14 @@
   --w-map-control-bg: rgba(255, 255, 255, 0.94);
   --w-map-control-border: 1px solid rgba(26, 26, 46, 0.12);
 
-  --w-chrome-header-bg: rgba(255, 255, 255, 0.92);
-  --w-scrim:             rgba(15, 23, 42, 0.18);
-  --w-border-hairline:   1px solid rgba(26, 26, 46, 0.08);
-  --w-border-chrome:     1px solid rgba(26, 26, 46, 0.12);
-  --w-banner-bg-mock:    rgba(0, 168, 158, 0.06);
-  --w-banner-bg-live:    rgba(212, 137, 10, 0.08);
-  --w-banner-edge-mock:  rgba(0, 168, 158, 0.12);
-  --w-banner-edge-live:  rgba(212, 137, 10, 0.18);
+  --w-chrome-header-bg: rgba(244, 242, 247, 0.92);
+  --w-scrim:             rgba(27, 26, 39, 0.18);
+  --w-border-hairline:   1px solid rgba(43, 39, 50, 0.08);
+  --w-border-chrome:     1px solid rgba(43, 39, 50, 0.12);
+  --w-banner-bg-mock:    rgba(43, 39, 50, 0.03);
+  --w-banner-bg-live:    rgba(43, 39, 50, 0.045);
+  --w-banner-edge-mock:  rgba(43, 39, 50, 0.10);
+  --w-banner-edge-live:  rgba(43, 39, 50, 0.12);
 
   --w-text-inverse:      #ffffff;
   --w-red-border-soft:   rgba(220, 53, 69, 0.22);
@@ -187,6 +203,9 @@
   --color-w-panel:        var(--w-panel);
   --color-w-surface:      var(--w-surface);
   --color-w-surface-high: var(--w-surface-high);
+  --color-w-card:         var(--w-card);
+  --color-w-card-hover:   var(--w-card-hover);
+  --color-w-inset:        var(--w-inset);
   --color-w-border:       var(--w-border);
   --color-w-border2:      var(--w-border2);
   --color-w-border3:      var(--w-border3);
@@ -194,6 +213,8 @@
   --color-w-text2:        var(--w-text2);
   --color-w-text3:        var(--w-text3);
   --color-w-text4:        var(--w-text4);
+  --color-w-icon:         var(--w-icon);
+  --color-w-icon-muted:   var(--w-icon-muted);
   --color-w-violet:       var(--w-violet);
   --color-w-violet-soft:  var(--w-violet-soft);
   --color-w-cyan:         var(--w-cyan);

@@ -14,7 +14,7 @@ import { W, V } from './shared'
 const STEP_STATUS_COLORS: Record<string, string> = {
   verified: W.green,
   active: W.violet,
-  pending: W.text4,
+  pending: W.text3,
 }
 
 export default function TraceabilitySlide() {
@@ -93,7 +93,7 @@ export default function TraceabilitySlide() {
               {batch.molecular_timeline.map((step, i) => {
                 if (!step.coordinates) return null
                 const isSelected = selectedStepIndex === i
-                const stepColor = STEP_STATUS_COLORS[step.status] ?? W.text4
+                const stepColor = STEP_STATUS_COLORS[step.status] ?? W.text3
                 return (
                   <Marker key={`step-${i}`} longitude={step.coordinates.lng} latitude={step.coordinates.lat} anchor="center"
                     onClick={(e) => { e.originalEvent.stopPropagation(); handleStepClick(i) }}>
@@ -146,7 +146,7 @@ export default function TraceabilitySlide() {
       }}>
         <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>Supply Chain Route</div>
         <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: '0 0 10px' }}>
-          From Caldeira drill collar to Toyota assembly line — every handoff is traceable. Blockchain anchoring on the roadmap.
+          From Caldeira drill collar to OEM assembly line — every modeled handoff is traceable through the audit chain. Sample buyer (Toyota) shown for illustration; blockchain anchoring on the roadmap.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
           {[

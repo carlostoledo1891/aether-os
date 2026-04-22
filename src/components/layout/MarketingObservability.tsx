@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 import { ScrollSection as S, Stagger, SectionHeader } from './MarketingPrimitives'
 import { marketingStyles } from './MarketingShared'
 
@@ -10,23 +10,23 @@ const { wrap, glass, glow } = marketingStyles
 const TOPICS = [
   {
     title: 'The Problem',
-    tag: 'Hallucinated Compliance',
-    desc: 'Traditional ESG reporting is the equivalent of an AI hallucination — it provides an output without a transparent audit trail of the inputs. Just as AI requires "Observability" to trace reasoning, physical mining requires "Field Observability".',
+    tag: 'Field reports nobody trusts',
+    desc: 'Field operations report to GIS, telemetry to a fleet console, compliance to a spreadsheet, and the board to a slide. Buyers, regulators, and capital see four different stories. Vero collapses them onto one map with one audit chain — a "White Box Field" instead of four black boxes.',
   },
   {
     title: 'Observe',
-    tag: 'The Ground Truth',
-    desc: 'Geology is probabilistic; operations are absolute. We separate the predictive model (JORC resources) from the verified reality (LAPOC instrument data). Telemetry acts as the foundational "training data".',
+    tag: 'Ground truth on the map',
+    desc: 'Models are probabilistic; operations are absolute. Vero separates the predictive layer (forecasts, resource estimates, financial scenarios) from verified reality (sensor streams, field-verified readings, operator inputs). Every reading lands as a typed unit on the map with a provenance label.',
   },
   {
     title: 'Trace',
-    tag: 'Zero-Trust Extraction',
-    desc: 'Implementing a Zero-Trust architecture for the physical supply chain. Every movement of ore — from extraction coordinate to the processing plant to the final batch of MREC — is logged in a cryptographic audit chain.',
+    tag: 'Zero-trust audit chain',
+    desc: 'Zero-trust architecture for the physical operation. Every state change — a sample at the source, a paddock crossing, an AOI breach, a permit edit, a batch handoff — is logged in a SHA-256 append-only audit chain that downstream parties can verify without trusting our database.',
   },
   {
     title: 'Verify',
-    tag: 'Commercial Arbitrage',
-    desc: '"White Box" observability de-risks the asset, enabling access to strategic capital. It generates an instantaneous, mathematically provable Digital Product Passport (DPP), turning compliance into a competitive moat.',
+    tag: 'Compliance as moat',
+    desc: 'White-box field operations de-risk the operation and unlock strategic capital and customer trust. The same audit chain produces an evidence dossier the buyer can verify — Digital Product Passport for minerals, organic / regenerative certification for agriculture, audit-chain reports for defense — turning compliance from a cost into a moat.',
   },
 ]
 
@@ -80,9 +80,9 @@ export function MarketingObservability() {
       <div style={glow} />
       <div style={{ ...wrap, position: 'relative' }}>
         <SectionHeader
-          label="The White Box Mine"
-          heading="From Probabilistic to Provable"
-          body="Applying the principles of AI Observability and Zero-Trust Architecture to critical mineral supply chains."
+          label="The White Box Field"
+          heading="From four black boxes to one map"
+          body="GIS, telemetry, compliance, and the board pack — usually four parallel stories. Vero collapses them onto one map with one audit chain so buyers, regulators, and capital see the same operational truth."
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 48, alignItems: 'center' }}>
@@ -125,10 +125,10 @@ export function MarketingObservability() {
               <OrganogramEdge x1={200} y1={330} x2={200} y2={370} delay={1.8} />
 
               {/* Nodes */}
-              <OrganogramNode x={200} y={100} label="Sensors" sub="Physical Ground Truth" delay={0.2} />
-              <OrganogramNode x={200} y={200} label="Ingestion" sub="Nervous System" delay={0.8} />
-              <OrganogramNode x={200} y={300} label="Trace" sub="Blockchain / DPP" delay={1.4} />
-              <OrganogramNode x={200} y={400} label="Verify" sub="Capital & Compliance" delay={2.0} />
+              <OrganogramNode x={200} y={100} label="Field Sensors" sub="Ground Truth" delay={0.2} />
+              <OrganogramNode x={200} y={200} label="Map & Geofence" sub="Typed Units" delay={0.8} />
+              <OrganogramNode x={200} y={300} label="Monitor & Verify" sub="Audit Chain" delay={1.4} />
+              <OrganogramNode x={200} y={400} label="Decide & Report" sub="Evidence Dossier" delay={2.0} />
 
               {/* Loop Edge */}
               <motion.path

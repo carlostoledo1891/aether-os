@@ -54,23 +54,47 @@ graph TD
 ErrorBoundary
   └── DataServiceProvider   service = useMemo(() => createDataService(), [])
         └── MapProvider
-              └── AppShell (div.AppShell.module.css — var(--w-bg), grid via --w-app-shell-grid)
-                    ├── HeaderStrip → ViewSwitcher (+ Reports dropdown)
-                    ├── DataModeBanner     — getDataContext() from injected service
-                    ├── main (flex:1) → AnimatePresence → motion.div.viewLayer → active view
-                    ├── AlertPanel
-                    ├── ChatPanel
-                    └── DeckRunner (lazy, portal — rendered when route matches /pages/decks/*)
+              └── MapCameraProvider
+                    └── Routes
+                          ├── /app/* → UnitPage (standalone, full-bleed single map)
+                          │     ├── UnitChrome (in-page lens switcher)
+                          │     ├── MapBase id="veroUnit" + UnitMarkers
+                          │     └── UnitInspector (slide-in right)
+                          ├── /, /business, /tech, /trust → standalone marketing (LandingPage, BusinessPage, TechPage, TrustCenterPage)
+                          └── /deck/* → PresentationShell
+                                ├── Manifest registry + route model
+                                ├── TopChrome
+                                ├── DataModeBanner (deck manifests that opt in)
+                                ├── OptionalMapLayer
+                                ├── HorizontalSlidesRenderer
+                                ├── AlertPanel (only when showAppUtilities)
+                                └── DeckRunner report lightbox (Technical Appendix)
 ```
 
-`createDataService()` uses **`getDataMode()`** from `src/config/env.ts`: **`createMockDataService()`** or **`createLiveDataService()`**.
+`createDataService()` still uses **`getDataMode()`** from `src/config/env.ts`: **`createMockDataService()`** or **`createLiveDataService()`**.
 
-**State held in `AppShell`:**
-- `view: ViewMode` — passed to `HeaderStrip` / `ViewSwitcher`
-- `reportOpen: ReportType | null` — which report lightbox is open (environment / operations / drill-tests)
+**State held in `PresentationShell`:**
+- active experience manifest + active scene
+- `appendixOpen: boolean` — shared report lightbox
 - `alertOpen: boolean` — alert drawer
 - `chatOpen: boolean` — AI chat drawer
-- Telemetry via `DataServiceProvider` (`useTelemetry()` / `useAetherService()`)
+- `highlightFeatureId: string | null` — alert-to-scene handoff for geology review
+- telemetry via `DataServiceProvider` (`useTelemetry()` / `useAetherService()`)
+
+## Scene-First Runtime
+
+The frontend no longer treats app, deck, and site as three unrelated layout systems. The shared runtime in `src/experience/*` is now authoritative for decks; the app workspace is a standalone page:
+
+- **`/app/*`** → `src/pages/unit/UnitPage.tsx` — a full-bleed single-map workspace (`MapBase id="veroUnit"`) with `UnitChrome` + `useLens()` handling lens switching in-page and a slide-in `UnitInspector` on the right. No URL-backed scene tabs. This is the canonical product surface.
+- **`horizontalSlides`** is the only active experience mode. It powers `/deck/founders`, `/deck/meteoric` pitch decks, and `/deck/home|business|tech|trust` marketing deck variants (optional `showPublicDeckNav` chrome).
+- **Marketing pages** (`/`, `/business`, `/tech`, `/trust`) render standalone snap-scroll components outside the experience runtime and do not import from `components/deck` or `experience/*`.
+
+Each route resolves to an **`ExperienceManifest`** and one or more **`SceneManifest`** entries. Scene data decides:
+
+- whether the map is enabled
+- which camera preset the map uses
+- whether the surface is transparent, glass, or solid
+- which content module renders inside the shell
 
 ### Data honesty (`getDataContext()`)
 
@@ -80,6 +104,26 @@ ErrorBoundary
 - **`getProvenanceProfile()`** returns per-area provenance kinds (`from_public_record`, `simulated`, etc.) for **`ProvenanceBadge`** on Field Hydro Twin and Executive surfaces.
 - **`getRegulatoryExportBundle()`** packs regulatory log + audit slice + permitting risks for **JSON download**.
 - **`VITE_DATA_MODE=live`:** `createLiveDataService()` is used; **`getDataContext()`** surfaces live mode.
+
+### Unit Model
+
+The unit model is a parallel data layer that models every operational object (deposit, drill hole, tenement, spring, batch, risk, etc.) as a typed **unit** with:
+
+- **State machine:** Each unit type defines states with severity mappings and transition rules. Transitions can require evidence.
+- **Evidence chain:** Documents, reports, and certificates attached to units, linked to transitions, all audited via SHA-256 chain.
+- **Dependency graph:** Units are connected by typed edges (`contains`, `drilled_at`, `covers`, `affects`, etc.). BFS traversal enables consequence analysis.
+- **Evidence bundles:** Self-verifying snapshots of a unit and its dependency graph, with chain proofs and deterministic narratives.
+
+**Key files:**
+- `shared/units/types.ts` — canonical type definitions shared by server and frontend
+- `server/src/store/unitStore.ts` — core store module (CRUD, state machine validation, audit chain integration)
+- `server/src/store/unitTypeSeeds.ts` — 15 unit type definitions
+- `server/src/store/unitSeeder.ts` — idempotent seeder mapping existing domain data to ~1,350 units
+- `server/src/routes/units.ts` — 15 REST endpoints
+- `src/units/lensRegistry.ts` — 6 preset lens definitions for filtering units
+- `src/components/units/UnitInspector.tsx` — generic type-driven inspector
+
+**API endpoints:** `/api/units`, `/api/units/:id`, `/api/unit-types`, `/api/units/:id/transition`, `/api/units/:id/evidence`, `/api/units/:id/edges`, `/api/units/:id/consequences`, `/api/bundles`, `/api/bundles/:id/verify`, etc.
 
 ### Future: credential scopes (RBAC) — not implemented
 

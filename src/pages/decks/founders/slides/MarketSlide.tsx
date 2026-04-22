@@ -25,7 +25,7 @@ export default function MarketSlide() {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
             <span style={{ fontSize: 12, color: W.text3 }}>{m.desc}{m.cagr !== 'Bottom-up' ? ` · ${m.cagr} CAGR` : ''}</span>
-            <span style={{ fontSize: 11, color: W.text4, fontFamily: 'var(--font-mono)' }}>{m.src}</span>
+            <span style={{ fontSize: 11, color: W.text3, fontFamily: 'var(--font-mono)' }}>{m.src}</span>
           </div>
         </div>
       ))}

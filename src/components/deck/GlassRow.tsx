@@ -1,4 +1,4 @@
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 
 const V = W.violet
 
@@ -11,7 +11,7 @@ export function GlassRow({ items }: GlassRowProps) {
     <div style={{
       display: 'grid',
       gridTemplateColumns: `repeat(${items.length}, 1fr)`,
-      background: W.glass04,
+      background: W.panel,
       border: `1px solid ${W.glass06}`,
       borderRadius: 14,
       padding: '18px 0',

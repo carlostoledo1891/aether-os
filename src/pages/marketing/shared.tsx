@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
-import { W } from '../../app/canvas/canvasTheme'
-import { Terminal as TerminalBase } from '../../components/deck'
+import { W } from '../../theme/publicTheme'
+import { Terminal as TerminalBase } from '../../components/presentation/Terminal'
 import { V } from './sharedConstants'
 
 export function Terminal({ title, children }: { title: string; children: ReactNode }) {

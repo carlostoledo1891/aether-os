@@ -1,50 +1,20 @@
 import { createHash } from 'node:crypto'
 import { getDb } from './db.js'
+import {
+  canonicalEventJson,
+  chainHashInput,
+} from '../../../shared/audit/canonicalJson.js'
+import {
+  GENESIS_HASH,
+  type AuditEventInput,
+  type AuditEventRow,
+  type AuditEventType,
+  type ChainVerification,
+} from '../../../shared/audit/types.js'
 
-/* ─── Types ───────────────────────────────────────────────────────────────── */
+/* ─── Re-exports for backwards compatibility ──────────────────────────────── */
 
-export type AuditEventType =
-  | 'batch_created'
-  | 'passport_issued'
-  | 'api_handoff'
-  | 'alert_triggered'
-  | 'alert_resolved'
-  | 'compliance_check'
-  | 'user_action'
-  | 'system_event'
-  | 'regulatory_submission'
-  | 'offtake_update'
-  | 'dpp_export'
-  | 'regulatory_bundle_export'
-  | 'auth_failure'
-  | 'ws_connection'
-  | 'chain_verification'
-  | 'audit_export'
-  | 'knowledge_ingested'
-  | 'knowledge_verified'
-  | 'knowledge_cited'
-  | 'knowledge_updated'
-  | 'knowledge_deleted'
-
-export interface AuditEventInput {
-  event_id: string
-  timestamp: string
-  type: AuditEventType
-  actor: string
-  action: string
-  detail: string
-  relatedEntityId?: string
-}
-
-export interface AuditEventRow extends AuditEventInput {
-  sequence: number
-  payload_hash: string
-  prev_hash: string
-  chain_hash: string
-  anchor_batch_id: number | null
-}
-
-const GENESIS_HASH = '0'.repeat(64)
+export type { AuditEventInput, AuditEventRow, AuditEventType, ChainVerification }
 
 /* ─── Hashing ─────────────────────────────────────────────────────────────── */
 
@@ -53,26 +23,17 @@ export function sha256(input: string): string {
 }
 
 /**
- * Canonical JSON: sorted keys, no whitespace. Guarantees deterministic hashing
- * regardless of property insertion order.
+ * Compute the payload hash for an audit event using the shared canonical-JSON
+ * encoder. The wire format is defined in `docs/spec/audit-event-v1.md` and
+ * implemented identically in `shared/audit/canonicalJson.ts` for the browser
+ * verifier.
  */
 export function computePayloadHash(event: AuditEventInput): string {
-  const canonical: Record<string, unknown> = {
-    action: event.action,
-    actor: event.actor,
-    detail: event.detail,
-    event_id: event.event_id,
-    timestamp: event.timestamp,
-    type: event.type,
-  }
-  if (event.relatedEntityId !== undefined) {
-    canonical.relatedEntityId = event.relatedEntityId
-  }
-  return sha256(JSON.stringify(canonical))
+  return sha256(canonicalEventJson(event))
 }
 
 function computeChainHash(sequence: number, payloadHash: string, prevHash: string): string {
-  return sha256(`${sequence}|${payloadHash}|${prevHash}`)
+  return sha256(chainHashInput(sequence, payloadHash, prevHash))
 }
 
 /* ─── Append ──────────────────────────────────────────────────────────────── */
@@ -161,13 +122,6 @@ export function getAuditEvent(eventId: string): AuditEventRow | null {
 }
 
 /* ─── Verification ────────────────────────────────────────────────────────── */
-
-export interface ChainVerification {
-  valid: boolean
-  length: number
-  brokenAt?: number
-  detail?: string
-}
 
 export function verifyChain(): ChainVerification {
   const db = getDb()

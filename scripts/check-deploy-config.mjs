@@ -45,6 +45,17 @@ if (deploymentDoc.includes('staging.example.com') || deploymentDoc.includes('pro
   errors.push('`docs/DEPLOYMENT.md` still uses placeholder staging/prod smoke URLs.')
 }
 
+const externalUnitTokens = ['@_unit/', 'unit-custom', 'unit:serve', 'samuelmtimbo', '/unit-server', 'VITE_UNIT_URL', 'UnitIDEPage']
+const externalUnitWatchedFiles = ['package.json', 'vite.config.ts', 'src/App.tsx', '.env.example']
+for (const file of externalUnitWatchedFiles) {
+  const raw = read(file)
+  for (const token of externalUnitTokens) {
+    if (raw.includes(token)) {
+      errors.push(`\`${file}\` references '${token}'. The third-party samuelmtimbo/unit (unit.software / @_unit/unit) project is not part of aether-os. The first-party 'unit' concept lives under src/components/units and server/src/store/unitStore.ts.`)
+    }
+  }
+}
+
 if (errors.length) {
   console.error('Deployment config checks failed:')
   errors.forEach((error) => console.error(`- ${error}`))

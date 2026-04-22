@@ -6,11 +6,6 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.CALDEIRA_BOUNDARY_LAYER_ID).toBe('caldeira-boundary-line')
   })
 
-  it('LicenseOverlay exports LICENSE_LAYER_ID', async () => {
-    const mod = await import('../LicenseOverlay')
-    expect(mod.LICENSE_LAYER_ID).toBe('license-fill')
-  })
-
   it('DrillHoleOverlay exports DRILL_LAYER_ID', async () => {
     const mod = await import('../DrillHoleOverlay')
     expect(mod.DRILL_LAYER_ID).toBe('drill-hole-core')
@@ -72,11 +67,10 @@ describe('Map overlay layer ID contracts', () => {
     expect(mod.CALDEIRA_EXTERNAL_LAYERS.every((layer: { renderMode?: string }) => layer.renderMode === 'snapshot-geojson')).toBe(true)
   })
 
-  it('map registry defaults to boundary, licenses, and APA while hiding monitoring and urban', async () => {
+  it('map registry defaults to boundary and APA while hiding monitoring and urban', async () => {
     const mod = await import('../layerRegistry')
     const byId = new Map(mod.ALL_LAYERS.map((layer: { id: string; defaultOn: boolean; available: boolean }) => [layer.id, layer]))
     expect(byId.get('boundary')?.defaultOn).toBe(true)
-    expect(byId.get('licenses')?.defaultOn).toBe(true)
     expect(byId.get('apa')?.defaultOn).toBe(true)
     expect(byId.get('monitoring')?.available).toBe(false)
     expect(byId.get('urban')?.available).toBe(false)
@@ -142,8 +136,8 @@ describe('Map overlay layer ID contracts', () => {
 
   it('layer runtime derives interactive ids for concrete layers', async () => {
     const mod = await import('../layerRuntime')
-    expect(mod.collectInteractiveLayerIds(['boundary', 'licenses', 'apa'])).toEqual(
-      expect.arrayContaining(['caldeira-boundary-line', 'license-fill', 'env-apa-fill']),
+    expect(mod.collectInteractiveLayerIds(['boundary', 'apa'])).toEqual(
+      expect.arrayContaining(['caldeira-boundary-line', 'env-apa-fill']),
     )
     expect(mod.collectInteractiveLayerIds(['sigmine'])).toEqual(
       expect.arrayContaining(['ext-snapshot-sigmine-fill', 'ext-snapshot-sigmine-line']),
@@ -182,7 +176,6 @@ describe('Map overlay layer ID contracts', () => {
   it('all active overlays export a component (function or memo object)', async () => {
     const overlays = [
       () => import('../CaldeiraBoundary'),
-      () => import('../LicenseOverlay'),
       () => import('../DrillHoleOverlay'),
       () => import('../EnvironmentalOverlay'),
       () => import('../HydroOverlay'),

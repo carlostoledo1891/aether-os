@@ -6,6 +6,7 @@ import {
   getLatestLapocIngest, dismissAlert, dismissAllAlerts,
 } from '../store/db.js'
 import { getAuditTrail, getAuditEvent, verifyChain, appendAuditEvent } from '../store/auditChain.js'
+import { getUnit, getEvidence } from '../store/unitStore.js'
 
 export async function domainRoutes(app: FastifyInstance) {
   /* ─── Telemetry channels ─────────────────────────────────────────────── */
@@ -391,6 +392,25 @@ export async function domainRoutes(app: FastifyInstance) {
         collection_recycling_info: { value: null, status: 'pending', cen_ref: 'Annex VI §7(a)' },
         dismantling_info: { value: null, status: 'pending', cen_ref: 'Annex VI §7(b)' },
       },
+      unit_evidence: (() => {
+        const batchUnitId = `BATCH-${batch.batch_id}`
+        const batchUnit = getUnit(batchUnitId)
+        if (!batchUnit) return { status: 'not_linked', evidence: [] }
+        const evidence = getEvidence(batchUnitId)
+        return {
+          status: 'linked',
+          unit_id: batchUnitId,
+          unit_state: batchUnit.currentState,
+          evidence_count: evidence.length,
+          evidence: evidence.map(e => ({
+            doc_type: e.docType,
+            doc_id: e.docId,
+            label: e.label,
+            hash: e.hash,
+            attached_at: e.attachedAt,
+          })),
+        }
+      })(),
     }
   })
 

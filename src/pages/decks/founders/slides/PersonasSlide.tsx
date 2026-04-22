@@ -20,12 +20,12 @@ export default function PersonasSlide() {
     <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', justifyContent: 'center' }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontSize: 48, fontWeight: 800, color: V, fontFamily: 'var(--font-mono)' }}>9.4</div>
-        <div style={{ fontSize: 11, color: W.text4 }}>/ 10 weighted avg</div>
+        <div style={{ fontSize: 11, color: W.text3 }}>/ 10 weighted avg</div>
       </div>
       <div style={{ width: 1, height: 60, background: W.glass08 }} />
       <div style={{ textAlign: 'left' }}>
         <div style={{ fontSize: 13, color: W.text2, lineHeight: 1.6 }}>9 stakeholders · 15 versions<br />v1: <span style={{ color: W.amber }}>6.8</span> → v15: <span style={{ color: W.green }}>9.4</span></div>
-        <div style={{ fontSize: 11, color: W.text4, marginTop: 4 }}>6 of 9 at code ceiling (10.0)</div>
+        <div style={{ fontSize: 11, color: W.text3, marginTop: 4 }}>6 of 9 at code ceiling (10.0)</div>
       </div>
     </div>
     <div style={{ maxWidth: 860, width: '100%' }}>

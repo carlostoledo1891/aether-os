@@ -2,9 +2,9 @@ import { W, V } from '../shared'
 import { Tag, Bullet } from '../../../../components/deck'
 
 const DRIVERS = [
-  { driver: 'EU Digital Product Passport', date: 'Feb 2027', status: '22 / 37 CEN/CENELEC fields mapped', color: V },
-  { driver: 'US FEOC / IRA Compliance', date: 'Active now', status: 'FEOC 0.00% · SHA-256 audit chain', color: V },
-  { driver: 'Australian ESG Reporting', date: '2025+', status: '5 frameworks · 62-92% coverage', color: V },
+  { driver: 'EU Digital Product Passport', date: 'Feb 2027', status: '22 / 37 CEN/CENELEC fields mapped (~59%)', color: V },
+  { driver: 'US FEOC / IRA Compliance', date: 'Active now', status: 'FEOC tracking framework · SHA-256 audit chain', color: V },
+  { driver: 'Australian ESG Reporting', date: '2025+', status: '5 frameworks mapped · 62-92% field coverage', color: V },
 ]
 
 export default function RegulatorySlide() {
@@ -23,7 +23,7 @@ export default function RegulatorySlide() {
     <div style={{ marginTop: 24, maxWidth: 720 }}>
       <Bullet accent={W.amber}>Pix created the fintech explosion because <strong style={{ color: W.text1 }}>regulation created the market</strong>. EU DPP does the same for mineral compliance.</Bullet>
       <div style={{ height: 8 }} />
-      <Bullet>VeroChain is 59% DPP-ready. No competitor has 20%. Enforcement is in 10 months.</Bullet>
+      <Bullet>VeroChain has ~59% of DPP fields mapped today (not certified). Public competitor coverage we've benchmarked is materially lower. Enforcement begins Feb 2027.</Bullet>
     </div>
   </>)
 }

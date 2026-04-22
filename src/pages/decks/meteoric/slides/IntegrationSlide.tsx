@@ -29,19 +29,19 @@ export default function IntegrationSlide() {
       <ApiPingBadge />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14, maxWidth: 960, width: '100%', marginTop: 16 }}>
         <Terminal title="REST API · /api/telemetry">
-          <span style={{ color: W.text4 }}>{'// Live sensor data'}</span><br />
+          <span style={{ color: W.text3 }}>{'// Example payload — real channels on connect'}</span><br />
           {'{ '}<span style={{ color: W.green }}>"channel"</span>{': '}<span style={{ color: W.green }}>"ph_meter"</span>{','}<br />
           {'  '}<span style={{ color: W.green }}>"value"</span>{': '}<span style={{ color: W.cyan }}>2.41</span>{','}<br />
           {'  '}<span style={{ color: W.green }}>"source"</span>{': '}<span style={{ color: W.green }}>"lapoc_field"</span>{' }'}
         </Terminal>
-        <Terminal title="WebSocket · live telemetry">
+        <Terminal title="WebSocket · telemetry stream">
           <span style={{ color: V }}>ws</span>{'.on('}<span style={{ color: W.green }}>'telemetry'</span>{', d => {'}<br />
           {'  updateSensor(d.channel, d.value)'}<br />
-          {'  '}<span style={{ color: W.text4 }}>{'// < 2s refresh cycle'}</span><br />
+          {'  '}<span style={{ color: W.text3 }}>{'// ~2s engine tick'}</span><br />
           {'})'}
         </Terminal>
-        <Terminal title="SCADA · OPC-UA surface">
-          <span style={{ color: W.text4 }}>{'// Integration surface ready'}</span><br />
+        <Terminal title="SCADA · OPC-UA surface (planned)">
+          <span style={{ color: W.text3 }}>{'// Ingestion surface designed — adapters pending'}</span><br />
           <span style={{ color: V }}>connector</span>{'.map({'}<br />
           {'  opcua: '}<span style={{ color: W.green }}>'equipment/*'</span>{','}<br />
           {'  mqtt: '}<span style={{ color: W.green }}>'sensors/#'</span>{','}<br />
@@ -49,8 +49,8 @@ export default function IntegrationSlide() {
           {'})'}
         </Terminal>
       </div>
-      <p style={{ fontSize: 13, color: W.text4, marginTop: 20, maxWidth: 500 }}>
-        When live data connects: "Simulated" labels become "Field-verified." Every reading carries provenance metadata.
+      <p style={{ fontSize: 13, color: W.text3, marginTop: 20, maxWidth: 500 }}>
+        When real channels connect, "Simulated" labels flip to "Field-verified." Every reading already carries provenance metadata.
       </p>
     </>
   )

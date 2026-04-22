@@ -5,15 +5,15 @@ const DATA_MODES = [
   { mode: 'Mock', desc: 'Development and testing — clearly labeled, no confusion with production data' },
   { mode: 'Presentation', desc: 'Demo mode — realistic scenarios with visible "illustrative" banners' },
   { mode: 'Disclosure', desc: 'Market-safe mode — hides sensitive figures, shows only public information' },
-  { mode: 'Live', desc: 'Production — field-verified data with provenance metadata on every reading' },
+  { mode: 'Live', desc: 'Live target — field-verified readings with provenance metadata once real channels connect' },
 ]
 
 const SAFETY_ITEMS = [
-  'Every screen carries a visible data honesty banner',
+  'Each screen carries a visible data honesty banner',
   'Disclosure mode hides board-sensitive figures automatically',
-  'Dynamic provenance automatically upgrades UI badges when real data connects',
-  'Field-to-filing-to-market: one coherent narrative, zero contradictions',
-  'SHA-256 audit trail — every event hashed and timestamped',
+  'Provenance layer designed to upgrade UI badges from modeled to verified when real data connects',
+  'Field-to-filing-to-market: one coherent narrative, no contradictions',
+  'SHA-256 append-only audit chain — every recorded event hashed and timestamped',
 ]
 
 export default function GovernanceSlide() {
@@ -41,8 +41,8 @@ export default function GovernanceSlide() {
           ))}
         </div>
       </div>
-      <p style={{ fontSize: 12, color: W.text4, maxWidth: 600 }}>
-        No screenshot from VeroChain can be misread as certification or attestation. Continuous disclosure safety is built into every mode.
+      <p style={{ fontSize: 12, color: W.text3, maxWidth: 600 }}>
+        Screenshots from VeroChain are designed not to be misread as certification or attestation. Disclosure-safety is wired into every mode.
       </p>
     </>
   )

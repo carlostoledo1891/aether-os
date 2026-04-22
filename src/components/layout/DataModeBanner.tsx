@@ -69,9 +69,9 @@ export function DataModeBanner({ context }: DataModeBannerProps) {
       }}
     >
       <span style={{ color: W.text2, fontWeight: 600, fontSize: 11 }}>
-        Meteoric Resources{' '}
+        Vero{' '}
         <span style={{ color: W.text4, fontWeight: 400 }}>—</span>{' '}
-        <span style={{ color: W.text3, fontWeight: 400 }}>Caldeira Project</span>
+        <span style={{ color: W.text3, fontWeight: 400 }}>Demo Environment</span>
       </span>
 
       {statusMsg && (

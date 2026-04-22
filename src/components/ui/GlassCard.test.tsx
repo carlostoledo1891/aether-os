@@ -11,7 +11,7 @@ describe('GlassCard', () => {
   it('applies glassmorphism base styles', () => {
     const { container } = render(<GlassCard animate={false}>Content</GlassCard>)
     const card = container.firstChild as HTMLElement
-    expect(card.style.backdropFilter).toBe('blur(var(--w-glass-card-blur, 12px))')
+    expect(card.style.backdropFilter).toBe('blur(var(--w-glass-card-blur, 8px))')
     expect(card.style.borderRadius).toBe('14px')
   })
 

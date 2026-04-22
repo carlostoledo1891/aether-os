@@ -2,8 +2,69 @@
 
 **Purpose:** Define how Vero reaches each stakeholder segment — who we target, what we lead with, how we close, and what we charge. This is the operational companion to [`branding.md`](branding.md) (brand identity) and [`personas/core-personas.md`](personas/core-personas.md) (stakeholder profiles).
 
-**Last updated:** 2026-04-09 (v18 — Pre-Pitch Final Sprint)  
+**Last updated:** 2026-04-16 (v19 — Field Operations Repositioning)
 **Cross-references:** [`VALUATION.md`](VALUATION.md), [`messaging-strategy.md`](messaging-strategy.md), [`branding.md`](branding.md), [`PITCH_STRATEGY.md`](PITCH_STRATEGY.md)
+
+---
+
+## 0. Public Positioning (v19, Apr 2026)
+
+> **The field-operations command center for regulated industries.**
+> Map every asset. Stream every sensor. Prove every change.
+
+Investor-facing language ("operational truth layer", "four primitives") moves to internal/founder materials. Buyer-facing surfaces (`/`, marketing decks, home deck content, in-app chrome) lead with **field operations + monitoring + evidence**.
+
+### Three Capability Pillars (was: Four Primitives)
+
+The four engineering primitives still ship — they're just bundled into three buyer-readable pillars:
+
+1. **Map & Geofence** — Typed units + spatial layers + boundaries. Drill collars, paddocks, AOIs, license polygons, equipment, batches — every operational object is a typed, mappable, geofence-aware record.
+2. **Monitor & Verify** — Sensor ingestion + SHA-256 audit chain + provenance labels. Stream readings, hash every change, prove the data didn't move without an audit trail.
+3. **Decide & Report** — AI agent + scene runtime + evidence dossiers. One workspace, source-grounded answers, exportable evidence packets — same runtime serves operators, decks, and the public site.
+
+Geofencing is **a capability, not a vertical**. It is called out as part of pillar 1 because it crosscuts every vertical we serve.
+
+### Lead vs Adjacent Verticals
+
+| Tier | Vertical | Status / Wedge |
+|------|----------|----------------|
+| **Lead** | Critical Minerals / Mining | Caldeira reference deployment. Drill collars, license polygons, permit evidence, JORC reports. |
+| **Lead** | Agriculture / Water & Environmental | Closest engineering fit (hydrology, springs, environmental layers already shipped). Paddocks, soil moisture, irrigation events, organic / regenerative certification chain. EU CSRD + water-rights tailwinds. |
+| **Lead** | Defense / Public Sector | NIST 800-53 Rev 5 + CMMC L2 mapped. AOIs, sensor feeds, asset state changes, audit-chain reporting. Highest ACV, slowest cycle — pursued via design partnerships. |
+| **Adjacent** | Logistics & Cold Chain | Routes, batch handoffs, cold-chain telemetry, delivery evidence. Mention only — do not lead (entrenched: FourKites, Project44, Samsara). |
+| **Adjacent** | Transportation & Infrastructure | Asset registries, permit evidence, change logs for roads, rail, pipelines, grid. |
+| **Adjacent** | Industrial Operations | Process plants, equipment lifecycle, HSE evidence — runs on the same primitives. |
+
+**Headline framing:** "Built for mining, agriculture, and defense. Runs on logistics, transportation, and infrastructure too."
+
+### The Wedge (One Sentence)
+
+> GIS shows you where things are. Telemetry shows you what they're doing. Vero shows you both — and proves it didn't change without an audit trail.
+
+This is defensible against:
+- **Esri / ArcGIS**: no evidence chain, no AI grounding
+- **Samsara / Trackunit**: no typed units, no compliance evidence, no vertical lenses
+- **Palantir Foundry**: 100× the price, 100× the deployment time
+- **Spreadsheets**: the actual incumbent — and the honest competition for first pilots
+
+### What Stays Investor-Facing
+
+- Founders Deck — keep "primitives" / "operational truth layer" framing (intentional, technical depth)
+- Trust Deck — security posture is universal, no industry framing needed
+- VALUATION.md, financial models — internal metric language
+
+### What Moves to Buyer Language
+
+- `src/config/marketing.ts` — hero, stats, industries, capabilities
+- `src/pages/marketing/decks/homeDeckContent.tsx` — hero, industries band, three pillars
+- `src/components/layout/MarketingObservability.tsx` — "White Box Field" framing
+- `src/pages/marketing/decks/businessDeckContent.tsx` — light buyer-pain reframe
+- `src/pages/marketing/decks/techDeckContent.tsx` — pillar language replaces "primitives"
+- In-app chrome / Request-a-Demo CTA — already aligned
+
+### Demo Disclosure Rule
+
+Every demo screen must show the vertical lens active (Mining, Agriculture, Defense, …). Never let a buyer see a generic "platform" screen. The product is industry-agnostic; the demo is never.
 
 ---
 
@@ -25,8 +86,8 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 
 | Persona | Deep Need | Hero Feature | Opening Line |
 |---------|-----------|--------------|--------------|
-| **Chairman (Tunks)** | One coherent field → filing → market story. No contradictory channels. | Executive Overview — 9 tabs synchronized to board/steerco rhythm. Disclosure mode for market sessions. | "Every tab maps to a board agenda item. One narrative, zero contradictions." |
-| **CEO (Gale)** | Execution credibility that reduces diligence friction for capital raises. | Capital tracker + DFS bars + milestone CPs + risk register — the "$443M CAPEX" answer in one click. | "Your next raise closes faster when every due diligence question has a dashboard answer." |
+| **Chairman (Tunks)** | One coherent field → filing → market story. No contradictory channels. | Shared scene runtime that moves from geology review to appendix without switching products or stories. | "One shell, one map, one narrative surface from technical review to leave-behind." |
+| **CEO (Gale)** | Execution credibility that reduces diligence friction for capital raises. | Scene-first workspace + deck flow that turns the same operating system into the meeting room narrative. | "Your next raise closes faster when the product and the deck are the same runtime." |
 | **Chief Geologist (De Carvalho)** | Defensible data with clear methodology labeling. Nothing on screen that a QP wouldn't sign. | Drill trace schematic with JORC badges + resource classification with ASX citation links + geology/hydro firewall. | "Every number links to its JORC table. The digital twin never pretends to prove the deposit." |
 
 ### 2.2 External Stakeholders
@@ -135,14 +196,14 @@ Each external persona has one **deep need** — the thing that keeps them up at 
 - Traceability: molecular-to-magnet ledger
 - (For DoD rooms: lead with this section, not Field Ops)
 
-**Minutes 25–35: Executive Overview**
-- Financial scenarios (Bear/Consensus/Bull)
-- Risk register → Capital tracker → DFS bars
-- Agencies matrix → Audit trail
-- ESG frameworks
+**Minutes 25–35: Technical appendix and proof surfaces**
+- Open the Technical Appendix from the shared shell
+- Walk the geology dossier, validation evidence, and permitting context
+- Show how the same runtime pivots from workspace scene to leave-behind artifact
 
 **Minutes 35–40: Technical Credibility**
 - "CI quality gates, zero TypeScript errors, NIST 800-53 mapped, SBOM on every build"
+- "One shared presentation runtime powers app, deck, and site. No parallel shell stacks."
 - Show OpenAPI docs at /api/docs
 - Show build verification stamp
 - "Persona-scored at 9.4/10 — here's the methodology"

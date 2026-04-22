@@ -31,25 +31,25 @@ export const CaldeiraBoundary = memo(function CaldeiraBoundary() {
         }}
       />
 
-      {/* Outer glow halo — wide, soft violet */}
+      {/* Outer glow halo — APA-matched stroke width with soft blur */}
       <Layer
         id="caldeira-boundary-glow"
         type="line"
         paint={{
           'line-color': W.violet,
-          'line-width': 6,
+          'line-width': 1,
           'line-opacity': 0.12,
           'line-blur': 4,
         }}
       />
 
-      {/* Solid border — full opacity purple, wider for easier click target */}
+      {/* Solid border — APA-matched stroke width */}
       <Layer
         id="caldeira-boundary-line"
         type="line"
         paint={{
           'line-color': W.violet,
-          'line-width': 2.5,
+          'line-width': 1,
           'line-opacity': 1.0,
         }}
       />

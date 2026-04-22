@@ -9,7 +9,6 @@ import { useLayerSurface } from '../../../../components/map/useMapLayers'
 import { VISIBLE_LAYER_GROUPS } from '../../../../components/map/layerRegistry'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
 import { ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
-import { LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
 import { SPRING_PIN_LAYER_ID } from '../../../../components/map/SpringPinsOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
@@ -46,7 +45,7 @@ export default function HydroSlide() {
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
     if (!feats?.length) return
-    const priority = [SPRING_PIN_LAYER_ID, LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
+    const priority = [SPRING_PIN_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
     const feat = priority.reduce<(typeof feats)[number] | undefined>(
       (pick, lid) => pick ?? feats.find(f => f.layer?.id === lid),
       undefined,
@@ -67,18 +66,6 @@ export default function HydroSlide() {
             ...(props.source_label ? [{ label: 'Source', value: String(props.source_label) }] : []),
             ...(props.municipality ? [{ label: 'Municipality', value: String(props.municipality) }] : []),
             { label: 'Network', value: 'CAR Monitored' },
-          ],
-        },
-      })
-    } else if (layerId === LICENSE_LAYER_ID) {
-      setPopup({
-        x: px.x, y: px.y,
-        data: {
-          title: String(props.name ?? props.id ?? ''),
-          accentColor: W.violet,
-          rows: [
-            { label: 'Status', value: String(props.status ?? '—') },
-            { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
           ],
         },
       })
@@ -135,12 +122,12 @@ export default function HydroSlide() {
                   <Tag>Hydrology</Tag>
                   <h2 style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.1, marginTop: 8, marginBottom: 12, color: W.text1 }}>The Hydro Story</h2>
                   <Suspense fallback={null}>
-                    <AnimatedStat value={1092} label="Springs Monitored" sub="Complete hydrological network" prefix="" />
+                    <AnimatedStat value={1092} label="Springs Mapped" sub="Hydrological network — modeled inputs, ingestion-ready" prefix="" />
                   </Suspense>
                 </SlidePanel>
                 <SlidePanel style={{ padding: '14px 16px' }}>
                   <div style={{ fontSize: 10, color: W.cyan, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Environmental Layers</div>
-                  {['APA boundary with buffer zones', 'Spring network (pH, conductivity, flow)', 'Predictive spring health analysis', 'Piezometer stations with readings', 'FEAM/IGAM compliance zones', 'Community monitoring interface'].map(item => (
+                  {['APA boundary with buffer zones', 'Spring network (pH, conductivity, flow) — modeled', 'Predictive spring health surfaces (scenario)', 'Piezometer stations with reference readings', 'FEAM/IGAM compliance zones — mapped', 'Community monitoring interface'].map(item => (
                     <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
                       <div style={{ width: 3, height: 3, borderRadius: '50%', background: W.cyan, marginTop: 6, flexShrink: 0 }} />
                       <span style={{ fontSize: 11, color: W.text2, lineHeight: 1.4 }}>{item}</span>
@@ -150,17 +137,17 @@ export default function HydroSlide() {
                 <SlidePanel style={{ padding: '14px 16px' }}>
                   <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>LAPOC Pipeline + Weather Intelligence</div>
                   <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: '0 0 8px' }}>
-                    Platform actively parses and stores real LAPOC CSV data. 16-day environmental forecast powered by Open-Meteo + ECMWF ERA5 baseline.
+                    LAPOC CSV ingestion path implemented and ready to bind to live exports. 16-day environmental forecast surface powered by Open-Meteo + ECMWF ERA5 baseline.
                   </p>
                   <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: '0 0 8px' }}>
-                    Dynamic provenance engine automatically upgrades UI badges from <span style={{ color: W.text4 }}>"simulated"</span> to <span style={{ color: W.green }}>"verified_real"</span>.
+                    Provenance engine designed to upgrade UI badges from <span style={{ color: W.text3 }}>"simulated"</span> to <span style={{ color: W.green }}>"verified_real"</span> when real channels connect.
                   </p>
                   <p style={{ fontSize: 11, color: W.text2, lineHeight: 1.5, margin: 0 }}>
-                    5-year historical climate baseline (ERA5 reanalysis) for seasonal compliance forecasting.
+                    5-year historical climate baseline (ERA5 reanalysis) wired in for seasonal compliance scenarios.
                   </p>
                 </SlidePanel>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  {[{ label: 'Piezometers', value: 'Pre-mapped' }, { label: 'Quality', value: '5 params' }, { label: 'Refresh', value: '< 2s' }].map(s => (
+                  {[{ label: 'Piezometers', value: 'Pre-mapped' }, { label: 'Quality', value: '5 params' }, { label: 'Engine Tick', value: '~2s' }].map(s => (
                     <SlidePanel key={s.label} style={{ textAlign: 'center', flex: 1, padding: '6px 0', borderRadius: 8 }}>
                       <div style={{ fontSize: 12, fontWeight: 800, color: W.cyan, fontFamily: 'var(--font-mono)' }}>{s.value}</div>
                       <div style={{ fontSize: 8, color: W.text4, marginTop: 2 }}>{s.label}</div>
@@ -183,7 +170,6 @@ export default function HydroSlide() {
                 {[
                   { label: 'Springs', color: W.cyan },
                   { label: 'APA Boundary', color: W.cyan },
-                  { label: 'Mining licences', color: W.violetSoft },
                 ].map(l => (
                   <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 4, background: W.overlay88, padding: '4px 10px', borderRadius: 6, backdropFilter: 'blur(16px)' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color }} />

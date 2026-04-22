@@ -2,7 +2,6 @@ import { useSyncExternalStore } from 'react'
 import type { DrillHoleType } from './DrillHoleOverlay'
 
 export interface FieldOpsMapLayers {
-  tenements: boolean
   drillHoles: boolean
   holeTypeFilter: DrillHoleType | 'all'
   pfsEngineering: boolean
@@ -11,8 +10,7 @@ export interface FieldOpsMapLayers {
 }
 
 export const DEFAULT_FIELD_OPS_LAYERS: FieldOpsMapLayers = {
-  tenements: true,
-  drillHoles: false,
+  drillHoles: true,
   holeTypeFilter: 'all',
   pfsEngineering: false,
   plantSites: false,

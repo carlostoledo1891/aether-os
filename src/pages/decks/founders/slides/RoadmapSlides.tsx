@@ -10,7 +10,7 @@ export function RoadmapSlide() {
     <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 28 }}>Product Roadmap</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, maxWidth: 960, width: '100%' }}>
       {PRODUCT_ROADMAP.map(phase => {
-        const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text4
+        const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text3
         return (
           <div key={phase.id} style={{ background: W.glass04, border: `1px solid ${phase.status === 'active' ? V : W.glass06}`, borderRadius: 14, padding: '16px 14px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: accent, fontFamily: 'var(--font-mono)', marginBottom: 4 }}>{phase.quarter}</div>
@@ -35,10 +35,11 @@ export function RoadmapSlide() {
 
 const MILESTONES = [
   { date: 'Apr 16', label: 'Demo to Meteoric Resources', status: 'next' as const },
-  { date: 'May', label: 'All national regulatory agencies plugged in — ANM, ANA, ANSN, etc.', status: 'pending' as const },
-  { date: 'Jun', label: 'Meteoric pilot — $102k/yr', status: 'pending' as const },
-  { date: 'Jul-Sep', label: 'Seed $1-2M · 3 pilots', status: 'pending' as const },
-  { date: 'Feb 2027', label: 'EU DPP — market 3x', status: 'pending' as const },
+  { date: 'Apr', label: '/app/maritime sibling instance live — same runtime, ISR fixtures, green verifier handoff', status: 'pending' as const },
+  { date: 'May', label: 'Brazilian regulatory feeds targeted for ingestion — ANM, ANA, ANSN, etc.', status: 'pending' as const },
+  { date: 'Jun', label: 'Meteoric pilot target — $102k/yr', status: 'pending' as const },
+  { date: 'Jul-Sep', label: 'Seed $1-2M · 3 pilot targets across mining + maritime/defense', status: 'pending' as const },
+  { date: 'Feb 2027', label: 'EU DPP enforcement — market expansion catalyst', status: 'pending' as const },
 ]
 
 export function TimelineSlide() {

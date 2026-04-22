@@ -72,7 +72,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: undefined,
     },
-    layerIds: ['boundary', 'licenses', 'apa', 'pfs', 'drillholes', 'plantSites', 'infra'],
+    layerIds: ['boundary', 'apa', 'pfs', 'drillholes', 'plantSites', 'infra'],
     showLayerPicker: true,
   },
 
@@ -85,7 +85,7 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: true,
       forceStyle: undefined,
     },
-    layerIds: ['boundary', 'licenses', 'apa', 'hydroSprings'],
+    layerIds: ['boundary', 'apa', 'hydroSprings'],
     showLayerPicker: true,
   },
 
@@ -98,13 +98,13 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
       highlightWater: false,
       forceStyle: undefined,
     },
-    layerIds: ['boundary', 'licenses', 'drillholes', 'apa'],
+    layerIds: ['boundary', 'drillholes', 'apa'],
     showLayerPicker: true,
   },
 
   'deck-cover': {
     viewProps: {
-      initialViewState: { ...SITE_VIEW, zoom: 11.5, pitch: 50, bearing: -15 },
+      initialViewState: { ...SITE_VIEW, zoom: 11.5, pitch: 0, bearing: 0 },
       interactive: false,
       disableZoomControls: true,
       hideControls: true,
@@ -117,40 +117,40 @@ const PRESETS: Record<MapPresetKey, MapPreset> = {
 
   'deck-geology': {
     viewProps: {
-      initialViewState: { ...SITE_VIEW, zoom: 10.5, pitch: 40, bearing: 0 },
+      initialViewState: { ...SITE_VIEW, zoom: 10.5, pitch: 0, bearing: 0 },
       interactive: true,
       disableZoomControls: false,
       hideControls: false,
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    layerIds: ['boundary', 'licenses', 'apa', 'drillholes', 'geosgbGeology'],
+    layerIds: ['boundary', 'apa', 'drillholes', 'geosgbGeology'],
     showLayerPicker: true,
   },
 
   'deck-hydro': {
     viewProps: {
-      initialViewState: { ...SITE_VIEW, zoom: 11, pitch: 30, bearing: 10 },
+      initialViewState: { ...SITE_VIEW, zoom: 11, pitch: 0, bearing: 0 },
       interactive: true,
       disableZoomControls: false,
       hideControls: false,
       highlightWater: false,
       forceStyle: 'satellite',
     },
-    layerIds: ['boundary', 'licenses', 'apa', 'hydroSprings'],
+    layerIds: ['boundary', 'apa', 'hydroSprings'],
     showLayerPicker: true,
   },
 
   'story-map': {
     viewProps: {
-      initialViewState: { ...SITE_VIEW, pitch: 30, bearing: 0 },
+      initialViewState: { ...SITE_VIEW, pitch: 0, bearing: 0 },
       interactive: true,
       disableZoomControls: false,
       hideControls: false,
       highlightWater: false,
       forceStyle: undefined,
     },
-    layerIds: ['boundary', 'licenses', 'apa', 'plantSites'],
+    layerIds: ['boundary', 'apa', 'plantSites'],
     showLayerPicker: false,
   },
 

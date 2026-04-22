@@ -19,6 +19,7 @@ export const PRODUCT_ROADMAP: RoadmapPhase[] = [
     title: 'Pilot Ready',
     status: 'active',
     items: [
+      { title: 'Multi-Instance Shell', description: 'One /app shell hosts multiple instances — /app/meteoric (mining) and /app/maritime (Atlantic ISR) ship from the same audit-chain runtime, with per-instance fixtures, lenses, and reference bundles.', tag: 'tech' },
       { title: 'LAPOC Live Instruments', description: 'Piezometers, water quality sensors — real-time data from ANSN field stations. Active development, first live channel for Caldeira pilot.', tag: 'infra' },
       { title: 'OPC-UA / MQTT Bridge', description: 'Industrial protocol bridge for SCADA historians and plant telemetry', tag: 'tech' },
       { title: 'Multi-Tenant Architecture', description: 'Project isolation with per-tenant data boundaries and access controls', tag: 'tech' },

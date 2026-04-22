@@ -413,5 +413,29 @@ export function createMockDataService(): AetherDataService {
       const snapshot = { plant, env, esg, alerts: [] }
       subscribers.forEach(cb => cb(snapshot))
     },
+
+    /* ─── Unit Model (delegate to live API even in mock mode) ──────────── */
+    async getUnits(filters) {
+      const params = new URLSearchParams()
+      if (filters?.typeId) params.set('type', filters.typeId)
+      if (filters?.state) params.set('state', filters.state)
+      if (filters?.severity) params.set('severity', filters.severity)
+      const qs = params.toString()
+      const res = await fetch(`/api/units${qs ? `?${qs}` : ''}`)
+      return res.json()
+    },
+    async getUnit(id) { const res = await fetch(`/api/units/${id}`); return res.ok ? res.json() : null },
+    async getUnitByPlace(placeId) { const res = await fetch(`/api/units/by-place/${placeId}`); return res.ok ? res.json() : null },
+    async getUnitStats() { const res = await fetch('/api/units/stats'); return res.json() },
+    async getUnitTypes() { const res = await fetch('/api/unit-types'); return res.json() },
+    async transitionUnit(id, toState, actor, reason) {
+      const res = await fetch(`/api/units/${id}/transition`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toState, actor, reason }) })
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error ?? 'Transition failed') }
+      return res.json()
+    },
+    async getUnitTransitions(unitId) { const res = await fetch(`/api/units/${unitId}/transitions`); return res.json() },
+    async getUnitEvidence(unitId) { const res = await fetch(`/api/units/${unitId}/evidence`); return res.json() },
+    async getUnitEdges(unitId) { const res = await fetch(`/api/units/${unitId}/edges`); return res.json() },
+    async getUnitConsequences(unitId, maxDepth = 5) { const res = await fetch(`/api/units/${unitId}/consequences?maxDepth=${maxDepth}`); return res.json() },
   }
 }

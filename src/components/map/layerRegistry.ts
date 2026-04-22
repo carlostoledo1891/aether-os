@@ -12,7 +12,6 @@ import {
   Factory,
   Trees,
   Droplets,
-  Layers,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -37,7 +36,6 @@ export interface LayerGroupDef {
 }
 
 export const LAYER_GROUPS: LayerGroupDef[] = [
-  { id: 'base',        label: 'Base',        icon: Layers,   accent: 'var(--c-violet)' },
   { id: 'geology',     label: 'Geology',     icon: Mountain, accent: 'var(--c-amber)'  },
   { id: 'operations',  label: 'Operations',  icon: Factory,  accent: 'var(--c-violet)' },
   { id: 'environment', label: 'Environment', icon: Trees,    accent: 'var(--c-green)'  },
@@ -46,7 +44,6 @@ export const LAYER_GROUPS: LayerGroupDef[] = [
 ]
 
 export const VISIBLE_LAYER_GROUPS: LayerGroupId[] = [
-  'base',
   'geology',
   'operations',
   'environment',

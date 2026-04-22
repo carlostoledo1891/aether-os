@@ -1,8 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy } from 'react'
 import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
 
-const slides: LazySlide[] = [
+export const METEORIC_DECK_SLIDES: LazySlide[] = [
   lazy(() => import('../../../components/deck/slides/DisclaimerSlide').then(m => ({ default: () => <m.default /> }))),
   lazy(() => import('./slides/CoverSlide')),
   lazy(() => import('../../../components/deck/slides/WhiteBoxSlide')),
@@ -26,15 +27,16 @@ const slides: LazySlide[] = [
   lazy(() => import('./slides/CtaSlide')),
 ]
 
-const MANIFEST: DeckManifest = {
+export const METEORIC_DECK_MANIFEST: DeckManifest = {
   id: 'meteoric',
   title: 'VeroChain for\nCaldeira Project',
   subtitle: 'Your digital twin is already built.\nNow connect it to live data.',
   mode: 'slides',
+  theme: 'dark',
   exitPath: '/',
-  slides,
+  slides: METEORIC_DECK_SLIDES,
 }
 
 export default function MeteoricDeck() {
-  return <DeckRunner manifest={MANIFEST} />
+  return <DeckRunner manifest={METEORIC_DECK_MANIFEST} />
 }

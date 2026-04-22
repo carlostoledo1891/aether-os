@@ -105,7 +105,7 @@ export const MonitoringOverlay = memo(function MonitoringOverlay() {
         filter={['==', ['get', 'kind'], 'monitoring-zone']}
         paint={{
           'line-color': W.cyan,
-          'line-width': 1.2,
+          'line-width': 1,
           'line-opacity': 0.5,
           'line-dasharray': [3, 2.5],
         }}

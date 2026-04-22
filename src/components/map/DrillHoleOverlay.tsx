@@ -106,6 +106,8 @@ function holeColor(treo: number): string {
 
 interface DrillHoleOverlayProps {
   hoveredHoleId?: string | null
+  /** AI copilot highlight — draws a prominent pulse ring */
+  highlightId?: string | null
   /** Filter to only show holes for a specific deposit */
   depositFilter?: string | null
   /** Filter by collar type */
@@ -116,6 +118,7 @@ interface DrillHoleOverlayProps {
 
 export const DrillHoleOverlay = memo(function DrillHoleOverlay({
   hoveredHoleId = null,
+  highlightId = null,
   depositFilter = null,
   holeTypeFilter = 'all',
   drillIds = null,
@@ -131,18 +134,20 @@ export const DrillHoleOverlay = memo(function DrillHoleOverlay({
       .map(f => {
         const treo = f.properties.treo_ppm
         const isHovered = f.properties.id === hoveredHoleId
+        const isHighlighted = f.properties.id === highlightId
         return {
           ...f,
           properties: {
             ...f.properties,
             circleColor: holeColor(treo),
-            circleRadius: HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX,
-            circleOpacity: isHovered ? 1 : 0.78,
+            circleRadius: isHighlighted ? HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX * 1.6 : HYDRO_SPRING_PIN_RADIUS_DEFAULT_PX,
+            circleOpacity: isHovered || isHighlighted ? 1 : 0.78,
+            isHighlighted: isHighlighted ? 1 : 0,
           },
         }
       })
     return { type: 'FeatureCollection', features }
-  }, [raw, hoveredHoleId, depositFilter, holeTypeFilter, drillIds])
+  }, [raw, hoveredHoleId, highlightId, depositFilter, holeTypeFilter, drillIds])
 
   if (!data) return null
 
@@ -159,6 +164,21 @@ export const DrillHoleOverlay = memo(function DrillHoleOverlay({
           'circle-blur': 1,
         }}
       />
+      {/* Copilot highlight ring */}
+      {highlightId && (
+        <Layer
+          id="drill-hole-highlight"
+          type="circle"
+          filter={['==', ['get', 'isHighlighted'], 1]}
+          paint={{
+            'circle-color': 'transparent',
+            'circle-radius': ['*', ['get', 'circleRadius'], 2.8],
+            'circle-opacity': 0.9,
+            'circle-stroke-color': '#00D4C8',
+            'circle-stroke-width': 2.5,
+          }}
+        />
+      )}
       {/* Core dot */}
       <Layer
         id={DRILL_LAYER_ID}

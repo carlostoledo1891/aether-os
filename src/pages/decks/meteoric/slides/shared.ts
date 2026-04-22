@@ -1,4 +1,4 @@
-import { W } from '../../../../app/canvas/canvasTheme'
+import { W } from '../../../../theme/publicTheme'
 import { CALDEIRA_GEO } from 'shared/sites/caldeira'
 
 export { W }

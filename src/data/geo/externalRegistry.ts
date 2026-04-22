@@ -1,7 +1,9 @@
 import geosgbUrl from '../geojson/external/caldeira-geosgb-geology.geojson?url'
 import sigmineUrl from '../geojson/external/caldeira-sigmine-tenements.geojson?url'
+import sigmineTargetsUrl from '../geojson/external/caldeira-sigmine-target-tenements.geojson?url'
 import anmGeologyUrl from '../geojson/external/caldeira-anm-geology.geojson?url'
 import snirhUrl from '../geojson/external/caldeira-snirh-stations.geojson?url'
+import { EXTERNAL_SNAPSHOT_STYLES } from 'shared/sites/externalSnapshotStyles'
 
 export type ExternalSnapshotGeometryKind = 'polygon' | 'point'
 
@@ -23,8 +25,7 @@ export const EXTERNAL_GEO = {
     kind: 'polygon' as const,
     sourceId: 'ext-snapshot-geosgb-geology',
     attribution: 'Fonte: SGB/GeoSGB',
-    fillColor: 'rgba(250,204,21,0.10)',
-    lineColor: 'rgba(250,204,21,0.88)',
+    ...EXTERNAL_SNAPSHOT_STYLES.geosgbGeology,
   },
   sigmine: {
     id: 'sigmine',
@@ -32,8 +33,15 @@ export const EXTERNAL_GEO = {
     kind: 'polygon' as const,
     sourceId: 'ext-snapshot-sigmine',
     attribution: 'Fonte: ANM SIGMINE',
-    fillColor: 'rgba(124,92,252,0.05)',
-    lineColor: 'rgba(124,92,252,0.92)',
+    ...EXTERNAL_SNAPSHOT_STYLES.sigmine,
+  },
+  sigmineTargets: {
+    id: 'sigmineTargets',
+    url: sigmineTargetsUrl,
+    kind: 'polygon' as const,
+    sourceId: 'ext-snapshot-sigmine-targets',
+    attribution: 'Fonte: ANM SIGMINE · curated target subset',
+    ...EXTERNAL_SNAPSHOT_STYLES.sigmineTargets,
   },
   anmGeology: {
     id: 'anmGeology',
@@ -41,8 +49,7 @@ export const EXTERNAL_GEO = {
     kind: 'polygon' as const,
     sourceId: 'ext-snapshot-anm-geology',
     attribution: 'Fonte: ANM',
-    fillColor: 'rgba(34,211,238,0.08)',
-    lineColor: 'rgba(34,211,238,0.92)',
+    ...EXTERNAL_SNAPSHOT_STYLES.anmGeology,
   },
   hidroweb: {
     id: 'hidroweb',
@@ -50,7 +57,7 @@ export const EXTERNAL_GEO = {
     kind: 'point' as const,
     sourceId: 'ext-snapshot-snirh-hidroweb',
     attribution: 'Fonte: ANA/SNIRH Hidroweb',
-    circleColor: '#22d3ee',
+    ...EXTERNAL_SNAPSHOT_STYLES.hidroweb,
   },
 } as const satisfies Record<string, ExternalSnapshotLayerDef>
 

@@ -21,6 +21,84 @@ import type { TimeRangeKey } from '../types/shared.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const PILOT_PLANT_PATH = resolve(__dirname, '..', '..', '..', 'data', 'caldeira', 'pilot-plant-mirror.json')
+const MAP_LAYER_IDS = [
+  'boundary', 'drillholes', 'pfs', 'geosgbGeology', 'sigmine',
+  'sigmineTargets', 'anmGeology', 'plantSites', 'infra',
+  'apa', 'buffer', 'hydroSprings', 'hydroNodes', 'hidroweb',
+  'terrain', 'hillshade',
+] as const
+const MAP_BOOKMARK_IDS = ['site-overview', 'pilotPlant', 'commercialPlant', 'capaoDoMel'] as const
+const MAP_LAYER_ID_LIST = MAP_LAYER_IDS.join(', ')
+const MAP_BOOKMARK_ID_LIST = MAP_BOOKMARK_IDS.join(', ')
+export const mapActionInputSchema = z.object({
+  actions: z.array(z.discriminatedUnion('type', [
+    z.object({
+      type: z.literal('toggleLayer'),
+      layerId: z.enum(MAP_LAYER_IDS).describe(`Layer ID from the available set: ${MAP_LAYER_ID_LIST}`),
+      visible: z.boolean(),
+    }),
+    z.object({
+      type: z.literal('flyTo'),
+      center: z.object({
+        lng: z.number().describe('Longitude in decimal degrees'),
+        lat: z.number().describe('Latitude in decimal degrees'),
+      }),
+      zoom: z.number(),
+      pitch: z.number().optional(),
+      bearing: z.number().optional(),
+    }),
+    z.object({
+      type: z.literal('bookmark'),
+      bookmarkId: z.enum(MAP_BOOKMARK_IDS).describe(`Named bookmark ID: ${MAP_BOOKMARK_ID_LIST}`),
+    }),
+    z.object({
+      type: z.literal('highlight'),
+      featureId: z.string().describe('Drill hole or feature ID to highlight on the map'),
+    }),
+    z.object({
+      type: z.literal('fitBounds'),
+      bbox: z.object({
+        west: z.number(),
+        south: z.number(),
+        east: z.number(),
+        north: z.number(),
+      }).describe('Bounding box object with west, south, east, north coordinates'),
+    }),
+    z.object({ type: z.literal('clearHighlight') }),
+  ])).describe('One or more map viewport actions to execute sequentially'),
+})
+export const chatBodySchema = {
+  type: 'object',
+  required: ['messages'],
+  properties: {
+    messages: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['role'],
+        additionalProperties: true,
+        properties: {
+          role: { type: 'string', enum: ['user', 'assistant', 'system'] },
+          id: { type: 'string' },
+          content: {
+            anyOf: [
+              { type: 'string' },
+              { type: 'array' },
+              { type: 'null' },
+            ],
+          },
+          parts: {
+            type: 'array',
+            items: {
+              type: 'object',
+              additionalProperties: true,
+            },
+          },
+        },
+      },
+    },
+  },
+} as const
 
 const SYSTEM_PROMPT = `You are a VeroChain platform analyst. You answer questions about the Caldeira critical minerals project using verified data from the VeroChain database.
 
@@ -37,6 +115,7 @@ CORE RULES:
 10. Keep responses concise but thorough. Use bullet points for multi-item answers.
 11. This is a decision-support tool, not a system of record. Always include appropriate caveats.
 12. When queryKnowledgeBase returns results, cite them with their provenance_kind (e.g. "from_public_record", "issuer_attested"). If no KB results match a regulatory question, explicitly say "This is not currently in the verified knowledge base" before falling back to webSearch.
+13. You are a READ-ONLY observer. You may adjust what the user SEES on the map (toggle layers, move camera, highlight features) but you must NEVER claim to have changed, created, or deleted any project data. Every mapAction is a viewport adjustment, not a data operation. All map actions are reversible.
 
 CITATION FORMAT (two-tier):
 - VeroChain data: "NPV is $821M (source: PFS Jul 2025, as_of: 2025-07-21)"
@@ -44,7 +123,15 @@ CITATION FORMAT (two-tier):
 
 When using the webSearch tool, clearly distinguish external results from VeroChain database queries. Prefix web findings with "External:" or "According to [source]:".
 
-You have access to weather intelligence tools. When users ask about environmental conditions, water quality outlook, spring health, or climate patterns, proactively use queryWeatherForecast, queryWeatherHistory, and analyzeEnvironmentalRisk to provide data-backed answers. Reference ECMWF ERA5 data provenance when discussing historical patterns. Always distinguish between observed data (verified_real) and AI-predicted forecasts. Never present predictions as certainties.`
+You have access to weather intelligence tools. When users ask about environmental conditions, water quality outlook, spring health, or climate patterns, proactively use queryWeatherForecast, queryWeatherHistory, and analyzeEnvironmentalRisk to provide data-backed answers. Reference ECMWF ERA5 data provenance when discussing historical patterns. Always distinguish between observed data (verified_real) and AI-predicted forecasts. Never present predictions as certainties.
+
+GEOSPATIAL COPILOT:
+When the user asks to show, display, zoom to, highlight, toggle map features, or jump to a named location, use the mapAction tool. You can combine mapAction with domain query tools (e.g. queryDeposits + mapAction to show and describe drill holes simultaneously).
+
+Available layer IDs: ${MAP_LAYER_ID_LIST}.
+Named bookmarks: ${MAP_BOOKMARK_ID_LIST}.
+
+Always describe what you changed on the map so the user understands what they are seeing.`
 
 function loadPilotPlantMirror(): Record<string, unknown> {
   if (!existsSync(PILOT_PLANT_PATH)) return { error: 'pilot-plant-mirror.json not found' }
@@ -437,6 +524,14 @@ function buildTools() {
         }
       },
     }),
+
+    mapAction: tool({
+      description: 'Control the map viewport: toggle layer visibility, jump to a named bookmark, fly the camera to coordinates, highlight a feature, or fit bounds. This is a VIEW-ONLY action — it adjusts what the user sees, never mutates data.',
+      inputSchema: mapActionInputSchema,
+      execute: async ({ actions }) => {
+        return { mapActions: actions, status: 'dispatched' }
+      },
+    }),
   }
 }
 
@@ -447,22 +542,7 @@ export async function chatRoutes(app: FastifyInstance) {
       tags: ['ai'],
       summary: 'AI chat endpoint (streaming)',
       description: 'Sends a message to the VeroChain AI analyst. Returns a streaming UI message response.',
-      body: {
-        type: 'object',
-        required: ['messages'],
-        properties: {
-          messages: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                role: { type: 'string', enum: ['user', 'assistant', 'system'] },
-                content: { type: 'string' },
-              },
-            },
-          },
-        },
-      },
+      body: chatBodySchema,
     },
   }, async (req, reply) => {
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY

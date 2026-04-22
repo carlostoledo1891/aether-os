@@ -3,11 +3,11 @@ import { Tag } from '../../../../components/deck'
 
 const RISKS = [
   { risk: 'Key-person risk', mitigation: 'Advisory bench (science, ESG, tech, commercial) + AGENT.md bootstrap + strict TypeScript + CI quality gates = day-1 onboarding for any senior dev' },
-  { risk: 'Zero revenue', mitigation: 'Apr 16 Meteoric demo → pilot by June. Named anchor client, not cold pipeline.' },
-  { risk: 'Single customer dependency', mitigation: '150 Critical Mineral projects identified (ASX/TSX/SEC). OEM pipeline via ERP/ECA channels.' },
-  { risk: 'EU DPP delay', mitigation: 'IRA/FEOC active now. Australian ESG 2025+. Regulatory diversification across 3 jurisdictions.' },
-  { risk: 'NdPr price volatility', mitigation: '0.03% of client revenue. Price-insensitive tier — less than one day of CAPEX interest.' },
-  { risk: 'Brazil jurisdiction', mitigation: 'Founder from inside the Caldeira. LAPOC partnership. Prefeitura relationship. 40 years of context.' },
+  { risk: 'Zero revenue', mitigation: 'Apr 16 Meteoric demo → pilot target by June. Named pilot candidate, not cold pipeline.' },
+  { risk: 'Single customer dependency', mitigation: '150 Critical Mineral projects identified (ASX/TSX/SEC). Targeted OEM pipeline via ERP/ECA channels.' },
+  { risk: 'EU DPP delay', mitigation: 'IRA/FEOC active now. Australian ESG 2025+. Regulatory exposure spread across 3 jurisdictions.' },
+  { risk: 'NdPr price volatility', mitigation: 'Modeled ~0.03% of client revenue. Price-insensitive tier — less than one day of disclosed CAPEX interest.' },
+  { risk: 'Brazil jurisdiction', mitigation: 'Founder from inside the Caldeira. LAPOC partnership in conversation. Prefeitura relationship. 40 years of local context.' },
 ]
 
 export default function RiskSlide() {

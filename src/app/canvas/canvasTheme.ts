@@ -10,18 +10,23 @@
  * - text4: decorative/meta only, ~4.8:1 — borderline AA; never for essential info
  */
 export const W = {
-  bg:           '#07070E',
-  canvas:       '#060610',
-  panel:        '#0D0D1C',
-  surface:      '#121228',
-  surfaceHigh:  '#181834',
-  border:       '#20203A',
-  border2:      '#2E2E52',
-  border3:      '#424270',
-  text1:        '#ECECF8',
-  text2:        '#A0A0C8',
-  text3:        '#8888B8',
-  text4:        '#7878B0',
+  bg:           '#181724',
+  canvas:       '#1B1A27',
+  panel:        '#201F2C',
+  surface:      '#232230',
+  surfaceHigh:  '#282736',
+  card:         '#232230',
+  cardHover:    '#2A2937',
+  inset:        '#1E1D2A',
+  border:       '#2B2A39',
+  border2:      '#333142',
+  border3:      '#3D3A4C',
+  text1:        '#E7E4EE',
+  text2:        '#B5B1C1',
+  text3:        '#8A8698',
+  text4:        '#676372',
+  icon:         '#A39FB0',
+  iconMuted:    '#7B7788',
   violet:       '#7C5CFC',
   violetSoft:   '#9D80FF',
   violetGlow:   'rgba(124,92,252,0.25)',
@@ -46,16 +51,19 @@ export const W = {
   red:          '#FF4D4D',
   redGlow:      'rgba(255,77,77,0.22)',
   redSubtle:    'rgba(255,77,77,0.10)',
-  glass:        'rgba(255,255,255,0.035)',
-  glass02:      'rgba(255,255,255,0.02)',
-  glass04:      'rgba(255,255,255,0.04)',
-  glass07:      'rgba(255,255,255,0.07)',
-  glass12:      'rgba(255,255,255,0.12)',
-  glassHover:   'rgba(255,255,255,0.06)',
-  overlay88:    'rgba(6,6,16,0.88)',
+  glass:        'rgba(255,255,255,0.018)',
+  glass02:      'rgba(255,255,255,0.010)',
+  glass04:      'rgba(255,255,255,0.022)',
+  glass07:      'rgba(255,255,255,0.050)',
+  glass12:      'rgba(255,255,255,0.090)',
+  glassHover:   'rgba(255,255,255,0.042)',
+  overlay88:    'rgba(24,23,36,0.88)',
+  shadowSm:     '0 2px 8px rgba(0,0,0,0.18)',
+  shadowMd:     '0 6px 18px rgba(0,0,0,0.22)',
+  shadowLg:     '0 10px 28px rgba(0,0,0,0.26)',
 
   /** App shell background grid (1px lines) */
-  appShellGridLine: 'rgba(255,255,255,0.012)',
+  appShellGridLine: 'rgba(255,255,255,0.016)',
   /** Map HUD floating panels (springs counter, weather strip) */
   mapHudPanelBg:    'rgba(5,5,16,0.82)',
   mapHudPanelBgWQ:  'rgba(0,212,200,0.08)',
@@ -64,24 +72,24 @@ export const W = {
   mapHudBorderCyanStrong: '1px solid rgba(0,212,200,0.20)',
   mapHudBorderAmber: '1px solid rgba(245,166,35,0.28)',
   mapHudBorderRed: '1px solid rgba(255,77,77,0.25)',
-  mapControlBg:     'rgba(13, 13, 28, 0.95)',
+  mapControlBg:     'rgba(32,31,44,0.96)',
   mapControlBorder: '1px solid rgba(255, 255, 255, 0.08)',
 
   /** App shell: top header bar (blur + tint) */
-  chromeHeaderBg: 'rgba(13,13,28,0.95)',
+  chromeHeaderBg: 'rgba(24,23,36,0.88)',
   /** Full modal overlay */
-  scrim:          'rgba(0,0,0,0.5)',
+  scrim:          'rgba(8,8,13,0.62)',
   /** Marketing page nav bar (blurred fixed header) */
-  navScrim:       'rgba(7,7,14,0.88)',
+  navScrim:       'rgba(24,23,36,0.88)',
   /** Panel seams, tab bars */
-  hairlineBorder: '1px solid rgba(255,255,255,0.06)',
+  hairlineBorder: '1px solid rgba(255,255,255,0.04)',
   /** Glass cards, icon buttons, inputs */
-  chromeBorder:   '1px solid rgba(255,255,255,0.08)',
+  chromeBorder:   '1px solid rgba(255,255,255,0.06)',
   /** Data honesty strip (getDataContext) */
-  bannerBgMock:   'rgba(0,212,200,0.06)',
-  bannerBgLive:   'rgba(245,166,35,0.08)',
-  bannerEdgeMock: 'rgba(0,212,200,0.12)',
-  bannerEdgeLive: 'rgba(245,166,35,0.2)',
+  bannerBgMock:   'rgba(255,255,255,0.020)',
+  bannerBgLive:   'rgba(255,255,255,0.028)',
+  bannerEdgeMock: 'rgba(255,255,255,0.070)',
+  bannerEdgeLive: 'rgba(255,255,255,0.090)',
   /** Map: water feature fill (dark blue tint) */
   mapWaterFill:   '#0A1A28',
   /** Map: text halo / label knockout (matches canvas) */
@@ -100,10 +108,10 @@ export const W = {
   gray:           '#6B7280',
   graySubtle:     'rgba(107,114,128,0.06)',
 
-  glass03:      'rgba(255,255,255,0.03)',
-  glass05:      'rgba(255,255,255,0.05)',
-  glass06:      'rgba(255,255,255,0.06)',
-  glass08:      'rgba(255,255,255,0.08)',
+  glass03:      'rgba(255,255,255,0.014)',
+  glass05:      'rgba(255,255,255,0.030)',
+  glass06:      'rgba(255,255,255,0.040)',
+  glass08:      'rgba(255,255,255,0.060)',
 
   radius:       { xs: 4, sm: 7, md: 10, lg: 14 },
 } as const

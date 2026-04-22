@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { Loader2 } from 'lucide-react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 import { TEAM } from '../../config/marketing'
 
 interface TeamShowcaseProps {

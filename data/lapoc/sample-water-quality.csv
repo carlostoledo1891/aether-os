@@ -1,0 +1,4 @@
+sample_id,timestamp,location,ph,sulfate_ppm,nitrate_ppm,iron_ppm,manganese_ppm,turbidity_ntu
+WQ-2026-04-16-001,2026-04-16T08:00:00Z,Caldeira discharge point,7.12,148,27,0.14,0.07,4.1
+WQ-2026-04-16-002,2026-04-16T08:00:00Z,Spring SP-03 upstream,7.34,132,22,0.09,0.05,2.8
+WQ-2026-04-16-003,2026-04-16T08:00:00Z,Tailings seep monitor,6.91,182,35,0.22,0.11,6.3

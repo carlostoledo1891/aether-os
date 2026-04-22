@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verochain.co/spec/audit-event-v1.json",
+  "title": "Vero Audit Event v1",
+  "description": "An immutable hash-chained event row. See docs/spec/audit-event-v1.md.",
+  "type": "object",
+  "required": [
+    "sequence",
+    "event_id",
+    "timestamp",
+    "type",
+    "actor",
+    "action",
+    "detail",
+    "payload_hash",
+    "prev_hash",
+    "chain_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1-indexed monotonic position in the chain."
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Globally unique within a Vero deployment."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC."
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Event-type discriminator (see shared/audit/types.ts)."
+    },
+    "actor": { "type": "string", "minLength": 1 },
+    "action": { "type": "string", "minLength": 1 },
+    "detail": { "type": "string" },
+    "relatedEntityId": {
+      "type": "string",
+      "description": "Optional. Entity (unit/bundle/batch) the event refers to."
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "sha256(canonical_json(event))."
+    },
+    "prev_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Previous chain_hash, or 64 zeroes for genesis."
+    },
+    "chain_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "sha256(\"<sequence>|<payload_hash>|<prev_hash>\")."
+    },
+    "anchor_batch_id": {
+      "type": ["integer", "null"],
+      "description": "Optional foreign key into Vero's external timestamp anchors. Roadmap; null in v1."
+    }
+  }
+}

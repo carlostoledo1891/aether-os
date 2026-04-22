@@ -6,16 +6,17 @@ import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../components/map/CaldeiraBoundar
 import {
   ENV_APA_FILL_LAYER_ID,
   ENV_BUFFER_FILL_LAYER_ID,
+  ENV_MONITORING_FILL_LAYER_ID,
+  ENV_URBAN_FILL_LAYER_ID,
   parseEnvMapFeature,
 } from '../../components/map/EnvironmentalOverlay'
-import { LICENSE_LAYER_ID, toLicenseDetail } from '../../components/map/LicenseOverlay'
 import { DRILL_LAYER_ID, toDrillHoleDetail, parseLithologyIntervals } from '../../components/map/DrillHoleOverlay'
 import { PFS_ENGINEERING_FILL_LAYER_ID, toPfsEngineeringDetail } from '../../components/map/PfsEngineeringOverlay'
 import { INFRA_POINT_CORE_LAYER_ID } from '../../components/map/InfraOverlay'
 import { OPS_PLANT_SITE_CORE_LAYER_ID } from '../../components/map/OpsPlantSitesOverlay'
 import type { MapPopupData } from '../../components/map/MapFeaturePopup'
 import { W } from '../../app/canvas/canvasTheme'
-import type { MapTab } from './constants'
+import type { MapSurface } from './constants'
 import type { FieldOpsMapLayers } from './fieldMapLayers'
 import {
   type FieldMapGeoSelection,
@@ -32,7 +33,6 @@ const OPS_LAYER_PRIORITY = [
   INFRA_POINT_CORE_LAYER_ID,
   DRILL_LAYER_ID,
   PFS_ENGINEERING_FILL_LAYER_ID,
-  LICENSE_LAYER_ID,
   ENV_APA_FILL_LAYER_ID,
 ] as const
 
@@ -42,7 +42,23 @@ const ENV_LAYER_PRIORITY = [
   ENV_APA_FILL_LAYER_ID,
   'env-apa-label',
   ENV_BUFFER_FILL_LAYER_ID,
-  LICENSE_LAYER_ID,
+] as const
+
+const OPS_UNIT_LOOKUP_LAYER_PRIORITY = [
+  DRILL_LAYER_ID,
+  ENV_APA_FILL_LAYER_ID,
+  ENV_BUFFER_FILL_LAYER_ID,
+  ENV_MONITORING_FILL_LAYER_ID,
+  ENV_URBAN_FILL_LAYER_ID,
+] as const
+
+const ENV_UNIT_LOOKUP_LAYER_PRIORITY = [
+  HYDRO_SPRING_LAYER_ID,
+  HYDRO_NODE_LAYER_ID,
+  ENV_APA_FILL_LAYER_ID,
+  ENV_BUFFER_FILL_LAYER_ID,
+  ENV_MONITORING_FILL_LAYER_ID,
+  ENV_URBAN_FILL_LAYER_ID,
 ] as const
 
 function pickFeatureByPriority(
@@ -57,8 +73,59 @@ function pickFeatureByPriority(
   return undefined
 }
 
+export interface UnitLookupCandidate {
+  placeId: string
+  layerId: string
+}
+
+function isUnitLookupFeature(
+  feat: NonNullable<MapLayerMouseEvent['features']>[number] | undefined,
+  mapTab: MapSurface,
+): feat is NonNullable<MapLayerMouseEvent['features']>[number] {
+  const layerId = feat?.layer?.id
+  const props = feat?.properties as Record<string, unknown> | undefined
+  const id = props?.id
+
+  if (typeof layerId !== 'string' || typeof id !== 'string') return false
+
+  if (layerId === DRILL_LAYER_ID || layerId === ENV_APA_FILL_LAYER_ID || layerId === ENV_BUFFER_FILL_LAYER_ID || layerId === ENV_MONITORING_FILL_LAYER_ID || layerId === ENV_URBAN_FILL_LAYER_ID) {
+    return true
+  }
+
+  if (layerId === HYDRO_SPRING_LAYER_ID) return true
+
+  if (layerId === HYDRO_NODE_LAYER_ID) {
+    return mapTab === 'environment' && props?.nodeType === 'piezometer'
+  }
+
+  return false
+}
+
+export function getUnitLookupCandidate(
+  feats: MapLayerMouseEvent['features'] | undefined,
+  mapTab: MapSurface,
+): UnitLookupCandidate | null {
+  if (!feats?.length) return null
+
+  const priority = mapTab === 'operations'
+    ? OPS_UNIT_LOOKUP_LAYER_PRIORITY
+    : ENV_UNIT_LOOKUP_LAYER_PRIORITY
+
+  const prioritized = pickFeatureByPriority(
+    feats.filter(feat => isUnitLookupFeature(feat, mapTab)),
+    priority as unknown as string[],
+  )
+
+  const props = prioritized?.properties as Record<string, unknown> | undefined
+  const placeId = props?.id
+  const layerId = prioritized?.layer?.id
+  if (typeof placeId !== 'string' || typeof layerId !== 'string') return null
+
+  return { placeId, layerId }
+}
+
 export interface UseMapInteractionParams {
-  mapTab: MapTab
+  mapTab: MapSurface
   opsMapLayers: FieldOpsMapLayers
   springsRef: React.RefObject<SpringTelemetry[]>
   visibleLayerIds: LayerId[]
@@ -169,23 +236,6 @@ export function useMapInteraction({
         })
         return
       }
-      if (layerId === LICENSE_LAYER_ID && props) {
-        setHoveredNodeId(null)
-        setMapHoverHint(null)
-        setPopupData({
-          x: px.x, y: px.y,
-          data: {
-            title: String(props.name ?? props.id ?? ''),
-            accentColor: W.violet,
-            rows: [
-              { label: 'Status', value: String(props.status ?? '—') },
-              { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
-            ],
-          },
-        })
-        return
-      }
-
       if (layerId === CALDEIRA_BOUNDARY_LAYER_ID) {
         setHoveredNodeId(null)
         setMapHoverHint(null)
@@ -327,11 +377,6 @@ export function useMapInteraction({
           return
         }
 
-        if (layerId === LICENSE_LAYER_ID && opsMapLayers.tenements) {
-          const d = toLicenseDetail(props)
-          if (d) setGeoSelection((g) => (g?.kind === 'license' && g.detail.id === id ? null : { kind: 'license', detail: d }))
-          return
-        }
         if (layerId === DRILL_LAYER_ID && opsMapLayers.drillHoles) {
           const d = toDrillHoleDetail(props)
           if (d) setGeoSelection((g) => (g?.kind === 'drill' && g.detail.id === id ? null : { kind: 'drill', detail: d }))
@@ -388,12 +433,6 @@ export function useMapInteraction({
 
       setSelectedHydroNode(null)
 
-      if (layerId === LICENSE_LAYER_ID) {
-        const d = toLicenseDetail(props)
-        if (d) setGeoSelection((g) => (g?.kind === 'license' && g.detail.id === id ? null : { kind: 'license', detail: d }))
-        return
-      }
-
       const envDetail = parseEnvMapFeature(props)
       if (envDetail) {
         setGeoSelection((g) => (g?.kind === 'env' && g.detail.id === id ? null : { kind: 'env', detail: envDetail }))
@@ -401,7 +440,6 @@ export function useMapInteraction({
     },
     [
       mapTab,
-      opsMapLayers.tenements,
       opsMapLayers.drillHoles,
       opsMapLayers.pfsEngineering,
       opsMapLayers.plantSites,

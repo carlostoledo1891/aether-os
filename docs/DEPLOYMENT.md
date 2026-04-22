@@ -100,7 +100,7 @@ If chat, Operations, Hydro Twin, telemetry history, provenance, or market reads 
 3. Push only the releasable files to `main`.
 4. Run `npm run update:all` to redeploy production frontend + API.
 5. Watch the new Vercel production deployment for the intended SHA.
-6. Manually click through `LandingPage`, `FieldView`, `BuyerView`, `FoundersDeck`, and `MeteoricDeck`.
+6. Manually click through `LandingPage`, `UnitPage` at `/app`, `FoundersDeck`, and `MeteoricDeck`.
 7. Manually smoke-test chat send + upload flow on production.
 
 ## Map Layer Change Checklist

@@ -28,7 +28,7 @@ describe('FoundersDeck', () => {
   it('removes the personalized greeting and shortened slide sequence stays active', async () => {
     render(<FoundersDeck />)
 
-    expect(screen.getByText('slide-count:20')).toBeInTheDocument()
+    expect(screen.getByText('slide-count:21')).toBeInTheDocument()
     expect(await screen.findByText('Disclaimer anonymous')).toBeInTheDocument()
     expect(screen.queryByText(/Hi Guilherme/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/Hi Juliano/i)).not.toBeInTheDocument()

@@ -30,20 +30,20 @@ export function RevenueSlide() {
       ))}
     </div>
     <div style={{ maxWidth: 860, width: '100%' }}>
-      <div style={{ fontSize: 11, fontWeight: 700, color: V, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>2030 Revenue Scenarios</div>
+      <div style={{ fontSize: 11, fontWeight: 700, color: V, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>2030 Revenue Scenarios — Modeled</div>
       {SCENARIOS.map(s => (
         <div key={s.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${W.glass06}` }}>
           <span style={{ fontSize: 12, color: W.text2 }}>{s.label}</span>
           <div style={{ display: 'flex', gap: 16 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: W.text1, fontFamily: 'var(--font-mono)' }}>{s.arr} ARR</span>
-            <span style={{ fontSize: 11, color: W.text4 }}>{s.clients} clients</span>
+            <span style={{ fontSize: 11, color: W.text3 }}>{s.clients} clients</span>
             <span style={{ fontSize: 12, color: V, fontFamily: 'var(--font-mono)' }}>EV {s.ev}</span>
           </div>
         </div>
       ))}
     </div>
     <div style={{ marginTop: 16, fontSize: 11, color: W.text3 }}>
-      Operating cost ~$2k/mo · Gross margin 95%+ · Zero price sensitivity at 0.03% of client revenue
+      Modeled: operating cost ~$2k/mo · target gross margin 95%+ · low price sensitivity at ~0.03% of disclosed client revenue. Pricing is target list — no signed contracts yet.
     </div>
   </>)
 }
@@ -69,7 +69,7 @@ export function ValuationSlide() {
         <div key={f.factor} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${W.glass06}` }}>
           <span style={{ fontSize: 12, color: W.text2 }}>{f.factor}</span>
           <div style={{ display: 'flex', gap: 16 }}>
-            <span style={{ fontSize: 11, color: W.text4, minWidth: 36, textAlign: 'right' }}>{f.weight}</span>
+            <span style={{ fontSize: 11, color: W.text3, minWidth: 36, textAlign: 'right' }}>{f.weight}</span>
             <span style={{ fontSize: 12, fontWeight: 600, color: V, fontFamily: 'var(--font-mono)', minWidth: 24, textAlign: 'right' }}>{f.score}</span>
           </div>
         </div>

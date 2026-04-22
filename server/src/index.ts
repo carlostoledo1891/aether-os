@@ -20,6 +20,8 @@ import { chatRoutes } from './routes/chat.js'
 import { chatUploadRoutes } from './routes/chatUpload.js'
 import { knowledgeAdminRoutes } from './routes/knowledgeAdmin.js'
 import { mapLayerRoutes } from './routes/mapLayers.js'
+import { unitRoutes } from './routes/units.js'
+import { contactRoutes } from './routes/contact.js'
 import { seedIfNeeded } from './seed.js'
 import { getDb } from './store/db.js'
 import { enforceEnvOrExit } from './validateEnv.js'
@@ -114,6 +116,8 @@ export async function buildApp(opts: { logger?: boolean } = {}) {
   await app.register(chatUploadRoutes)
   await app.register(knowledgeAdminRoutes)
   await app.register(mapLayerRoutes)
+  await app.register(unitRoutes)
+  await app.register(contactRoutes)
 
   return app
 }

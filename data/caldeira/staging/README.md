@@ -2,6 +2,11 @@
 
 Authoritative **tabular** inputs for `npm run build:caldeira-geojson`. PDFs are not committed; paste appendix extracts here after each ASX release.
 
+The current drill build is a two-part process:
+
+1. `npm run build:caldeira-geojson` rebuilds collars from staging, preserves additive fields already committed in `src/data/geojson/caldeira-drillholes.geojson`, and reapplies the Jan 2024 assay lookup.
+2. `npm run backfill:drill-assays` remains available as an explicit additive refresh if the assay lookup table changes outside the main builder.
+
 See also:
 
 - [`SCHEMA.md`](SCHEMA.md) — column definitions and ID rules
@@ -20,6 +25,7 @@ See also:
 ## Refresh
 
 1. Add or edit staging files.
-2. From repo root: `npm run build:caldeira-geojson`
-3. Commit regenerated `src/data/geojson/caldeira-drillholes.geojson` and `caldeira-licenses.geojson`.
-4. Update `docs/data/caldeira/DATA_SOURCES.md` dates.
+2. From repo root run `npm run build:caldeira-geojson`.
+3. If you changed the explicit assay lookup table in `scripts/backfill-drill-assays.ts`, re-run `npm run backfill:drill-assays`.
+4. Commit regenerated `src/data/geojson/caldeira-drillholes.geojson` and `caldeira-licenses.geojson`.
+5. Update `docs/data/caldeira/DATA_SOURCES.md` dates.

@@ -1,6 +1,16 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { Check, Map as MapIcon } from 'lucide-react'
 import { W } from '../../app/canvas/canvasTheme'
+import { usePopoverDismiss } from '../../hooks/usePopoverDismiss'
 import { MAP_STYLE_DEFS, type MapStyleId } from './MapStyleController'
+import {
+  mapControlAnchorStyle,
+  getMapControlMenuRowStyle,
+  getMapControlTriggerStyle,
+  mapControlHeaderLabelStyle,
+  mapControlPanelStyle,
+  mapControlSidePopoverStyle,
+} from './mapControlStyles'
 
 export function MapStylePicker({
   active, onChange,
@@ -8,32 +18,28 @@ export function MapStylePicker({
   active: MapStyleId; onChange: (id: MapStyleId) => void
 }) {
   const [open, setOpen] = useState(false)
+  const handleClose = useCallback(() => setOpen(false), [])
+  const anchorRef = usePopoverDismiss<HTMLDivElement>({ open, onClose: handleClose })
   if (MAP_STYLE_DEFS.length <= 1) return null
 
+  const activeStyle = MAP_STYLE_DEFS.find(s => s.id === active)
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div ref={anchorRef} style={mapControlAnchorStyle}>
       {open && (
-        <div style={{
-          display: 'flex', flexDirection: 'column', gap: 2,
-          background: W.mapControlBg,
-          border: W.mapControlBorder, borderRadius: W.radius.sm,
-          padding: 4, minWidth: 110,
-        }}>
+        <div style={{ ...mapControlPanelStyle, ...mapControlSidePopoverStyle, minWidth: 168 }}>
+          <span style={mapControlHeaderLabelStyle}>Basemap</span>
           {MAP_STYLE_DEFS.map(s => (
             <button
               key={s.id}
               type="button"
               onClick={() => { onChange(s.id); setOpen(false) }}
-              style={{
-                display: 'block', width: '100%', padding: '5px 8px',
-                background: s.id === active ? `${W.violet}25` : 'transparent',
-                border: 'none', borderRadius: 4, cursor: 'pointer', textAlign: 'left',
-                fontSize: 10, fontWeight: s.id === active ? 700 : 500,
-                color: s.id === active ? W.violetSoft : W.text3,
-                fontFamily: 'var(--font-ui)',
-              }}
+              aria-pressed={s.id === active}
+              style={getMapControlMenuRowStyle(s.id === active)}
             >
-              {s.label}
+              <MapIcon size={12} style={{ color: s.id === active ? W.text1 : W.icon, flexShrink: 0 }} />
+              <span style={{ flex: 1 }}>{s.label}</span>
+              {s.id === active && <Check size={12} style={{ color: W.text2, flexShrink: 0 }} />}
             </button>
           ))}
         </div>
@@ -41,22 +47,12 @@ export function MapStylePicker({
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        aria-label="Map style"
-        style={{
-          display: 'flex', alignItems: 'center', gap: 5,
-          padding: '5px 10px',
-          background: W.mapControlBg,
-          border: W.mapControlBorder, borderRadius: W.radius.sm,
-          cursor: 'pointer', fontSize: 10, fontWeight: 600,
-          color: W.text3, fontFamily: 'var(--font-ui)',
-          letterSpacing: '0.04em',
-        }}
+        aria-label={`Basemap selector. Current style ${activeStyle?.label ?? 'Style'}`}
+        title={activeStyle?.label ?? 'Basemap'}
+        aria-expanded={open}
+        style={getMapControlTriggerStyle(open)}
       >
-        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z" />
-          <path d="M8 2v16" /><path d="M16 6v16" />
-        </svg>
-        {MAP_STYLE_DEFS.find(s => s.id === active)?.label ?? 'Style'}
+        <MapIcon size={15} />
       </button>
     </div>
   )

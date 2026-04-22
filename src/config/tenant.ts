@@ -29,7 +29,7 @@ const CALDEIRA_TENANT: TenantConfig = {
   mapZoom: CALDEIRA_GEO.defaultZoom,
   mapPitch: CALDEIRA_GEO.defaultPitch,
   accentColor: CALDEIRA_IDENTITY.accentColor,
-  availableViews: ['operator', 'buyer', 'executive'],
+  availableViews: ['operator'],
   defaultView: 'operator',
 }
 

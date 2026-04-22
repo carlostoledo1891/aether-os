@@ -62,14 +62,15 @@ body {
 .font-mono { font-family: var(--font-mono); }
 
 .glass-surface {
-  background: var(--w-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--w-border);
+  background: var(--w-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: var(--w-border-chrome);
+  box-shadow: var(--w-shadow-sm);
 }
 
 .glass-surface:hover {
-  background: var(--w-glass-hover);
+  background: var(--w-card-hover);
 }
 
 .text-gradient-violet {
@@ -129,17 +130,17 @@ body {
 .maplibregl-map { font-family: var(--font-ui) !important; }
 
 .maplibregl-ctrl-group {
-  background: rgba(13,13,28,0.88) !important;
-  border: 1px solid rgba(255,255,255,0.10) !important;
+  background: var(--w-map-control-bg) !important;
+  border: var(--w-map-control-border) !important;
   border-radius: 8px !important;
-  backdrop-filter: blur(12px) !important;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--w-shadow-md) !important;
   overflow: hidden;
 }
 
 .maplibregl-ctrl-group button {
   background: transparent !important;
-  border-color: rgba(255,255,255,0.07) !important;
+  border-color: rgba(255,255,255,0.05) !important;
   width: 28px !important;
   height: 28px !important;
 }
@@ -149,13 +150,13 @@ body {
 }
 
 .maplibregl-ctrl-group button + button {
-  border-top: 1px solid rgba(255,255,255,0.07) !important;
+  border-top: 1px solid rgba(255,255,255,0.05) !important;
 }
 
 .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
 .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon,
 .maplibregl-ctrl-compass .maplibregl-ctrl-icon {
-  filter: invert(1) opacity(0.55) !important;
+  filter: invert(1) opacity(0.38) !important;
 }
 
 .maplibregl-ctrl-zoom-in:hover .maplibregl-ctrl-icon,

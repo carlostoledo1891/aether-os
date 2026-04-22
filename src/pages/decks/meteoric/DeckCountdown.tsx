@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { W } from '../../../app/canvas/canvasTheme'
+import { W } from '../../../theme/publicTheme'
 
 const V = W.violet
 

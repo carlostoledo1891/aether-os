@@ -4,13 +4,14 @@
  *
  * Run: npm run build:caldeira-geojson
  */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { targetToDeposit } from './depositSlug.ts'
 import { normalizeHoleId } from './normalizeHoleId.ts'
 import { JAN_2024_DD_ROWS } from './sources/jan2024Rows.ts'
 import { isWithinCaldeiraEnvelope, utm23sSirgasToWgs84 } from './utmSirgas.ts'
+import { applyDrillAssayBackfill, type GeoJsonFC, type GeoJsonFeature } from '../backfill-drill-assays.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '../..')
@@ -51,6 +52,10 @@ interface DrillWork {
   intercept?: string
   including?: string
   note: string | null
+}
+
+type ExistingFeature = GeoJsonFeature & {
+  properties: Record<string, unknown>
 }
 
 function readStagingText(name: string): string {
@@ -209,9 +214,60 @@ function toFeature(w: DrillWork): Record<string, unknown> {
   }
 }
 
+function loadExistingDrillById(): Map<string, ExistingFeature> {
+  if (!existsSync(OUT_DRILL)) return new Map()
+  const existing = JSON.parse(readFileSync(OUT_DRILL, 'utf8')) as GeoJsonFC
+  return new Map(
+    existing.features
+      .filter((feature): feature is ExistingFeature => typeof feature.properties?.id === 'string')
+      .map(feature => [String(feature.properties.id), feature]),
+  )
+}
+
+function preserveDrillFields(
+  feature: ReturnType<typeof toFeature>,
+  existingById: Map<string, ExistingFeature>,
+): ReturnType<typeof toFeature> {
+  const id = feature.properties.id
+  if (typeof id !== 'string') return feature
+  const existing = existingById.get(id)
+  if (!existing) return feature
+
+  const properties = feature.properties as Record<string, unknown>
+  const existingProps = existing.properties
+
+  if ((properties.treo_ppm === 0 || properties.treo_ppm == null) && typeof existingProps.treo_ppm === 'number') {
+    properties.treo_ppm = existingProps.treo_ppm
+  }
+  if ((properties.mreo_pct === 0 || properties.mreo_pct == null) && typeof existingProps.mreo_pct === 'number') {
+    properties.mreo_pct = existingProps.mreo_pct
+  }
+  if ((properties.intercept == null || properties.intercept === '') && typeof existingProps.intercept === 'string') {
+    properties.intercept = existingProps.intercept
+  }
+  if ((properties.including == null || properties.including === '') && typeof existingProps.including === 'string') {
+    properties.including = existingProps.including
+  }
+  if ((properties.note == null || properties.note === '') && typeof existingProps.note === 'string') {
+    properties.note = existingProps.note
+  }
+  if (typeof existingProps.hmreo_ppm === 'number') {
+    properties.hmreo_ppm = existingProps.hmreo_ppm
+  }
+  if (typeof existingProps.prnd_ppm === 'number') {
+    properties.prnd_ppm = existingProps.prnd_ppm
+  }
+  if (Array.isArray(existingProps.lithology_intervals)) {
+    properties.lithology_intervals = existingProps.lithology_intervals
+  }
+
+  return feature
+}
+
 function buildDrillholes(): void {
   const merged = [...jan24RowsToWork(), ...mergeAgoac()]
   merged.sort((a, b) => a.id.localeCompare(b.id))
+  const existingById = loadExistingDrillById()
 
   const outside = merged.filter((w) => !isWithinCaldeiraEnvelope(w.lon, w.lat))
   if (outside.length > 0) {
@@ -227,12 +283,23 @@ function buildDrillholes(): void {
     metadata: {
       generated_at: generatedAt,
       crs_pipeline: 'EPSG:31983 (SIRGAS 2000 / UTM 23S) → WGS84',
-      sources: ['02766588_table2', '02909601_appendix1', '02909601_appendix2', 'dd_intercept_highlights.json'],
+      sources: [
+        '02766588_table2',
+        '02909601_appendix1',
+        '02909601_appendix2',
+        'dd_intercept_highlights.json',
+        'asx_02766588_table1',
+      ],
       feature_count: merged.length,
+      preserved_fields: ['hmreo_ppm', 'prnd_ppm', 'lithology_intervals'],
     },
-    features: merged.map(toFeature),
+    features: merged.map(work => preserveDrillFields(toFeature(work), existingById)),
+  } satisfies GeoJsonFC
+  const assayResult = applyDrillAssayBackfill(fc)
+  if (assayResult.notFound > 0) {
+    console.warn('Caldeira build: assay backfill IDs missing from drill GeoJSON:', assayResult.missingIds)
   }
-  writeFileSync(OUT_DRILL, `${JSON.stringify(fc, null, 2)}\n`, 'utf8')
+  writeFileSync(OUT_DRILL, `${JSON.stringify(assayResult.geojson, null, 2)}\n`, 'utf8')
   console.log(`Wrote ${merged.length} drill features → ${OUT_DRILL}`)
 }
 

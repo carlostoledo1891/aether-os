@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
-import { W } from '../app/canvas/canvasTheme'
+import { W } from '../theme/publicTheme'
 
 interface Props {
   children: ReactNode

@@ -2,8 +2,8 @@ import { W, V } from '../shared'
 import { StatCard } from '../../../../components/deck'
 
 const TWIN_STATS = [
-  { v: 'Full', l: 'AMSUL Process', s: 'Metso · Andritz · GEA · Outotec' },
-  { v: 'Live', l: 'Telemetry', s: 'Mapped to sensor channels' },
+  { v: 'Full', l: 'AMSUL Process', s: 'Modeled on Metso · Andritz · GEA · Outotec equipment' },
+  { v: 'Ingestion-ready', l: 'Telemetry', s: 'Channels mapped — simulated until real sensors connect' },
   { v: '7', l: 'Process Steps', s: 'AMSUL ion-exchange' },
   { v: 'Animated', l: 'SVG Flow', s: 'Interactive connections' },
 ]
@@ -19,7 +19,7 @@ const PROCESS_NODES = [
 export default function DigitalTwinSlide() {
   return (<>
     <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>Pilot Plant Digital Twin</h2>
-    <p style={{ fontSize: 12, color: W.text3, marginBottom: 20, maxWidth: 600 }}>Interactive Control Room — full pilot plant process, every sensor mapped, animated SVG flow</p>
+    <p style={{ fontSize: 12, color: W.text3, marginBottom: 20, maxWidth: 640 }}>Interactive control room — full AMSUL process modeled, sensor channels mapped, animated SVG flow. Telemetry is currently simulated; channels swap to live the moment plant instruments connect.</p>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, maxWidth: 860, width: '100%', marginBottom: 16 }}>
       {TWIN_STATS.map(s => <StatCard key={s.l} value={s.v} label={s.l} sub={s.s} />)}
     </div>
@@ -39,7 +39,7 @@ export default function DigitalTwinSlide() {
           {i < 4 && <line x1={n.x + 120} y1="58" x2={n.x + 176} y2="58" stroke={V} strokeWidth="1" markerEnd="url(#flowA)" strokeDasharray="4 2" />}
         </g>
       ))}
-      <text x="400" y="18" textAnchor="middle" fill={`${V}40`} fontSize="9" fontFamily="var(--font-mono)">Full AMSUL process — live version includes all equipment with animated flow paths</text>
+      <text x="400" y="18" textAnchor="middle" fill={W.text3} fontSize="9" fontFamily="var(--font-mono)">Full AMSUL process — in-app view includes all equipment with animated flow paths (simulated)</text>
     </svg>
   </>)
 }

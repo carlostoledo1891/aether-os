@@ -36,16 +36,16 @@ describe('useLayerSurface', () => {
     )
 
     act(() => {
-      result.current.toggle('licenses')
+      result.current.toggle('terrain')
     })
 
-    expect(result.current.visibleLayerIds).toEqual(['boundary', 'licenses', 'apa'])
+    expect(result.current.visibleLayerIds).toEqual(['boundary', 'apa', 'terrain'])
 
     act(() => {
-      result.current.setActiveGroups(['base'])
+      result.current.setActiveGroups(['terrain'])
     })
 
-    expect(result.current.visibleLayerIds).toEqual(['boundary', 'licenses'])
+    expect(result.current.visibleLayerIds).toEqual(['terrain'])
   })
 
   it('uses the shared field store for shared-store bound layers', () => {
@@ -54,20 +54,20 @@ describe('useLayerSurface', () => {
     )
 
     expect(result.current.visibleLayerIds).toEqual(
-      expect.arrayContaining(['licenses', 'apa']),
+      expect.arrayContaining(['apa', 'drillholes']),
     )
-    expect(result.current.visibleLayerIds).not.toContain('drillholes')
+    expect(result.current.visibleLayerIds).not.toContain('plantSites')
     expect(result.current.visibleLayerIds).not.toContain('buffer')
 
     act(() => {
-      result.current.toggle('drillholes')
+      result.current.toggle('plantSites')
       result.current.toggle('buffer')
     })
 
-    expect(sharedLayerStore.getOps().drillHoles).toBe(true)
+    expect(sharedLayerStore.getOps().plantSites).toBe(true)
     expect(sharedLayerStore.getEnv().buffer).toBe(true)
     expect(result.current.visibleLayerIds).toEqual(
-      expect.arrayContaining(['drillholes', 'buffer']),
+      expect.arrayContaining(['plantSites', 'buffer']),
     )
   })
 

@@ -11,7 +11,7 @@ export default function RoadmapSlide() {
       <div style={{ position: 'relative', maxWidth: 860, width: '100%' }}>
         <div style={{ position: 'absolute', left: 19, top: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, ${V}60, ${V}10)` }} />
         {PRODUCT_ROADMAP.map((phase, i) => {
-          const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text4
+          const accent = phase.status === 'active' ? V : phase.status === 'shipped' ? W.green : W.text3
           const meteoricItems = phase.items.filter(it =>
             it.tag === 'infra' || it.tag === 'compliance' || it.title.includes('LAPOC') || it.title.includes('OPC') || it.title.includes('Multi-Project') || it.title.includes('Covenant') || it.title.includes('Blockchain') || it.title.includes('Government')
           )

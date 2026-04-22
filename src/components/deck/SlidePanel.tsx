@@ -1,5 +1,5 @@
 import { type ReactNode, type CSSProperties } from 'react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 
 export interface SlidePanelProps {
   children: ReactNode
@@ -12,8 +12,7 @@ export function SlidePanel({ children, style, className }: SlidePanelProps) {
     <div
       className={className}
       style={{
-        background: W.overlay88,
-        backdropFilter: 'blur(16px)',
+        background: W.panel,
         border: `1px solid ${W.glass08}`,
         borderRadius: 14,
         padding: 16,

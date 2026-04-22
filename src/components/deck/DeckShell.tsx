@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef, type ReactNode, type TouchEvent } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 
 const ease = [0.16, 1, 0.3, 1] as const
 const V = W.violet

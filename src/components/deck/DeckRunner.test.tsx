@@ -90,7 +90,7 @@ describe('DeckRunner — dashboard mode', () => {
   it('renders with dark theme by default', () => {
     const { container } = wrap(<DeckRunner manifest={manifest} />)
     const root = container.firstChild as HTMLElement
-    expect(root.style.background).toBe('#07070E')
+    expect(root.style.background).toBe('#181724')
   })
 
   it('renders with light theme when specified', () => {

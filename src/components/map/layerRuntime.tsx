@@ -3,7 +3,6 @@ import { CALDEIRA_EXTERNAL_LAYERS } from 'shared/sites/caldeira'
 import type { SiteExternalLayer } from 'shared/sites/types'
 import type { LayerId } from './layerRegistry'
 import { CaldeiraBoundary, CALDEIRA_BOUNDARY_LAYER_ID } from './CaldeiraBoundary'
-import { LicenseOverlay, LICENSE_LAYER_ID } from './LicenseOverlay'
 import { DrillHoleOverlay, DRILL_LAYER_ID } from './DrillHoleOverlay'
 import { PfsEngineeringOverlay, PFS_ENGINEERING_FILL_LAYER_ID } from './PfsEngineeringOverlay'
 import {
@@ -83,17 +82,6 @@ export const LAYER_RUNTIMES: Record<LayerId, LayerRuntimeDef> = {
     interactiveLayerIds: [CALDEIRA_BOUNDARY_LAYER_ID],
     render: () => <CaldeiraBoundary />,
   },
-  licenses: {
-    hostKey: 'licenses',
-    interactiveLayerIds: [LICENSE_LAYER_ID],
-    render: ({ licenseProps }) => (
-      <LicenseOverlay
-        highlightId={licenseProps?.highlightId}
-        hoveredLicenseId={licenseProps?.hoveredLicenseId ?? null}
-        selectedLicenseId={licenseProps?.selectedLicenseId ?? null}
-      />
-    ),
-  },
   drillholes: {
     hostKey: 'drillholes',
     interactiveLayerIds: [DRILL_LAYER_ID],
@@ -113,6 +101,11 @@ export const LAYER_RUNTIMES: Record<LayerId, LayerRuntimeDef> = {
     hostKey: 'sigmine',
     interactiveLayerIds: getExternalInteractiveLayerIds('sigmine'),
     render: () => renderExternalLayer('sigmine'),
+  },
+  sigmineTargets: {
+    hostKey: 'sigmineTargets',
+    interactiveLayerIds: getExternalInteractiveLayerIds('sigmineTargets'),
+    render: () => renderExternalLayer('sigmineTargets'),
   },
   anmGeology: {
     hostKey: 'anmGeology',

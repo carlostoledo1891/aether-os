@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verochain.co/spec/bundle-v1.json",
+  "title": "Vero Evidence Bundle v1",
+  "description": "Self-contained, content-addressed evidence bundle. See docs/spec/bundle-v1.md.",
+  "type": "object",
+  "required": [
+    "id",
+    "rootUnitId",
+    "claim",
+    "createdAt",
+    "verificationStatus",
+    "snapshot",
+    "chainProof",
+    "events"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "rootUnitId": { "type": "string", "minLength": 1 },
+    "claim": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "verificationStatus": {
+      "type": "string",
+      "enum": ["pending", "valid", "invalid"],
+      "description": "Server's prior verdict — DO NOT trust without re-walking the chain."
+    },
+    "verifiedAt": { "type": ["string", "null"], "format": "date-time" },
+    "narrative": { "type": ["string", "null"] },
+    "snapshot": {
+      "type": "object",
+      "description": "Opaque domain snapshot. Not part of the chain proof in v1."
+    },
+    "chainProof": {
+      "type": "object",
+      "required": ["startSequence", "endSequence", "eventCount", "startHash", "endHash", "valid"],
+      "properties": {
+        "startSequence": { "type": "integer", "minimum": 0 },
+        "endSequence": { "type": "integer", "minimum": 0 },
+        "eventCount": { "type": "integer", "minimum": 0 },
+        "startHash": {
+          "type": "string",
+          "anyOf": [{ "pattern": "^[0-9a-f]{64}$" }, { "const": "" }]
+        },
+        "endHash": {
+          "type": "string",
+          "anyOf": [{ "pattern": "^[0-9a-f]{64}$" }, { "const": "" }]
+        },
+        "valid": { "type": "boolean" }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "Continuous chain segment between chainProof.startSequence and endSequence inclusive.",
+      "items": { "$ref": "https://verochain.co/spec/audit-event-v1.json" }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy } from 'react'
 import { DeckRunner } from '../../../components/deck/DeckRunner'
 import type { DeckManifest, LazySlide } from '../../../components/deck/types'
@@ -12,6 +13,7 @@ const MarketSlide      = lazy(() => import('./slides/MarketSlide'))
 const RegulatorySlide  = lazy(() => import('./slides/RegulatorySlide'))
 const PlatformSlide    = lazy(() => import('./slides/PlatformSlide'))
 const CaldeiraSlide    = lazy(() => import('./slides/CaldeiraSlide'))
+const MaritimeSiblingSlide = lazy(() => import('./slides/MaritimeSiblingSlide'))
 const ArchitectureSlide = lazy(() => import('./slides/ArchitectureSlide'))
 const CodeQualitySlide = lazy(() => import('./slides/CodeQualitySlide'))
 const DataServiceSlide = lazy(() => import('./slides/DataServiceSlide'))
@@ -27,7 +29,7 @@ const CloseSlide       = lazy(() => import('./slides/BookendSlides').then(m => (
 
 /* ── Manifest ─────────────────────────────────────────────── */
 
-const slides: LazySlide[] = [
+export const FOUNDERS_DECK_SLIDES: LazySlide[] = [
   DisclaimerSlide,
   CoverSlide,
   ProblemSlide,
@@ -45,21 +47,23 @@ const slides: LazySlide[] = [
   RevenueSlide,
   TeamSlide,
   CaldeiraSlide,
+  MaritimeSiblingSlide,
   RoadmapSlide,
   TimelineSlide,
   CloseSlide,
 ]
 
-const MANIFEST: DeckManifest = {
+export const FOUNDERS_DECK_MANIFEST: DeckManifest = {
   id: 'founders',
   title: 'VeroChain — Founders Deck',
   mode: 'slides',
+  theme: 'dark',
   exitPath: '/',
-  slides,
+  slides: FOUNDERS_DECK_SLIDES,
 }
 
 /* ── Component ────────────────────────────────────────────── */
 
 export default function FoundersDeck() {
-  return <DeckRunner manifest={MANIFEST} />
+  return <DeckRunner manifest={FOUNDERS_DECK_MANIFEST} />
 }

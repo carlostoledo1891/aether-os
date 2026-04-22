@@ -48,15 +48,15 @@ export default function AiAgentSlide() {
         </g>
       ))}
 
-      <rect x="720" y="104" width="120" height="44" rx="8" fill={`${V}08`} stroke={`${V}20`} strokeWidth="0.8" />
+      <rect x="720" y="104" width="120" height="44" rx="8" fill={`${V}14`} stroke={`${V}30`} strokeWidth="0.8" />
       <text x="780" y="122" textAnchor="middle" fill={V} fontSize="9" fontWeight="600" fontFamily="var(--font-mono)">Provenance</text>
-      <text x="780" y="136" textAnchor="middle" fill={W.text4} fontSize="8">Source on every response</text>
+      <text x="780" y="136" textAnchor="middle" fill={W.text3} fontSize="8">Source citation required by prompt</text>
       {[20, 56, 92, 128, 164, 200, 236].map(y => (
         <line key={y} x1="690" y1={y + 14} x2="716" y2={120} stroke={`${V}15`} strokeWidth="0.6" />
       ))}
 
       <rect x="178" y="256" width="160" height="24" rx="6" fill={`${W.amber}10`} stroke={`${W.amber}20`} strokeWidth="0.8" />
-      <text x="258" y="272" textAnchor="middle" fill={W.amber} fontSize="9" fontFamily="var(--font-mono)">Hallucination tests · 100% pass</text>
+      <text x="258" y="272" textAnchor="middle" fill={W.amber} fontSize="9" fontFamily="var(--font-mono)">Hallucination guardrail tests · current suite passing</text>
     </svg>
   </>)
 }

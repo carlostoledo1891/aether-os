@@ -73,15 +73,15 @@ function DrillTestsReport({ range: _range }: Props) {
             <Crosshair size={16} style={{ color: WL.blue }} />
           </div>
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: WL.text4 }}>
-            Drill Tests & Resource Report
+            Technical Appendix
           </span>
         </div>
         <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 6px', color: WL.text1 }}>
-          Caldeira Rare Earths Project
+          Caldeira Geology Dossier
         </h1>
         <p style={{ fontSize: 13, color: WL.text3, margin: 0, maxWidth: 600, lineHeight: 1.5 }}>
           JORC 2012 resource classification, drill results, grade distribution, rare earth recovery factors,
-          and lithology across the Caldeira alkaline complex.
+          and lithology across the Caldeira alkaline complex for technical committee review.
         </p>
       </div>
 
@@ -406,8 +406,8 @@ function DrillTestsReport({ range: _range }: Props) {
         fontFamily: 'var(--font-ui)',
       }}>
         Resource estimates follow JORC 2012 guidelines. Data sourced from Meteoric Resources ASX announcements
-        and internal pilot plant results. Recovery percentages from pilot-scale continuous operation and ANSTO laboratory validation.
-        Lithology from drill core logging across 750+ holes. See VeroChain data provenance layer for per-metric classification.
+        and internal pilot plant results. Recovery percentages reflect pilot-scale continuous operation and ANSTO laboratory validation.
+        Lithology derives from drill core logging across 750+ holes. Hydrology is intentionally separated from geology claims in the main demo surface.
       </div>
     </div>
   )

@@ -25,6 +25,28 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/business",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/business/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tech",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/tech/(.*)",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

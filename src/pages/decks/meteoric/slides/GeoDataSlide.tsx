@@ -15,7 +15,7 @@ const SOURCES = [
   },
   {
     name: 'USGS Seismic Feed',
-    detail: 'Real-time microseismic events with depth and structural correlation — continuous geomechanical monitoring',
+    detail: 'Public seismic events feed wired in — depth and structural correlation surfaces designed for continuous geomechanical monitoring',
   },
   {
     name: 'ERA5 Climate Baseline',
@@ -23,7 +23,7 @@ const SOURCES = [
   },
   {
     name: 'LAPOC / ANSN',
-    detail: 'Piezometers, water quality, pH, and conductivity from ANSN field stations — the only field-verified data channel on the Caldeira plateau',
+    detail: 'Piezometer, water quality, pH and conductivity samples mapped from ANSN field stations — the field-verified channel we are working to bring online on the Caldeira plateau',
   },
 ]
 
@@ -35,13 +35,13 @@ const TEMPORAL = [
   },
   {
     horizon: 'Present',
-    data: 'LAPOC live + USGS seismic + Macrostrat',
-    insight: 'Real-time cross-correlation with structural geology and environmental thresholds',
+    data: 'LAPOC ingestion-ready + USGS seismic + Macrostrat',
+    insight: 'Cross-correlation surfaces designed for structural geology and environmental thresholds — refresh on connect',
   },
   {
     horizon: 'Future',
-    data: 'Predictive spring health + grade correlation',
-    insight: 'Compliance risk forecast and resource model enrichment ahead of DFS milestones',
+    data: 'Modeled spring health + grade correlation surfaces',
+    insight: 'Compliance risk scenarios and resource model enrichment on the roadmap toward DFS milestones',
   },
 ]
 
@@ -52,14 +52,14 @@ export default function GeoDataSlide() {
         Geological Intelligence — Source to Surface
       </h2>
       <p style={{ fontSize: 13, color: W.text3, marginBottom: 24, maxWidth: 720 }}>
-        Six data channels active. Every reading has a source, a timestamp, and a provenance label.
+        Six data channels wired in — public feeds live, field channels ingestion-ready. Every reading carries a source, a timestamp, and a provenance label.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 980, width: '100%' }}>
         {/* Left — Data Sources */}
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, color: V, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>
-            Data Sources Active Now
+            Data Sources Wired In
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {SOURCES.map(s => (
@@ -91,7 +91,7 @@ export default function GeoDataSlide() {
 
           <div style={{ marginTop: 6, background: `${V}08`, border: `1px solid ${V}20`, borderRadius: 10, padding: '12px 14px' }}>
             <div style={{ fontSize: 11, color: W.text3, lineHeight: 1.6 }}>
-              <span style={{ color: V, fontWeight: 700 }}>Open integration architecture</span> — any new API (IBGE, ANA, INMET, international geological surveys) connects without frontend changes.
+              <span style={{ color: V, fontWeight: 700 }}>Open integration architecture</span> — designed so new APIs (IBGE, ANA, INMET, international geological surveys) plug into the existing ingestion layer without rewriting the frontend.
             </div>
           </div>
         </div>

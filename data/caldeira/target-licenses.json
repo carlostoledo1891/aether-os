@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-15T00:00:00Z",
+  "source_snapshot": "src/data/geojson/external/caldeira-sigmine-tenements.geojson",
+  "match_method": "bbox overlap review with centroid containment as a primary hint; curated for stability after review.",
+  "licenses": [
+    {
+      "license_id": "LIC-FIG-01",
+      "license_name": "Figueira License",
+      "selected_process_numbers": [
+        "814860/1971",
+        "832221/2021"
+      ],
+      "candidate_process_numbers": [
+        "180266/1977",
+        "815274/1971",
+        "831269/1992",
+        "833176/2008"
+      ],
+      "notes": "Two refractory-clay tenements are kept as the initial curated target set; additional overlaps remain recorded as candidates."
+    },
+    {
+      "license_id": "LIC-SOB-01",
+      "license_name": "Soberbo License",
+      "selected_process_numbers": [
+        "817223/1971",
+        "833656/1996",
+        "834743/1995",
+        "833550/1993"
+      ],
+      "candidate_process_numbers": [
+        "300332/2017",
+        "830955/2006",
+        "832429/2023",
+        "830711/2006"
+      ],
+      "notes": "Initial curated set keeps the dominant refractory-clay overlap plus the strongest reviewed adjacent claims."
+    },
+    {
+      "license_id": "LIC-CDM-01",
+      "license_name": "Capão do Mel License",
+      "selected_process_numbers": [
+        "830955/2006",
+        "830513/1979",
+        "300897/2018",
+        "830551/1979"
+      ],
+      "candidate_process_numbers": [
+        "834294/1995",
+        "816211/1971"
+      ],
+      "notes": "Multiple high-overlap SIGMINE polygons span the curated Capão do Mel target area, so they are preserved together."
+    },
+    {
+      "license_id": "LIC-CVN-01",
+      "license_name": "Cupim Vermelho Norte License",
+      "selected_process_numbers": [
+        "813025/1973",
+        "831026/2024",
+        "830464/1982",
+        "813944/1971"
+      ],
+      "candidate_process_numbers": [
+        "835469/1994",
+        "830619/1979",
+        "816798/1971",
+        "830908/1980",
+        "806971/1973",
+        "835959/1994"
+      ],
+      "notes": "Initial target set keeps the highest-overlap northern tenements, including the visible rare-earth candidate."
+    },
+    {
+      "license_id": "LIC-DM2-01",
+      "license_name": "Dona Maria 2 License",
+      "selected_process_numbers": [
+        "809359/1975",
+        "818686/1971",
+        "809358/1975"
+      ],
+      "candidate_process_numbers": [
+        "7737/1959",
+        "830888/2023",
+        "832346/2024"
+      ],
+      "notes": "Three strong overlapping cadastre polygons are retained while weaker overlaps stay as review candidates."
+    },
+    {
+      "license_id": "LIC-DM1-01",
+      "license_name": "Dona Maria 1 License",
+      "selected_process_numbers": [
+        "809358/1975",
+        "131701/1964",
+        "830539/1985",
+        "818686/1971"
+      ],
+      "candidate_process_numbers": [
+        "777/1967",
+        "830761/2018",
+        "833626/1995",
+        "2009/1967",
+        "800836/1971"
+      ],
+      "notes": "The initial curated set keeps the strongest reviewed overlaps for Dona Maria 1 while preserving other candidates for later curation."
+    }
+  ]
+}

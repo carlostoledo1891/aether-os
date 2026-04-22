@@ -24,16 +24,16 @@ const sizeMap = {
 
 const colorMap = {
   text1:  W.text1,
-  violet: W.violetSoft,
-  cyan:   W.cyan,
-  green:  W.green,
-  amber:  W.amber,
-  red:    W.red,
+  violet: W.text1,
+  cyan:   W.text2,
+  green:  W.text1,
+  amber:  W.text2,
+  red:    W.text2,
 } as const
 
 export function MetricDisplay({
   value, unit, label, sublabel, size = 'md', color = 'text1',
-  trend, trendGood = 'up', mono = true, decimals,
+  trend, trendGood: _trendGood = 'up', mono = true, decimals,
 }: MetricDisplayProps) {
   const s = sizeMap[size]
   const c = colorMap[color]
@@ -42,7 +42,7 @@ export function MetricDisplay({
     : value
 
   const trendColor = trend
-    ? (trend === trendGood ? W.green : trend === 'flat' ? W.text3 : W.red)
+    ? (trend === 'flat' ? W.text4 : W.text2)
     : undefined
 
   return (
@@ -51,7 +51,7 @@ export function MetricDisplay({
         <span style={{
           fontSize: s.label,
           fontWeight: 600,
-          letterSpacing: '0.07em',
+          letterSpacing: '0.05em',
           textTransform: 'uppercase',
           color: W.text3,
           fontFamily: 'var(--font-ui)',

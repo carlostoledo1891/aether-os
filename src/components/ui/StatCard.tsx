@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { W } from '../../app/canvas/canvasTheme'
+import { W } from '../../theme/publicTheme'
 
 export interface StatCardProps {
   value: string | number

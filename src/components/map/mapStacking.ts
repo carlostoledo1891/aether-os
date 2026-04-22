@@ -28,6 +28,7 @@ export const Z = {
   mapPopup: 60,
   controlRoom: 60,
   hydroStation: 60,
+  workspaceChat: 80,
 
   // ─── Overlays / drawers (90-100) ───
   backdrop: 90,

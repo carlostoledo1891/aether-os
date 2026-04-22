@@ -17,10 +17,10 @@ export const CALDEIRA_IDENTITY: SiteIdentity = {
 }
 
 export const CALDEIRA_GEO: SiteGeo = {
-  center: [-46.555, -21.84],
-  bbox: [[-46.72, -22.06], [-46.39, -21.75]],
-  defaultZoom: 11,
-  defaultPitch: 35,
+  center: [-46.57290021799997, -21.895454154846426],
+  bbox: [[-46.72434390999996, -22.047977154342806], [-46.421456525999986, -21.742931155350043]],
+  defaultZoom: 8.5,
+  defaultPitch: 0,
   defaultBearing: 0,
   pois: {
     pilotPlant:      { coords: [-46.575, -21.8],   label: 'CIP Pilot Plant' },

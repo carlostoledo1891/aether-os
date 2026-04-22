@@ -1,31 +1,40 @@
-import { Bell, Sparkles } from 'lucide-react'
-import type { EsgScore, ReportType, ViewMode } from '../../types/telemetry'
-import { EsgScoreRing } from '../EsgScoreRing'
+import { Bell, Sparkles, Layers, Mountain, Settings } from 'lucide-react'
+import type { ViewMode } from '../../types/telemetry'
 import { ViewSwitcher } from './ViewSwitcher'
+import { TabSwitcher } from '../ui/TabSwitcher'
 import { W } from '../../app/canvas/canvasTheme'
 import { Z } from '../map/mapStacking'
 import { useDataService } from '../../services/DataServiceProvider'
 import { VeroChainLogo } from '../brand/VeroChainLogo'
+import { FIELD_RAIL_TABS } from '../../config/demoExperience'
+import type { FieldRailTab } from '../../views/field/constants'
 
 interface HeaderStripProps {
-  esg: EsgScore
+  views: ViewMode[]
+  fieldRailTab?: FieldRailTab
+  onFieldRailTabChange?: (tab: FieldRailTab) => void
   alertCount: number
   fieldAlertCount: number
   onAlertOpen: () => void
   view: ViewMode
   onViewChange: (v: ViewMode) => void
-  onReportOpen?: (type: ReportType) => void
   onChatOpen?: () => void
 }
 
 export function HeaderStrip({
-  esg,
+  views,
+  fieldRailTab,
+  onFieldRailTabChange,
   alertCount, fieldAlertCount, onAlertOpen,
-  view, onViewChange, onReportOpen,
+  view, onViewChange,
   onChatOpen,
 }: HeaderStripProps) {
   const { service } = useDataService()
   const dataContext = service.getDataContext()
+  const fieldTabItems = FIELD_RAIL_TABS.map(item => ({
+    ...item,
+    icon: item.icon === 'mountain' ? Mountain : item.icon === 'layers' ? Layers : Settings,
+  }))
 
   return (
     <header style={{
@@ -63,13 +72,22 @@ export function HeaderStrip({
 
       {/* Center: view tabs */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <ViewSwitcher active={view} onChange={onViewChange} alertCount={fieldAlertCount} onReportOpen={onReportOpen} />
+        {fieldRailTab && onFieldRailTabChange ? (
+          <div style={{ width: '100%', maxWidth: 440 }}>
+            <TabSwitcher
+              items={fieldTabItems}
+              active={fieldRailTab}
+              onSelect={onFieldRailTabChange}
+              layoutId="field-header-tab-pill"
+            />
+          </div>
+        ) : (
+          <ViewSwitcher views={views} active={view} onChange={onViewChange} alertCount={fieldAlertCount} />
+        )}
       </div>
 
-      {/* Right: ESG ring → AI chat → Alerts */}
+      {/* Right: utility actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-        <EsgScoreRing esg={esg} compact />
-
         {onChatOpen && (
           <button
             type="button"

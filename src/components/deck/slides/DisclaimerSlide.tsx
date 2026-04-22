@@ -1,4 +1,4 @@
-import { W } from '../../../app/canvas/canvasTheme'
+import { W } from '../../../theme/publicTheme'
 import { Tag } from '../index'
 
 const V = W.violet

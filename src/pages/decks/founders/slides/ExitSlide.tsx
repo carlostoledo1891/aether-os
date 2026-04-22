@@ -23,6 +23,6 @@ export default function ExitSlide() {
         </div>
       ))}
     </div>
-    <div style={{ fontSize: 11, color: W.text4 }}>3-5 year horizon · DFS → Construction → Production creates natural acquisition window</div>
+    <div style={{ fontSize: 11, color: W.text3 }}>3-5 year horizon · DFS → Construction → Production creates natural acquisition window</div>
   </>)
 }

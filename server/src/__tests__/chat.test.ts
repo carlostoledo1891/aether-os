@@ -1,6 +1,7 @@
 import { describe, it, expect, afterAll, beforeAll } from 'vitest'
 import { buildApp } from '../index.js'
 import type { FastifyInstance } from 'fastify'
+import { mapActionInputSchema } from '../routes/chat.js'
 
 let app: FastifyInstance
 
@@ -73,6 +74,66 @@ describe('POST /api/chat', () => {
       headers: { 'x-api-key': 'test-chat-key' },
     })
     expect([400, 501]).toContain(res.statusCode)
+  })
+
+  it('accepts UIMessage-style payloads with parts arrays', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/chat',
+      payload: {
+        messages: [{
+          id: 'msg-1',
+          role: 'user',
+          parts: [{ type: 'text', text: 'Hello' }],
+        }],
+      },
+      headers: { 'x-api-key': 'test-chat-key' },
+    })
+    expect(res.statusCode).toBe(501)
+  })
+})
+
+describe('mapActionInputSchema', () => {
+  it('accepts object-based flyTo, bookmark, and fitBounds actions', () => {
+    const parsed = mapActionInputSchema.parse({
+      actions: [
+        {
+          type: 'flyTo',
+          center: { lng: -46.573, lat: -21.895 },
+          zoom: 9,
+        },
+        {
+          type: 'bookmark',
+          bookmarkId: 'site-overview',
+        },
+        {
+          type: 'fitBounds',
+          bbox: { west: -46.7, south: -22.0, east: -46.4, north: -21.7 },
+        },
+      ],
+    })
+    expect(parsed.actions).toHaveLength(3)
+  })
+
+  it('rejects legacy tuple-based flyTo and fitBounds payloads', () => {
+    expect(() => mapActionInputSchema.parse({
+      actions: [
+        {
+          type: 'flyTo',
+          center: [-46.573, -21.895],
+          zoom: 9,
+        },
+      ],
+    })).toThrow()
+
+    expect(() => mapActionInputSchema.parse({
+      actions: [
+        {
+          type: 'fitBounds',
+          bbox: [[-46.7, -22.0], [-46.4, -21.7]],
+        },
+      ],
+    })).toThrow()
   })
 })
 

@@ -5,7 +5,6 @@
  */
 
 import boundaryUrl from '../geojson/caldeira-boundary.geojson?url'
-import licensesUrl from '../geojson/caldeira-licenses.geojson?url'
 import pfsUrl from '../geojson/caldeira-pfs-engineering.geojson?url'
 import apaUrl from '../geojson/caldeira-apa-pedra-branca.geojson?url'
 import bufferUrl from '../geojson/caldeira-apa-buffer.geojson?url'
@@ -29,7 +28,6 @@ export interface GeoLayerDef {
 
 export const GEO = {
   boundary:      { id: 'caldeira-boundary',         url: boundaryUrl,     kind: 'polygon' as const, renderOrder: 0 },
-  licenses:      { id: 'caldeira-licenses',          url: licensesUrl,     kind: 'polygon' as const, renderOrder: 4 },
   pfs:           { id: 'caldeira-pfs-engineering',   url: pfsUrl,          kind: 'polygon' as const, renderOrder: 5 },
   apa:           { id: 'caldeira-apa-pedra-branca',  url: apaUrl,          kind: 'polygon' as const, renderOrder: 6 },
   buffer:        { id: 'caldeira-apa-buffer',        url: bufferUrl,       kind: 'polygon' as const, renderOrder: 7 },

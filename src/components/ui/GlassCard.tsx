@@ -12,11 +12,11 @@ interface GlassCardProps {
 }
 
 const colorMap = {
-  violet: W.violet,
-  cyan:   W.cyan,
-  green:  W.green,
-  amber:  W.amber,
-  red:    W.red,
+  violet: W.border3,
+  cyan:   W.border3,
+  green:  W.border3,
+  amber:  W.border3,
+  red:    W.border3,
   none:   'transparent',
 }
 
@@ -24,14 +24,14 @@ export function GlassCard({
   children, className = '', style, glow = 'none', onClick, animate = true
 }: GlassCardProps) {
   const baseStyle: CSSProperties = {
-    background: `var(--w-glass-card-bg, ${W.glass04})`,
-    backdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
-    WebkitBackdropFilter: `blur(var(--w-glass-card-blur, 12px))`,
-    border: 'var(--w-glass-card-border, var(--w-border-chrome))',
+    background: `var(--w-glass-card-bg, ${W.card})`,
+    backdropFilter: `blur(var(--w-glass-card-blur, 8px))`,
+    WebkitBackdropFilter: `blur(var(--w-glass-card-blur, 8px))`,
+    border: `var(--w-glass-card-border, 1px solid ${W.border2})`,
     borderRadius: W.radius.lg,
     boxShadow: glow !== 'none'
-      ? `0 0 0 1px ${colorMap[glow]}24, 0 4px 12px rgba(0,0,0,0.1)`
-      : `0 4px 12px rgba(0,0,0,0.1)`,
+      ? `0 0 0 1px ${colorMap[glow]}, ${W.shadowMd}`
+      : W.shadowSm,
     ...style,
   }
 

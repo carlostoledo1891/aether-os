@@ -1,204 +1,32 @@
-import { lazy, Suspense, useCallback, useRef, useState, useMemo } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { AnimatePresence, motion } from 'motion/react'
-import type { AlertItem, ReportType, ViewMode } from './types/telemetry'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { MapCameraProvider } from './contexts/MapCameraContext'
-import { DataServiceProvider, useDataService } from './services/DataServiceProvider'
+import { DataServiceProvider } from './services/DataServiceProvider'
 import { createMockDataService } from './services/mockDataService'
 import { createLiveDataService } from './services/liveDataService'
 import { getDataMode } from './config/env'
 import { ThemeScope } from './theme/ThemeProvider'
 import { useThemeTokens } from './theme/useTheme'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { HeaderStrip } from './components/layout/HeaderStrip'
-import { DataModeBanner } from './components/layout/DataModeBanner'
-import { AlertPanel } from './components/layout/AlertPanel'
-import { ChatPanel } from './components/layout/ChatPanel'
-import { DeckRunner } from './components/deck/DeckRunner'
-import type { DeckManifest } from './components/deck/types'
-import shell from './AppShell.module.css'
+import { PresentationShell } from './experience/PresentationShell'
+import { RequestDemoProvider } from './components/marketing/RequestDemo'
+import { InstanceProvider } from './contexts/InstanceContext'
 
-const LandingPage = lazy(() => import('./pages/marketing/LandingPage'))
-const TechPage = lazy(() => import('./pages/marketing/TechPage'))
-const BusinessPage = lazy(() => import('./pages/marketing/BusinessPage'))
-const TrustCenterPage = lazy(() => import('./pages/marketing/TrustCenterPage'))
-
-const FoundersDeck = lazy(() => import('./pages/decks/founders/FoundersDeck'))
-const MeteoricDeck = lazy(() => import('./pages/decks/meteoric/MeteoricDeck'))
-
+const WorkspacePage = lazy(() => import('./pages/unit/UnitPage'))
+const EmptyShellPage = lazy(() => import('./pages/instances/EmptyShell'))
+const MaritimeWorkspacePage = lazy(() => import('./pages/instances/MaritimeWorkspace'))
 const PrefeituraPage = lazy(() => import('./pages/views/prefeitura/PrefeituraPage').then(m => ({ default: m.PrefeituraPage })))
-
 const KnowledgePage = lazy(() => import('./pages/admin/KnowledgePage'))
 const MapLayersPage = lazy(() => import('./pages/admin/MapLayersPage'))
-
-const EnvironmentReport = lazy(() => import('./components/reports/EnvironmentReport'))
-const OperationsReport = lazy(() => import('./components/reports/OperationsReport'))
-const DrillTestsReport = lazy(() => import('./components/reports/DrillTestsReport'))
-
-function createReportManifest(
-  id: string,
-  title: string,
-  renderContent: DeckManifest['renderContent'],
-): DeckManifest {
-  return {
-    id,
-    title,
-    subtitle: 'Caldeira Project',
-    mode: 'report',
-    theme: 'light',
-    timeRange: true,
-    printable: true,
-    portal: true,
-    renderContent,
-  }
-}
-
-const REPORT_MANIFESTS: Record<ReportType, DeckManifest> = {
-  environment: createReportManifest('report-environment', 'Environmental & Community Report', range => <EnvironmentReport range={range} />),
-  operations: createReportManifest('report-operations', 'Operations Report', range => <OperationsReport range={range} />),
-  'drill-tests': createReportManifest('report-drill-tests', 'Drill Tests & Resource Report', range => <DrillTestsReport range={range} />),
-}
-
-const VIEW_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const
-
-const FieldView = lazy(() => import('./views/FieldView').then(m => ({ default: m.FieldView })))
-const BuyerView = lazy(() => import('./views/BuyerView').then(m => ({ default: m.BuyerView })))
-const ExecutiveView = lazy(() => import('./views/ExecutiveView').then(m => ({ default: m.ExecutiveView })))
+const LandingPage = lazy(() => import('./pages/marketing/LandingPage'))
+const TrustCenterPage = lazy(() => import('./pages/marketing/TrustCenterPage'))
+const VerifyPage = lazy(() => import('./pages/verify/VerifyPage'))
+const VerifierStatsPage = lazy(() => import('./pages/admin/VerifierStatsPage'))
 
 function createDataService() {
   return getDataMode() === 'live' ? createLiveDataService() : createMockDataService()
-}
-
-function AppShell() {
-  const theme = useThemeTokens()
-  const [view, setView] = useState<ViewMode>('operator')
-  const [reportOpen, setReportOpen] = useState<ReportType | null>(null)
-  const [alertOpen, setAlertOpen] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
-  const [highlightFeatureId, setHighlightFeatureId] = useState<string | null>(null)
-  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const { service, telemetry, dismissAlert, dismissAllAlerts } = useDataService()
-  const closeAlertPanel = useCallback(() => setAlertOpen(false), [])
-  const openAlertPanel = useCallback(() => { setChatOpen(false); setAlertOpen(true) }, [])
-  const openChatPanel = useCallback(() => { setAlertOpen(false); setChatOpen(true) }, [])
-  const closeChatPanel = useCallback(() => setChatOpen(false), [])
-  const handleReportOpen = useCallback((type: ReportType) => { setReportOpen(type) }, [])
-  const handleReportClose = useCallback(() => setReportOpen(null), [])
-
-  const handleAlertNavigate = useCallback((alert: AlertItem) => {
-    if (alert.source === 'operator') {
-      setView('operator')
-    } else if (alert.source === 'buyer') {
-      setView('buyer')
-    } else {
-      setView('operator')
-    }
-    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current)
-    setHighlightFeatureId(alert.id)
-    highlightTimerRef.current = setTimeout(() => setHighlightFeatureId(null), 5000)
-    setAlertOpen(false)
-  }, [])
-
-  const dataContext = useMemo(() => service.getDataContext(), [service])
-  const { esg, activeAlerts } = telemetry
-  const fieldAlertCount = activeAlerts.filter(a => a.source === 'operator').length
-
-  return (
-    <div className={shell.root}>
-      <HeaderStrip
-        esg={esg}
-        alertCount={dataContext.disclosureMode ? 0 : activeAlerts.length}
-        fieldAlertCount={fieldAlertCount}
-        onAlertOpen={openAlertPanel}
-        onChatOpen={openChatPanel}
-        view={view}
-        onViewChange={setView}
-        onReportOpen={handleReportOpen}
-      />
-      <DataModeBanner context={dataContext} />
-
-      <div className={shell.main}>
-        <Suspense
-          fallback={(
-            <div
-              style={{
-                background: theme.bg,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 14,
-                flex: 1,
-                minHeight: 0,
-              }}
-            >
-              <div style={{
-                width: 36, height: 36,
-                background: theme.violet,
-                borderRadius: theme.radius.sm,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 16, fontWeight: 800, color: theme.textInverse, letterSpacing: '-0.03em',
-                animation: 'pulse 1.5s ease-in-out infinite',
-              }}>
-                V
-              </div>
-              <span style={{
-                color: theme.text4,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                letterSpacing: '0.06em',
-              }}>
-                Loading view…
-              </span>
-            </div>
-          )}
-        >
-          <AnimatePresence mode="wait">
-            {view === 'operator' && (
-              <motion.div key="operator" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                transition={VIEW_TRANSITION} className={shell.viewLayer}>
-                <FieldView highlightFeatureId={highlightFeatureId} />
-              </motion.div>
-            )}
-            {view === 'buyer' && (
-              <motion.div key="buyer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                transition={VIEW_TRANSITION} className={shell.viewLayer}>
-                <BuyerView />
-              </motion.div>
-            )}
-            {view === 'executive' && (
-              <motion.div key="executive" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                transition={VIEW_TRANSITION} className={shell.viewLayer}>
-                <ExecutiveView />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Suspense>
-      </div>
-
-      <AlertPanel
-        alerts={activeAlerts}
-        isOpen={alertOpen}
-        onClose={closeAlertPanel}
-        onDismiss={dismissAlert}
-        onDismissAll={dismissAllAlerts}
-        onNavigate={handleAlertNavigate}
-      />
-      <ChatPanel isOpen={chatOpen} onClose={closeChatPanel} />
-
-      {reportOpen && (
-        <Suspense fallback={null}>
-          <DeckRunner
-            manifest={REPORT_MANIFESTS[reportOpen]}
-            onClose={handleReportClose}
-          />
-        </Suspense>
-      )}
-    </div>
-  )
 }
 
 const PageFallback = () => {
@@ -210,7 +38,7 @@ const PageFallback = () => {
   )
 }
 
-function renderPage(page: ReactNode, theme: 'dark' | 'light' = 'dark') {
+function renderPage(page: ReactNode, theme: 'dark' | 'light' = 'light') {
   return (
     <ThemeScope theme={theme} style={{ minHeight: '100vh', background: 'var(--w-bg)', color: 'var(--w-text1)' }}>
       <ErrorBoundary>
@@ -222,30 +50,118 @@ function renderPage(page: ReactNode, theme: 'dark' | 'light' = 'dark') {
   )
 }
 
+/**
+ * /app entry — the multi-instance shell. If the user has previously
+ * visited a Vero instance (localStorage hint), 308 them straight back
+ * to it; otherwise show the EmptyShell picker.
+ */
+function readLastInstanceHint(): 'meteoric' | 'maritime' | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const last = window.localStorage.getItem('vero.lastInstance')
+    if (last === 'meteoric' || last === 'maritime') return last
+  } catch {
+    // localStorage unavailable — fall through to empty shell.
+  }
+  return null
+}
+
+function AppRoot() {
+  const last = readLastInstanceHint()
+  if (last) {
+    return <Navigate to={`/app/${last}`} replace />
+  }
+  return (
+    <InstanceProvider slug="_empty">
+      {renderPage(<EmptyShellPage />, 'dark')}
+    </InstanceProvider>
+  )
+}
+
+/**
+ * Legacy /app/<unit-id> deep links land here. Forward the entire suffix
+ * to /app/meteoric/<unit-id> so existing share-links keep working after
+ * the multi-instance move.
+ */
+function LegacyAppRedirect() {
+  const location = useLocation()
+  // location.pathname starts with /app/ — strip the prefix and prepend
+  // /app/meteoric/ so /app/SITE-CALDEIRA → /app/meteoric/SITE-CALDEIRA.
+  const suffix = location.pathname.replace(/^\/app\/?/, '')
+  const target = `/app/meteoric${suffix ? `/${suffix}` : ''}${location.search}${location.hash}`
+  return <Navigate to={target} replace />
+}
+
 export default function App() {
   const service = useMemo(() => createDataService(), [])
+  const experienceElement = (
+    <ErrorBoundary>
+      <PresentationShell />
+    </ErrorBoundary>
+  )
 
   return (
     <DataServiceProvider service={service}>
       <MapProvider>
         <MapCameraProvider>
+          <RequestDemoProvider>
           <Routes>
-            <Route path="/" element={renderPage(<LandingPage />)} />
-            <Route path="/app/*" element={<ThemeScope theme="dark" style={{ height: '100vh' }}><ErrorBoundary><AppShell /></ErrorBoundary></ThemeScope>} />
-            <Route path="/business" element={renderPage(<BusinessPage />)} />
-            <Route path="/tech" element={renderPage(<TechPage />)} />
-            <Route path="/trust" element={renderPage(<TrustCenterPage />)} />
-            
-            <Route path="/deck/founders" element={renderPage(<FoundersDeck />)} />
-            <Route path="/deck/meteoric" element={renderPage(<MeteoricDeck />)} />
-            
+            <Route path="/" element={renderPage(<LandingPage />, 'dark')} />
+            {/*
+              * /app — multi-instance shell.
+              * /app                 → AppRoot (last-visited redirect or EmptyShell picker)
+              * /app/meteoric/*      → existing Caldeira workspace, byte-identical
+              * /app/maritime/*      → new Defense Maritime ISR mock instance
+              * /app/<anything>/*    → legacy redirect to /app/meteoric/<anything>
+              *                         (preserves pre-sprint share links)
+              */}
+            <Route path="/app" element={<AppRoot />} />
+            <Route
+              path="/app/meteoric/*"
+              element={(
+                <InstanceProvider slug="meteoric">
+                  {renderPage(<WorkspacePage />, 'dark')}
+                </InstanceProvider>
+              )}
+            />
+            <Route
+              path="/app/maritime/*"
+              element={(
+                <InstanceProvider slug="maritime">
+                  {renderPage(<MaritimeWorkspacePage />, 'dark')}
+                </InstanceProvider>
+              )}
+            />
+            <Route path="/app/*" element={<LegacyAppRedirect />} />
+            {/*
+              * Day-5 sprint route consolidation
+              * (`.cursor/plans/wave_1_final_sprint_c23e42d0.plan.md` § 5).
+              * /business is folded into /; /tech is parked behind a 90-day
+              * temporary redirect to /. The hard 30x semantics live in
+              * `vercel.json`; these client-side <Navigate> elements exist
+              * so local dev / preview / non-Vercel hosts behave the same
+              * way and any deep link hitting the SPA shell still lands on
+              * the canonical landing page.
+              */}
+            <Route path="/business" element={<Navigate to="/" replace />} />
+            <Route path="/business/*" element={<Navigate to="/" replace />} />
+            <Route path="/tech" element={<Navigate to="/" replace />} />
+            <Route path="/tech/*" element={<Navigate to="/" replace />} />
+            <Route path="/trust" element={renderPage(<TrustCenterPage />, 'dark')} />
+            <Route path="/deck/home" element={experienceElement} />
+            <Route path="/deck/business" element={experienceElement} />
+            <Route path="/deck/tech" element={experienceElement} />
+            <Route path="/deck/trust" element={experienceElement} />
+            <Route path="/deck/founders" element={experienceElement} />
+            <Route path="/deck/meteoric" element={experienceElement} />
             <Route path="/views/prefeitura" element={renderPage(<PrefeituraPage />)} />
-            
             <Route path="/admin/knowledge" element={renderPage(<KnowledgePage />)} />
             <Route path="/admin/map-layers" element={renderPage(<MapLayersPage />)} />
-            
-            <Route path="/*" element={renderPage(<LandingPage />)} />
+            <Route path="/admin/verifier-stats" element={renderPage(<VerifierStatsPage />, 'dark')} />
+            <Route path="/verify/:hash" element={renderPage(<VerifyPage />, 'dark')} />
+            <Route path="/*" element={renderPage(<LandingPage />, 'dark')} />
           </Routes>
+          </RequestDemoProvider>
         </MapCameraProvider>
       </MapProvider>
     </DataServiceProvider>

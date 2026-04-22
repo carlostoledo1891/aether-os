@@ -13,7 +13,7 @@ export default function AskSlide() {
         { label: 'Runway', value: '12 months' }
       ].map(s => (
         <div key={s.label} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '16px', textAlign: 'center' }}>
-          <div style={{ fontSize: 12, color: W.text4, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>{s.label}</div>
+          <div style={{ fontSize: 12, color: W.text3, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>{s.label}</div>
           <div style={{ fontSize: 24, fontWeight: 800, color: W.text1, fontFamily: 'var(--font-mono)' }}>{s.value}</div>
         </div>
       ))}

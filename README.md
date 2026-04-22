@@ -8,6 +8,34 @@ A pitch-ready B2B SaaS prototype providing real-time telemetry, ESG compliance, 
 
 **Enterprise Readiness:** Controls mapped to NIST 800-53 Rev 5 and CMMC Level 2. SBOM generated via Syft on every CI build. See [Trust Center](/trust) and [SECURITY.md](SECURITY.md).
 
+## Verify this build
+
+Open [`https://verochain.co/verify/c1a32f57bf64b88c845166007e16f12a3522589dcc4f90cad572f14ba8512d1a`](https://verochain.co/verify/c1a32f57bf64b88c845166007e16f12a3522589dcc4f90cad572f14ba8512d1a)
+in any modern browser.
+
+Your browser will recompute the SHA-256 chain locally with `crypto.subtle`
+and either confirm the audit chain is intact or pinpoint the broken
+sequence. The server is never the one that says "valid". If your browser
+lacks `crypto.subtle` (in-app webviews, locked-down corp builds), the
+page degrades to a "Verifier unavailable" card with the chain hash and a
+`curl` snippet — we never silently fall back to "trust the server".
+
+The wire format and verification algorithm are MIT-licensed in
+[`docs/spec/`](docs/spec/) (`audit-event-v1.md`, `bundle-v1.md`, plus
+JSON Schemas). The committed reference hash lives in
+[`docs/REFERENCE_BUNDLE_HASH.txt`](docs/REFERENCE_BUNDLE_HASH.txt) and is
+gated against drift by
+[`server/src/__tests__/referenceBundle.test.ts`](server/src/__tests__/referenceBundle.test.ts) —
+any change to the canonical bundle's shape fails CI in the same PR. To
+reproduce the hash on a fresh clone:
+
+```bash
+npm install
+cd server && npm install && cd ..
+rm -f server/data/aether.db
+npm run server   # logs `[seed] /verify/<hash>` on first boot
+```
+
 ## Quick Start
 
 ```bash

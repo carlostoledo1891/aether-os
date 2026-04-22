@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const GEOJSON_PATH = resolve(__dirname, '..', 'src', 'data', 'geojson', 'caldeira-drillholes.geojson')
 
-interface AssayEntry {
+export interface AssayEntry {
   treo_ppm: number
   mreo_pct: number
   hmreo_ppm: number
@@ -25,7 +25,7 @@ interface AssayEntry {
 
 // Extracted from PDF Table 1 — full-hole composite rows
 // mreo_pct = round((MREO / TREO) * 100) where MREO = Pr6O11 + Nd2O3 + Tb4O7 + Dy2O3
-const ASSAY_LOOKUP: Record<string, AssayEntry> = {
+export const ASSAY_LOOKUP: Record<string, AssayEntry> = {
   AGODD0001: {
     treo_ppm: 2616, mreo_pct: Math.round((243 / 2616) * 100), hmreo_ppm: 18, prnd_ppm: 224,
     intercept: '43.2m @ 2,616ppm TREO [0m]',
@@ -183,26 +183,21 @@ const ASSAY_LOOKUP: Record<string, AssayEntry> = {
   },
 }
 
-interface GeoJsonFeature {
+export interface GeoJsonFeature {
   type: string
   properties: Record<string, unknown>
   geometry: unknown
 }
 
-interface GeoJsonFC {
+export interface GeoJsonFC {
   type: string
   metadata: Record<string, unknown>
   features: GeoJsonFeature[]
 }
 
-function main() {
-  console.log('Reading GeoJSON...')
-  const raw = readFileSync(GEOJSON_PATH, 'utf-8')
-  const geojson = JSON.parse(raw) as GeoJsonFC
-
+export function applyDrillAssayBackfill(geojson: GeoJsonFC) {
   let updated = 0
   let alreadyCorrect = 0
-  let notFound = 0
 
   const lookupIds = new Set(Object.keys(ASSAY_LOOKUP))
 
@@ -241,14 +236,30 @@ function main() {
     updated++
   }
 
-  notFound = lookupIds.size
-  if (notFound > 0) {
-    console.warn(`  WARNING: ${notFound} hole(s) not found in GeoJSON: ${[...lookupIds].join(', ')}`)
+  return {
+    geojson,
+    updated,
+    alreadyCorrect,
+    notFound: lookupIds.size,
+    missingIds: [...lookupIds],
+  }
+}
+
+function main() {
+  console.log('Reading GeoJSON...')
+  const raw = readFileSync(GEOJSON_PATH, 'utf-8')
+  const geojson = JSON.parse(raw) as GeoJsonFC
+
+  const result = applyDrillAssayBackfill(geojson)
+  if (result.notFound > 0) {
+    console.warn(`  WARNING: ${result.notFound} hole(s) not found in GeoJSON: ${result.missingIds.join(', ')}`)
   }
 
-  console.log(`Writing GeoJSON... (${updated} updated, ${alreadyCorrect} already correct, ${notFound} not found)`)
-  writeFileSync(GEOJSON_PATH, JSON.stringify(geojson, null, 2) + '\n')
+  console.log(`Writing GeoJSON... (${result.updated} updated, ${result.alreadyCorrect} already correct, ${result.notFound} not found)`)
+  writeFileSync(GEOJSON_PATH, JSON.stringify(result.geojson, null, 2) + '\n')
   console.log('Done.')
 }
 
-main()
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main()
+}

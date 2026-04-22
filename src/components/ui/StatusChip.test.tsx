@@ -11,7 +11,10 @@ describe('StatusChip', () => {
   it('applies green variant styling', () => {
     const { container } = render(<StatusChip label="OK" variant="green" />)
     const chip = container.firstChild as HTMLElement
-    expect(chip.style.color).toContain('22D68A')
+    // Green variant currently maps to W.text1 (#E7E4EE) on a glass surface;
+    // see variantMap in StatusChip.tsx. Update both files together when
+    // re-tuning the chip palette.
+    expect(chip.style.color.toUpperCase()).toContain('E7E4EE')
   })
 
   it('renders dot when dot prop is true', () => {

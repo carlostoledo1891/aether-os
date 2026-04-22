@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Bullet } from '../../../../components/deck'
 import { W, V, EU_DPP_DATE } from './shared'
+import { RequestDemoButton } from '../../../../components/marketing/RequestDemo'
 
 
 const DeckCountdown = lazy(() => import('../DeckCountdown'))
@@ -14,8 +15,8 @@ export default function CtaSlide() {
       <h2 style={{ fontSize: 'clamp(32px, 5.5vw, 56px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 28, background: `linear-gradient(135deg, ${W.text4} 30%, ${V})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
         It's not a prototype.
       </h2>
-      <p style={{ fontSize: 'clamp(15px, 2vw, 20px)', color: W.text3, maxWidth: 520, lineHeight: 1.6, marginBottom: 28, textAlign: 'center' }}>
-        Live geological data. Environmental compliance telemetry. A domain-grounded AI trained on the Caldeira's own datasets. It's running — go in and see.
+      <p style={{ fontSize: 'clamp(15px, 2vw, 20px)', color: W.text3, maxWidth: 600, lineHeight: 1.6, marginBottom: 28, textAlign: 'center' }}>
+        Caldeira geology wired in. Compliance telemetry modeled and ingestion-ready. A domain-grounded AI tool-calling against the Caldeira's own datasets. The same runtime is already powering a live Atlantic Maritime ISR sibling — Meteoric is signing into a category-defining platform, not a single-customer tool. It's running — go in and see.
       </p>
       <div style={{ marginBottom: 28 }}>
         <Suspense fallback={null}>
@@ -23,16 +24,15 @@ export default function CtaSlide() {
         </Suspense>
       </div>
       <div style={{ maxWidth: 700, display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36, textAlign: 'left' }}>
-        <Bullet>The Caldeira is a globally strategic asset. A flagship trust layer protects its valuation at every stage — PFS, DFS, and construction.</Bullet>
-        <Bullet>The team brings production-grade engineering, 40 years of Caldeira context, and active LAPOC/ANSN field science.</Bullet>
+        <Bullet>The Caldeira is a globally strategic asset. A trust layer designed to protect its valuation across PFS, DFS, and construction stages.</Bullet>
+        <Bullet>One builder shipping production-grade engineering, with advisor depth in Caldeira context and active LAPOC/ANSN field science.</Bullet>
         <Bullet accent={W.green}>$102k/yr at 0.013% of NPV — less than one week of DFS consultant fees.</Bullet>
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <a href="/app" onClick={e => e.stopPropagation()} style={{ background: V, color: '#fff', padding: '16px 40px', borderRadius: 8, fontSize: 16, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.01em' }}>
-          Enter the Platform
-        </a>
+        <RequestDemoButton size="lg" />
+        <a href="/" onClick={e => e.stopPropagation()} style={{ border: `1px solid ${W.glass12}`, color: W.text2, padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: 'none', background: 'transparent', letterSpacing: '0.01em' }}>Website</a>
       </div>
-      <p style={{ fontSize: 12, color: W.text4, marginTop: 20 }}>carlos@verochain.co</p>
+      <p style={{ fontSize: 12, color: W.text3, marginTop: 20 }}>carlos@verochain.co</p>
     </>
   )
 }

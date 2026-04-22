@@ -17,7 +17,7 @@ export default function MoatSlide() {
         <div key={c.comp} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '14px 0', borderBottom: `1px solid ${W.glass06}`, textAlign: 'left' }}>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 600, color: W.text1 }}>{c.comp}</div>
-            <div style={{ fontSize: 11, color: W.text4, marginTop: 2 }}>{c.val}</div>
+            <div style={{ fontSize: 11, color: W.text3, marginTop: 2 }}>{c.val}</div>
           </div>
           <div style={{ flex: 2, fontSize: 12, color: W.text3, paddingLeft: 16 }}>{c.gap}</div>
         </div>
@@ -28,7 +28,9 @@ export default function MoatSlide() {
       <div style={{ height: 6 }} />
       <Bullet accent={W.green}>Honesty-first positioning — data honesty banner, Slide 0 disclaimer, "words to avoid" appendix. The Everledger defense.</Bullet>
       <div style={{ height: 6 }} />
-      <Bullet accent={V}>Predictive environmental intelligence — competitors report historical data; VeroChain forecasts compliance risk.</Bullet>
+      <Bullet accent={V}>Forward-looking environmental intelligence — competitors largely report historical data; Vero models forward compliance-risk signals from public weather and disclosure feeds.</Bullet>
+      <div style={{ height: 6 }} />
+      <Bullet accent={W.cyan}>Two live instances on one runtime — Meteoric's Caldeira workspace and an Atlantic Maritime ISR workspace ship from the same audit-chain primitives. Vertical reach is a feature of the platform, not a vendor promise.</Bullet>
     </div>
   </>)
 }

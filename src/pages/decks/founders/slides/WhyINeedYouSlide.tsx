@@ -40,10 +40,10 @@ export default function WhyINeedYouSlide() {
       </div>
       <div style={{ background: W.glass08, width: 1 }} />
       <div style={{ textAlign: 'left' }}>
-        <div style={{ fontSize: 11, color: W.text4, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I cannot do simultaneously</div>
+        <div style={{ fontSize: 11, color: W.text3, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>What I cannot do simultaneously</div>
         {CANNOT_ITEMS.map(item => (
           <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: `${W.text4}60`, marginTop: 6, flexShrink: 0 }} />
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: W.text4, marginTop: 6, flexShrink: 0, opacity: 0.6 }} />
             <p style={{ fontSize: 12, color: W.text3, lineHeight: 1.5, margin: 0 }}>{item}</p>
           </div>
         ))}

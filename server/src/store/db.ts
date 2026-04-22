@@ -27,7 +27,7 @@ export function getDb(): Database.Database {
   return db
 }
 
-const SCHEMA_VERSION = 4
+const SCHEMA_VERSION = 7
 
 const MIGRATIONS: Array<(d: Database.Database) => void> = [
   // v0 → v1: initial schema
@@ -206,14 +206,138 @@ const MIGRATIONS: Array<(d: Database.Database) => void> = [
     CREATE INDEX IF NOT EXISTS idx_kc_content ON knowledge_chunks(content);
   `)
   },
+  // v4 → v5: unit model tables
+  (d) => {
+    d.exec(`
+    CREATE TABLE IF NOT EXISTS unit_types (
+      id          TEXT PRIMARY KEY,
+      label       TEXT NOT NULL,
+      color       TEXT NOT NULL,
+      icon        TEXT,
+      def_json    TEXT NOT NULL,
+      updated_at  TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS units (
+      id            TEXT PRIMARY KEY,
+      type_id       TEXT NOT NULL REFERENCES unit_types(id),
+      label         TEXT NOT NULL,
+      current_state TEXT NOT NULL,
+      severity      TEXT NOT NULL DEFAULT 'nominal',
+      place_id      TEXT,
+      owner         TEXT,
+      data_json     TEXT NOT NULL DEFAULT '{}',
+      created_at    TEXT NOT NULL,
+      updated_at    TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_units_type ON units(type_id);
+    CREATE INDEX IF NOT EXISTS idx_units_state ON units(current_state);
+    CREATE INDEX IF NOT EXISTS idx_units_place ON units(place_id);
+    CREATE INDEX IF NOT EXISTS idx_units_severity ON units(severity);
+
+    CREATE TABLE IF NOT EXISTS unit_edges (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      from_id       TEXT NOT NULL REFERENCES units(id),
+      to_id         TEXT NOT NULL REFERENCES units(id),
+      rel           TEXT NOT NULL,
+      metadata_json TEXT,
+      UNIQUE(from_id, to_id, rel)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_edges_from ON unit_edges(from_id);
+    CREATE INDEX IF NOT EXISTS idx_edges_to ON unit_edges(to_id);
+
+    CREATE TABLE IF NOT EXISTS unit_transitions (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      unit_id         TEXT NOT NULL REFERENCES units(id),
+      from_state      TEXT NOT NULL,
+      to_state        TEXT NOT NULL,
+      actor           TEXT NOT NULL,
+      reason          TEXT,
+      audit_event_id  TEXT,
+      created_at      TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_trans_unit ON unit_transitions(unit_id);
+
+    CREATE TABLE IF NOT EXISTS evidence_refs (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      unit_id         TEXT NOT NULL REFERENCES units(id),
+      transition_id   INTEGER REFERENCES unit_transitions(id),
+      doc_type        TEXT NOT NULL,
+      doc_id          TEXT NOT NULL,
+      label           TEXT NOT NULL,
+      hash            TEXT,
+      attached_at     TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_evidence_unit ON evidence_refs(unit_id);
+
+    CREATE TABLE IF NOT EXISTS evidence_bundles (
+      id                    TEXT PRIMARY KEY,
+      root_unit_id          TEXT NOT NULL REFERENCES units(id),
+      claim                 TEXT NOT NULL,
+      snapshot_json         TEXT NOT NULL,
+      chain_proof_json      TEXT NOT NULL,
+      narrative             TEXT,
+      created_at            TEXT NOT NULL,
+      verified_at           TEXT,
+      verification_status   TEXT NOT NULL DEFAULT 'pending'
+    );
+  `)
+  },
+  // v5 → v6: data_mode column on evidence_bundles. Wave 1 final-sprint
+  // policy: bundles created with `process.env.AETHER_DATA_MODE='mock'`
+  // are NOT publishable through `/api/public/bundles/*` (the public route
+  // returns 403 with `mock_mode_bundle_not_publishable`). Live is the
+  // default for any historical row that pre-dates this column.
+  // See `.cursor/plans/wave_1_final_sprint_c23e42d0.plan.md` § 2.2.
+  (d) => {
+    d.exec(`
+      ALTER TABLE evidence_bundles
+        ADD COLUMN data_mode TEXT NOT NULL DEFAULT 'live';
+    `)
+  },
+  // v6 → v7: verifier_telemetry table. Stores anonymous, client-reported
+  // measurements of the in-tab verification flow (see
+  // `.cursor/plans/wave_1_final_sprint_c23e42d0.plan.md` § 3.2).
+  // Columns:
+  //   - chain_hash: which bundle the verifier was asked to check.
+  //   - duration_ms: wall-clock from "fetch resolved" to "verdict shown".
+  //   - event_count: how many audit_events the chain proof covered.
+  //   - outcome: 'valid' | 'broken' | 'unavailable' | 'error'.
+  //   - user_agent_class: coarse bucket ('safari', 'chromium', 'firefox', 'webview', 'other').
+  //   - reported_at: server-side ingestion time (we ignore client clocks).
+  // We deliberately do NOT store IPs here — `bundle_published` already
+  // handles unique-session counting via the audit chain.
+  (d) => {
+    d.exec(`
+      CREATE TABLE IF NOT EXISTS verifier_telemetry (
+        id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+        chain_hash         TEXT NOT NULL,
+        duration_ms        INTEGER NOT NULL,
+        event_count        INTEGER NOT NULL,
+        outcome            TEXT NOT NULL,
+        user_agent_class   TEXT NOT NULL DEFAULT 'other',
+        reported_at        TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_verifier_telemetry_hash
+        ON verifier_telemetry(chain_hash);
+      CREATE INDEX IF NOT EXISTS idx_verifier_telemetry_reported_at
+        ON verifier_telemetry(reported_at);
+    `)
+  },
 ]
 
 function initSchema() {
   const currentVersion = (db.pragma('user_version', { simple: true }) as number) ?? 0
   for (let v = currentVersion; v < SCHEMA_VERSION; v++) {
-    MIGRATIONS[v](db)
+    db.transaction(() => {
+      MIGRATIONS[v](db)
+      db.pragma(`user_version = ${v + 1}`)
+    })()
   }
-  db.pragma(`user_version = ${SCHEMA_VERSION}`)
 }
 
 /* ─── Telemetry operations ──────────────────────────────────────────────── */

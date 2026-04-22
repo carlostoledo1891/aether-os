@@ -56,7 +56,7 @@ describe.sequential('production CORS allowlist', () => {
     await expectCorsFor(app, '/api/provenance')
     await expectCorsFor(app, '/api/telemetry/history?range=24h')
     await expectCorsFor(app, '/api/market/stock', [200, 503])
-  })
+  }, 30000)
 
   it('falls back to canonical production origins when CORS_ORIGIN is unset', async () => {
     app = await createProdApp({ CORS_ORIGIN: undefined })

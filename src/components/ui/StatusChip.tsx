@@ -9,12 +9,12 @@ interface StatusChipProps {
 }
 
 const variantMap = {
-  green:  { bg: `${W.green}12`,  text: W.green },
-  amber:  { bg: `${W.amber}12`,  text: W.amber },
-  red:    { bg: `${W.red}12`,    text: W.red },
-  violet: { bg: `${W.violet}12`, text: W.violetSoft },
-  cyan:   { bg: `${W.cyan}12`,   text: W.cyan },
-  muted:  { bg: `${W.border3}12`, text: W.text3 },
+  green:  { bg: W.glass06, border: W.border3, text: W.text1 },
+  amber:  { bg: W.glass05, border: W.border2, text: W.text2 },
+  red:    { bg: W.glass04, border: W.border2, text: W.text2 },
+  violet: { bg: W.glass06, border: W.border3, text: W.text1 },
+  cyan:   { bg: W.glass05, border: W.border2, text: W.text2 },
+  muted:  { bg: W.glass03, border: W.border, text: W.text3 },
 } as const
 
 export const StatusChip = memo(function StatusChip({ label, variant = 'muted', dot = false, size = 'sm' }: StatusChipProps) {
@@ -28,12 +28,12 @@ export const StatusChip = memo(function StatusChip({ label, variant = 'muted', d
       alignItems: 'center',
       gap: 5,
       background: v.bg,
-      border: 'none',
+      border: `1px solid ${v.border}`,
       borderRadius: W.radius.lg,
       padding,
       fontSize,
       fontWeight: 600,
-      letterSpacing: '0.07em',
+      letterSpacing: '0.05em',
       textTransform: 'uppercase',
       color: v.text,
       fontFamily: 'var(--font-ui)',
@@ -44,7 +44,6 @@ export const StatusChip = memo(function StatusChip({ label, variant = 'muted', d
           width: 4, height: 4,
           borderRadius: '50%',
           background: v.text,
-          boxShadow: `0 0 4px ${v.text}`,
           flexShrink: 0,
         }} />
       )}

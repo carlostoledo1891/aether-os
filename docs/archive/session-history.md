@@ -1,4 +1,32 @@
 
+### Session Log — 2026-04-18 (Wave 1 Final Sprint — Public Verifier launch readiness)
+- Hardened `/verify/<hash>`: `crypto.subtle` fallback in `src/pages/verify/cryptoCapability.ts` + `VerifyPage.tsx` "Verifier unavailable" card; live-mode-only guard returns `403 mock_mode_bundle_not_publishable` (schema v6 `data_mode` column); `DataModeBadge` rendered on the verify page.
+- Reference bundle anchored: `docs/REFERENCE_BUNDLE_HASH.txt` = `c1a32f57…12d1a`, drift gate at `server/src/__tests__/referenceBundle.test.ts`, deterministic `REFERENCE_ANCHOR_EVENT` added in `server/src/seed.ts`. README "Verify this build" block links it.
+- Telemetry shipped: schema v7 `verifier_telemetry`, `POST /api/public/verifier-telemetry` always 204, `VerifyPage` posts (chain hash, duration, outcome, event count); `/admin/verifier-stats` now surfaces p50/p95 + outcomes + browser-bucket breakdown.
+- Marketing routes consolidated: `vercel.json` 308 `/business → /` and 307 `/tech → /`; `<Navigate>` mirrors in `App.tsx` keep local/preview consistent; Trust hero + CTA now lead with the verifier URL.
+- Launch package authored: `docs/launch/wave-1-public-verifier.md`, `docs/launch/screen-recording-runbook.md`, `docs/spec/CHANGELOG.md` v1.0.0, `docs/wave-2-kickoff.md` (proposes `/fork/<hash>`, 5 primitives, forks-per-verification north star, 8-week kill criterion).
+- Verification: 315 frontend tests + 155 server tests pass; `npm run lint` clean (one pre-existing warning unrelated to this work).
+
+### Session Log — 2026-04-17 (Globe Polish: Ticker, Narration, Camera Smoothing)
+- `AuditTicker` now spans full page height (`bottom: 0`, was `76`); `VISIBLE_ROWS` 12→32 and `MAX_RECENT` 24→32 so tall viewports fill. Mask-fade preserved.
+- Narration tightened in `narrationScript.ts`: each act now does at least one zoom + popup. Initial waits cut to 0.7–1.8s. Acts 2/3 grew into two-feature tours; Act 1 added a card; Act 5 floats two "global ledger" cards over the planet pull-out without moving the camera.
+- Fixed homepage camera flicker: `requestScene` deduped, new `clearSpotlightSoon(ms)` cancellable deferred clear (cancelled by any subsequent `requestSpotlight` / `requestScene` / immediate clear), and the narration director uses it on cleanup so adjacent acts hand off feature-to-feature instead of bouncing back to the scene preset.
+- Touched: `src/components/marketing/globe/AuditTicker.tsx`, `globeBus.ts`, `narrationScript.ts`, `ScrollyExperience.tsx`. No test changes needed; lint clean.
+
+### Session Log — 2026-04-17 (Marketing Globe + Concierge Scrolly)
+- Built fixed 3D MarketingGlobe + 5-act ScrollyExperience ("Every line you see is provable") replacing the homepage; hero is naked text over the globe, cards left-aligned, H1 bumped to clamp(36→68px), Final Coda alpha 0.6.
+- New globeBus channels: scenes, chain events, spotlight, provenance, narration pause. Companion components: SceneController, NarrationControls, ProvenanceCardOverlay (auto-dismiss), narrationScript (per-act curated spotlight + minted provenance beats).
+- HUD reorganized to four-corner layout: LiveCounter (TL, count-only), ProvenanceChip (TR), NarrationControls (BC), and a single right-edge vertical AuditTicker chain (last 12 events, mask-fade, click-to-fly+open-card). Removed duplicated chain-head display, killed bottom ribbon flicker (1Hz emit cadence + stable chip border + opacity-only fade).
+- Latent fix in MovingPinsOverlay: trail crumbs were appended every frame for every pin (`Math.floor(now/80) % 1` always 0); now throttled to ~12 Hz so the trail buffer scales with time, not framerate.
+- Verification: `npx tsc --noEmit` clean, ESLint clean on all touched files (`src/components/marketing/globe/*`, `MarketingShell.tsx`).
+
+### Session Log — 2026-04-16 (Public Positioning v19)
+- Repositioned Vero as "field-operations command center for regulated industries" — three pillars (Map & Geofence / Monitor & Verify / Decide & Report), three lead verticals (mining, agriculture, defense), three adjacent (logistics, transportation, infrastructure). Direction persisted in `docs/strategy.md` §0 + `AGENT.md` overview.
+- Rewrote `src/config/marketing.ts` (hero copy, stats, INDUSTRIES with `tier`/`tagline`/`useCases`, CAPABILITIES collapsed from 4 primitives → 3 pillars), `src/pages/marketing/decks/homeDeckContent.tsx` (hero label, lead/adjacent industries band, three-pillar grid, vertical use-case chips, refreshed CTA copy), and `src/components/layout/MarketingObservability.tsx` (White Box Field framing, organogram nodes relabeled to the three pillars). Light pass on `businessDeckContent.tsx` + `techDeckContent.tsx` to swap "primitives" → pillars.
+- Home deck visual sweep: hero stat strip → falsifiable claims (Geofenced / Real-Time / SHA-256 / 5-Mode), removed `#market` TAM/SAM/SOM section from the home closing slide, stripped all card outlines + hover-`borderColor` effects across the public website (lift/scale animations preserved).
+- Founders Deck and Trust Deck intentionally untouched (investor / universal language). Caldeira data still anchors the deployed reference.
+- Verification: `npx tsc -b --noEmit` clean, ESLint clean on all 5 touched files, `npx vitest run src/experience/routeModel.test.ts` 3/3 pass.
+
 ## Chat History Reference
 
 | Chat | Summary |
@@ -39,6 +67,30 @@
 - Pushed commit `0082788` to both `main` and `staging` so both remote branches now reference the same release candidate.
 - Confirmed both Railway APIs are healthy; production CORS is correct, but staging API still needs a redeploy to emit `access-control-allow-origin` for the staging Vercel preview URL.
 - Production frontend domains were still serving the previous asset bundle at handoff time, and the staging Vercel preview remained auth-protected from external smoke access.
+
+### Session Log — 2026-04-15
+- Fixed production API CORS for Hydrology, telemetry history, provenance, market, and related live-data reads; local/server release checks passed and production was redeployed.
+- Added the public theming foundation: named dark/light themes, scoped theme boundaries, `docs/THEMING.md`, and deployment/CSP notes.
+- Implemented the public light-default sprint in code by moving marketing pages, public decks, and shared public deck primitives onto a CSS-variable-backed `publicTheme` bridge.
+- Current repo state at handoff: public light-theme changes are implemented and validated locally (`lint`, `test:run`, `build`) but remain uncommitted; `/app/*` is still intentionally dark.
+
+### Session Log — 2026-04-15 (map workspace)
+- Neutral-first UI tokens and map-only workspace chrome; bottom-center map controls with custom zoom/compass and popover dismiss (outside click + Escape).
+- Caldeira boundary replaced with ANM alkaline-complex geometry; camera defaults top-down with boundary fit; SIGMINE target highlight layer driven by `data/caldeira/target-licenses.json` and build script.
+- Layer controls: Geology-first grouping, fixed-height layer rows; unofficial Vero mining-licenses layer fully removed from runtime and defaults.
+
+### Session Log — 2026-04-15 (unit workspace + handoff)
+- Consolidated the unit-driven workspace shell so map selection routes into the shared right-side inspector instead of scattered legacy cards.
+- Fixed the `UnitMarkers` MapLibre lifecycle race by gating layer/source mutation on style readiness and reapplying markers after style changes.
+- Verified the frontend change with `npx tsc --noEmit`, the focused workspace smoke test, and `npm run build`.
+- Investigated remaining `/api/units/by-place/*` 404s: they are real backend misses, likely from stale unit seeding / old DB state rather than fabricated mock results.
+
+### Session Log — 2026-04-16 (deck containers + contrast sweep)
+- Retuned `src/components/presentation/Terminal.tsx` from `rgba(4,4,12,0.92)` to `W.glass06` + backdrop-blur; dimmed traffic-light dots to theme tokens at 70% opacity; title → `W.text3`, body default → `W.text2`. Cascades to all 11 terminal call sites (Founders + Meteoric + marketing).
+- Fixed Founders slide 10 (`DataServiceSlide.tsx`) bottom line `${V}60` → `W.text3` with an accent `→` tspan, and lifted the slide's sibling implements/captions the user flagged as unreadable.
+- Contrast sweep across ~30 deck slides: body-weight `W.text4` → `W.text3` (≥11px rule), hex-alpha violet on SVG text → `W.text3`, `${V}40|50|60` decorative strokes/fills left intact. `TraceabilitySlide` pending-step color also lifted.
+- Provenance chip in `AiAgentSlide.tsx` moved from `${V}08/${V}20` to `${V}14/${V}30` to match the other glass pills; caption → `W.text3`.
+- Verified with `npx tsc -b --noEmit` (clean), `npx vitest run` (290 pass; 5 pre-existing theme-token failures unrelated), and refreshed Playwright deck-cover/deck-geology/deck-hydro/story-map snapshots.
 
 ## Persona-Driven Quality Feedback Loop (2026-04-08)
 
@@ -2219,3 +2271,21 @@ Timeline adjusted to Apr 13/13/15. Product roadmap created and integrated across
 - Hardened server request guards to bypass `OPTIONS` preflight and added regression coverage for chat preflight + denied auth responses with CORS headers.
 - Added a deployment troubleshooting checklist for chat CORS/auth in `docs/DEPLOYMENT.md`.
 - Added `npm run update:all` automation (`scripts/update-all.sh`, `docs/UPDATE_ALL.md`) with explicit confirmation, token-based Railway deploys, and staging smoke skip handling for Vercel auth walls.
+
+### Session Log — 2026-04-15
+- Implemented the scene-first runtime in `src/experience/*` with one `PresentationShell`, manifest registry, route model, and three render modes.
+- Moved `/app/*`, deck routes, and public pages onto shared-shell scene manifests; public pages now support embedded rendering under shared chrome.
+- Updated architecture/story docs to describe one runtime instead of separate app/deck/site shells.
+- Verified with `npm run build` and focused workspace scene tests.
+
+### Session Log — 2026-04-15 (Unit Model Architecture)
+- Designed the Vero Unit Model: unified schema where every operational object (deposit, drill hole, spring, batch, permit, risk, offtake, milestone, etc.) is a unit with typed state machine, evidence requirements, dependency graph edges, and inspector section definitions.
+- Defined 15 unit types with complete state machines, transition rules, auto-trigger thresholds, and per-type inspector layouts. Mapped all seed data (~1,920 units, ~2,500 edges) to existing domain files.
+- Designed the lens system replacing FieldView/BuyerView/ExecutiveView with one unified map workspace and preset filters (Field, Compliance, Environmental, Executive, Buyer Room, Everything).
+- Created 8-sprint implementation plan (24 days) saved to `.cursor/plans/`. No code changes — architecture and planning session only.
+
+### Session Log — 2026-04-15 (Unit Model Full Implementation)
+- Implemented all 7 sprints of the Unit Model plan in one session.
+- Server: migration v5 (6 tables), `unitStore.ts` (state machine + audit chain), 15 unit type seeds, idempotent seeder (~1,350 units from GeoJSON + domain data), 15 REST endpoints, 5 AI chat tools (`queryUnits`, `inspectUnit`, `missingEvidence`, `consequenceCheck`, `generateBundle`).
+- Frontend: extended `AetherDataService` with 10 unit methods, lens system (`lensRegistry.ts` + `useLens.ts`), LensBar/KpiStrip workspace components, UnitMarkers map layer, generic UnitInspector with 7 section types + TransitionDialog + BundleExporter.
+- 132 server tests green (56 new across `unitStore.test.ts`, `unitSeeder.test.ts`, `units.test.ts`). Updated architecture docs.

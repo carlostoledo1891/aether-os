@@ -3,18 +3,20 @@ import { W, DOMAIN_COLORS, STATUS_PRIORITY } from './canvasTheme'
 
 describe('canvasTheme W tokens', () => {
   it('exports all required surface tokens', () => {
-    expect(W.bg).toBe('#07070E')
-    expect(W.canvas).toBe('#060610')
-    expect(W.panel).toBe('#0D0D1C')
+    // Canonical values pinned to current canvasTheme.ts; update both files
+    // together when re-tuning the dark surface ramp.
+    expect(W.bg).toBe('#181724')
+    expect(W.canvas).toBe('#1B1A27')
+    expect(W.panel).toBe('#201F2C')
     expect(W.surface).toBeDefined()
     expect(W.surfaceHigh).toBeDefined()
   })
 
   it('exports all required text tokens', () => {
-    expect(W.text1).toBe('#ECECF8')
-    expect(W.text2).toBe('#A0A0C8')
-    expect(W.text3).toBe('#8888B8')
-    expect(W.text4).toBe('#7878B0')
+    expect(W.text1).toBe('#E7E4EE')
+    expect(W.text2).toBe('#B5B1C1')
+    expect(W.text3).toBe('#8A8698')
+    expect(W.text4).toBe('#676372')
   })
 
   it('exports all accent colors', () => {

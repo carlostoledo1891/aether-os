@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'motion/react'
-import { W } from '../../../app/canvas/canvasTheme'
+import { W } from '../../../theme/publicTheme'
 
 const V = W.violet
 

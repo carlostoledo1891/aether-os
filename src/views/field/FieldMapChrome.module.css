@@ -1,7 +1,0 @@
-.mapHero {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.4s, box-shadow 0.4s;
-}

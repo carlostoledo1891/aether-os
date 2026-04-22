@@ -1,15 +1,15 @@
 import { W, V } from './shared'
 
 const VIEWS = [
-  { view: 'Field Operations', who: 'Geologists, operators', what: '3D terrain, drill collars, pilot plant twin, hydro monitoring' },
-  { view: 'Compliance', who: 'Buyers, auditors', what: 'FEOC tracking, DPP export, SHA-256 audit chain' },
-  { view: 'Executive', who: 'Board, investors, ECAs', what: 'Financial scenarios, risk register, capital tracker' },
+  { view: 'Field Geology', who: 'Chief geologist, technical committee', what: '3D terrain, drill collars, deposit context, and JORC-aligned resource evidence' },
+  { view: 'Hydro Firewall', who: 'Geology kept honest', what: 'Hydrology remains visible, but clearly separated from tonnage, grade, and reserve claims' },
+  { view: 'Technical Appendix', who: 'Printable evidence', what: 'One light-mode geology dossier with drill tests, lithology, and Pilot vs ANSTO validation' },
 ]
 
 export default function ThreeViewsSlide() {
   return (
     <>
-      <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 36 }}>Three Views, One Platform</h2>
+      <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 36 }}>One Technical Review Flow</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, maxWidth: 940, width: '100%' }}>
         {VIEWS.map(v => (
           <div key={v.view} style={{ background: W.glass04, border: `1px solid ${W.glass06}`, borderRadius: 14, padding: '20px 16px', textAlign: 'left' }}>

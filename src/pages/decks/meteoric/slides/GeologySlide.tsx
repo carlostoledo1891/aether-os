@@ -9,7 +9,6 @@ import { useLayerSurface } from '../../../../components/map/useMapLayers'
 import { VISIBLE_LAYER_GROUPS } from '../../../../components/map/layerRegistry'
 import { CALDEIRA_BOUNDARY_LAYER_ID } from '../../../../components/map/CaldeiraBoundary'
 import { ENV_APA_FILL_LAYER_ID } from '../../../../components/map/EnvironmentalOverlay'
-import { LICENSE_LAYER_ID } from '../../../../components/map/LicenseOverlay'
 import { DRILL_LAYER_ID, parseLithologyIntervals } from '../../../../components/map/DrillHoleOverlay'
 import { MapFeaturePopup, type MapPopupData } from '../../../../components/map/MapFeaturePopup'
 import type { MapLayerMouseEvent } from '../../../../components/map/MapBase'
@@ -29,7 +28,7 @@ export default function GeologySlide() {
   const handleMouseEnter = useCallback((e: MapLayerMouseEvent) => {
     const feats = e.features
     if (!feats?.length) return
-    const priority = [DRILL_LAYER_ID, LICENSE_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
+    const priority = [DRILL_LAYER_ID, ENV_APA_FILL_LAYER_ID, CALDEIRA_BOUNDARY_LAYER_ID]
     const feat = priority.reduce<(typeof feats)[number] | undefined>(
       (pick, lid) => pick ?? feats.find(f => f.layer?.id === lid),
       undefined,
@@ -54,18 +53,6 @@ export default function GeologySlide() {
             { label: 'Type', value: String(props.hole_type ?? '—') },
           ],
           lithologyIntervals: lithIntervals,
-        },
-      })
-    } else if (layerId === LICENSE_LAYER_ID) {
-      setPopup({
-        x: px.x, y: px.y,
-        data: {
-          title: String(props.name ?? props.id ?? ''),
-          accentColor: W.violet,
-          rows: [
-            { label: 'Status', value: String(props.status ?? '—') },
-            { label: 'Area', value: `${Number(props.area_km2 ?? 0)} km²` },
-          ],
         },
       })
     } else if (layerId === ENV_APA_FILL_LAYER_ID) {
@@ -109,7 +96,7 @@ export default function GeologySlide() {
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          flyTo={{ center: CAPAO_DO_MEL, zoom: 13, pitch: 45, duration: 4000 }}
+          flyTo={{ center: CAPAO_DO_MEL, zoom: 13, pitch: 0, duration: 4000 }}
           containerStyle={{ width: '100%', height: '100%', borderRadius: 0 }}
           controlSlots={{
             topLeft: (
@@ -127,7 +114,7 @@ export default function GeologySlide() {
                     </Suspense>
                   </div>
                   <div style={{ fontSize: 10, color: V, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Geological Layers</div>
-                  {['Drill collars with trace metadata', 'Deposit polygons with ASX source refs', 'Resource classification (JORC Table 1)', 'Lithology domains & grade distribution', 'Competent Person–safe labeling'].map(item => (
+                  {['Drill collars with trace metadata', 'Deposit polygons with ASX source refs', 'Resource classification (JORC Table 1 layout)', 'Lithology domains & grade distribution (public data)', 'Competent Person–safe labeling'].map(item => (
                     <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
                       <div style={{ width: 3, height: 3, borderRadius: '50%', background: V, marginTop: 6, flexShrink: 0 }} />
                       <span style={{ fontSize: 11, color: W.text2, lineHeight: 1.4 }}>{item}</span>
@@ -136,7 +123,7 @@ export default function GeologySlide() {
                 </SlidePanel>
                 <SlidePanel style={{ padding: '14px 16px' }}>
                   <div style={{ fontSize: 10, color: W.cyan, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Hydrological Layers</div>
-                  {['Spring monitoring network (modeled)', 'Piezometer locations and readings', 'Water quality parameters (pH, conductivity)'].map(item => (
+                  {['Spring monitoring network (modeled)', 'Piezometer locations and reference readings', 'Water quality parameters (pH, conductivity) — sample inputs'].map(item => (
                     <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
                       <div style={{ width: 3, height: 3, borderRadius: '50%', background: W.cyan, marginTop: 6, flexShrink: 0 }} />
                       <span style={{ fontSize: 11, color: W.text2, lineHeight: 1.4 }}>{item}</span>
@@ -158,7 +145,6 @@ export default function GeologySlide() {
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 4 }}>
                 {[
                   { label: 'Drill Holes', color: V },
-                  { label: 'Mining licences', color: W.violetSoft },
                   { label: 'APA Boundary', color: W.cyan },
                   { label: 'Caldeira Boundary', color: W.violet },
                   { label: 'SGB/CPRM Geology', color: W.amber },

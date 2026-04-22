@@ -5,6 +5,7 @@ import type {
   SiteExternalLayerRenderMode,
   SiteLayerSourceType,
 } from './types.js'
+import { EXTERNAL_SNAPSHOT_STYLES } from './externalSnapshotStyles.js'
 
 export type CaldeiraLayerGroupId =
   | 'base'
@@ -27,7 +28,7 @@ export type CaldeiraLayerSourceType =
   | 'geojson-static'
 
 export type SharedStoreBinding =
-  | { kind: 'shared-store'; store: 'ops'; key: 'tenements' | 'drillHoles' | 'pfsEngineering' | 'plantSites' | 'infra' }
+  | { kind: 'shared-store'; store: 'ops'; key: 'drillHoles' | 'pfsEngineering' | 'plantSites' | 'infra' }
   | { kind: 'shared-store'; store: 'env'; key: 'apa' | 'buffer' | 'monitoring' | 'urban' }
   | { kind: 'local' }
 
@@ -87,15 +88,39 @@ export const CALDEIRA_LAYER_PAGE_SCOPES = [
 const ALL_PANEL_SCOPES = CALDEIRA_LAYER_PAGE_SCOPES
 
 const SIGMINE_TENEMENT_LEGEND = [
-  { label: 'Active mineral title polygon', symbol: 'fill', color: 'rgba(124,92,252,0.05)', strokeColor: 'rgba(124,92,252,0.92)' },
+  {
+    label: 'Active mineral title polygon',
+    symbol: 'fill',
+    color: EXTERNAL_SNAPSHOT_STYLES.sigmine.fillColor,
+    strokeColor: EXTERNAL_SNAPSHOT_STYLES.sigmine.lineColor,
+  },
+] as const satisfies readonly SiteExternalLayerLegendItem[]
+
+const SIGMINE_TARGET_TENEMENT_LEGEND = [
+  {
+    label: 'Curated target tenement',
+    symbol: 'fill',
+    color: EXTERNAL_SNAPSHOT_STYLES.sigmineTargets.fillColor,
+    strokeColor: EXTERNAL_SNAPSHOT_STYLES.sigmineTargets.lineColor,
+  },
 ] as const satisfies readonly SiteExternalLayerLegendItem[]
 
 const GEOSGB_GEOLOGY_LEGEND = [
-  { label: 'State geology polygon', symbol: 'fill', color: 'rgba(250,204,21,0.10)', strokeColor: 'rgba(250,204,21,0.88)' },
+  {
+    label: 'State geology polygon',
+    symbol: 'fill',
+    color: EXTERNAL_SNAPSHOT_STYLES.geosgbGeology.fillColor,
+    strokeColor: EXTERNAL_SNAPSHOT_STYLES.geosgbGeology.lineColor,
+  },
 ] as const satisfies readonly SiteExternalLayerLegendItem[]
 
 const ANM_GEOLOGY_LEGEND = [
-  { label: 'ANM geoscience polygon', symbol: 'fill', color: 'rgba(34,211,238,0.08)', strokeColor: 'rgba(34,211,238,0.92)' },
+  {
+    label: 'ANM geoscience polygon',
+    symbol: 'fill',
+    color: EXTERNAL_SNAPSHOT_STYLES.anmGeology.fillColor,
+    strokeColor: EXTERNAL_SNAPSHOT_STYLES.anmGeology.lineColor,
+  },
 ] as const satisfies readonly SiteExternalLayerLegendItem[]
 
 const HIDROWEB_STATION_LEGEND = [
@@ -105,34 +130,22 @@ const HIDROWEB_STATION_LEGEND = [
 const _CALDEIRA_LAYER_MANIFEST = [
   {
     id: 'boundary',
-    group: 'base',
+    group: 'geology',
     label: 'Caldeira boundary',
     pageScopes: ALL_PANEL_SCOPES,
     defaultOn: true,
     sourceType: 'component',
     available: true,
-    provider: 'Vero',
-    datasetId: 'alkaline_complex_boundary',
+    provider: 'ANM',
+    datasetId: 'anm_sigmine_geociencias_pocos_caldas_complexo_alcalino',
     binding: { kind: 'local' },
-  },
-  {
-    id: 'licenses',
-    group: 'base',
-    label: 'Mining licences',
-    pageScopes: ALL_PANEL_SCOPES,
-    defaultOn: true,
-    sourceType: 'component',
-    available: true,
-    provider: 'Vero',
-    datasetId: 'ops_reality_tenements',
-    binding: { kind: 'shared-store', store: 'ops', key: 'tenements' },
   },
   {
     id: 'drillholes',
     group: 'geology',
     label: 'Drill collars',
     pageScopes: ALL_PANEL_SCOPES,
-    defaultOn: false,
+    defaultOn: true,
     sourceType: 'component',
     available: true,
     provider: 'Vero',
@@ -205,6 +218,28 @@ const _CALDEIRA_LAYER_MANIFEST = [
     legendUrl: 'https://geo.anm.gov.br/arcgis/rest/services/SIGMINE/dados_anm/FeatureServer/0?f=pjson',
     legendItems: SIGMINE_TENEMENT_LEGEND,
     sourceUrl: 'https://sigmine.dnpm.gov.br/arcgis/rest/services/SIGMINE/MapServer/export?bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=256,256&format=png32&transparent=true&f=image',
+    binding: { kind: 'local' },
+  },
+  {
+    id: 'sigmineTargets',
+    group: 'geology',
+    label: 'SIGMINE target tenements',
+    pageScopes: ALL_PANEL_SCOPES,
+    defaultOn: true,
+    sourceType: 'geojson-snapshot',
+    available: true,
+    attribution: 'Fonte: ANM SIGMINE · curated target subset',
+    provider: 'ANM',
+    datasetId: 'sigmine_target_processos_curated',
+    logicalSourceId: 'snapshot:sigmine-target-tenements',
+    snapshotPath: 'src/data/geojson/external/caldeira-sigmine-target-tenements.geojson',
+    snapshotSourceId: 'sigmine-targets',
+    apiSourceId: 'sigmine',
+    renderMode: 'snapshot-geojson',
+    identifyMode: 'none',
+    supportsLegend: true,
+    supportsHealth: false,
+    legendItems: SIGMINE_TARGET_TENEMENT_LEGEND,
     binding: { kind: 'local' },
   },
   {

@@ -22,7 +22,7 @@ export default function ArchitectureSlide() {
         <marker id="arrowT4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d={`M0,0 L8,3 L0,6`} fill={W.text4} /></marker>
       </defs>
       <rect x="118" y="20" width="520" height="300" rx="16" fill="none" stroke={`${V}20`} strokeWidth="1" strokeDasharray="6 4" />
-      <text x="130" y="42" fill={`${V}40`} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.06em">INTERNAL TRUST ZONE</text>
+      <text x="130" y="42" fill={W.text3} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.06em">INTERNAL TRUST ZONE · INGESTION-READY</text>
 
       <rect x="140" y="60" width="160" height="100" rx="10" fill={W.glass04} stroke={`${V}30`} strokeWidth="1" />
       <text x="220" y="96" textAnchor="middle" fill={V} fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">aether-engine</text>
@@ -64,7 +64,7 @@ export default function ArchitectureSlide() {
         </g>
       ))}
 
-      <text x="750" y="176" textAnchor="middle" fill={W.text4} fontSize="9" fontFamily="var(--font-mono)">LAPOC · Meteoric · Prefeitura</text>
+      <text x="750" y="176" textAnchor="middle" fill={W.text4} fontSize="9" fontFamily="var(--font-mono)">LAPOC · Meteoric · Prefeitura — target channels</text>
       <line x1="750" y1="152" x2="750" y2="166" stroke={`${V}30`} strokeWidth="0.8" strokeDasharray="3 2" />
     </svg>
   </>)

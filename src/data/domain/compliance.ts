@@ -251,17 +251,17 @@ export const ESG_FRAMEWORKS: ESGFramework[] = [
   {
     id: 'gri-303', name: 'GRI 303: Water & Effluents', standard: 'GRI', category: 'water', coverage_pct: 92,
     metrics: [
-      { metric: 'Water withdrawal by source', dashboardSource: 'FieldView → Hydro Twin → Flow Metrics', status: 'mapped' },
-      { metric: 'Water recycled and reused', dashboardSource: 'FieldView → Operations → Recirculation %', status: 'mapped' },
-      { metric: 'Water discharge quality', dashboardSource: 'FieldView → Hydro Twin → Sulfate/Nitrate ppm', status: 'mapped' },
-      { metric: 'Water stress area assessment', dashboardSource: `FieldView → Hydro Twin → ${SPRING_COUNT} Springs Monitor`, status: 'mapped' },
+      { metric: 'Water withdrawal by source', dashboardSource: 'Operations → Hydro Twin → Flow Metrics', status: 'mapped' },
+      { metric: 'Water recycled and reused', dashboardSource: 'Operations → Recirculation %', status: 'mapped' },
+      { metric: 'Water discharge quality', dashboardSource: 'Operations → Hydro Twin → Sulfate/Nitrate ppm', status: 'mapped' },
+      { metric: 'Water stress area assessment', dashboardSource: `Operations → Hydro Twin → ${SPRING_COUNT} Springs Monitor`, status: 'mapped' },
     ],
   },
   {
     id: 'gri-306', name: 'GRI 306: Waste', standard: 'GRI', category: 'waste', coverage_pct: 78,
     metrics: [
-      { metric: 'Waste generated', dashboardSource: 'FieldView → Operations → Dry-stack tailings volume', status: 'mapped' },
-      { metric: 'Waste diverted from disposal', dashboardSource: 'FieldView → Operations → Recirculation %', status: 'mapped' },
+      { metric: 'Waste generated', dashboardSource: 'Operations → Dry-stack tailings volume', status: 'mapped' },
+      { metric: 'Waste diverted from disposal', dashboardSource: 'Operations → Recirculation %', status: 'mapped' },
       { metric: 'Significant spills', dashboardSource: 'Alert Panel → Incident Log', status: 'mapped' },
       { metric: 'Hazardous waste transport', dashboardSource: 'Not applicable (ionic clay — no hazardous waste)', status: 'partial' },
     ],
@@ -269,28 +269,28 @@ export const ESG_FRAMEWORKS: ESGFramework[] = [
   {
     id: 'sasb-em-mm', name: 'SASB EM-MM: Metals & Mining', standard: 'SASB', category: 'governance', coverage_pct: 85,
     metrics: [
-      { metric: 'GHG Scope 1 + 2 emissions', dashboardSource: 'BuyerView → Green Premium → Carbon Intensity', status: 'mapped' },
-      { metric: 'Total fresh water withdrawn', dashboardSource: 'FieldView → Hydro Twin → Flow Metrics', status: 'mapped' },
-      { metric: 'Community engagement & permits', dashboardSource: 'ExecutiveView → DFS → Regulatory Log', status: 'mapped' },
+      { metric: 'GHG Scope 1 + 2 emissions', dashboardSource: 'Trade → Green Premium → Carbon Intensity', status: 'mapped' },
+      { metric: 'Total fresh water withdrawn', dashboardSource: 'Operations → Hydro Twin → Flow Metrics', status: 'mapped' },
+      { metric: 'Community engagement & permits', dashboardSource: 'Executive → DFS → Regulatory Log', status: 'mapped' },
       { metric: 'Workforce health & safety', dashboardSource: 'Alert Panel → Incident Log → SLA Metrics', status: 'partial' },
-      { metric: 'Reserves & resource estimation', dashboardSource: 'ExecutiveView → Assets → Geology Panel', status: 'mapped' },
+      { metric: 'Reserves & resource estimation', dashboardSource: 'Executive → Assets → Geology Panel', status: 'mapped' },
     ],
   },
   {
     id: 'tcfd', name: 'TCFD: Climate-Related Disclosures', standard: 'TCFD', category: 'climate', coverage_pct: 70,
     metrics: [
-      { metric: 'Governance: Board oversight of climate risks', dashboardSource: 'ExecutiveView → Risk Register', status: 'mapped' },
-      { metric: 'Strategy: Climate scenario analysis', dashboardSource: 'FieldView → Hydro Twin → Predictive Modeling (drought)', status: 'mapped' },
-      { metric: 'Risk management: Integration of climate risk', dashboardSource: 'ExecutiveView → Risk Register → Environmental', status: 'mapped' },
-      { metric: 'Metrics: Scope 3 emissions tracking', dashboardSource: 'BuyerView → Scope 3 Reagent Provenance', status: 'partial' },
+      { metric: 'Governance: Board oversight of climate risks', dashboardSource: 'Executive → Risk Register', status: 'mapped' },
+      { metric: 'Strategy: Climate scenario analysis', dashboardSource: 'Operations → Hydro Twin → Predictive Modeling (drought)', status: 'mapped' },
+      { metric: 'Risk management: Integration of climate risk', dashboardSource: 'Executive → Risk Register → Environmental', status: 'mapped' },
+      { metric: 'Metrics: Scope 3 emissions tracking', dashboardSource: 'Trade → Scope 3 Reagent Provenance', status: 'partial' },
     ],
   },
   {
     id: 'issb-s2', name: 'ISSB S2: Climate Disclosures', standard: 'ISSB', category: 'climate', coverage_pct: 62,
     metrics: [
-      { metric: 'Physical climate risk assessment', dashboardSource: 'FieldView → Hydro Twin → Drought Forecast 2030–2050', status: 'mapped' },
-      { metric: 'Transition risk: Commodity price sensitivity', dashboardSource: 'ExecutiveView → Financials → Sensitivity Table', status: 'mapped' },
-      { metric: 'Cross-industry emissions metrics', dashboardSource: 'BuyerView → Competitive Benchmarks → CO₂/t', status: 'mapped' },
+      { metric: 'Physical climate risk assessment', dashboardSource: 'Operations → Hydro Twin → Drought Forecast 2030–2050', status: 'mapped' },
+      { metric: 'Transition risk: Commodity price sensitivity', dashboardSource: 'Executive → Financials → Sensitivity Table', status: 'mapped' },
+      { metric: 'Cross-industry emissions metrics', dashboardSource: 'Trade → Competitive Benchmarks → CO₂/t', status: 'mapped' },
       { metric: 'Financed emissions', dashboardSource: 'Not yet tracked — requires EXIM/EFA integration', status: 'pending' },
     ],
   },

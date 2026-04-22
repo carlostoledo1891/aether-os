@@ -104,9 +104,9 @@ export interface ComplianceLedger {
   certificates: string[]
 }
 
-export type ViewMode = 'operator' | 'buyer' | 'executive'
+export type ViewMode = 'operator' | 'buyer'
 
-export type ReportType = 'environment' | 'operations' | 'drill-tests'
+export type AppendixType = 'technical-appendix'
 
 export interface AlertItem {
   id: string

@@ -281,5 +281,31 @@ export function createLiveDataService(): AetherDataService {
     dismissAllAlerts() {
       fetch(buildApiUrl('/api/alerts/dismiss-all'), { method: 'POST' }).catch(() => {})
     },
+
+    /* ─── Unit Model ──────────────────────────────────────────────────── */
+    getUnits(filters) {
+      const params = new URLSearchParams()
+      if (filters?.typeId) params.set('type', filters.typeId)
+      if (filters?.state) params.set('state', filters.state)
+      if (filters?.severity) params.set('severity', filters.severity)
+      const qs = params.toString()
+      return api(`/api/units${qs ? `?${qs}` : ''}`)
+    },
+    getUnit(id) { return api(`/api/units/${id}`) },
+    async getUnitByPlace(placeId) {
+      try { return await api(`/api/units/by-place/${placeId}`) }
+      catch { return null }
+    },
+    getUnitStats() { return api('/api/units/stats') },
+    getUnitTypes() { return api('/api/unit-types') },
+    async transitionUnit(id, toState, actor, reason) {
+      const res = await fetch(buildApiUrl(`/api/units/${id}/transition`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toState, actor, reason }) })
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error ?? 'Transition failed') }
+      return res.json()
+    },
+    getUnitTransitions(unitId) { return api(`/api/units/${unitId}/transitions`) },
+    getUnitEvidence(unitId) { return api(`/api/units/${unitId}/evidence`) },
+    getUnitEdges(unitId) { return api(`/api/units/${unitId}/edges`) },
+    getUnitConsequences(unitId, maxDepth = 5) { return api(`/api/units/${unitId}/consequences?maxDepth=${maxDepth}`) },
   }
 }

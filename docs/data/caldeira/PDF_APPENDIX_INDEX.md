@@ -22,6 +22,13 @@ Index of Meteoric (ASX: MEI) PDFs referenced for GeoJSON staging. Use with [`dat
 | [`data/caldeira/staging/appendix_02909601_agostinho_ac_collars.txt`](../../../data/caldeira/staging/appendix_02909601_agostinho_ac_collars.txt) | 02909601 Appendix 1 | Aircore collar lines (parsed at build) |
 | [`data/caldeira/staging/appendix_02909601_agostinho_intercepts.txt`](../../../data/caldeira/staging/appendix_02909601_agostinho_intercepts.txt) | 02909601 Appendix 2 | Per-hole intercept summary for Agostinho AC |
 | [`data/caldeira/staging/licence_metrics.csv`](../../../data/caldeira/staging/licence_metrics.csv) | 02933327 Table 1 | Licence-level MRE text fields |
+| [`scripts/backfill-drill-assays.ts`](../../../scripts/backfill-drill-assays.ts) | 02766588 Table 1 | Additive DD assay/intercept lookup reused by the builder and by explicit backfill runs |
+
+## Current ingestion status
+
+- **Automated in `build:caldeira-geojson`:** 02766588 Table 2 collars, 02909601 Appendix 1 collars, 02909601 Appendix 2 intercepts, DD highlight lookup, and the reusable Jan 2024 assay backfill table.
+- **Additive / preserved on rebuild:** committed `hmreo_ppm`, `prnd_ppm`, and `lithology_intervals` fields already present in `src/data/geojson/caldeira-drillholes.geojson`.
+- **Indexed but not yet in the automated collar build:** 02705559 Appendix 1 collars and any future appendix tables not mirrored into staging files.
 
 ## Refresh workflow
 
