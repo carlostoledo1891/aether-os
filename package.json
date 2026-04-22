@@ -31,7 +31,7 @@
     "ingest:lapoc": "tsx scripts/ingest-lapoc.ts",
     "backfill:drill-assays": "tsx scripts/backfill-drill-assays.ts",
     "update:all": "bash scripts/update-all.sh",
-    "prepare": "husky"
+    "prepare": "node -e \"const f=require('fs');const {execFileSync}=require('child_process');const b='node_modules/husky/bin.js';if(f.existsSync(b))execFileSync(process.execPath,[b],{stdio:'inherit'})\""
   },
   "lint-staged": {
     "*.{ts,tsx}": [
