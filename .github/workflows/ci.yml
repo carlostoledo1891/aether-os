@@ -92,7 +92,7 @@ jobs:
         run: syft dir:engine -o cyclonedx-json=sbom-engine.cdx.json
 
       - name: Install Grype
-        uses: anchore/scan-action/download-grype@v4
+        uses: anchore/scan-action/download-grype@v7
       - name: Vulnerability scan (root)
         run: grype sbom:sbom-root.cdx.json --fail-on critical || true
       - name: Vulnerability scan (server)
